@@ -1,0 +1,35 @@
+{
+    "api": {
+        "baseUrl": "https://api.multiversx.com",
+        "gatewayUrl": "https://gateway.multiversx.com",
+        "timeout": 30000,
+        "rateLimitDelay": 200
+    },
+    "monitoring": {
+        "pollIntervalMs": 6000,
+        "maxQueueSize": 10000
+    },
+    "analysis": {
+        "whaleThreshold": 10000,
+        "largeTransactionThreshold": 5000,
+        "significantMovementUsd": 100000
+    },
+    "database": {
+        "path": "./data/quant_agent.db"
+    },
+    "reporting": {
+        "schedule": "0 9 * * 0",
+        "retentionDays": 90
+    },
+    "notifications": {
+        "slack": {
+            "enabled": false,
+            "webhookUrl": ""
+        },
+        "email": {
+            "enabled": false,
+            "from": "",
+            "to": []
+        }
+    }
+}
