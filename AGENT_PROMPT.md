@@ -39,16 +39,30 @@ curl -s 'https://api.multiversx.com/accounts?size=50&sort=balance&order=desc' > 
 sleep 0.2
 ```
 
-### 1.3 Recent Large Transactions
+### 1.3 Whale Transaction Detection
 
-Fetch the most recent successful transactions and filter for large values. EGLD has 18 decimals, so 5,000 EGLD = 5000000000000000000000.
+**The global `/transactions` endpoint does NOT support filtering by value.** The `minValue` parameter is accepted but silently ignored. Instead, use this two-step approach:
+
+**Step A: Discover whale addresses dynamically from top accounts.**
+The top accounts list from step 1.2 gives you the current whales. Additionally, load `data/known-addresses.json` for all tagged exchange and whale addresses.
+
+**Step B: Query each whale/exchange account's individual transactions.**
+For each account with balance > 100K EGLD (and all known exchange addresses), fetch their recent transactions:
 
 ```bash
-curl -s "https://api.multiversx.com/transactions?size=50&status=success&order=desc&after=${SEVEN_DAYS_AGO}" > /tmp/recent_txs.json
+# For each whale/exchange address, query their transactions in the period:
+curl -s "https://api.multiversx.com/accounts/${ADDRESS}/transactions?size=25&after=${SEVEN_DAYS_AGO}&order=desc&status=success"
 sleep 0.2
 ```
 
-Also check for large-value transactions specifically by paginating through results. The API returns max 50 per request, so you may need multiple pages for a busy week.
+Then filter client-side for transactions with `value > 1000 EGLD` (1000 * 10^18 in raw denomination).
+
+This approach catches whale movements that the global endpoint misses. In testing, it found 28 large transactions including 77K, 58K, and 35K EGLD movements from UPbit that were invisible to global queries.
+
+**Prioritize these accounts** (query in this order, stop if you've made 30+ API calls):
+1. All known exchange addresses (category: "exchange" in known-addresses.json) — ~17 addresses
+2. Top 10 non-exchange, non-system accounts by balance from step 1.2
+3. Any addresses from `data/previous.json` top_accounts that dropped out of the current top 50 (may indicate large outflow)
 
 ### 1.4 Token Data
 
@@ -132,7 +146,7 @@ When it doesn't match: use truncated format `erd1...last6` and note it as "Unkno
 
 ### 2.3 Whale Analysis
 
-1. **Large transactions**: Filter all fetched transactions for value > 5,000 EGLD (5000 * 10^18 in raw). Classify each by flow type:
+1. **Large transactions**: From the per-account transaction queries in step 1.3, collect all transactions with value > 1,000 EGLD. Classify each by flow type:
    - `exchange_inflow`: sender is NOT an exchange, receiver IS an exchange
    - `exchange_outflow`: sender IS an exchange, receiver is NOT
    - `defi_deposit`: receiver is a known DeFi contract
