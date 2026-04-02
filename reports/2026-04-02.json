@@ -1,0 +1,873 @@
+{
+  "metadata": {
+    "report_date": "2026-04-02",
+    "period_start": "2026-03-26T00:00:00Z",
+    "period_end": "2026-04-02T00:00:00Z",
+    "generated_at": "2026-04-02T17:08:50.860Z",
+    "egld_price_usd": 3.68,
+    "data_sources_ok": [
+      "economics",
+      "stats",
+      "accounts",
+      "tokens",
+      "providers",
+      "identities",
+      "mex/economics",
+      "mex/pairs",
+      "mex/tokens"
+    ],
+    "data_sources_failed": []
+  },
+  "executive_summary": [
+    {
+      "finding": "48.1% of EGLD supply is staked (14.25M), creating a staking-dominant economy with reduced circulating float",
+      "severity": "info",
+      "category": "staking"
+    },
+    {
+      "finding": "6.8M EGLD (22.9% of supply) on exchanges, with Binance holding 64.8% of all exchange EGLD",
+      "severity": "medium",
+      "category": "whale"
+    },
+    {
+      "finding": "Validator market is highly competitive (HHI 0.018) with 184 providers — strong decentralization",
+      "severity": "info",
+      "category": "staking"
+    },
+    {
+      "finding": "xExchange daily volume only $210K across 541 pairs — DeFi liquidity is thin",
+      "severity": "medium",
+      "category": "defi"
+    },
+    {
+      "finding": "Baseline report — all WoW deltas and anomaly detection available from next week",
+      "severity": "info",
+      "category": "network"
+    }
+  ],
+  "network_health": {
+    "economics": {
+      "egld_price_usd": 3.68,
+      "market_cap_usd": 109076974,
+      "total_supply": 29640482,
+      "circulating_supply": 29640482,
+      "staked_egld": 14251847,
+      "staked_ratio": 0.48082372614588387,
+      "staking_apr": 0.088996,
+      "token_market_cap_usd": 52135969
+    },
+    "activity": {
+      "total_accounts": 9182828,
+      "total_transactions": 596192455,
+      "epoch": 2071,
+      "blocks": 119244802,
+      "shards": 3
+    },
+    "deltas": {
+      "price_change_pct": null,
+      "market_cap_change_pct": null,
+      "staked_ratio_change_pct": null,
+      "apr_change_pct": null,
+      "accounts_added": null,
+      "transactions_added": null
+    },
+    "analysis": "Staking-dominant economy with 48.1% of supply locked. 8.9% APR remains competitive. $109M market cap in micro-cap territory. 9.18M accounts with 596M lifetime transactions."
+  },
+  "whale_intelligence": {
+    "large_transactions": [],
+    "wallet_changes": [
+      {
+        "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l",
+        "label": "System: Staking Module",
+        "category": "system",
+        "current_balance_egld": 14251215.620897071,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p",
+        "label": "Binance Staking",
+        "category": "exchange",
+        "current_balance_egld": 3204120.9488048204,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+        "label": "UPbit",
+        "category": "exchange",
+        "current_balance_egld": 1397694.9444522245,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1ylwuswz9zuk4acuq4aa6d0x9ys293yhlpwg6vpuwntndyej4u44q896zlz",
+        "label": "Binance.com",
+        "category": "exchange",
+        "current_balance_egld": 516992.52327805944,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 495145.2665475443,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 495145.2665475443,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+        "label": "Binance.com",
+        "category": "exchange",
+        "current_balance_egld": 407350.99064005294,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+        "label": "Bybit",
+        "category": "exchange",
+        "current_balance_egld": 403929.5424206244,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 346046.63279247814,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqvc7gdl0p4s97guh498wgz75k8sav6sjfjlwqh679jy",
+        "label": "xExchange: WrappedEGLD Contract Shard 0",
+        "category": "defi",
+        "current_balance_egld": 311479.5078817747,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1v4ms58e22zjcp08suzqgm9ajmumwxcy4hfkdc23gvynnegjdflmsj6gmaq",
+        "label": "Binance.com",
+        "category": "exchange",
+        "current_balance_egld": 300009.05085,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 253238.9314685329,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3",
+        "label": "xExchange: WrappedEGLD Contract Shard 1",
+        "category": "defi",
+        "current_balance_egld": 247925.04249326105,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 206253.24866367938,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 193123.61167,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 192900.3180810694,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4",
+        "label": "Crypto.com",
+        "category": "exchange",
+        "current_balance_egld": 182480.32682400223,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j",
+        "label": "Unknown Whale",
+        "category": "other",
+        "current_balance_egld": 165005.64440000002,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqa9unh4m4j3nyg3l7cvlw8wshumx58m6089pspt29xm",
+        "label": "Ecosystem Growth Fund for Builders",
+        "category": "team",
+        "current_balance_egld": 161101.60467843522,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg",
+        "label": "Growth Dividend Fund for Users",
+        "category": "team",
+        "current_balance_egld": 161101.60467843522,
+        "previous_balance_egld": null,
+        "change_egld": null,
+        "change_pct": null
+      }
+    ],
+    "exchange_flows": {
+      "net_exchange_flow_egld": null,
+      "total_inflow_egld": null,
+      "total_outflow_egld": null,
+      "by_exchange": [
+        {
+          "exchange": "Binance Staking",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "UPbit",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Binance.com",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Binance.com",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Bybit",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Binance.com",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Crypto.com",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "MEXC",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Bitget",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Coinbase",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Coinbase Custody",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "Gate.io",
+          "net_flow_egld": null
+        },
+        {
+          "exchange": "KuCoin",
+          "net_flow_egld": null
+        }
+      ]
+    },
+    "dormant_activations": [],
+    "analysis": "Exchange wallets hold 6.8M EGLD (22.9% of supply). Binance dominates at 4.4M (64.8% of exchange EGLD). Three zero-nonce whales hold 1.34M EGLD in apparent cold storage."
+  },
+  "staking_intelligence": {
+    "top_providers": [
+      {
+        "name": "Figment",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+        "locked_egld": 584370.9610132386,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 306,
+        "apr": 6.51,
+        "service_fee_pct": 12,
+        "num_nodes": 50
+      },
+      {
+        "name": "Binance Staking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc0llllsayxegu",
+        "locked_egld": 432437.52362978447,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 8479,
+        "apr": 7.11,
+        "service_fee_pct": 7.920000000000001,
+        "num_nodes": 50
+      },
+      {
+        "name": "Staking Agency",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqhllllsajxzat",
+        "locked_egld": 420402.7941877364,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 10035,
+        "apr": 8.09,
+        "service_fee_pct": 12,
+        "num_nodes": 106
+      },
+      {
+        "name": "Trust Staking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzhllllsp9wvyl",
+        "locked_egld": 375133.9209315795,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 7206,
+        "apr": 8.12,
+        "service_fee_pct": 12,
+        "num_nodes": 96
+      },
+      {
+        "name": "Meria",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq8hlllls7a6h85",
+        "locked_egld": 340112.63189254416,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 11012,
+        "apr": 8.07,
+        "service_fee_pct": 12,
+        "num_nodes": 94
+      },
+      {
+        "name": "iVerse Vision",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrhlllls062tu4",
+        "locked_egld": 284050.82777039165,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 4093,
+        "apr": 8.23,
+        "service_fee_pct": 12,
+        "num_nodes": 137
+      },
+      {
+        "name": "The Palm Tree Network",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqy8lllls62y8s5",
+        "locked_egld": 269573.8972169647,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 3684,
+        "apr": 7.05,
+        "service_fee_pct": 12,
+        "num_nodes": 76
+      },
+      {
+        "name": "Incal",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqd8llllslmf3hu",
+        "locked_egld": 221102.67581871964,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 2792,
+        "apr": 8.82,
+        "service_fee_pct": 1,
+        "num_nodes": 50
+      },
+      {
+        "name": "Orange Staking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxhllllssz7sl7",
+        "locked_egld": 219962.01717803502,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 2947,
+        "apr": 7.85,
+        "service_fee_pct": 12,
+        "num_nodes": 50
+      },
+      {
+        "name": "P2P Validator",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd",
+        "locked_egld": 217357.73420893695,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 1248,
+        "apr": 7.88,
+        "service_fee_pct": 12,
+        "num_nodes": 50
+      },
+      {
+        "name": "Valid Blocks",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq90llllslwfcr3",
+        "locked_egld": 212002.17438345595,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 4517,
+        "apr": 8.38,
+        "service_fee_pct": 7.000000000000001,
+        "num_nodes": 50
+      },
+      {
+        "name": "Aurentum GmbH",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqmhllllsjg335n",
+        "locked_egld": 204036.99388478897,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 1630,
+        "apr": 8.2,
+        "service_fee_pct": 10,
+        "num_nodes": 50
+      },
+      {
+        "name": "Maple Leaf Network",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpp8llllscdsdm4",
+        "locked_egld": 192200.59311894694,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 929,
+        "apr": 9.28,
+        "service_fee_pct": 0,
+        "num_nodes": 50
+      },
+      {
+        "name": "Primal Block One",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqx8llllsxavffq",
+        "locked_egld": 190790.19323236443,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 3570,
+        "apr": 8.37,
+        "service_fee_pct": 10,
+        "num_nodes": 67
+      },
+      {
+        "name": "Orius International",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp80lllls7xp8j0",
+        "locked_egld": 190591.5502100685,
+        "previous_locked_egld": null,
+        "change_egld": null,
+        "num_delegators": 1204,
+        "apr": 8.56,
+        "service_fee_pct": 7.99,
+        "num_nodes": 50
+      }
+    ],
+    "concentration": {
+      "top_5_share_pct": 19.27144387144434,
+      "top_10_share_pct": 30.123177326809603,
+      "herfindahl_index": 0.018287235917538974,
+      "previous_herfindahl": null
+    },
+    "analysis": "Highly competitive validator market. HHI 0.018 across 184 providers. Top 5 hold only 19.3%. Fee competition working: Incal (1%) and Maple Leaf (0%) maintain 200K+ delegations."
+  },
+  "token_activity": {
+    "top_by_holders": [
+      {
+        "identifier": "DRX-b7f337",
+        "name": "DoctorX",
+        "holders": 2469469,
+        "previous_holders": null,
+        "price_usd": 1.8118455008744887e-7,
+        "market_cap_usd": 36801.98212857143,
+        "volume_24h_usd": 0.445203
+      },
+      {
+        "identifier": "WEGLD-bd4d79",
+        "name": "WrappedEGLD",
+        "holders": 134315,
+        "previous_holders": null,
+        "price_usd": 3.6530902709933555,
+        "market_cap_usd": 2078301.1172208195,
+        "volume_24h_usd": 196825.60850078502
+      },
+      {
+        "identifier": "HYPE-619661",
+        "name": "HYPE",
+        "holders": 120326,
+        "previous_holders": null,
+        "price_usd": 8.250870973266967e-8,
+        "market_cap_usd": 4610.157095169054,
+        "volume_24h_usd": 27.943405
+      },
+      {
+        "identifier": "MEX-455c57",
+        "name": "MEX",
+        "holders": 104637,
+        "previous_holders": null,
+        "price_usd": 3.530655462182124e-7,
+        "market_cap_usd": 1433930.3201882779,
+        "volume_24h_usd": 11131.296067686493
+      },
+      {
+        "identifier": "RIDE-7d18e9",
+        "name": "holoride",
+        "holders": 99397,
+        "previous_holders": null,
+        "price_usd": 0.0002451685599570841,
+        "market_cap_usd": 215723.7128945198,
+        "volume_24h_usd": 210.69019080286327
+      },
+      {
+        "identifier": "QWT-46ac01",
+        "name": "QoWatt",
+        "holders": 97104,
+        "previous_holders": null,
+        "price_usd": 0.00025865107250042026,
+        "market_cap_usd": 42386.23045366264,
+        "volume_24h_usd": 424.73850635770646
+      },
+      {
+        "identifier": "ZPAY-247875",
+        "name": "ZoidPay",
+        "holders": 93698,
+        "previous_holders": null,
+        "price_usd": 0.004033573513540466,
+        "market_cap_usd": 2480657.836443123,
+        "volume_24h_usd": 8889.458252769073
+      },
+      {
+        "identifier": "BHAT-c1fde3",
+        "name": "BHNetwork",
+        "holders": 88799,
+        "previous_holders": null,
+        "price_usd": 0.00014028074214692877,
+        "market_cap_usd": 13027.159609129762,
+        "volume_24h_usd": 0.679832931410161
+      },
+      {
+        "identifier": "USDC-c76f1f",
+        "name": "WrappedUSDC",
+        "holders": 83468,
+        "previous_holders": null,
+        "price_usd": 0.9998771394567844,
+        "market_cap_usd": 9056937.488066675,
+        "volume_24h_usd": 117081.07394430955
+      },
+      {
+        "identifier": "UTK-2f80e9",
+        "name": "xMoney UTK",
+        "holders": 77366,
+        "previous_holders": null,
+        "price_usd": 0.01945563617736078,
+        "market_cap_usd": 9285744.834991524,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "AERO-458bbf",
+        "name": "Aerovek",
+        "holders": 77102,
+        "previous_holders": null,
+        "price_usd": 0.000029178375728037978,
+        "market_cap_usd": 2905.523668018433,
+        "volume_24h_usd": 0.38444999084576525
+      },
+      {
+        "identifier": "ISET-84e55e",
+        "name": "IsengardToken",
+        "holders": 76493,
+        "previous_holders": null,
+        "price_usd": 0.000022073455141630426,
+        "market_cap_usd": 6042.241362053257,
+        "volume_24h_usd": 1.3821269251008865
+      },
+      {
+        "identifier": "EFFORT-a13513",
+        "name": "EffortToken",
+        "holders": 76378,
+        "previous_holders": null,
+        "price_usd": 0.00011506772582985595,
+        "market_cap_usd": 11506.772582985595,
+        "volume_24h_usd": 0.38413210555773264
+      },
+      {
+        "identifier": "WATER-9ed400",
+        "name": "Water",
+        "holders": 69011,
+        "previous_holders": null,
+        "price_usd": null,
+        "market_cap_usd": null,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "ITHEUM-df6f26",
+        "name": "Itheum",
+        "holders": 68552,
+        "previous_holders": null,
+        "price_usd": 0.00023842590853189957,
+        "market_cap_usd": 197297.3697531846,
+        "volume_24h_usd": 0.3840843719509515
+      }
+    ],
+    "top_by_volume": [
+      {
+        "identifier": "WEGLD-bd4d79",
+        "name": "WrappedEGLD",
+        "transactions": 8593141,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 3.6530902709933555
+      },
+      {
+        "identifier": "USDC-c76f1f",
+        "name": "WrappedUSDC",
+        "transactions": 2121214,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.9998771394567844
+      },
+      {
+        "identifier": "MEX-455c57",
+        "name": "MEX",
+        "transactions": 2022272,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 3.530655462182124e-7
+      },
+      {
+        "identifier": "UTK-2f80e9",
+        "name": "xMoney UTK",
+        "transactions": 855960,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.01945563617736078
+      },
+      {
+        "identifier": "BOBER-9eb764",
+        "name": "BOBER",
+        "transactions": 757187,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.00004786159456862262
+      },
+      {
+        "identifier": "ZPAY-247875",
+        "name": "ZoidPay",
+        "transactions": 751902,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.004033573513540466
+      },
+      {
+        "identifier": "RIDE-7d18e9",
+        "name": "holoride",
+        "transactions": 666816,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.0002451685599570841
+      },
+      {
+        "identifier": "EGLDMEX-0be9e5",
+        "name": "EGLDMEXLP",
+        "transactions": 663780,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": null
+      },
+      {
+        "identifier": "CGO-5e9528",
+        "name": "CathenaGold",
+        "transactions": 519957,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.0000022266599941640653
+      },
+      {
+        "identifier": "AERO-458bbf",
+        "name": "Aerovek",
+        "transactions": 507199,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.000029178375728037978
+      },
+      {
+        "identifier": "BHAT-c1fde3",
+        "name": "BHNetwork",
+        "transactions": 484501,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.00014028074214692877
+      },
+      {
+        "identifier": "DRX-b7f337",
+        "name": "DoctorX",
+        "transactions": 481804,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 1.8118455008744887e-7
+      },
+      {
+        "identifier": "TADA-5c032c",
+        "name": "Tada",
+        "transactions": 395234,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.0004926345601080565
+      },
+      {
+        "identifier": "HTM-f51d55",
+        "name": "Hatom",
+        "transactions": 328954,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": 0.013855263371777058
+      },
+      {
+        "identifier": "WATER-9ed400",
+        "name": "Water",
+        "transactions": 323241,
+        "previous_transactions": null,
+        "change_pct": null,
+        "price_usd": null
+      }
+    ],
+    "new_tokens": [],
+    "xexchange_summary": {
+      "total_pairs": 541,
+      "total_volume_24h_usd": 212959,
+      "mex_price_usd": 3.5379859227102966e-7,
+      "mex_market_cap_usd": 1436907,
+      "top_pairs_by_volume": [
+        {
+          "name": "WEGLD/USDC",
+          "volume_24h_usd": 113076.58758510242,
+          "total_value_usd": 1612523.1113354575
+        },
+        {
+          "name": "ZPAY/WEGLD",
+          "volume_24h_usd": 14049.083544987743,
+          "total_value_usd": 45741.797157821275
+        },
+        {
+          "name": "MEX/WEGLD",
+          "volume_24h_usd": 5986.361632707779,
+          "total_value_usd": 394110.4014755586
+        },
+        {
+          "name": "USDC/MEX",
+          "volume_24h_usd": 779.0420024726486,
+          "total_value_usd": 26638.671121187585
+        },
+        {
+          "name": "RIDE/WEGLD",
+          "volume_24h_usd": 210.69019080286327,
+          "total_value_usd": 23622.321893474596
+        }
+      ]
+    },
+    "analysis": "DRX leads holders (2.47M) via distribution. Real ecosystem starts at WEGLD (134K holders). USDC at $9M is the key stablecoin. xExchange thin at $210K daily volume."
+  },
+  "defi_activity": {
+    "sc_deployments": [],
+    "protocol_activity": [
+      {
+        "protocol": "xExchange",
+        "category": "dex",
+        "transaction_count": null,
+        "unique_users": null,
+        "notable_events": "541 pairs, $210K daily volume, WEGLD/USDC dominates at 54%"
+      },
+      {
+        "protocol": "Hatom",
+        "category": "lending",
+        "transaction_count": null,
+        "unique_users": null,
+        "notable_events": "8 money markets active, liquid staking at ~44K EGLD"
+      },
+      {
+        "protocol": "AshSwap",
+        "category": "dex",
+        "transaction_count": null,
+        "unique_users": null,
+        "notable_events": "Aggregator v1.2 routing across multiple DEXes, AshPerp perpetuals active"
+      },
+      {
+        "protocol": "XOXNO",
+        "category": "nft_marketplace",
+        "transaction_count": null,
+        "unique_users": null,
+        "notable_events": "Largest NFT marketplace, xLend NFT-backed lending"
+      }
+    ],
+    "analysis": "Early-stage DeFi with complete building blocks. ~568K EGLD locked in WEGLD wrapping contracts as the DeFi float indicator."
+  },
+  "anomalies": [
+    {
+      "metric": "dex_volume_to_mcap_ratio",
+      "current_value": 0.0019,
+      "average_value": null,
+      "z_score": null,
+      "description": "xExchange 24h volume to EGLD market cap ratio is 0.19% — very low DEX utilization",
+      "severity": "medium"
+    },
+    {
+      "metric": "exchange_concentration",
+      "current_value": 64.8,
+      "average_value": null,
+      "z_score": null,
+      "description": "Binance holds 64.8% of all exchange EGLD — single-exchange dependency",
+      "severity": "low"
+    }
+  ],
+  "watch_list": [
+    {
+      "item": "Zero-nonce whale wallets (495K, 495K, 346K EGLD)",
+      "reason": "Massive wallets that have never sent a transaction — activation would be major signal",
+      "weeks_on_list": 1
+    },
+    {
+      "item": "Binance exchange dominance (64.8%)",
+      "reason": "Heavy single-exchange dependency for EGLD liquidity",
+      "weeks_on_list": 1
+    },
+    {
+      "item": "xExchange volume trend",
+      "reason": "$210K daily is thin — tracking for improvement or deterioration",
+      "weeks_on_list": 1
+    },
+    {
+      "item": "WEGLD locked (~568K EGLD)",
+      "reason": "DeFi float indicator across 3 wrapping contracts",
+      "weeks_on_list": 1
+    },
+    {
+      "item": "Hatom sEGLD liquid staking (~44K EGLD)",
+      "reason": "Track liquid staking growth as alternative to direct delegation",
+      "weeks_on_list": 1
+    }
+  ]
+}
