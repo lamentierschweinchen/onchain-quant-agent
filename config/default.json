@@ -12,7 +12,13 @@
     "analysis": {
         "whaleThreshold": 10000,
         "largeTransactionThreshold": 5000,
-        "significantMovementUsd": 100000
+        "significantMovementUsd": 100000,
+        "anomalyZScoreThreshold": 2.0,
+        "dormantThresholdDays": 180,
+        "exchangeFlowEnabled": true,
+        "topAccountsCount": 50,
+        "topTokensCount": 25,
+        "topProvidersCount": 50
     },
     "database": {
         "path": "./data/quant_agent.db"

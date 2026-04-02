@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "MultiversX Weekly Intelligence Report",
+  "description": "Structured output from the weekly on-chain analysis agent. Consumed by the dashboard.",
+  "type": "object",
+  "required": ["metadata", "executive_summary", "network_health", "whale_intelligence", "staking_intelligence", "token_activity", "defi_activity", "anomalies", "watch_list"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["report_date", "period_start", "period_end", "generated_at", "egld_price_usd", "data_sources_ok", "data_sources_failed"],
+      "properties": {
+        "report_date": { "type": "string", "format": "date", "description": "YYYY-MM-DD of report generation" },
+        "period_start": { "type": "string", "format": "date-time", "description": "Start of analysis window (7 days ago)" },
+        "period_end": { "type": "string", "format": "date-time", "description": "End of analysis window (now)" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "egld_price_usd": { "type": "number" },
+        "data_sources_ok": { "type": "array", "items": { "type": "string" } },
+        "data_sources_failed": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "executive_summary": {
+      "type": "array",
+      "description": "Top 5 findings, ordered by significance",
+      "items": {
+        "type": "object",
+        "required": ["finding", "severity", "category"],
+        "properties": {
+          "finding": { "type": "string", "description": "One-sentence insight" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "category": { "type": "string", "enum": ["whale", "staking", "token", "defi", "network", "anomaly"] }
+        }
+      },
+      "minItems": 3,
+      "maxItems": 7
+    },
+    "network_health": {
+      "type": "object",
+      "required": ["economics", "activity", "deltas"],
+      "properties": {
+        "economics": {
+          "type": "object",
+          "properties": {
+            "egld_price_usd": { "type": "number" },
+            "market_cap_usd": { "type": "number" },
+            "total_supply": { "type": "number", "description": "EGLD total supply (human-readable)" },
+            "circulating_supply": { "type": "number" },
+            "staked_egld": { "type": "number" },
+            "staked_ratio": { "type": "number", "description": "Fraction 0-1" },
+            "staking_apr": { "type": "number", "description": "Fraction, e.g. 0.089 for 8.9%" },
+            "token_market_cap_usd": { "type": "number" }
+          }
+        },
+        "activity": {
+          "type": "object",
+          "properties": {
+            "total_accounts": { "type": "integer" },
+            "total_transactions": { "type": "integer" },
+            "epoch": { "type": "integer" },
+            "blocks": { "type": "integer" },
+            "shards": { "type": "integer" }
+          }
+        },
+        "deltas": {
+          "type": "object",
+          "description": "Week-over-week changes. Null if no previous data.",
+          "properties": {
+            "price_change_pct": { "type": ["number", "null"] },
+            "market_cap_change_pct": { "type": ["number", "null"] },
+            "staked_ratio_change_pct": { "type": ["number", "null"] },
+            "apr_change_pct": { "type": ["number", "null"] },
+            "accounts_added": { "type": ["integer", "null"] },
+            "transactions_added": { "type": ["integer", "null"] }
+          }
+        },
+        "analysis": { "type": "string", "description": "Narrative analysis of network health trends" }
+      }
+    },
+    "whale_intelligence": {
+      "type": "object",
+      "required": ["large_transactions", "wallet_changes", "exchange_flows", "analysis"],
+      "properties": {
+        "large_transactions": {
+          "type": "array",
+          "description": "Transactions > 5,000 EGLD in the period",
+          "items": {
+            "type": "object",
+            "properties": {
+              "hash": { "type": "string" },
+              "timestamp": { "type": "string", "format": "date-time" },
+              "sender": { "type": "string" },
+              "sender_label": { "type": ["string", "null"] },
+              "receiver": { "type": "string" },
+              "receiver_label": { "type": ["string", "null"] },
+              "value_egld": { "type": "number" },
+              "value_usd": { "type": "number" },
+              "flow_type": { "type": "string", "enum": ["exchange_inflow", "exchange_outflow", "defi_deposit", "defi_withdrawal", "whale_to_whale", "staking", "unstaking", "bridge", "unknown"] }
+            }
+          }
+        },
+        "wallet_changes": {
+          "type": "array",
+          "description": "Top wallet balance changes vs previous week",
+          "items": {
+            "type": "object",
+            "properties": {
+              "address": { "type": "string" },
+              "label": { "type": ["string", "null"] },
+              "category": { "type": ["string", "null"] },
+              "current_balance_egld": { "type": "number" },
+              "previous_balance_egld": { "type": ["number", "null"] },
+              "change_egld": { "type": ["number", "null"] },
+              "change_pct": { "type": ["number", "null"] }
+            }
+          }
+        },
+        "exchange_flows": {
+          "type": "object",
+          "description": "Net flow to/from known exchange addresses",
+          "properties": {
+            "net_exchange_flow_egld": { "type": ["number", "null"], "description": "Positive = net inflow (sell pressure), negative = net outflow (accumulation)" },
+            "total_inflow_egld": { "type": ["number", "null"] },
+            "total_outflow_egld": { "type": ["number", "null"] },
+            "by_exchange": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "exchange": { "type": "string" },
+                  "net_flow_egld": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "dormant_activations": {
+          "type": "array",
+          "description": "Wallets inactive 6+ months that moved funds this week",
+          "items": {
+            "type": "object",
+            "properties": {
+              "address": { "type": "string" },
+              "label": { "type": ["string", "null"] },
+              "balance_egld": { "type": "number" },
+              "last_active_before": { "type": "string", "format": "date" },
+              "action": { "type": "string" }
+            }
+          }
+        },
+        "analysis": { "type": "string", "description": "Narrative: accumulation vs distribution signals, smart money patterns" }
+      }
+    },
+    "staking_intelligence": {
+      "type": "object",
+      "required": ["top_providers", "analysis"],
+      "properties": {
+        "top_providers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "provider_address": { "type": "string" },
+              "locked_egld": { "type": "number" },
+              "previous_locked_egld": { "type": ["number", "null"] },
+              "change_egld": { "type": ["number", "null"] },
+              "num_delegators": { "type": "integer" },
+              "apr": { "type": "number" },
+              "service_fee_pct": { "type": "number" },
+              "num_nodes": { "type": "integer" }
+            }
+          }
+        },
+        "concentration": {
+          "type": "object",
+          "properties": {
+            "top_5_share_pct": { "type": "number", "description": "% of total stake held by top 5 providers" },
+            "top_10_share_pct": { "type": "number" },
+            "herfindahl_index": { "type": ["number", "null"], "description": "HHI for stake distribution. Lower = more decentralized. <0.15 = competitive, 0.15-0.25 = moderate, >0.25 = concentrated" },
+            "previous_herfindahl": { "type": ["number", "null"] }
+          }
+        },
+        "analysis": { "type": "string" }
+      }
+    },
+    "token_activity": {
+      "type": "object",
+      "required": ["top_by_holders", "top_by_volume", "analysis"],
+      "properties": {
+        "top_by_holders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "identifier": { "type": "string" },
+              "name": { "type": "string" },
+              "holders": { "type": "integer" },
+              "previous_holders": { "type": ["integer", "null"] },
+              "price_usd": { "type": ["number", "null"] },
+              "market_cap_usd": { "type": ["number", "null"] },
+              "volume_24h_usd": { "type": ["number", "null"] }
+            }
+          }
+        },
+        "top_by_volume": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "identifier": { "type": "string" },
+              "name": { "type": "string" },
+              "transactions": { "type": "integer" },
+              "previous_transactions": { "type": ["integer", "null"] },
+              "change_pct": { "type": ["number", "null"] },
+              "price_usd": { "type": ["number", "null"] }
+            }
+          }
+        },
+        "new_tokens": {
+          "type": "array",
+          "description": "Tokens issued in the past 7 days with notable traction",
+          "items": {
+            "type": "object",
+            "properties": {
+              "identifier": { "type": "string" },
+              "name": { "type": "string" },
+              "deployer": { "type": "string" },
+              "deployer_label": { "type": ["string", "null"] },
+              "holders": { "type": "integer" },
+              "transactions": { "type": "integer" }
+            }
+          }
+        },
+        "xexchange_summary": {
+          "type": "object",
+          "properties": {
+            "total_pairs": { "type": "integer" },
+            "total_volume_24h_usd": { "type": ["number", "null"] },
+            "mex_price_usd": { "type": "number" },
+            "mex_market_cap_usd": { "type": "number" },
+            "top_pairs_by_volume": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "volume_24h_usd": { "type": "number" },
+                  "total_value_usd": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "analysis": { "type": "string" }
+      }
+    },
+    "defi_activity": {
+      "type": "object",
+      "required": ["analysis"],
+      "properties": {
+        "sc_deployments": {
+          "type": "array",
+          "description": "New smart contracts deployed this week",
+          "items": {
+            "type": "object",
+            "properties": {
+              "address": { "type": "string" },
+              "deployer": { "type": "string" },
+              "deployer_label": { "type": ["string", "null"] },
+              "timestamp": { "type": "string", "format": "date-time" },
+              "interaction_count": { "type": "integer" }
+            }
+          }
+        },
+        "protocol_activity": {
+          "type": "array",
+          "description": "Activity summary for known DeFi protocols",
+          "items": {
+            "type": "object",
+            "properties": {
+              "protocol": { "type": "string" },
+              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "nft_marketplace", "bridge", "perpetuals", "other"] },
+              "transaction_count": { "type": ["integer", "null"] },
+              "unique_users": { "type": ["integer", "null"] },
+              "notable_events": { "type": "string" }
+            }
+          }
+        },
+        "analysis": { "type": "string" }
+      }
+    },
+    "anomalies": {
+      "type": "array",
+      "description": "Metrics that deviate >2 std deviations from trailing average",
+      "items": {
+        "type": "object",
+        "required": ["metric", "current_value", "description", "severity"],
+        "properties": {
+          "metric": { "type": "string" },
+          "current_value": { "type": "number" },
+          "average_value": { "type": ["number", "null"] },
+          "z_score": { "type": ["number", "null"] },
+          "description": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] }
+        }
+      }
+    },
+    "watch_list": {
+      "type": "array",
+      "description": "Developing patterns not yet actionable but worth monitoring",
+      "items": {
+        "type": "object",
+        "required": ["item", "reason"],
+        "properties": {
+          "item": { "type": "string" },
+          "reason": { "type": "string" },
+          "weeks_on_list": { "type": "integer", "default": 1 }
+        }
+      }
+    }
+  }
+}
