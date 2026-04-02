@@ -1,0 +1,80 @@
+{
+  "_description": "Accumulated intelligence from each agent run. The agent reads this at the start of every run and appends to it at the end. This is the self-learning loop — each run builds on all previous runs.",
+  "runs": [
+    {
+      "date": "2026-04-02",
+      "run_number": 1,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?sort=locked",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "/accounts/{addr}/transactions"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "minValue parameter on /transactions is accepted but silently ignored — does NOT filter by transaction value",
+          "Global /transactions only returns most recent 100 txs network-wide — useless for whale detection",
+          "Per-account /accounts/{addr}/transactions is the only reliable way to find large transactions",
+          "Binance hot wallet (erd1ylw...) returned 0 txs in 7 days — may use internal transfers that don't show as standard txs",
+          "Zero-nonce whale wallets (495K, 495K, 346K EGLD) literally have no transaction history at all — pure cold storage receiving via internal transfers or genesis"
+        ],
+        "data_gaps": [
+          "No way to query all transactions above a value threshold network-wide",
+          "Cannot determine when an account was last active without fetching its transactions",
+          "Exchange flow analysis limited to balance snapshots since we can't see all historical inflows/outflows in one API call"
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Entity resolution via known-addresses.json — correctly labeled all major exchanges and DeFi contracts",
+          "Per-account transaction queries found 28 whale txs that global endpoint missed entirely",
+          "UPbit showed net outflow of ~170K EGLD in the period — the biggest whale signal, only visible via per-account queries",
+          "Staking concentration HHI calculation gives a single meaningful number (0.018 = competitive)"
+        ],
+        "what_needs_improvement": [
+          "Dormant wallet detection not yet implemented — need to compare account timestamps",
+          "Exchange flow is currently balance-snapshot-only — should also sum individual tx values for precision",
+          "No new token detection yet — need to filter tokens by creation timestamp",
+          "DeFi TVL tracking requires querying individual protocol contracts for balances",
+          "Anomaly z-scores need at least 4 weeks of data to be statistically meaningful"
+        ],
+        "surprising_findings": [
+          "DRX (DoctorX) has 2.47M holders but near-zero value — airdrop/spam distribution, not real adoption",
+          "xExchange daily volume only $210K across 541 pairs — most pairs are essentially dead",
+          "Binance holds 64.8% of all exchange EGLD — extreme single-exchange dependency",
+          "48.1% of all EGLD is staked — nearly half the supply is illiquid"
+        ]
+      },
+      "methodology_changes": [
+        "ESTABLISHED: Per-account whale detection as primary method (query top accounts + known exchanges individually)",
+        "ESTABLISHED: Baseline snapshot format in data/previous.json for WoW deltas",
+        "ESTABLISHED: Known addresses entity resolution pipeline"
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd1v6x9egd2j5cm...",
+          "reason": "Received 170K EGLD from UPbit in multiple tranches (77K, 58K, 35K). Likely UPbit cold storage or OTC counterparty. Should be tracked.",
+          "suggested_label": "UPbit-related (unconfirmed)",
+          "priority": "high"
+        }
+      ],
+      "recommendations_for_next_run": [
+        "Implement dormant wallet detection by checking account timestamps against 180-day threshold",
+        "Add new token detection by filtering /tokens for creation timestamps within the report period",
+        "Query Hatom liquid staking contract (erd1qqqq...4gzf...) balance directly for sEGLD TVL tracking",
+        "Explore /accounts/{addr}/transfers endpoint as alternative to /transactions for more complete flow data",
+        "Start building z-score baselines — need 4+ weeks before anomaly detection is meaningful",
+        "Investigate the UPbit outflow destination address — if it keeps receiving, it's likely an OTC desk or cold wallet"
+      ]
+    }
+  ]
+}

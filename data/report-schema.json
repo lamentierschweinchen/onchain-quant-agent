@@ -3,7 +3,7 @@
   "title": "MultiversX Weekly Intelligence Report",
   "description": "Structured output from the weekly on-chain analysis agent. Consumed by the dashboard.",
   "type": "object",
-  "required": ["metadata", "executive_summary", "network_health", "whale_intelligence", "staking_intelligence", "token_activity", "defi_activity", "anomalies", "watch_list"],
+  "required": ["metadata", "executive_summary", "network_health", "whale_intelligence", "staking_intelligence", "token_activity", "defi_activity", "anomalies", "watch_list", "meta_learning"],
   "properties": {
     "metadata": {
       "type": "object",
@@ -314,6 +314,39 @@
           "item": { "type": "string" },
           "reason": { "type": "string" },
           "weeks_on_list": { "type": "integer", "default": 1 }
+        }
+      }
+    },
+    "meta_learning": {
+      "type": "object",
+      "description": "Self-assessment and learning loop metadata for this run",
+      "required": ["run_number", "action_items_from_previous", "action_items_completed", "methodology_changes", "top_recommendation"],
+      "properties": {
+        "run_number": { "type": "integer" },
+        "action_items_from_previous": {
+          "type": "integer",
+          "description": "Number of recommendations from last run"
+        },
+        "action_items_completed": {
+          "type": "integer",
+          "description": "How many of those recommendations were implemented this run"
+        },
+        "methodology_changes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "New practices established or changed this run"
+        },
+        "new_addresses_discovered": {
+          "type": "integer",
+          "description": "Count of new addresses flagged for investigation"
+        },
+        "most_valuable_insight": {
+          "type": "string",
+          "description": "The single most valuable finding this week"
+        },
+        "top_recommendation": {
+          "type": "string",
+          "description": "The #1 thing the next run should improve"
         }
       }
     }

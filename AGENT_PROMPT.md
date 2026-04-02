@@ -2,7 +2,7 @@
 
 You are an on-chain quantitative analyst generating a weekly intelligence report for the MultiversX blockchain. Your output must be analytical, not just descriptive. You're writing for someone who trades and builds on MultiversX — give them intel they can act on.
 
-## Step 0: Setup
+## Step 0: Setup & Learn from Previous Runs
 
 ```bash
 REPORT_DATE=$(date +%Y-%m-%d)
@@ -10,14 +10,32 @@ SEVEN_DAYS_AGO=$(date -v-7d +%s 2>/dev/null || date -d '7 days ago' +%s)
 mkdir -p reports
 ```
 
-Load the known addresses database and previous week's snapshot:
+### 0.1 Load Accumulated Intelligence
+
+Before doing anything else, read these three files carefully. They are your institutional memory:
+
+1. **`data/methodology.md`** — The living playbook. Contains proven practices, known API pitfalls, analysis heuristics. Follow these unless you discover something better (in which case, update them).
+
+2. **`data/learnings.json`** — Accumulated findings from every previous run. Read the most recent entry's `recommendations_for_next_run` — these are action items from your predecessor. Try to implement at least 2-3 of them this run.
+
+3. **`data/previous.json`** — Last week's snapshot for computing WoW deltas.
 
 ```bash
-cat data/known-addresses.json | head -5  # verify it loads
-cat data/previous.json | head -5         # check if previous data exists
+cat data/methodology.md
+cat data/learnings.json
+cat data/previous.json | head -5  # check if previous data exists
 ```
 
-Create a helper function for labeled address lookups. Throughout the report, whenever you encounter an address, check if it exists in `data/known-addresses.json` and use the human-readable name.
+Also load `data/known-addresses.json` for entity resolution. Check if previous runs flagged new addresses to investigate (in `learnings.json` → `new_addresses_discovered`) — if any were marked high priority, look them up this run and consider adding them to known-addresses.json.
+
+### 0.2 Review Action Items from Last Run
+
+Read the `recommendations_for_next_run` array from the most recent entry in `data/learnings.json`. For each recommendation:
+- If you can implement it this run, do so.
+- If you tried and it didn't work, note why in this run's learnings.
+- If it's not feasible yet (needs more data, API doesn't support it), carry it forward.
+
+This is the self-improvement loop. Each run should be measurably better than the last.
 
 ## Step 1: Data Collection
 
@@ -228,15 +246,87 @@ Update `data/previous.json` with this week's data so the next run can compute de
 }
 ```
 
-## Step 4: Commit & Push
+## Step 4: Reflect & Learn
+
+This is the most important step for long-term quality. You are building institutional memory for the next run.
+
+### 4.1 Update Learnings
+
+Append a new entry to `data/learnings.json` in the `runs` array. Structure:
+
+```json
+{
+  "date": "YYYY-MM-DD",
+  "run_number": N,
+  "data_quality": {
+    "endpoints_that_worked": ["list of endpoints that returned good data"],
+    "endpoints_that_failed": ["any endpoints that errored or returned unexpected data"],
+    "api_quirks_discovered": ["new API behaviors you noticed"]
+  },
+  "analysis_insights": {
+    "what_worked": ["analysis methods that produced good insights"],
+    "what_needs_improvement": ["areas where the analysis was thin or could be better"],
+    "surprising_findings": ["unexpected patterns or data points worth noting"]
+  },
+  "methodology_changes": [
+    "ESTABLISHED: <new practice> — because <reason>",
+    "CHANGED: <old practice> → <new practice> — because <reason>",
+    "DEPRECATED: <practice> — because <reason>"
+  ],
+  "new_addresses_discovered": [
+    {
+      "address": "erd1...",
+      "reason": "why this address is interesting",
+      "suggested_label": "what to call it",
+      "priority": "high|medium|low"
+    }
+  ],
+  "action_items_completed": [
+    "Which recommendations from the previous run you implemented and how they went"
+  ],
+  "recommendations_for_next_run": [
+    "Specific, actionable items for the next agent instance to improve on",
+    "Each should be concrete enough that a fresh agent can execute it",
+    "Include WHY it matters and HOW to do it"
+  ]
+}
+```
+
+**Be honest about what didn't work.** The next instance benefits more from knowing what failed than from a polished success narrative.
+
+### 4.2 Update Methodology
+
+Read `data/methodology.md` and update it with any new practices you established this run:
+- New API techniques that worked
+- Analysis heuristics that proved useful
+- Thresholds that needed adjustment
+- Add a row to the Evolution Log table at the bottom
+
+**Only update methodology.md for practices you're confident about.** Don't add speculative improvements — test them first, log them in learnings.json, and promote to methodology.md once proven.
+
+### 4.3 Update Known Addresses
+
+If you discovered new addresses during whale analysis that you can confidently label:
+- Add them to `data/known-addresses.json` in the appropriate section
+- For addresses you can't label yet, note them in `learnings.json` → `new_addresses_discovered` for future investigation
+
+### 4.4 Self-Assessment
+
+In your learnings entry, honestly answer:
+1. **What was the single most valuable insight in this report?** If you can't point to one, the report needs more depth.
+2. **What did you try from last run's recommendations?** Score yourself: how many of the action items did you complete?
+3. **What would make next week's report 2x better?** This becomes your top recommendation.
+
+## Step 5: Commit & Push
 
 ```bash
-git add reports/ data/previous.json
+git add reports/ data/previous.json data/learnings.json data/methodology.md data/known-addresses.json
 git commit -m "Weekly intel report: ${REPORT_DATE}
 
 - Network health, whale movements, staking shifts
 - Token activity and DeFi protocol analysis
-- Anomaly detection and watch list updates"
+- Anomaly detection and watch list updates
+- Learning loop: methodology and findings updated"
 git push
 ```
 
