@@ -13,13 +13,12 @@ interface StakingIntelligenceProps {
 // Row type passed to DataTable (needs Record<string, unknown>)
 type ProviderRow = Record<string, unknown> & {
   _rank: number
-  name: string
+  identity: string
   locked_egld: number
-  change_egld: number | null
-  num_delegators: number
-  apr: number
-  service_fee_pct: number
-  num_nodes: number
+  share_pct: number
+  num_users: number
+  apr_pct: number
+  fee_pct: number
 }
 
 function hhiLabel(hhi: number): { text: string; className: string } {
@@ -37,13 +36,12 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
   // Build table rows with rank
   const tableRows: ProviderRow[] = sortedProviders.map((p, i) => ({
     _rank: i + 1,
-    name: p.name,
+    identity: p.identity,
     locked_egld: p.locked_egld,
-    change_egld: p.change_egld,
-    num_delegators: p.num_delegators,
-    apr: p.apr,
-    service_fee_pct: p.service_fee_pct,
-    num_nodes: p.num_nodes,
+    share_pct: p.share_pct,
+    num_users: p.num_users,
+    apr_pct: p.apr_pct,
+    fee_pct: p.fee_pct,
   }))
 
   const columns: Column<ProviderRow>[] = [
@@ -56,7 +54,7 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
       ),
     },
     {
-      key: 'name',
+      key: 'identity',
       label: 'Provider',
       align: 'left',
     },
@@ -68,44 +66,32 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
       render: (v) => formatEgld(v as number),
     },
     {
-      key: 'change_egld',
-      label: 'Change',
+      key: 'share_pct',
+      label: 'Share %',
       align: 'right',
       sortable: true,
-      render: (v) => {
-        if (v == null) return <span className="text-text-secondary">—</span>
-        const n = v as number
-        const sign = n >= 0 ? '+' : ''
-        const cls = n > 0 ? 'text-green-400' : n < 0 ? 'text-red-400' : 'text-text-secondary'
-        return <span className={cls}>{sign}{formatEgld(Math.abs(n))}</span>
-      },
+      render: (v) => `${(v as number).toFixed(2)}%`,
     },
     {
-      key: 'num_delegators',
+      key: 'num_users',
       label: 'Delegators',
       align: 'right',
       sortable: true,
       render: (v) => formatNumber(v as number),
     },
     {
-      key: 'apr',
+      key: 'apr_pct',
       label: 'APR %',
       align: 'right',
       sortable: true,
       render: (v) => cleanServiceFee(v as number),
     },
     {
-      key: 'service_fee_pct',
+      key: 'fee_pct',
       label: 'Fee %',
       align: 'right',
       sortable: true,
       render: (v) => cleanServiceFee(v as number),
-    },
-    {
-      key: 'num_nodes',
-      label: 'Nodes',
-      align: 'right',
-      sortable: true,
     },
   ]
 
@@ -114,7 +100,7 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
   const barData = [...top15]
     .reverse() // horizontal bar: bottom = first item, so reverse for descending top-to-bottom
     .map((p) => ({
-      name: p.name,
+      name: p.identity,
       locked_egld: p.locked_egld,
     }))
 
@@ -125,8 +111,8 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
     return String(Math.round(value))
   }
 
-  const hhi = concentration.herfindahl_index
-  const prevHhi = concentration.previous_herfindahl
+  const hhi = concentration.hhi
+  const prevHhi = concentration.hhi_previous
   const hhiBadge = hhi !== null ? hhiLabel(hhi) : null
 
   return (
@@ -142,7 +128,7 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
           defaultSort={{ key: 'locked_egld', dir: 'desc' }}
           rowClassName={(row: ProviderRow) => {
             const r = row as unknown as StakingProvider
-            return r.apr > 8.5 && r.service_fee_pct < 5 ? 'bg-green-500/5' : ''
+            return r.apr_pct > 8.5 && r.fee_pct < 5 ? 'bg-green-500/5' : ''
           }}
         />
       </div>

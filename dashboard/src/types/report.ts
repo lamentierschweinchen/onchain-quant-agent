@@ -85,8 +85,10 @@ export interface Activity {
 export interface NetworkDeltas {
   price_change_pct: number | null;
   market_cap_change_pct: number | null;
-  staked_ratio_change_pct: number | null;
-  apr_change_pct: number | null;
+  /** percentage points (pp) */
+  staked_ratio_change_pp: number | null;
+  /** percentage points (pp) */
+  apr_change_pp: number | null;
   accounts_added: number | null;
   transactions_added: number | null;
 }
@@ -121,26 +123,30 @@ export interface LargeTransaction {
 export interface WalletChange {
   address: string;
   label: string | null;
-  category: string | null;
-  current_balance_egld: number;
-  previous_balance_egld: number | null;
+  category?: string | null;
+  balance_current_egld: number;
+  balance_previous_egld: number | null;
   change_egld: number | null;
   change_pct: number | null;
 }
 
 export interface ExchangeFlowEntry {
   exchange: string;
-  net_flow_egld: number | null;
+  change_egld: number | null;
+  pct?: number | null;
 }
 
 /** Net flow to/from known exchange addresses.
- *  Positive net_exchange_flow_egld = net inflow (sell pressure).
- *  Negative = net outflow (accumulation signal).
+ *  Negative net_change_egld = net outflow (accumulation signal).
+ *  Positive = net inflow (sell pressure).
  */
 export interface ExchangeFlows {
-  net_exchange_flow_egld: number | null;
-  total_inflow_egld: number | null;
-  total_outflow_egld: number | null;
+  total_exchange_egld_current: number | null;
+  total_exchange_egld_previous: number | null;
+  net_change_egld: number | null;
+  net_change_pct: number | null;
+  direction: string | null;
+  signal: string | null;
   by_exchange: ExchangeFlowEntry[];
 }
 
@@ -170,15 +176,13 @@ export interface WhaleIntelligence {
 // ---------------------------------------------------------------------------
 
 export interface StakingProvider {
-  name: string;
-  provider_address: string;
+  rank: number;
+  identity: string;
   locked_egld: number;
-  previous_locked_egld: number | null;
-  change_egld: number | null;
-  num_delegators: number;
-  apr: number;
-  service_fee_pct: number;
-  num_nodes: number;
+  share_pct: number;
+  apr_pct: number;
+  fee_pct: number;
+  num_users: number;
 }
 
 /**
@@ -188,14 +192,25 @@ export interface StakingProvider {
  *   > 0.25  — concentrated
  */
 export interface Concentration {
-  /** Percentage of total stake held by the top 5 providers */
   top_5_share_pct: number;
   top_10_share_pct: number;
-  herfindahl_index: number | null;
-  previous_herfindahl: number | null;
+  hhi: number | null;
+  hhi_previous: number | null;
+  hhi_interpretation?: string | null;
+}
+
+export interface StakingSummary {
+  total_staked_egld: number;
+  total_delegated_egld: number;
+  staked_ratio: number;
+  num_providers: number;
+  apr_min: number;
+  apr_max: number;
+  apr_weighted_avg: number;
 }
 
 export interface StakingIntelligence {
+  summary: StakingSummary;
   top_providers: StakingProvider[];
   concentration: Concentration;
   analysis: string;
@@ -215,29 +230,10 @@ export interface TokenByHolders {
   volume_24h_usd: number | null;
 }
 
-export interface TokenByVolume {
+export interface TokenByTransactions {
   identifier: string;
   name: string;
-  transactions: number;
-  previous_transactions: number | null;
-  change_pct: number | null;
-  price_usd: number | null;
-}
-
-/** Token issued in the past 7 days with notable traction */
-export interface NewToken {
-  identifier: string;
-  name: string;
-  deployer: string;
-  deployer_label: string | null;
-  holders: number;
-  transactions: number;
-}
-
-export interface XExchangePair {
-  name: string;
-  volume_24h_usd: number;
-  total_value_usd: number;
+  total_transactions: number;
 }
 
 export interface XExchangeSummary {
@@ -245,15 +241,17 @@ export interface XExchangeSummary {
   total_volume_24h_usd: number | null;
   mex_price_usd: number;
   mex_market_cap_usd: number;
-  top_pairs_by_volume: XExchangePair[];
+  mex_price_change_24h_pct: number | null;
+  top_pair: string | null;
+  top_pair_volume_24h_usd: number | null;
+  top_pair_dominance_pct: number | null;
 }
 
 export interface TokenActivity {
   top_by_holders: TokenByHolders[];
-  top_by_volume: TokenByVolume[];
-  /** Tokens issued in the past 7 days with notable traction */
-  new_tokens: NewToken[];
-  xexchange_summary: XExchangeSummary;
+  top_by_transactions: TokenByTransactions[];
+  top_by_market_cap?: TokenByHolders[];
+  xexchange: XExchangeSummary;
   analysis: string;
 }
 
@@ -261,29 +259,16 @@ export interface TokenActivity {
 // DeFi activity
 // ---------------------------------------------------------------------------
 
-export interface ScDeployment {
-  address: string;
-  deployer: string;
-  deployer_label: string | null;
-  /** ISO 8601 date-time */
-  timestamp: string;
-  interaction_count: number;
-}
-
 export interface ProtocolActivity {
-  protocol: string;
-  category: ProtocolCategory;
-  transaction_count: number | null;
-  unique_users: number | null;
-  /** Narrative string describing notable events for this protocol */
-  notable_events: string;
+  name: string;
+  category: string;
+  volume_24h_usd: number | null;
+  active_pairs: number | null;
+  transfers_24h: number | null;
 }
 
 export interface DefiActivity {
-  /** New smart contracts deployed this week */
-  sc_deployments: ScDeployment[];
-  /** Activity summary for known DeFi protocols */
-  protocol_activity: ProtocolActivity[];
+  protocols: ProtocolActivity[];
   analysis: string;
 }
 
@@ -294,8 +279,10 @@ export interface DefiActivity {
 export interface Anomaly {
   metric: string;
   current_value: number;
-  average_value: number | null;
-  z_score: number | null;
+  previous_value?: number | null;
+  average_value?: number | null;
+  z_score?: number | null;
+  change_pct?: number | null;
   description: string;
   severity: AnomalySeverity;
 }
@@ -322,18 +309,11 @@ export interface WatchItem {
  */
 export interface MetaLearning {
   run_number: number;
-  /** Number of recommendations carried over from the previous run */
-  action_items_from_previous: number;
-  /** How many of those recommendations were implemented this run */
-  action_items_completed: number;
-  /** New practices established or changed this run */
-  methodology_changes: string[];
-  /** Count of new addresses flagged for investigation */
-  new_addresses_discovered: number;
-  /** The single most valuable finding this week */
-  most_valuable_insight: string;
-  /** The #1 thing the next run should improve */
-  top_recommendation: string;
+  endpoints_that_worked: string[];
+  endpoints_that_failed: string[];
+  api_quirks: string[];
+  key_findings: string[];
+  recommendations_for_next_run: string[];
 }
 
 // ---------------------------------------------------------------------------

@@ -1,11 +1,9 @@
 import { ResponsiveBar } from '@nivo/bar'
-import type { TokenActivity, DefiActivity, TokenByHolders, TokenByVolume } from '../types/report'
+import type { TokenActivity, DefiActivity, TokenByHolders, TokenByTransactions } from '../types/report'
 import { formatNumber, formatUsd, formatPct } from '../lib/formatters'
 import { darkTheme } from '../lib/nivo-theme'
 import { DataTable } from './ui/DataTable'
-import { AddressLink } from './ui/AddressLink'
 import { AnalysisBlock } from './ui/AnalysisBlock'
-import { NullState } from './ui/NullState'
 import { MetricCard } from './ui/MetricCard'
 import type { Column } from './ui/DataTable'
 
@@ -16,7 +14,7 @@ interface TokenDefiProps {
 
 // DataTable row types
 type HoldersRow = Record<string, unknown> & TokenByHolders
-type VolumeRow = Record<string, unknown> & TokenByVolume
+type VolumeRow = Record<string, unknown> & TokenByTransactions
 
 // Protocol category color map
 const PROTOCOL_CATEGORY_COLORS: Record<string, string> = {
@@ -52,9 +50,8 @@ function isLikelyAirdrop(row: TokenByHolders): boolean {
 }
 
 export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
-  const { top_by_holders, top_by_volume, new_tokens, xexchange_summary, analysis: tokenAnalysis } =
-    tokenData
-  const { sc_deployments, protocol_activity, analysis: defiAnalysis } = defiData
+  const { top_by_holders, top_by_transactions, xexchange, analysis: tokenAnalysis } = tokenData
+  const { protocols, analysis: defiAnalysis } = defiData
 
   // -------------------------------------------------------------------------
   // Top Tokens by Holders — table columns
@@ -115,7 +112,7 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
       label: 'Name',
     },
     {
-      key: 'transactions',
+      key: 'total_transactions',
       label: 'Transactions',
       align: 'right',
       sortable: true,
@@ -147,15 +144,14 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
     },
   ]
 
-  const volumeRows: VolumeRow[] = top_by_volume.map((t) => ({ ...t } as VolumeRow))
+  const volumeRows: VolumeRow[] = top_by_transactions.map((t) => ({ ...t } as VolumeRow))
 
   // -------------------------------------------------------------------------
-  // xExchange bar chart data
+  // xExchange — no top_pairs array in this schema; show summary metrics only
   // -------------------------------------------------------------------------
-  const xexBarData = xexchange_summary.top_pairs_by_volume.map((p) => ({
-    name: p.name,
-    volume: p.volume_24h_usd,
-  }))
+  const xexBarData: { name: string; volume: number }[] = xexchange.top_pair
+    ? [{ name: xexchange.top_pair, volume: xexchange.top_pair_volume_24h_usd ?? 0 }]
+    : []
 
   return (
     <div className="space-y-6">
@@ -167,23 +163,23 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <MetricCard
             label="Total Pairs"
-            value={formatNumber(xexchange_summary.total_pairs)}
+            value={formatNumber(xexchange.total_pairs)}
           />
           <MetricCard
             label="24h Volume"
             value={
-              xexchange_summary.total_volume_24h_usd != null
-                ? formatUsd(xexchange_summary.total_volume_24h_usd)
+              xexchange.total_volume_24h_usd != null
+                ? formatUsd(xexchange.total_volume_24h_usd)
                 : '—'
             }
           />
           <MetricCard
             label="MEX Price"
-            value={formatUsd(xexchange_summary.mex_price_usd)}
+            value={formatUsd(xexchange.mex_price_usd)}
           />
           <MetricCard
             label="MEX Market Cap"
-            value={formatUsd(xexchange_summary.mex_market_cap_usd)}
+            value={formatUsd(xexchange.mex_market_cap_usd)}
           />
         </div>
       </div>
@@ -269,95 +265,9 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
         <DataTable
           columns={volumeColumns}
           data={volumeRows}
-          defaultSort={{ key: 'transactions', dir: 'desc' }}
+          defaultSort={{ key: 'total_transactions', dir: 'desc' }}
           emptyMessage="No transaction volume data available"
         />
-      </div>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* New Tokens                                                           */}
-      {/* ------------------------------------------------------------------ */}
-      <div className="bg-surface rounded-lg border border-border overflow-hidden">
-        <div className="px-4 py-3 border-b border-border">
-          <h3 className="text-sm font-semibold text-text-primary">New Tokens (Past 7 Days)</h3>
-          <p className="text-xs text-text-secondary mt-0.5">Tokens with notable traction</p>
-        </div>
-        <div className="p-4">
-          {new_tokens.length === 0 ? (
-            <NullState message="No new tokens this period" />
-          ) : (
-            <div className="space-y-3">
-              {new_tokens.map((token) => (
-                <div
-                  key={token.identifier}
-                  className="flex items-start justify-between gap-4 p-3 rounded-lg bg-surface border border-border"
-                >
-                  <div className="space-y-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-mono text-xs text-accent-cyan">{token.identifier}</span>
-                      <span className="text-sm font-medium text-text-primary">{token.name}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-3 text-xs text-text-secondary">
-                      <span>
-                        Holders:{' '}
-                        <span className="font-mono text-text-primary">
-                          {formatNumber(token.holders)}
-                        </span>
-                      </span>
-                      <span>
-                        Transactions:{' '}
-                        <span className="font-mono text-text-primary">
-                          {formatNumber(token.transactions)}
-                        </span>
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 text-xs text-text-secondary">
-                      <span>Deployed by:</span>
-                      <AddressLink address={token.deployer} label={token.deployer_label} />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* SC Deployments                                                        */}
-      {/* ------------------------------------------------------------------ */}
-      <div className="bg-surface rounded-lg border border-border overflow-hidden">
-        <div className="px-4 py-3 border-b border-border">
-          <h3 className="text-sm font-semibold text-text-primary">New Smart Contracts</h3>
-          <p className="text-xs text-text-secondary mt-0.5">Deployed this week with notable traction</p>
-        </div>
-        <div className="p-4">
-          {sc_deployments.length === 0 ? (
-            <NullState message="No new smart contracts deployed this period" />
-          ) : (
-            <div className="space-y-3">
-              {sc_deployments.map((sc) => (
-                <div
-                  key={sc.address}
-                  className="p-3 rounded-lg bg-surface border border-border space-y-1"
-                >
-                  <AddressLink address={sc.address} />
-                  <div className="flex flex-wrap gap-3 text-xs text-text-secondary">
-                    <span>
-                      Deployed by: <AddressLink address={sc.deployer} label={sc.deployer_label} />
-                    </span>
-                    <span>
-                      Interactions:{' '}
-                      <span className="font-mono text-text-primary">
-                        {formatNumber(sc.interaction_count)}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
 
       {/* ------------------------------------------------------------------ */}
@@ -366,38 +276,41 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
       <div>
         <h3 className="text-sm font-semibold text-text-primary mb-3">DeFi Protocol Activity</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {protocol_activity.map((protocol) => (
+          {protocols.map((protocol) => (
             <div
-              key={protocol.protocol}
+              key={protocol.name}
               className="bg-surface rounded-lg p-4 border border-border space-y-2"
             >
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-medium text-text-primary">{protocol.protocol}</span>
+                <span className="font-medium text-text-primary">{protocol.name}</span>
                 <ProtocolCategoryBadge category={protocol.category} />
               </div>
-              {(protocol.transaction_count != null || protocol.unique_users != null) && (
-                <div className="flex flex-wrap gap-4 text-xs text-text-secondary">
-                  {protocol.transaction_count != null && (
-                    <span>
-                      Transactions:{' '}
-                      <span className="font-mono text-text-primary">
-                        {formatNumber(protocol.transaction_count)}
-                      </span>
+              <div className="flex flex-wrap gap-4 text-xs text-text-secondary">
+                {protocol.volume_24h_usd != null && (
+                  <span>
+                    Volume 24h:{' '}
+                    <span className="font-mono text-text-primary">
+                      {formatUsd(protocol.volume_24h_usd)}
                     </span>
-                  )}
-                  {protocol.unique_users != null && (
-                    <span>
-                      Users:{' '}
-                      <span className="font-mono text-text-primary">
-                        {formatNumber(protocol.unique_users)}
-                      </span>
+                  </span>
+                )}
+                {protocol.active_pairs != null && (
+                  <span>
+                    Pairs:{' '}
+                    <span className="font-mono text-text-primary">
+                      {formatNumber(protocol.active_pairs)}
                     </span>
-                  )}
-                </div>
-              )}
-              {protocol.notable_events && (
-                <p className="text-sm text-text-secondary">{protocol.notable_events}</p>
-              )}
+                  </span>
+                )}
+                {protocol.transfers_24h != null && (
+                  <span>
+                    Transfers 24h:{' '}
+                    <span className="font-mono text-text-primary">
+                      {formatNumber(protocol.transfers_24h)}
+                    </span>
+                  </span>
+                )}
+              </div>
             </div>
           ))}
         </div>

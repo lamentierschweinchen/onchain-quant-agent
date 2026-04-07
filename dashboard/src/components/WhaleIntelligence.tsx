@@ -74,21 +74,21 @@ function FlowTypeBadge({ flowType }: { flowType: string }) {
 }
 
 export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
-  const { exchange_flows, wallet_changes, large_transactions, dormant_activations, analysis } = data
+  const { exchange_flows, wallet_changes, large_transactions, dormant_activations = [], analysis } = data
 
   // -------------------------------------------------------------------------
-  // Exchange flows: check if ALL net_flow_egld are null
+  // Exchange flows: check if ALL change_egld are null
   // -------------------------------------------------------------------------
-  const allFlowsNull = exchange_flows.by_exchange.every((e) => e.net_flow_egld === null)
+  const allFlowsNull = exchange_flows.by_exchange.every((e) => e.change_egld === null)
 
   // Aggregate duplicate exchange names by summing their net_flow
   const exchangeMap = new Map<string, number>()
   if (!allFlowsNull) {
     for (const entry of exchange_flows.by_exchange) {
-      if (entry.net_flow_egld !== null) {
+      if (entry.change_egld !== null) {
         exchangeMap.set(
           entry.exchange,
-          (exchangeMap.get(entry.exchange) ?? 0) + entry.net_flow_egld,
+          (exchangeMap.get(entry.exchange) ?? 0) + entry.change_egld,
         )
       }
     }
@@ -101,7 +101,7 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
     .reverse()
 
   // Net flow direction for summary indicator
-  const netFlow = exchange_flows.net_exchange_flow_egld
+  const netFlow = exchange_flows.net_change_egld
   const netFlowPositive = netFlow !== null && netFlow > 0
 
   // -------------------------------------------------------------------------
@@ -121,7 +121,7 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
       render: (_v, row) => <CategoryBadge category={row.category as string | null} />,
     },
     {
-      key: 'current_balance_egld',
+      key: 'balance_current_egld',
       label: 'Balance',
       align: 'right',
       sortable: true,
@@ -323,7 +323,7 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
         <DataTable
           columns={walletColumns}
           data={walletRows}
-          defaultSort={{ key: 'current_balance_egld', dir: 'desc' }}
+          defaultSort={{ key: 'balance_current_egld', dir: 'desc' }}
           rowClassName={walletRowClass}
           emptyMessage="No wallet data available"
         />

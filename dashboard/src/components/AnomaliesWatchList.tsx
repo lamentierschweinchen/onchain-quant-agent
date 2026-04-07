@@ -53,19 +53,24 @@ export function AnomaliesWatchList({ anomalies, watchList }: AnomaliesWatchListP
                 </p>
 
                 {/* Z-score and average (or null-state) */}
-                {anomaly.z_score !== null ? (
+                {anomaly.z_score != null ? (
                   <div className="mt-1 space-y-0.5">
                     <p className="font-mono text-sm text-text-secondary">
                       Z-score: {anomaly.z_score.toFixed(2)}
                     </p>
-                    {anomaly.average_value !== null && (
+                    {(anomaly.average_value ?? anomaly.previous_value) != null && (
                       <p className="font-mono text-sm text-text-secondary">
-                        Average: {anomaly.average_value}
+                        Prev: {anomaly.previous_value ?? anomaly.average_value}
                       </p>
                     )}
                   </div>
                 ) : (
                   <div className="mt-1">
+                    {anomaly.change_pct != null && (
+                      <p className="font-mono text-sm text-text-secondary">
+                        Change: {anomaly.change_pct > 0 ? '+' : ''}{anomaly.change_pct.toFixed(1)}%
+                      </p>
+                    )}
                     <NullState message="Baseline — anomaly tracking starts next week" />
                   </div>
                 )}
