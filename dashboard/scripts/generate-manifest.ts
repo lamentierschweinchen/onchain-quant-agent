@@ -8,10 +8,13 @@ const publicReportsDir = path.resolve(publicDir, 'reports')
 // Ensure public/reports/ exists
 fs.mkdirSync(publicReportsDir, { recursive: true })
 
-// Find all YYYY-MM-DD.json report files
-const files = fs.readdirSync(reportsDir)
-  .filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f))
-  .sort()
+// In CI/Vercel the parent reports/ directory doesn't exist — fall back to
+// whatever is already committed in public/reports/.
+const sourceExists = fs.existsSync(reportsDir)
+
+const files = sourceExists
+  ? fs.readdirSync(reportsDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort()
+  : fs.readdirSync(publicReportsDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort()
 
 // Generate manifest
 const manifest = files.map(f => ({
@@ -25,12 +28,14 @@ fs.writeFileSync(
   JSON.stringify(manifest, null, 2),
 )
 
-// Copy report files to public/reports/
-for (const file of files) {
-  fs.copyFileSync(
-    path.resolve(reportsDir, file),
-    path.resolve(publicReportsDir, file),
-  )
+// Copy report files to public/reports/ (only when source dir exists)
+if (sourceExists) {
+  for (const file of files) {
+    fs.copyFileSync(
+      path.resolve(reportsDir, file),
+      path.resolve(publicReportsDir, file),
+    )
+  }
 }
 
-console.log(`Generated manifest with ${files.length} report(s): ${files.join(', ')}`)
+console.log(`Generated manifest with ${files.length} report(s): ${files.join(', ')} (source: ${sourceExists ? reportsDir : publicReportsDir})`)
