@@ -75,6 +75,87 @@
         "Start building z-score baselines — need 4+ weeks before anomaly detection is meaningful",
         "Investigate the UPbit outflow destination address — if it keeps receiving, it's likely an OTC desk or cold wallet"
       ]
+    },
+    {
+      "date": "2026-04-07",
+      "run_number": 2,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?sort=locked",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "/accounts/{addr}/transactions",
+          "coingecko/simple/price"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "Persisted output files from tool results contain a metadata header before the JSON — must find first '[' character before parsing",
+          "Provider total locked (11.17M EGLD from /providers) differs significantly from /economics staked (14.25M) — difference is direct node staking, not via delegation contracts. These are different metrics.",
+          "MEXC balance grew +8.8% but sampled transactions only showed tiny flows — large exchange transfers likely go through internal or smart contract mechanisms, not standard transactions",
+          "coingecko simple/price endpoint worked without rate limiting when called once per run",
+          "Per-account query window (7 days ago = 1743894000) correctly captures 5-day period from Apr 1–7; need to verify exact UNIX timestamps each run"
+        ],
+        "data_gaps": [
+          "Cannot easily trace MEXC internal transfer source — requires deeper subaccount investigation",
+          "Cannot query 'who funded Unknown Whale I' without iterating through many potential sender accounts",
+          "Exchange internal sweeps between their own wallets are invisible to standard tx queries"
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "UPbit OTC pattern confirmed second week in a row — same address receiving large outflows",
+          "Exchange balance diff table caught MEXC +8.8% growth that wouldn't have been obvious from txs alone",
+          "Wallet balance change table correctly identified Unknown Whale I (+14.2%) as the biggest unreported movement",
+          "Staking HHI cross-check: 0.0183 unchanged from baseline, confirms stable competitive market",
+          "Previous.json comparison correctly revealed that MEXC in run #1 was reported as 83,519 EGLD (not 165K — that was a different unlabeled account)"
+        ],
+        "what_needs_improvement": [
+          "Need direct query on Unknown Whale I (erd1vd76) to find funding source",
+          "Should add Coinbase secondary wallet (erd1m9qn...) to exchange balance tracking",
+          "EmoryaSportsX $23M market cap anomaly needs verification against actual DEX liquidity",
+          "WrappedTAO tracking would be valuable given Bittensor cross-chain interest",
+          "Z-score baselines need 2 more runs before statistical anomaly detection is meaningful"
+        ],
+        "surprising_findings": [
+          "Unknown Whale I gained +18,167 EGLD (+14.2%) in one week — no obvious source visible in sampled exchange data",
+          "WEGLD holder count declined for first time (134,315 → 134,289, -26) while MEX and USDC both gained holders",
+          "MultiversX Community Delegation grew +6.7% in one week — largest single-week staking growth among tracked contracts",
+          "EmoryaSportsX claimed $23.2M market cap despite only 10K holders — likely custom price feed artifact, not real market depth",
+          "WrappedTAO (Bittensor) at $307/token with 1,287 holders showing real cross-chain AI token interest on MultiversX"
+        ]
+      },
+      "methodology_changes": [
+        "CONFIRMED: Previous.json balance comparison is the primary exchange flow signal — WoW delta table is more reliable than trying to sum individual transactions",
+        "ESTABLISHED: Separate 'exchange_balances' section in previous.json for clean WoW exchange flow tracking",
+        "ADDED: watch_addresses section to previous.json for persistent address monitoring",
+        "DISCOVERED: Provider total locked (from /providers) ≠ staked from /economics — document this distinction clearly",
+        "ADDED: BTC and ETH prices to economics snapshot for macro context"
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+          "reason": "Gained +18,167 EGLD (+14.2%) in one week to 146,011 EGLD. Nonce 8,122 = active account. No exchange label. Funding source unknown.",
+          "suggested_label": "Unknown Whale I (active, investigating)",
+          "priority": "high"
+        }
+      ],
+      "recommendations_for_next_run": [
+        "Query erd1vd76...z0 (Unknown Whale I) transactions to find funding source",
+        "Query erd1v6x9...hcxnk5 outflows — does it only receive or does it also send? If it sends, to where?",
+        "Query MultiversX Community Delegation contract recent large delegation events to explain +6.7% growth",
+        "Add Coinbase secondary (erd1m9qn...dc3) to exchange_balances tracking — was in top-50 this week",
+        "Investigate EmoryaSportsX $23M market cap vs actual on-chain DEX liquidity depth",
+        "Try /accounts/{addr}/transfers endpoint as alternative to /transactions for MEXC to catch internal transfers",
+        "Start tracking WrappedTAO (Bittensor bridge activity) as a cross-chain sentiment indicator",
+        "Next run will have 3 data points — begin building mean/stddev baselines for z-score anomaly detection"
+      ]
     }
   ]
 }

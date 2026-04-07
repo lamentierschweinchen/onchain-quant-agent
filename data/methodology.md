@@ -30,6 +30,12 @@
 - **`minValue` on `/transactions`** — silently ignored. DO NOT USE. Wastes API calls and returns wrong data.
 - **Global `/transactions`** for whale detection — only returns most recent ~100 txs network-wide. You'll get xPortal claim spam, not whale movements.
 - **Relying on account nonce for activity** — some whales have nonce 0 (received via internal transfers/genesis). Zero nonce ≠ inactive.
+- **Assuming exchange txs are visible as standard transactions** — large exchanges (e.g., MEXC) use internal transfers or smart contract mechanisms that don't appear in `/accounts/{addr}/transactions`. Always verify balance changes against the exchange balance snapshot in previous.json, not just recent tx queries.
+
+### Key Metric Distinction
+- **`/economics` `staked`** = total EGLD locked in the Staking Module contract (14.25M EGLD) — includes both direct node staking and delegation
+- **`/providers` `locked`** = total EGLD locked via delegation smart contracts only (11.17M EGLD) — excludes direct node operator staking
+- These will always differ. Use `/economics` staked for macro staked ratio, `/providers` for delegation market concentration metrics.
 
 ### Rate Limiting
 - No explicit rate limit headers, but add 200ms delays between requests.
@@ -136,3 +142,4 @@ Before committing the report, verify:
 | Run | Date | Changes |
 |-----|------|---------|
 | 1 | 2026-04-02 | Initial methodology established. Per-account whale detection, entity resolution, staking HHI, baseline snapshot format. |
+| 2 | 2026-04-07 | Added BTC/ETH price context. Confirmed OTC desk pattern for recurring large exchange outflows. Added `exchange_balances` and `watch_addresses` to previous.json for cleaner WoW tracking. Discovered that `/providers` total locked ≠ `/economics` staked (different metrics). |

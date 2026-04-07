@@ -853,10 +853,22 @@
       "notes": "Unlabeled account. ~153K EGLD."
     },
     "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0": {
-      "name": "Unknown Whale",
+      "name": "Unknown Whale I (active)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Unlabeled account. ~128K EGLD."
+      "notes": "Active account (nonce 8,122). Grew from 127,844 to 146,011 EGLD in week of Apr 1-7 (+18,167 EGLD, +14.2%). Funding source unknown. Not an exchange or known DeFi contract. Added to watch list 2026-04-07."
+    },
+    "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5": {
+      "name": "UPbit-related/OTC desk (unconfirmed)",
+      "category": "other",
+      "subcategory": "watch",
+      "notes": "Received 146K EGLD from UPbit in three tranches (46K, 51K, 49K) during week of Apr 1-7. Previously received ~170K EGLD from UPbit week of Mar 26-Apr 2. Active account (nonce 4,593). Balance grew to 61,259 EGLD. Pattern consistent with UPbit OTC desk or cold storage. Watch for continued UPbit outflows."
+    },
+    "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3": {
+      "name": "Coinbase (secondary)",
+      "category": "exchange",
+      "subcategory": "secondary_wallet",
+      "notes": "Coinbase secondary wallet. Appeared in top-50 accounts as of 2026-04-07 with ~17,489 EGLD. Nonce 29,343 = highly active. Confirmed exchange label from API assets."
     }
   }
 }
