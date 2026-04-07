@@ -141,7 +141,7 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
           data={tableRows}
           defaultSort={{ key: 'locked_egld', dir: 'desc' }}
           rowClassName={(row: ProviderRow) => {
-            const r = row as StakingProvider
+            const r = row as unknown as StakingProvider
             return r.apr > 8.5 && r.service_fee_pct < 5 ? 'bg-green-500/5' : ''
           }}
         />

@@ -1,4 +1,6 @@
-import type { Theme } from '@nivo/core'
+// Theme type not exported from this version of @nivo/core
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Theme = any
 
 export const darkTheme: Theme = {
   background: 'transparent',
