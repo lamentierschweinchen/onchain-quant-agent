@@ -47,13 +47,13 @@ export function NetworkHealth({ data }: NetworkHealthProps) {
         <MetricCard
           label="Staked Ratio"
           value={formatPct(economics.staked_ratio, true)}
-          delta={deltas.staked_ratio_change_pct}
+          delta={deltas.staked_ratio_change_pp}
           deltaFormat="pct"
         />
         <MetricCard
           label="Staking APR"
           value={formatPct(economics.staking_apr, true)}
-          delta={deltas.apr_change_pct}
+          delta={deltas.apr_change_pp}
           deltaFormat="pct"
         />
         <MetricCard
