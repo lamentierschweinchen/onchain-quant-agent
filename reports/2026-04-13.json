@@ -1,0 +1,227 @@
+{
+  "report_date": "2026-04-13",
+  "period_start": "2026-04-07",
+  "period_end": "2026-04-13",
+  "generated_at": "2026-04-13T00:00:00Z",
+  "metadata": {
+    "run_number": 3,
+    "data_sources": ["api.multiversx.com", "api.coingecko.com"],
+    "endpoints_queried": [
+      "/economics",
+      "/stats",
+      "/accounts?sort=balance",
+      "/accounts/{addr}/transactions",
+      "/tokens?sort=accounts",
+      "/tokens?sort=transactions",
+      "/tokens?sort=marketCap",
+      "/providers?sort=locked",
+      "/mex/economics",
+      "/mex/pairs",
+      "/mex/tokens"
+    ],
+    "endpoints_failed": []
+  },
+  "economics": {
+    "egld_price_usd": 3.74,
+    "egld_price_wow_pct": 0.8,
+    "market_cap_usd": 111135162,
+    "market_cap_wow_pct": 0.9,
+    "total_supply": 29715284,
+    "circulating_supply": 29715284,
+    "staked_egld": 14706521,
+    "staked_egld_wow_abs": 451425,
+    "staked_egld_wow_pct": 3.17,
+    "staked_ratio": 0.4949,
+    "staked_ratio_wow_pp": 0.0145,
+    "staking_apr": 0.086145,
+    "base_apr": 0.106129,
+    "topup_apr": 0.062153,
+    "token_market_cap_usd": 51458766,
+    "btc_price_usd": 71796,
+    "btc_wow_pct": 4.4,
+    "eth_price_usd": 2205.96,
+    "eth_wow_pct": 4.6
+  },
+  "activity": {
+    "total_accounts": 9188359,
+    "new_accounts_7d": 3064,
+    "total_transactions": 598437373,
+    "new_transactions_7d": 1453471,
+    "avg_daily_transactions": 207639,
+    "epoch": 2082,
+    "blocks": 119875348,
+    "shards": 3
+  },
+  "whale_activity": {
+    "large_transactions": [
+      {
+        "date": "2026-04-11",
+        "from": "Binance Staking (erd1rf4hv)",
+        "to": "erd1r3w62... (intermediary)",
+        "amount_egld": 470000,
+        "amount_usd": 1757800,
+        "flow_type": "internal_restaking",
+        "note": "Immediately re-delegated to staking module. Not an exit."
+      },
+      {
+        "date": "2026-04-12",
+        "from": "UPbit OTC desk (erd1v6x9)",
+        "to": "UPbit (erd1fcxu)",
+        "amount_egld": 50000,
+        "amount_usd": 187000,
+        "flow_type": "exchange_inflow",
+        "note": "OTC desk returning capital to exchange. Flow reversal from prior 2 weeks."
+      },
+      {
+        "date": "2026-04-10",
+        "from": "Coinbase secondary (erd1m9qn)",
+        "to": "Unknown Whale B (erd1at3j)",
+        "amount_egld": 8564,
+        "amount_usd": 32029,
+        "flow_type": "exchange_outflow"
+      },
+      {
+        "date": "2026-04-10",
+        "from": "Coinbase (erd16jr)",
+        "to": "Unknown Whale B (erd1at3j)",
+        "amount_egld": 8541,
+        "amount_usd": 31943,
+        "flow_type": "exchange_outflow"
+      }
+    ],
+    "top_balance_changes": [
+      {"address": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p", "label": "Binance Staking", "balance_egld": 2734121.5, "change_egld": -469999, "change_pct": -14.7},
+      {"address": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49", "label": "UPbit", "balance_egld": 1434441.2, "change_egld": 35549, "change_pct": 2.5},
+      {"address": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul", "label": "Unknown Whale B", "balance_egld": 512249.9, "change_egld": 17104, "change_pct": 3.5},
+      {"address": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh", "label": "Unknown Whale D", "balance_egld": 258238.9, "change_egld": 5000, "change_pct": 2.0},
+      {"address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets", "label": "Binance Hot 2", "balance_egld": 379097.6, "change_egld": -24061, "change_pct": -6.0},
+      {"address": "erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw", "label": "Gate.io", "balance_egld": 45447.0, "change_egld": -15196, "change_pct": -25.1},
+      {"address": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx", "label": "Bybit", "balance_egld": 403100.2, "change_egld": -10761, "change_pct": -2.6},
+      {"address": "erd16jruked88jgtsar78ej85hjp3qsd9jkjcw4swsn7k0teqh3wgcqqgyrupq", "label": "Coinbase", "balance_egld": 63070.6, "change_egld": -9676, "change_pct": -13.3},
+      {"address": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0", "label": "Unknown Whale I", "balance_egld": 138200.6, "change_egld": -7810, "change_pct": -5.3},
+      {"address": "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy", "label": "KuCoin", "balance_egld": 34648.8, "change_egld": 5378, "change_pct": 18.4}
+    ],
+    "exchange_net_flow_egld": -489174,
+    "exchange_net_flow_signal": "net_accumulation"
+  },
+  "staking": {
+    "total_delegated_egld": 11312040,
+    "total_delegated_wow_abs": 144966,
+    "total_delegated_wow_pct": 1.3,
+    "num_providers": 185,
+    "hhi": 0.0187,
+    "hhi_wow": 0.0004,
+    "top5_share_pct": 19.90,
+    "top10_share_pct": 30.63,
+    "top_providers": [
+      {"name": "Figment", "locked_egld": 587482, "delegators": 306, "apr_pct": 6.29, "fee_pct": 12.0},
+      {"name": "Binance Staking", "locked_egld": 525821, "delegators": 8477, "apr_pct": 6.15, "fee_pct": 7.9},
+      {"name": "Staking Agency", "locked_egld": 421687, "delegators": 10018, "apr_pct": 7.90, "fee_pct": 12.0},
+      {"name": "Trust Staking", "locked_egld": 375741, "delegators": 7200, "apr_pct": 7.94, "fee_pct": 12.0},
+      {"name": "Meria", "locked_egld": 340585, "delegators": 11000, "apr_pct": 7.88, "fee_pct": 12.0}
+    ]
+  },
+  "tokens": {
+    "top_by_holders": [
+      {"identifier": "DRX-b7f337", "name": "DoctorX", "holders": 2469266, "holders_wow": -210, "price_usd": 1.8e-7, "market_cap_usd": 37286},
+      {"identifier": "WEGLD-bd4d79", "name": "WrappedEGLD", "holders": 133865, "holders_wow": -424, "price_usd": 3.728, "market_cap_usd": 2096732},
+      {"identifier": "HYPE-619661", "name": "HYPE", "holders": 119911, "holders_wow": -412, "price_usd": 0, "market_cap_usd": 5792},
+      {"identifier": "MEX-455c57", "name": "MEX", "holders": 104301, "holders_wow": -353, "price_usd": 3.577e-7, "market_cap_usd": 1451764},
+      {"identifier": "USDC-c76f1f", "name": "WrappedUSDC", "holders": 83098, "holders_wow": -387, "price_usd": 0.9998, "market_cap_usd": 8851113}
+    ],
+    "top_by_market_cap": [
+      {"identifier": "EMRS-6e4067", "name": "EmoryaSportsX", "market_cap_usd": 27603000, "price_usd": 0.000028, "holders": 10325, "note": "Likely price feed artifact - verify liquidity"},
+      {"identifier": "UTK-2f80e9", "name": "xMoney UTK", "market_cap_usd": 9286165, "price_usd": 0.019456, "holders": 76988},
+      {"identifier": "USDC-c76f1f", "name": "WrappedUSDC", "market_cap_usd": 8851113, "price_usd": 0.9998, "holders": 83098},
+      {"identifier": "SEGLD-3ad2d0", "name": "StakedEGLD", "market_cap_usd": 3613299, "price_usd": 4.54, "holders": 1438},
+      {"identifier": "WTAO-4f5363", "name": "WrappedTAO", "market_cap_usd": 1510481, "price_usd": 256.64, "holders": 1261}
+    ],
+    "notable_price_moves_24h": [
+      {"identifier": "SUPER", "price_change_pct": 31.4, "volume_usd": 50, "note": "Thin liquidity spike"},
+      {"identifier": "BSK", "price_change_pct": -3.5, "volume_usd": null}
+    ]
+  },
+  "defi": {
+    "protocol_tvl": [
+      {"name": "WEGLD Contract S0", "balance_egld": 310848, "wow_change_egld": -142, "wow_change_pct": -0.05},
+      {"name": "WEGLD Contract S1", "balance_egld": 244193, "wow_change_egld": 1195, "wow_change_pct": 0.5},
+      {"name": "Hatom EGLD Money Market", "balance_egld": 69620, "wow_change_egld": 4679, "wow_change_pct": 7.2},
+      {"name": "Hatom Liquid Staking", "balance_egld": 43809, "wow_change_egld": 130, "wow_change_pct": 0.3},
+      {"name": "MultiversX Community Delegation", "balance_egld": 132235, "wow_change_egld": 1064, "wow_change_pct": 0.8}
+    ],
+    "xexchange": {
+      "volume_24h_usd": 93065,
+      "volume_wow_pct": 18.0,
+      "total_pairs": 542,
+      "mex_price_usd": 3.577e-7,
+      "mex_price_wow_pct": 0.1,
+      "mex_market_cap_usd": 1450888,
+      "top_pair_egldusdc_volume": 45539,
+      "top_pair_egldmex_volume": 1558
+    }
+  },
+  "anomalies": [
+    {
+      "severity": "medium",
+      "type": "large_internal_transfer",
+      "description": "Binance Staking moved 470K EGLD via intermediary wallet, immediately re-delegated",
+      "addresses": ["erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p", "erd1r3w62vqmsux5e38p6vnueatmfcs8nr5lmg3s97x6rafqpgxfae0sxv9z0v"],
+      "resolved": true,
+      "note": "Internal restaking operation, not an exit from ecosystem"
+    },
+    {
+      "severity": "medium",
+      "type": "exchange_balance_reduction",
+      "description": "Gate.io reduced EGLD holdings by 25.1% (-15,196 EGLD) in one week",
+      "addresses": ["erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw"],
+      "resolved": false,
+      "note": "Cause unclear - could be customer withdrawals or exchange repositioning"
+    }
+  ],
+  "watch_list": [
+    {
+      "address": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+      "label": "Unknown Whale I (active)",
+      "balance_egld": 138200.6,
+      "weeks_tracked": 2,
+      "first_seen": "2026-04-07",
+      "status": "active",
+      "note": "Lost 7,810 EGLD this week. Multiple small outflows."
+    },
+    {
+      "address": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+      "label": "Unknown Whale E",
+      "balance_egld": 208906.9,
+      "weeks_tracked": 3,
+      "first_seen": "2026-04-02",
+      "status": "stable",
+      "note": "Marginal outflow -649 EGLD, essentially stable"
+    },
+    {
+      "address": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+      "label": "Unknown Active Wallet (new)",
+      "balance_egld": 62431.3,
+      "weeks_tracked": 1,
+      "first_seen": "2026-04-13",
+      "status": "new",
+      "note": "Entered top-50 this week. Nonce 4,777 = highly active. No label. Worth investigating."
+    },
+    {
+      "address": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul",
+      "label": "Unknown Whale B",
+      "balance_egld": 512249.9,
+      "weeks_tracked": 1,
+      "first_seen": "2026-04-13",
+      "status": "new",
+      "note": "Received ~17K EGLD from Coinbase this week. 4th largest non-system non-exchange wallet."
+    }
+  ],
+  "risk_signals": {
+    "overall": "bullish",
+    "staking_ratio": "bullish",
+    "exchange_flow": "bullish",
+    "price_momentum": "neutral",
+    "defi_activity": "neutral_positive",
+    "token_adoption": "neutral_negative"
+  }
+}
