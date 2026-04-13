@@ -31,6 +31,14 @@
 - **Global `/transactions`** for whale detection — only returns most recent ~100 txs network-wide. You'll get xPortal claim spam, not whale movements.
 - **Relying on account nonce for activity** — some whales have nonce 0 (received via internal transfers/genesis). Zero nonce ≠ inactive.
 - **Assuming exchange txs are visible as standard transactions** — large exchanges (e.g., MEXC) use internal transfers or smart contract mechanisms that don't appear in `/accounts/{addr}/transactions`. Always verify balance changes against the exchange balance snapshot in previous.json, not just recent tx queries.
+- **`/mex/tokens` volume24h field** — returns $0 for all tokens despite real trading occurring. Use `/mex/pairs` for DEX volume data. The pairs endpoint correctly shows per-pair 24h volume and trade counts.
+
+### Intermediary Wallet Investigation Pattern
+When a large transfer goes to an unknown account:
+1. Check the recipient's **nonce** — low nonce (< 10) = purpose-built routing wallet
+2. Fetch their **recent transactions** to see if they immediately forwarded the funds
+3. Check **current balance** — near-zero balance after a large receipt = confirmed routing wallet
+4. This pattern correctly identified Binance's 470K EGLD restaking as internal vs. a withdrawal
 
 ### Key Metric Distinction
 - **`/economics` `staked`** = total EGLD locked in the Staking Module contract (14.25M EGLD) — includes both direct node staking and delegation
@@ -143,3 +151,4 @@ Before committing the report, verify:
 |-----|------|---------|
 | 1 | 2026-04-02 | Initial methodology established. Per-account whale detection, entity resolution, staking HHI, baseline snapshot format. |
 | 2 | 2026-04-07 | Added BTC/ETH price context. Confirmed OTC desk pattern for recurring large exchange outflows. Added `exchange_balances` and `watch_addresses` to previous.json for cleaner WoW tracking. Discovered that `/providers` total locked ≠ `/economics` staked (different metrics). |
+| 3 | 2026-04-13 | Established intermediary wallet investigation pattern for routing wallets (check nonce + immediate txs). Confirmed mex/tokens volume24h is unreliable (returns $0) — use mex/pairs exclusively. OTC desk lifecycle confirmed at ~3 weeks. Begin 3-point running baselines for z-score prep. |

@@ -156,6 +156,95 @@
         "Start tracking WrappedTAO (Bittensor bridge activity) as a cross-chain sentiment indicator",
         "Next run will have 3 data points — begin building mean/stddev baselines for z-score anomaly detection"
       ]
+    },
+    {
+      "date": "2026-04-13",
+      "run_number": 3,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?sort=locked",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "/accounts/{addr}/transactions",
+          "coingecko/simple/price"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "mex/tokens volume24h field returns $0 for all tokens despite volume being visible in mex/pairs — use mex/pairs for volume data, not mex/tokens",
+          "Per-account /transactions correctly captured the Binance Staking 470K intermediary routing in a single query",
+          "mex/pairs tradesCount24h is available and useful for spotting thin liquidity pairs",
+          "UPbit OTC desk (erd1v6x9) completed its cycle in 3 weeks: accumulated for 2 weeks, distributed in week 3"
+        ],
+        "data_gaps": [
+          "Still cannot determine exact Gate.io outflow destination without querying their historical transactions",
+          "Cannot see Coinbase custody transfer destination without more detailed tx query",
+          "mex/tokens volume data appears unreliable (all zeros) — needs investigation"
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Intermediary wallet investigation: spotted 470K EGLD routing through erd1r3w62 (nonce 3 = purpose-built), immediately delegated — correctly classified as re-staking not withdrawal",
+          "Exchange balance diff table revealed Gate.io's 25% single-week reduction, which no tx query would have surfaced",
+          "UPbit OTC desk tracking paid off in week 3 — the reversal pattern (50K back to UPbit + smaller distributions) confirms it was a 3-week institutional accumulation/distribution cycle",
+          "Coinbase → Unknown Whale B connection found by querying the whale's transactions, revealing two Coinbase wallets as sources"
+        ],
+        "what_needs_improvement": [
+          "Should query /accounts/{addr}/transfers as backup for exchanges with 0 visible transactions (Binance Hot 1 still shows 0 txs)",
+          "Still need to investigate erd1z7fnqf4... (new top-50, nonce 4777) transactions to understand what it does",
+          "mex/tokens volume data unreliable — report notes this but need alternative DEX volume source",
+          "Unknown Whale I (erd1vd76) losing -7810 EGLD in small outflows — still don't know what this wallet does"
+        ],
+        "surprising_findings": [
+          "Binance Staking lost 470K EGLD but all of it was immediately re-staked — total staked EGLD actually jumped +451K (+3.17%) this week",
+          "Staked ratio hit 49.49% — within 0.5pp of the 50% psychological milestone after this week's jump",
+          "Every major token by holder count DECLINED for second consecutive week — across 10 tokens ranging from -210 to -441 holders",
+          "Gate.io reduced holdings by 25.1% in one week — unusual speed of reduction for a major exchange",
+          "UPbit OTC desk pattern completed: accumulated ~170K over 2 weeks, distributed back in week 3 — total cycle ~3 weeks",
+          "KuCoin grew +18.4% in balance (+5,378 EGLD) — possible restocking or internal transfer"
+        ]
+      },
+      "methodology_changes": [
+        "CONFIRMED: Intermediary wallet investigation is valuable — always check nonce and immediate txs of recipients of large transfers to classify as routing vs. holding",
+        "ADDED: mex/tokens volume24h is unreliable (returns $0) — use mex/pairs for volume data exclusively",
+        "ESTABLISHED: When exchange shows 0 tx in period, use balance delta as the primary signal (not tx data)",
+        "CONFIRMED: OTC desk cycle typically 2-4 weeks based on UPbit OTC desk pattern"
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+          "reason": "New top-50 entrant with 62,431 EGLD, nonce 4,777 (highly active). No label in known-addresses. Could be trading firm, market maker, or large holder.",
+          "suggested_label": "Unknown Active Wallet (high-nonce)",
+          "priority": "medium"
+        },
+        {
+          "address": "erd1r3w62vqmsux5e38p6vnueatmfcs8nr5lmg3s97x6rafqpgxfae0sxv9z0v",
+          "reason": "Intermediary wallet used by Binance Staking to route 470K EGLD to delegation contract. Nonce 3 = purpose-built. Current balance ~2.5 EGLD.",
+          "suggested_label": "Binance Staking Router",
+          "priority": "low"
+        }
+      ],
+      "action_items_completed": [
+        "Queried Unknown Whale I (erd1vd76) transactions — found it losing 7,810 EGLD in multiple small outflows this week. Still no clear label.",
+        "Queried UPbit OTC desk (erd1v6x9) — confirmed reversal, sent 50K back to UPbit and smaller amounts to unknown addresses",
+        "Added Coinbase secondary (erd1m9qn) to exchange balance tracking — confirmed it sent 8,564 EGLD to Unknown Whale B this week",
+        "Began building 3-run baseline for metrics: we now have 3 data points for staked EGLD (14.25M, 14.26M, 14.71M), price ($3.71, $3.71, $3.74), and DEX volume ($78K, $79K, $93K)"
+      ],
+      "recommendations_for_next_run": [
+        "Query erd1z7fnqf4... transactions to identify what this 4,777-nonce wallet does — trading bot, DEX activity, or large staker",
+        "Query erd1at3jm3... (Unknown Whale B) transactions to see if Coinbase inflows continue — if so, this may be systematic institutional accumulation",
+        "Try /accounts/{addr}/transfers endpoint for Binance Hot 1 (erd1ylwu) and Binance Hot 2 to see if it shows more data than /transactions",
+        "Investigate Gate.io continued decline — query their transactions to find destination of outflows",
+        "With 3 data points now available: compute running mean and 1 stddev for key metrics (price, staked, DEX volume) to enable simple anomaly flags",
+        "Check if WrappedTAO holders increased this week — previous was 1,287, this week is 1,261 (down). Is the Bittensor bridge trend reversing?",
+        "Monitor whether 50% staked ratio threshold is breached next week — if so, worth noting as a milestone in the report"
+      ]
     }
   ]
 }
