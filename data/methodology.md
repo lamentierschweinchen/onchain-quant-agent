@@ -130,6 +130,26 @@ When a large transfer goes to an unknown account:
 
 ---
 
+## Report JSON Schema — CRITICAL
+
+The dashboard (`dashboard/src/types/report.ts`) enforces a strict schema. A blank page means the JSON doesn't match. The report JSON **must** have these exact top-level keys:
+
+```
+metadata, executive_summary, network_health, whale_intelligence,
+staking_intelligence, token_activity, defi_activity, anomalies,
+watch_list, meta_learning
+```
+
+Use `dashboard/public/reports/2026-04-07.json` as the canonical reference. Do NOT invent a flat schema — it will break the dashboard silently.
+
+After generating the JSON, also run the deployment steps:
+1. `cd dashboard && npx tsx scripts/generate-manifest.ts` — copies JSON to public/
+2. `git add ... && git push`
+3. `cd dashboard && vercel --prod` — deploy to Vercel
+4. Return the stable URL: **https://dashboard-omega-lyart-99.vercel.app**
+
+---
+
 ## Report Quality Checklist
 
 Before committing the report, verify:
