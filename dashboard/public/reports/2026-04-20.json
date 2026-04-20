@@ -303,10 +303,9 @@
       {
         "address": "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj",
         "label": "Unknown Whale A",
-        "previous_nonce": 4,
-        "current_nonce": 8,
-        "egld_moved": 351997,
-        "activity": "Reactivated cold storage wallet (nonce was 4). Sent 88K + 99K + 163K + 162K EGLD to Coinbase over April 17-18. Net -352K EGLD."
+        "balance_egld": 143148.86,
+        "last_active_before": "2026-04-17",
+        "action": "Reactivated cold storage wallet (nonce was 4). Sent 88K + 99K + 163K + 162K EGLD to Coinbase over April 17-18. Net -352K EGLD. Still holds 143K."
       }
     ],
     "analysis": "This week saw the most complex institutional Coinbase activity in four weeks of tracking. On April 18, Coinbase sent 798,649 EGLD in three tranches to a routing wallet (nonce 80, near-zero balance after forwarding) that immediately passed funds to erd18mv2z6r2 (nonce 21). Simultaneously, Unknown Whale A (erd1kn38, previously nonce 4 = cold storage) was activated and sent 514K EGLD to Coinbase, while Unknown Whale B (erd1at3jm3) completed its full position exit (~512K EGLD → Coinbase). The net result: Coinbase appears to be actively redistributing large EGLD positions — taking in ~514K from Whale A, and dispensing 798K to erd18mv2z6r2. This is consistent with OTC settlement, custody restructuring, or a large institutional client consolidating positions. The UPbit OTC desk started its second cycle (220K EGLD injected), and two coordinated OTC wallets (erd1v6x9 and erd1z7fnqf4) are actively distributing in 1–2K EGLD batches to the same recipients — likely feeding Bybit and other exchanges. Bybit's +27.9% balance increase (+112K EGLD) is the clearest beneficiary of this OTC distribution pipeline."
