@@ -799,16 +799,16 @@
 
   "unlabeled_whales": {
     "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj": {
-      "name": "Unknown Whale",
+      "name": "Unknown Whale A (reactivated)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Unlabeled account. ~495K EGLD. Shard 0. Nonce 0 (never sent a transaction - likely cold storage)."
+      "notes": "Originally cold storage (nonce 4 for 4+ weeks). Reactivated Apr 17-18 2026 — sent ~514K EGLD to Coinbase in four tranches, received ~154K EGLD back. Net: -352K EGLD to Coinbase. Current balance ~143K EGLD. Nonce advanced to 8. Partial exit — still holds significant position. Watch for continued liquidation."
     },
     "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul": {
-      "name": "Unknown Whale",
+      "name": "Unknown Whale B (liquidated to Coinbase)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Unlabeled account. ~495K EGLD. Shard 0. Nonce 0 (cold storage)."
+      "notes": "Previously received ~512K EGLD from Coinbase over multiple weeks ending Apr 10 2026. Fully liquidated back to Coinbase on Apr 14-17 2026 — balance went from 512K to ~27 EGLD. Complete OTC cycle: accumulated from Coinbase, held ~1 week, returned to Coinbase. Consistent with bilateral institutional OTC deal where Coinbase intermediated both legs."
     },
     "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd": {
       "name": "Unknown Whale",
@@ -835,10 +835,10 @@
       "notes": "Unlabeled account. ~193K EGLD. Shard 0."
     },
     "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw": {
-      "name": "Unknown Whale",
+      "name": "Unknown Mega Whale (received from Coinbase)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Unlabeled account. ~193K EGLD. Shard 0."
+      "notes": "Received 798,649 EGLD from Coinbase via routing wallet (erd1lgdlteq) on Apr 18 2026 in three tranches (70K + 566K + 161K). Balance jumped from 192,900 to 991,555 EGLD (+414%). Nonce 21 = minimal prior activity. Now 4th-largest non-system account on MultiversX. Identity unknown — could be institutional OTC buyer, fund custodian, or large holder. HIGH PRIORITY to watch for outflows. Added 2026-04-20."
     },
     "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j": {
       "name": "Unknown Whale",
@@ -859,16 +859,28 @@
       "notes": "Active account (nonce 8,122). Grew from 127,844 to 146,011 EGLD in week of Apr 1-7 (+18,167 EGLD, +14.2%). Funding source unknown. Not an exchange or known DeFi contract. Added to watch list 2026-04-07."
     },
     "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5": {
-      "name": "UPbit-related/OTC desk (unconfirmed)",
+      "name": "UPbit OTC Desk",
       "category": "other",
-      "subcategory": "watch",
-      "notes": "Received 146K EGLD from UPbit in three tranches (46K, 51K, 49K) during week of Apr 1-7. Previously received ~170K EGLD from UPbit week of Mar 26-Apr 2. Active account (nonce 4,593). Balance grew to 61,259 EGLD. Pattern consistent with UPbit OTC desk or cold storage. Watch for continued UPbit outflows."
+      "subcategory": "otc",
+      "notes": "Confirmed UPbit OTC distribution desk. Cycle 1 (Apr 2-13 2026): accumulated ~170K EGLD, distributed in 1-2K increments over 3 weeks. Cycle 2 started Apr 17 2026 with 220K EGLD injection from UPbit. Coordinated partner: erd1z7fnqf4 (distributes to same recipients). Distributes to Bybit-feeding addresses and retail recipients. Nonce ~4,800+. Active account."
     },
     "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3": {
       "name": "Coinbase (secondary)",
       "category": "exchange",
       "subcategory": "secondary_wallet",
       "notes": "Coinbase secondary wallet. Appeared in top-50 accounts as of 2026-04-07 with ~17,489 EGLD. Nonce 29,343 = highly active. Confirmed exchange label from API assets."
+    },
+    "erd1lgdltequh7627rtlacmcp6p5vec7zmu2rxhu7pjwvcja8f4a9gqq9vcc70": {
+      "name": "Coinbase Routing Wallet",
+      "category": "exchange",
+      "subcategory": "routing",
+      "notes": "Routing wallet used by Coinbase on Apr 18 2026. Received 798,649 EGLD from erd116jr (Coinbase) in three tranches and immediately forwarded entire amount to erd18mv2z6r2 (Unknown Mega Whale). Nonce 80 = medium-use routing wallet. Near-zero balance before and after the Apr 18 routing event. Not pure cold storage — actively used for large routing operations."
+    },
+    "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r": {
+      "name": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+      "category": "other",
+      "subcategory": "otc",
+      "notes": "High-nonce active wallet (nonce 5,041). Confirmed coordinated OTC partner with erd1v6x9 (UPbit OTC Desk): both wallets send to the same recipient addresses (erd1ghfrqvvyf7, erd1wyj8uf, erd1tr5lahv) in the same 1,000-2,000 EGLD range. Balance stable at ~63K EGLD. Likely same institutional actor or tightly coordinated trading network. Discovered 2026-04-13."
     }
   }
 }
