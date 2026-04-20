@@ -245,6 +245,104 @@
         "Check if WrappedTAO holders increased this week — previous was 1,287, this week is 1,261 (down). Is the Bittensor bridge trend reversing?",
         "Monitor whether 50% staked ratio threshold is breached next week — if so, worth noting as a milestone in the report"
       ]
+    },
+    {
+      "date": "2026-04-20",
+      "run_number": 4,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?sort=locked",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "/accounts/{addr}/transactions",
+          "coingecko/simple/price"
+        ],
+        "endpoints_that_failed": [
+          "/accounts/{addr}/transfers for Binance Hot 1 (erd1ylwu) — returned 0 results despite high nonce. Confirmed limitation: exchanges using internal or SC-mediated transfer mechanisms are invisible to /transfers endpoint."
+        ],
+        "api_quirks_discovered": [
+          "mex/pairs field names confirmed: 'baseName'/'quoteName' (not 'baseToken.ticker'), 'volume24h' (not 'volumeUSD24h'), 'totalValue' (not 'liquidityUSD')",
+          "Routing wallet nonce 80 (erd1lgdlteq) confirmed as pass-through — medium-nonce wallets can still be pure routing wallets if they have near-zero balance before/after forwarding",
+          "Low nonce is NOT always cold storage: Unknown Whale A had nonce 4 for 4+ weeks, then was reactivated. Low nonce = lower probability of activity, not certainty.",
+          "Coinbase outflow + simultaneous inflow from other whales in same 72h window strongly suggests Coinbase OTC desk intermediation"
+        ],
+        "data_gaps": [
+          "Cannot confirm identity of erd18mv2z6r2 (Unknown Mega Whale) — nonce 21 means minimal public activity, no API assets label",
+          "Cannot see Binance Hot 1 transaction flows (internal mechanisms), balance delta is the only signal",
+          "Gate.io outflow destinations are hundreds of small addresses — labor-intensive to trace, no single large recipient"
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Intermediary wallet investigation again proven valuable: traced Coinbase → erd1lgdlteq (nonce 80 router) → erd18mv2z6r2 correctly using the pattern",
+          "Exchange balance diff table caught the Coinbase net-neutral position despite massive gross flows (+514K in, -798K out = only -7K net), which confirmed OTC intermediation hypothesis",
+          "OTC coordination confirmation: querying erd1z7fnqf4 transactions revealed same recipient addresses as erd1v6x9, proving the two-wallet OTC network",
+          "4-run z-score baselines now available: EGLD price [3.71, 3.71, 3.74, 4.02] mean $3.795 SD $0.150; DEX volume [$78K, $79K, $93K, $186K] mean $109K SD $49K",
+          "Bybit's +27.9% gain correctly attributed to being downstream of the UPbit OTC distribution pipeline"
+        ],
+        "what_needs_improvement": [
+          "Still cannot identify erd18mv2z6r2 — need to query its outflows next week to understand if it's accumulating or distributing",
+          "Binance Hot 1 remains opaque — /transactions and /transfers both return 0 results",
+          "WrappedTAO declining 4 weeks straight but small sample — consider graduating from active tracking"
+        ],
+        "surprising_findings": [
+          "Coinbase executed a bilateral OTC deal in 72 hours: received ~1.026M EGLD from Whale A + Whale B simultaneously while distributing 798K to new mega-whale — net only -7K EGLD",
+          "Unknown Whale A (nonce 4, classified cold storage for 4 weeks) suddenly reactivated — low nonce is a probability indicator not an absolute",
+          "UPbit OTC desk started Cycle 2 within one week of completing Cycle 1 — faster than expected, suggesting ongoing institutional demand",
+          "xExchange volume doubled in one week to $186K — first time in 4 weeks it significantly deviated from baseline",
+          "ZPAY price +33% WoW with no obvious catalytic event — possible insider accumulation preceding an announcement",
+          "erd18mv2z6r2 is now the 4th largest non-system account on MultiversX at 991K EGLD ($3.98M)"
+        ]
+      },
+      "methodology_changes": [
+        "CONFIRMED: Medium-nonce wallets (nonce 80) can still be routing wallets — the diagnostic is near-zero balance before/after, not nonce alone",
+        "CONFIRMED: Low nonce ≠ cold storage guarantee. Unknown Whale A (nonce 4) proved this. Nonce is a probability indicator only.",
+        "ESTABLISHED: Coinbase OTC pattern — simultaneous large inflows and outflows from different counterparties = OTC intermediation. Net balance change is the signal, not gross flows.",
+        "ADDED: mex/pairs field names to API quirks reference — baseName, quoteName, volume24h, totalValue"
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw",
+          "reason": "Received 798,649 EGLD from Coinbase via routing wallet on Apr 18. Now 4th-largest non-system account. Nonce 21. Identity completely unknown. #1 priority to track.",
+          "suggested_label": "Unknown Mega Whale (received from Coinbase)",
+          "priority": "critical"
+        },
+        {
+          "address": "erd1lgdltequh7627rtlacmcp6p5vec7zmu2rxhu7pjwvcja8f4a9gqq9vcc70",
+          "reason": "Routing wallet used by Coinbase to forward 798,649 EGLD to erd18mv2z6r2. Nonce 80. Near-zero balance before and after.",
+          "suggested_label": "Coinbase Routing Wallet",
+          "priority": "low"
+        }
+      ],
+      "action_items_completed": [
+        "Queried erd1z7fnqf4 transactions — confirmed OTC coordination with erd1v6x9, distributes to same recipients in same amounts",
+        "Tried /accounts/{addr}/transfers for Binance Hot 1 — confirmed 0 results (limitation documented)",
+        "Investigated Gate.io outflows — hundreds of small withdrawals (600-1,200 EGLD each) + one 7,500 EGLD outflow, consistent with sustained customer withdrawals",
+        "Checked WrappedTAO holders: 1,256 (was 1,261) — continuing slow decline",
+        "Applied z-scores now that 4 data points available: DEX volume is 1.6 sigma above mean (anomaly), EGLD price is 1.5 sigma above mean"
+      ],
+      "running_baselines": {
+        "egld_price_usd": [3.71, 3.71, 3.74, 4.02],
+        "dex_volume_24h_usd": [78000, 79000, 93065, 186015],
+        "staked_egld": [14250000, 14260000, 14706521, 14729755],
+        "note": "4 data points now available. Mean and SD are now statistically meaningful for basic anomaly detection."
+      },
+      "recommendations_for_next_run": [
+        "Query erd18mv2z6r2 transactions — does the 991K EGLD stay put, get staked, or get distributed? This is the #1 priority. If it sends anywhere, trace the destination immediately.",
+        "Query remaining Unknown Whale A (erd1kn38) — does it continue selling the remaining 143K EGLD? If yes, continued Coinbase inflow pressure.",
+        "Investigate the ZPAY +33% price surge — check if there's new protocol activity, an upcoming announcement, or a whale accumulation pattern behind it.",
+        "Continue z-score tracking: update baselines with 5th data point. EGLD price and DEX volume both above 1.5 sigma — watch if trend continues.",
+        "Gate.io at 35.6K EGLD — query outflows again. If <25K next week, flag as a significant structural event (exchange delisting EGLD or major customer exodus).",
+        "WrappedTAO at 1,256 holders (4 consecutive declines from 1,287): graduate to 'established declining trend' and reduce monitoring frequency.",
+        "Monitor whether Bybit's +27.9% gain (+112K EGLD) stabilizes or continues — if UPbit OTC cycle 2 continues at current pace, Bybit may receive more inflows over the next 2-3 weeks."
+      ]
     }
   ]
 }

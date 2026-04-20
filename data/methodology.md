@@ -35,10 +35,18 @@
 
 ### Intermediary Wallet Investigation Pattern
 When a large transfer goes to an unknown account:
-1. Check the recipient's **nonce** — low nonce (< 10) = purpose-built routing wallet
+1. Check the recipient's **nonce** — low nonce (< 10) = high probability routing wallet; medium nonce (10–100) = still possible routing wallet
 2. Fetch their **recent transactions** to see if they immediately forwarded the funds
-3. Check **current balance** — near-zero balance after a large receipt = confirmed routing wallet
-4. This pattern correctly identified Binance's 470K EGLD restaking as internal vs. a withdrawal
+3. Check **current balance** — near-zero balance after a large receipt = confirmed routing wallet (regardless of nonce)
+4. **IMPORTANT: Low nonce ≠ cold storage guarantee**. Nonce 4 accounts can reactivate after weeks of dormancy. Always re-check activity if an account was previously classified cold.
+5. This pattern identified: Binance 470K restaking (nonce 3 router), Coinbase 798K OTC (nonce 80 router)
+
+### Coinbase OTC Pattern
+When Coinbase shows large inflows AND outflows in the same week:
+1. Check if the gross flows are from/to different counterparties — this confirms OTC intermediation
+2. Net balance change is the signal (net -7K EGLD despite 1M+ gross flows = OTC neutral)
+3. The buyers and sellers are identifiable as the counterparties
+4. This pattern identified the Apr 18 2026 bilateral deal: Whale A+B sold 1.026M, mega-whale erd18mv2z6r2 received 798K
 
 ### Key Metric Distinction
 - **`/economics` `staked`** = total EGLD locked in the Staking Module contract (14.25M EGLD) — includes both direct node staking and delegation
@@ -172,3 +180,4 @@ Before committing the report, verify:
 | 1 | 2026-04-02 | Initial methodology established. Per-account whale detection, entity resolution, staking HHI, baseline snapshot format. |
 | 2 | 2026-04-07 | Added BTC/ETH price context. Confirmed OTC desk pattern for recurring large exchange outflows. Added `exchange_balances` and `watch_addresses` to previous.json for cleaner WoW tracking. Discovered that `/providers` total locked ≠ `/economics` staked (different metrics). |
 | 3 | 2026-04-13 | Established intermediary wallet investigation pattern for routing wallets (check nonce + immediate txs). Confirmed mex/tokens volume24h is unreliable (returns $0) — use mex/pairs exclusively. OTC desk lifecycle confirmed at ~3 weeks. Begin 3-point running baselines for z-score prep. |
+| 4 | 2026-04-20 | Confirmed routing wallet nonce is NOT always near-zero (nonce 80 wallet was pure pass-through). Confirmed low nonce ≠ cold storage guarantee (nonce 4 wallet reactivated). Established Coinbase OTC pattern: simultaneous large inflows+outflows from different counterparties = OTC intermediation — watch net balance, not gross flows. mex/pairs field names confirmed: baseName, quoteName, volume24h, totalValue. 4-run z-score baselines now active. |
