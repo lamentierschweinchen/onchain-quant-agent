@@ -224,10 +224,37 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
     }
   }
 
-  const barData = Array.from(exchangeMap.entries())
-    .map(([exchange, net_flow]) => ({ exchange, net_flow }))
-    .sort((a, b) => Math.abs(b.net_flow) - Math.abs(a.net_flow))
+  // Negate raw values so:
+  //   outflow (originally negative, EGLD leaving exchange = accumulation)  → positive  → renders RIGHT
+  //   inflow  (originally positive, EGLD entering exchange = sell pressure) → negative → renders LEFT
+  // Filter out wallets with no change (or near-zero) — they're noise on this chart.
+  const NOISE_THRESHOLD = 100 // EGLD
+  const flowEntries = Array.from(exchangeMap.entries())
+    .filter(([, v]) => Math.abs(v) >= NOISE_THRESHOLD)
+    .map(([exchange, raw]) => ({
+      exchange,
+      flow: -raw, // sign flip
+      raw,
+    }))
+    // Most positive (= biggest outflow / accumulation) at top
+    .sort((a, b) => b.flow - a.flow)
+    // Nivo horizontal bar renders index 0 at the BOTTOM, so reverse for top-down listing
     .reverse()
+
+  // Symmetric x-axis around zero
+  const maxAbs =
+    flowEntries.length > 0
+      ? Math.max(...flowEntries.map((d) => Math.abs(d.flow))) * 1.1
+      : 0
+
+  // Aggregate totals (in original sign convention)
+  const totalInflow = exchange_flows.by_exchange
+    .filter((e) => e.change_egld !== null && e.change_egld > 0)
+    .reduce((s, e) => s + (e.change_egld ?? 0), 0)
+  const totalOutflow = exchange_flows.by_exchange
+    .filter((e) => e.change_egld !== null && e.change_egld < 0)
+    .reduce((s, e) => s + Math.abs(e.change_egld ?? 0), 0)
+  const totalAbs = totalInflow + totalOutflow
 
   const netFlow = exchange_flows.net_change_egld
   const netFlowPositive = netFlow !== null && netFlow > 0
@@ -443,41 +470,181 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
                 </div>
               )}
 
-              <div style={{ height: 320 }}>
+              {/* Direction legend */}
+              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider px-2">
+                <span className="flex items-center gap-1.5 text-down">
+                  <span>← inflow</span>
+                  <span className="text-text-muted normal-case tracking-normal">
+                    sell pressure
+                  </span>
+                </span>
+                <span className="text-text-muted">net flow per wallet</span>
+                <span className="flex items-center gap-1.5 text-up">
+                  <span className="text-text-muted normal-case tracking-normal">
+                    accumulation
+                  </span>
+                  <span>outflow →</span>
+                </span>
+              </div>
+
+              <div style={{ height: 32 + 28 * flowEntries.length }}>
                 <ResponsiveBar
-                  data={barData}
-                  keys={['net_flow']}
+                  data={flowEntries}
+                  keys={['flow']}
                   indexBy="exchange"
                   layout="horizontal"
                   theme={darkTheme}
                   colors={({ value }) =>
-                    (value as number) < 0 ? '#34D196' : '#F4525A'
+                    (value as number) >= 0 ? '#34D196' : '#F4525A'
                   }
-                  margin={{ top: 8, right: 80, bottom: 36, left: 150 }}
-                  padding={0.35}
+                  valueScale={{ type: 'linear', min: -maxAbs, max: maxAbs }}
+                  margin={{ top: 4, right: 24, bottom: 32, left: 24 }}
+                  padding={0.32}
                   valueFormat={(v) => formatEgldBare(Math.abs(v))}
                   axisBottom={{
-                    legend: 'Net Flow EGLD',
-                    legendPosition: 'middle',
-                    legendOffset: 28,
                     format: (v) => formatEgldBare(Math.abs(v as number)),
                     tickSize: 0,
                     tickPadding: 6,
+                    tickValues: 5,
                   }}
-                  axisLeft={{ tickSize: 0, tickPadding: 8 }}
+                  axisLeft={null}
                   enableGridX={true}
                   enableGridY={false}
-                  labelTextColor="#0A0D14"
-                  labelSkipWidth={50}
-                  tooltip={({ indexValue, value }) => (
-                    <div style={tooltipStyle}>
-                      <strong>{indexValue}</strong>
-                      <br />
-                      Net flow: {formatEgld(value)}
-                    </div>
-                  )}
+                  gridXValues={[0]}
+                  enableLabel={false}
+                  markers={[
+                    {
+                      axis: 'x',
+                      value: 0,
+                      lineStyle: {
+                        stroke: '#5C6679',
+                        strokeWidth: 1,
+                      },
+                    },
+                  ]}
+                  layers={[
+                    'grid',
+                    'axes',
+                    'bars',
+                    // Custom layer: render labels INSIDE the chart so the
+                    // exchange name sits at the zero line, on the side
+                    // opposite the bar (so it never overlaps the bar)
+                    ({ bars }) => (
+                      <g>
+                        {bars.map((bar) => {
+                          const v = bar.data.value as number
+                          const goesRight = v >= 0
+                          const exchange = bar.data.indexValue as string
+                          return (
+                            <g key={bar.key}>
+                              {/* Exchange name + value, anchored at the zero line */}
+                              <text
+                                x={
+                                  goesRight
+                                    ? bar.x - 6
+                                    : bar.x + bar.width + 6
+                                }
+                                y={bar.y + bar.height / 2}
+                                textAnchor={goesRight ? 'end' : 'start'}
+                                dominantBaseline="central"
+                                style={{
+                                  fontSize: 11,
+                                  fill: '#8B97AC',
+                                  fontFamily:
+                                    '"Inter", system-ui, sans-serif',
+                                }}
+                              >
+                                {exchange}
+                              </text>
+                              {/* Value label at the far end of the bar */}
+                              <text
+                                x={
+                                  goesRight
+                                    ? bar.x + bar.width + 6
+                                    : bar.x - 6
+                                }
+                                y={bar.y + bar.height / 2}
+                                textAnchor={goesRight ? 'start' : 'end'}
+                                dominantBaseline="central"
+                                style={{
+                                  fontSize: 11,
+                                  fill: goesRight ? '#34D196' : '#F4525A',
+                                  fontFamily:
+                                    '"JetBrains Mono", ui-monospace, monospace',
+                                  fontVariantNumeric: 'tabular-nums',
+                                }}
+                              >
+                                {goesRight ? '+' : '−'}
+                                {formatEgldBare(Math.abs(v))}
+                              </text>
+                            </g>
+                          )
+                        })}
+                      </g>
+                    ),
+                    'markers',
+                  ]}
+                  tooltip={({ indexValue, value }) => {
+                    const v = value as number
+                    return (
+                      <div style={tooltipStyle}>
+                        <strong>{indexValue}</strong>
+                        <br />
+                        {v >= 0 ? 'Outflow' : 'Inflow'}:{' '}
+                        {formatEgld(Math.abs(v))}
+                      </div>
+                    )
+                  }}
                 />
               </div>
+
+              {/* Aggregate inflow vs outflow proportion bar */}
+              {totalAbs > 0 && (
+                <div className="space-y-1.5 pt-3 border-t border-border-subtle">
+                  <div className="flex justify-between text-[10px] font-mono uppercase tracking-wider text-text-muted">
+                    <span>
+                      Total inflow{' '}
+                      <span className="text-down tabular">
+                        {formatEgldBare(totalInflow)}
+                      </span>
+                    </span>
+                    <span>
+                      <span className="text-up tabular">
+                        {formatEgldBare(totalOutflow)}
+                      </span>{' '}
+                      Total outflow
+                    </span>
+                  </div>
+                  <div className="flex h-2 rounded-sm overflow-hidden bg-bg-elevated">
+                    {totalInflow > 0 && (
+                      <div
+                        className="bg-down/80"
+                        style={{
+                          flex: totalInflow,
+                        }}
+                        title={`Inflow ${formatEgldBare(totalInflow)} EGLD`}
+                      />
+                    )}
+                    {totalOutflow > 0 && (
+                      <div
+                        className="bg-up/80"
+                        style={{
+                          flex: totalOutflow,
+                        }}
+                        title={`Outflow ${formatEgldBare(totalOutflow)} EGLD`}
+                      />
+                    )}
+                  </div>
+                  <div className="flex justify-between text-[10px] text-text-faint font-mono">
+                    <span>
+                      {((totalInflow / totalAbs) * 100).toFixed(1)}%
+                    </span>
+                    <span>
+                      {((totalOutflow / totalAbs) * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
