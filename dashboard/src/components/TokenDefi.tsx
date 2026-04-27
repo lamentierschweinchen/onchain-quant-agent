@@ -648,24 +648,28 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
         </CardSection>
       )}
 
-      {/* ---------------- Top 10 by Holders ---------------- */}
+      {/* ---------------- Top Tokens by Holders ---------------- */}
       <CardSection
-        title="Top 10 Tokens by Holders"
+        title="Top Tokens by Holders"
         subtitle="Spam / airdrop tokens flagged inline"
       >
         <DataTable
           columns={holderColumns}
           data={holderRows}
           defaultSort={{ key: 'holders', dir: 'desc' }}
+          collapsed={5}
+          noun="token"
         />
       </CardSection>
 
-      {/* ---------------- Top 10 by Volume ---------------- */}
-      <CardSection title="Top 10 Tokens by Transaction Volume">
+      {/* ---------------- Top Tokens by Volume ---------------- */}
+      <CardSection title="Top Tokens by Transaction Volume">
         <DataTable
           columns={volumeColumns}
           data={volumeSource}
           defaultSort={{ key: 'transactions', dir: 'desc' }}
+          collapsed={5}
+          noun="token"
         />
       </CardSection>
 
@@ -689,6 +693,8 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
             columns={protocolColumns}
             data={protocolRows}
             defaultSort={{ key: 'tvl_egld', dir: 'desc' }}
+            collapsed={5}
+            noun="protocol"
           />
         </CardSection>
       )}

@@ -458,25 +458,94 @@
     }
   },
 
-  "defi_other": {
-    "erd1qqqqqqqqqqqqqpgq47v57jzpwrpc89dhmd6d3g9ds94t9sm445qs4k7cgj": {
-      "name": "XOXNO: xLend EGLD Liquidity Layer",
+  "defi_xoxno": {
+    "erd1qqqqqqqqqqqqqpgq5rf2sppxk2xu4m0pkmugw2es4gak3rgjah0sxvajva": {
+      "name": "XOXNO: Swap Aggregator",
       "category": "defi",
-      "subcategory": "lending",
-      "notes": "XOXNO's xLend protocol EGLD liquidity layer. ~9.4K EGLD. NFT-backed lending."
-    },
-    "erd1qqqqqqqqqqqqqpgq6wegs2xkypfpync8mn2sa5cmpqjlvrhwz5nqgepyg8": {
-      "name": "XOXNO: Marketplace",
-      "category": "defi",
-      "subcategory": "nft_marketplace",
-      "notes": "XOXNO NFT marketplace aggregator. Largest NFT marketplace on MultiversX. ~3K EGLD."
+      "subcategory": "aggregator",
+      "notes": "XOXNO swap aggregator — routes trades across xExchange, AshSwap, OneDex, and other DEXs. >115K transfers per week, the highest-throughput aggregator on MultiversX. Operational EGLD only (~7); routing volume is the metric."
     },
     "erd1qqqqqqqqqqqqqpgq6uzdzy54wnesfnlaycxwymrn9texlnmyah0ssrfvk6": {
       "name": "XOXNO: EGLD Liquid Staking",
       "category": "defi",
       "subcategory": "liquid_staking",
-      "notes": "XOXNO's liquid staking protocol."
+      "notes": "XOXNO liquid staking protocol — issues XEGLD-e413ed (StakedEGLD). ~358K EGLD staked through this contract (XEGLD supply 318,778 * 1.13 EGLD/XEGLD ratio = ~358K)."
     },
+    "erd1qqqqqqqqqqqqqpgqdnpmeseu3j5t7grds9dfj8ttt70pev66ah0sydkq9x": {
+      "name": "XOXNO: Governance Proxy xEGLD",
+      "category": "defi",
+      "subcategory": "governance",
+      "notes": "XOXNO's governance vote-escrow contract for xEGLD holders."
+    },
+    "erd1qqqqqqqqqqqqqpgqc0jp2q280xaccqszxwsh5cyl2hv35g79ah0sk4zu5n": {
+      "name": "XOXNO: LSD Composability",
+      "category": "defi",
+      "subcategory": "liquid_staking",
+      "notes": "XOXNO LSD composability layer — wraps XEGLD usage across DeFi protocols."
+    },
+    "erd1qqqqqqqqqqqqqpgq47v57jzpwrpc89dhmd6d3g9ds94t9sm445qs4k7cgj": {
+      "name": "XOXNO: xLend EGLD Liquidity Layer",
+      "category": "defi",
+      "subcategory": "lending",
+      "notes": "XOXNO xLend protocol EGLD liquidity layer. NFT-backed lending."
+    },
+    "erd1qqqqqqqqqqqqqpgq6wegs2xkypfpync8mn2sa5cmpqjlvrhwz5nqgepyg8": {
+      "name": "XOXNO: Marketplace",
+      "category": "defi",
+      "subcategory": "nft_marketplace",
+      "notes": "XOXNO NFT marketplace aggregator. Largest NFT marketplace on MultiversX."
+    },
+    "erd1qqqqqqqqqqqqqpgq47y8hnct68v6asjv6gxem6h9rumn9frzah0skhxxt6": {
+      "name": "XOXNO: Peer to Peer",
+      "category": "defi",
+      "subcategory": "p2p_trading",
+      "notes": "XOXNO P2P trading contract for direct token swaps."
+    },
+    "erd1qqqqqqqqqqqqqpgq03yjtslvm63d3whhunycqgyg923866c7ah0s9vht8j": {
+      "name": "XOXNO: Ticketing Template",
+      "category": "defi",
+      "subcategory": "ticketing",
+      "notes": "XOXNO event-ticketing template contract."
+    },
+    "erd1qqqqqqqqqqqqqpgqm3w0cr4qnnp5uqqj9s377fde93l82sjuah0suxn6c3": {
+      "name": "XOXNO: Inscriptions",
+      "category": "defi",
+      "subcategory": "inscriptions",
+      "notes": "XOXNO inscriptions contract (BTC-style ordinals on MultiversX)."
+    },
+    "erd1qqqqqqqqqqqqqpgql2gmsgmgfhhmkzawhdvfv9d2j2ddf70aah0syj4psk": {
+      "name": "XOXNO: On-Chain Prices Query",
+      "category": "defi",
+      "subcategory": "oracle",
+      "notes": "XOXNO on-chain price query contract used by the aggregator."
+    },
+    "erd1qqqqqqqqqqqqqpgqscgww6dn8029mm0gyflu3ksep78decapah0s46nj67": {
+      "name": "XOXNO: Fiat Relayer",
+      "category": "defi",
+      "subcategory": "fiat_onramp",
+      "notes": "XOXNO fiat on-ramp relayer contract."
+    },
+    "erd1qqqqqqqqqqqqqpgqrswahk5sxkpwjl0gj6cx2up0cgx2usg7ah0sxnujs6": {
+      "name": "XOXNO: AG Multisig",
+      "category": "defi",
+      "subcategory": "multisig",
+      "notes": "XOXNO aggregator multisig admin."
+    },
+    "erd1qqqqqqqqqqqqqpgq277y4a5fqluldp5k7q0gayk87djyq3meah0sh7n378": {
+      "name": "XOXNO: Foundation Multisig",
+      "category": "defi",
+      "subcategory": "multisig",
+      "notes": "XOXNO Foundation multisig (treasury)."
+    },
+    "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm": {
+      "name": "XOXNO: Deployer Wallet",
+      "category": "defi",
+      "subcategory": "deployer",
+      "notes": "XOXNO main account that owns and deploys the XOXNO contract suite."
+    }
+  },
+
+  "defi_other": {
     "erd1qqqqqqqqqqqqqpgqx6833qjac6uqztgsa8jhlztexucke0hrdfys6wd7qt": {
       "name": "JewelSwap: Liquid Staking",
       "category": "defi",

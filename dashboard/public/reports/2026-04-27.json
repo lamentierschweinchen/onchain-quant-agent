@@ -44,6 +44,11 @@
       "category": "trend"
     },
     {
+      "finding": "XOXNO is now properly tracked as MultiversX's second-largest DeFi protocol by TVL: 359K EGLD ($1.54M) liquid-staked via XEGLD-e413ed, versus Hatom's $528K combined. XOXNO's Swap Aggregator is the network's highest-throughput on-chain swap router with 21,926 transfers/24h \u2014 7x xExchange's direct-contract activity.",
+      "severity": "medium",
+      "category": "defi"
+    },
+    {
       "finding": "Unknown Whale C (erd1a2t7xu4, classified cold storage with nonce 4) reactivated and gained +86,215 EGLD (+24.9%) to reach 432K EGLD. The third reactivation of a \"cold storage\" wallet in five weeks reinforces that low-nonce \u2260 permanent cold storage on MultiversX \u2014 likely a structural pattern of mid-tier holders rebalancing positions.",
       "severity": "high",
       "category": "whale"
@@ -1456,20 +1461,50 @@
         "category": "dex",
         "volume_24h_usd": 95356.38691685404,
         "active_pairs": 544,
-        "transfers_24h": null,
-        "tvl_egld": 542332.1762930303,
-        "tvl_usd": 2326605.0362970997,
-        "tvl_wow_change_pct": -0.5572030245410436
+        "transfers_24h": 3120,
+        "tvl_egld": 541219.3784059425,
+        "tvl_usd": 2321831.1333614932,
+        "tvl_wow_change_pct": -0.20518750974615566
+      },
+      {
+        "name": "XOXNO Liquid Staking",
+        "category": "liquid_staking",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 435,
+        "tvl_egld": 359119.8988466681,
+        "tvl_usd": 1540624.3660522061,
+        "tvl_wow_change_pct": null
       },
       {
         "name": "Hatom",
         "category": "lending",
         "volume_24h_usd": null,
         "active_pairs": null,
-        "transfers_24h": null,
-        "tvl_egld": 121239.90524840778,
-        "tvl_usd": 520119.1935156694,
-        "tvl_wow_change_pct": 0.6148642299170813
+        "transfers_24h": 389,
+        "tvl_egld": 123151.75535686628,
+        "tvl_usd": 528321.0304809563,
+        "tvl_wow_change_pct": 1.5769148817308305
+      },
+      {
+        "name": "XOXNO Swap Aggregator",
+        "category": "aggregator",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 21926,
+        "tvl_egld": null,
+        "tvl_usd": null,
+        "tvl_wow_change_pct": null
+      },
+      {
+        "name": "OneDex",
+        "category": "aggregator",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 13308,
+        "tvl_egld": 135.78013793259117,
+        "tvl_usd": 582.4967917308161,
+        "tvl_wow_change_pct": 124.58294965428782
       }
     ],
     "protocol_breakdown": [
@@ -1477,53 +1512,92 @@
         "protocol": "xExchange",
         "category": "dex",
         "addresses_tracked": 5,
-        "tvl_egld": 542332.1762930303,
-        "tvl_usd": 2326605.0362970997,
-        "tvl_wow_change_egld": -3038.823706969735,
-        "tvl_wow_change_pct": -0.5572030245410436,
-        "health_signal": "flat",
-        "transfers_24h": null,
+        "tvl_egld": 541219.3784059425,
+        "tvl_usd": 2321831.1333614932,
+        "tvl_wow_change_pct": -0.20518750974615566,
+        "tvl_wow_change_egld": -1112.7978870877996,
+        "transfers_24h": 3120,
         "unique_users_7d": null,
-        "notable_events": "24h volume reverted to $95K from $186K spike"
+        "notable_events": null,
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "XOXNO LSD",
+        "category": "liquid_staking",
+        "addresses_tracked": 1,
+        "tvl_egld": 359119.8988466681,
+        "tvl_usd": 1540624.3660522061,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 435,
+        "unique_users_7d": null,
+        "notable_events": "TVL estimated via XEGLD-e413ed market cap (more accurate than contract balance)",
+        "health_signal": "flat"
       },
       {
         "protocol": "Hatom",
         "category": "lending",
         "addresses_tracked": 5,
-        "tvl_egld": 121239.90524840778,
-        "tvl_usd": 520119.1935156694,
-        "tvl_wow_change_egld": 740.9052484077838,
-        "tvl_wow_change_pct": 0.6148642299170813,
-        "health_signal": "flat",
-        "transfers_24h": null,
+        "tvl_egld": 123151.75535686628,
+        "tvl_usd": 528321.0304809563,
+        "tvl_wow_change_pct": 1.5769148817308305,
+        "tvl_wow_change_egld": 1911.8501084585005,
+        "transfers_24h": 389,
         "unique_users_7d": null,
-        "notable_events": "TVL flat (+0.6%) after +11.8% gain last week"
+        "notable_events": null,
+        "health_signal": "flat"
       },
       {
-        "protocol": "AshSwap",
-        "category": "dex",
-        "addresses_tracked": 5,
-        "tvl_egld": 0.0,
-        "tvl_usd": 0.0,
-        "tvl_wow_change_egld": null,
+        "protocol": "XOXNO Other",
+        "category": "other",
+        "addresses_tracked": 4,
+        "tvl_egld": 3850.5916359773382,
+        "tvl_usd": 16519.03811834278,
         "tvl_wow_change_pct": null,
-        "health_signal": "flat",
-        "transfers_24h": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 29,
         "unique_users_7d": null,
-        "notable_events": "Sample contracts show ~0 EGLD \u2014 most TVL likely in pools/LPs"
+        "notable_events": "xLend, governance, LSD composability, P2P \u2014 combined",
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "XOXNO Marketplace",
+        "category": "nft_marketplace",
+        "addresses_tracked": 1,
+        "tvl_egld": 3019.9694509380365,
+        "tvl_usd": 12955.668944524177,
+        "tvl_wow_change_pct": -67.31294073678484,
+        "tvl_wow_change_egld": -6219.067400372116,
+        "transfers_24h": 984,
+        "unique_users_7d": null,
+        "notable_events": "Operational EGLD only \u2014 NFT volume is the real metric",
+        "health_signal": "draining"
+      },
+      {
+        "protocol": "XOXNO Aggregator",
+        "category": "aggregator",
+        "addresses_tracked": 1,
+        "tvl_egld": 7.322621684241415,
+        "tvl_usd": 31.41404702539567,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 21926,
+        "unique_users_7d": null,
+        "notable_events": "Routing volume \u2014 contract is non-custodial",
+        "health_signal": "flat"
       },
       {
         "protocol": "OneDex",
         "category": "aggregator",
         "addresses_tracked": 5,
-        "tvl_egld": 60.45879179234425,
-        "tvl_usd": 259.36821678915686,
-        "tvl_wow_change_egld": null,
-        "tvl_wow_change_pct": null,
-        "health_signal": "flat",
-        "transfers_24h": null,
+        "tvl_egld": 135.78013793259117,
+        "tvl_usd": 582.4967917308161,
+        "tvl_wow_change_pct": 124.58294965428782,
+        "tvl_wow_change_egld": 75.32134614024693,
+        "transfers_24h": 13308,
         "unique_users_7d": null,
-        "notable_events": "Aggregator routing \u2014 minimal contract balance expected"
+        "notable_events": null,
+        "health_signal": "spiking"
       },
       {
         "protocol": "JEXchange",
@@ -1531,25 +1605,12 @@
         "addresses_tracked": 4,
         "tvl_egld": 0.21516562704166942,
         "tvl_usd": 0.9230605400087618,
-        "tvl_wow_change_egld": null,
-        "tvl_wow_change_pct": null,
-        "health_signal": "flat",
-        "transfers_24h": null,
+        "tvl_wow_change_pct": 0.0,
+        "tvl_wow_change_egld": 0.0,
+        "transfers_24h": 3772,
         "unique_users_7d": null,
-        "notable_events": "Orderbook contracts ~0 EGLD"
-      },
-      {
-        "protocol": "XOXNO",
-        "category": "nft_marketplace",
-        "addresses_tracked": 3,
-        "tvl_egld": 9239.036851310153,
-        "tvl_usd": 39635.46809212056,
-        "tvl_wow_change_egld": null,
-        "tvl_wow_change_pct": null,
-        "health_signal": "flat",
-        "transfers_24h": null,
-        "unique_users_7d": null,
-        "notable_events": "Marketplace contract balances baseline established this run"
+        "notable_events": null,
+        "health_signal": "flat"
       },
       {
         "protocol": "JewelSwap",
@@ -1557,16 +1618,29 @@
         "addresses_tracked": 2,
         "tvl_egld": 852.0691307264658,
         "tvl_usd": 3655.3765708165383,
-        "tvl_wow_change_egld": null,
-        "tvl_wow_change_pct": null,
-        "health_signal": "flat",
-        "transfers_24h": null,
+        "tvl_wow_change_pct": 0.0,
+        "tvl_wow_change_egld": 0.0,
+        "transfers_24h": 64,
         "unique_users_7d": null,
-        "notable_events": "Small but tracked"
+        "notable_events": null,
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "AshSwap",
+        "category": "dex",
+        "addresses_tracked": 5,
+        "tvl_egld": 0.0,
+        "tvl_usd": 0.0,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 0,
+        "unique_users_7d": null,
+        "notable_events": null,
+        "health_signal": "flat"
       }
     ],
     "sc_deployments": [],
-    "analysis": "xExchange aggregate TVL across the 5 sampled contracts is 542K EGLD ($2.33M) \u2014 essentially flat WoW (-0.6%). Hatom is similarly flat (+0.6% to 121K EGLD / $520K). The lack of TVL movement combined with the volume reversion suggests DeFi activity is genuinely quiet this week.\n\nXOXNO marketplace showed 9,239 EGLD ($40K) in tracked contract balances \u2014 establishes baseline. AshSwap, OneDex, JEXchange, JewelSwap all show near-zero contract balances in our sample, consistent with their model (most TVL is in user wallets or pool LPs not the protocol contract). Per-protocol breakdown is now established as a tracking foundation; deltas will be meaningful from next run.\n\nBottom line for DeFi this week: no structural shifts. The interesting movement is happening in CEX flows (UPbit OTC injection, Crypto.com revealing second wallet) rather than on-chain DeFi protocols."
+    "analysis": "The expanded DeFi breakdown reveals XOXNO as the dominant DeFi-native protocol on MultiversX. **XOXNO Liquid Staking** is now tracked as a top-2 DeFi protocol by TVL: ~359K EGLD (~$1.54M) staked through it, derived from XEGLD-e413ed market cap (XEGLD/EGLD ratio 1.13 reflects accrued staking rewards). It surpasses Hatom's combined TVL ($528K) by ~3x.\n\n**XOXNO Swap Aggregator** is the highest-throughput contract in the tracked DeFi set: 21,926 transfers in 24h (vs xExchange's combined 3,120, OneDex's 13,308, JEXchange's 3,772). The aggregator is non-custodial \u2014 its 7 EGLD balance is operational. The throughput shows that on-chain swap routing on MultiversX is dominated by aggregators rather than direct DEX use, which has implications for liquidity fragmentation analysis.\n\nxExchange aggregate TVL (5 sampled contracts) is 541K EGLD ($2.32M) \u2014 flat WoW (-0.2%). Hatom +1.6% WoW. OneDex contract balance jumped 125% but at very small absolute scale ($582 \u2192 previous baseline noise). XOXNO Marketplace shows 3K EGLD in operational balance \u2014 NFT volume is the real metric here, not balance.\n\nBottom line: MultiversX's DeFi top three by TVL is xExchange ($2.32M) > XOXNO LSD ($1.54M) > Hatom ($528K). And by activity, XOXNO Aggregator and OneDex aggregators dominate over direct DEX contracts."
   },
   "anomalies": [
     {
@@ -1767,7 +1841,9 @@
       "Unknown Whale C (nonce 4 cold storage) reactivated with +86K EGLD \u2014 third cold-storage wallet reactivation in five weeks. Pattern confirmed.",
       "xExchange volume reverted from $186K to $95K \u2014 last week's spike was a one-week event, not a regime change",
       "5 zero-fee providers now offer \u22659% APR (738K combined locked = 6.5% of delegated). Asymmetric value zone widened.",
-      "Zero new fungible token issuances this week \u2014 combined with 5 weeks of holder declines, this is structural consolidation, not noise"
+      "Zero new fungible token issuances this week \u2014 combined with 5 weeks of holder declines, this is structural consolidation, not noise",
+      "XOXNO Liquid Staking emerges as MultiversX's 2nd-largest DeFi protocol: ~359K EGLD ($1.54M) staked via XEGLD-e413ed (3x larger than Hatom)",
+      "XOXNO Swap Aggregator dominates routing throughput: 21,926 transfers/24h, exceeds combined xExchange contract activity by 7x"
     ],
     "action_items_from_previous": 7,
     "action_items_completed": 5,

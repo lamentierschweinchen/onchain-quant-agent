@@ -708,6 +708,8 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
           data={walletRows}
           defaultSort={{ key: 'balance_current_egld', dir: 'desc' }}
           emptyMessage="No wallet data available"
+          collapsed={5}
+          noun="wallet"
         />
       </CardSection>
 
@@ -720,6 +722,8 @@ export function WhaleIntelligence({ data }: WhaleIntelligenceProps) {
           columns={txColumns}
           data={txRows}
           emptyMessage="No large transactions detected this period"
+          collapsed={5}
+          noun="transaction"
         />
       </CardSection>
 

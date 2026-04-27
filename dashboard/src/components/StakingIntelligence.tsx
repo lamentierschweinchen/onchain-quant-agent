@@ -439,6 +439,8 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
           columns={columns}
           data={tableRows}
           defaultSort={{ key: 'locked_egld', dir: 'desc' }}
+          collapsed={5}
+          noun="provider"
           rowClassName={(row: ProviderRow) => {
             const r = row as unknown as StakingProvider
             return r.apr_pct > 8.5 && r.fee_pct < 5 ? 'bg-up/5' : ''
