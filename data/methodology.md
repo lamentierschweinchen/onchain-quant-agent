@@ -181,14 +181,41 @@ Report top 5. A new token deployed by a known team or DeFi protocol is a higher-
 
 Each tracked protocol gets its own row in `protocol_breakdown`. Address sets come from `data/known-addresses.json`:
 
-| Protocol | Category | Address Set | What to Track |
-|----------|----------|-------------|---------------|
-| xExchange | dex | `defi_xexchange` (16 addresses) | TVL across pair contracts, 24h volume from `/mex/pairs`, transfers |
-| Hatom | lending + liquid_staking | `defi_hatom` (16 addresses) | EGLD Money Market TVL, sEGLD supply, borrow utilization |
+| Protocol | Category | Address Set | TVL Method |
+|----------|----------|-------------|------------|
+| xExchange | dex | `defi_xexchange` (16 addresses) | Sum contract balances + 24h volume from `/mex/pairs` |
+| Hatom Lending | lending | `defi_hatom` (39 addresses) | Sum H-token market caps (HUSDC, HWBTC, HEGLD, HWETH, HUSDT, HWTAO, HHTM, HMEX, HUTK, HBUSD). Exclude HSEGLD/HSWTAO to avoid double-count |
+| Hatom Liquid Staking | liquid_staking | `defi_hatom` subset | SEGLD-3ad2d0 market cap + SWTAO-356a25 market cap |
+| Hatom USH | stablecoin | `defi_hatom` subset | USH-111e09 market cap |
+| XOXNO LSD | liquid_staking | `defi_xoxno` subset | XEGLD-e413ed market cap |
+| XOXNO Aggregator | aggregator | `defi_xoxno` subset | `transfers_24h` only (non-custodial) |
+| XOXNO Marketplace | nft_marketplace | `defi_xoxno` subset | Operational EGLD only; NFT volume is the real metric |
 | AshSwap | dex (stableswap) | `defi_ashswap` (9 addresses) | Pool TVL, swap volume |
-| OneDex | dex (aggregator) | `defi_onedex` (5 addresses) | Aggregator routing volume |
-| XOXNO | nft_marketplace | `defi_other` subset | Marketplace contract activity |
-| JEXchange | dex (orderbook) | `defi_jexchange` (4 addresses) | Order book depth proxies |
+| OneDex | aggregator | `defi_onedex` (5 addresses) | `transfers_24h` (aggregator) |
+| JEXchange | dex (orderbook) | `defi_jexchange` (4 addresses) | `transfers_24h` (orderbook) |
+
+### Critical TVL Lesson (run #5, 2026-04-27)
+
+Lending protocols on MultiversX denominate contract balance in deposit-receipt tokens (HUSDC, HWBTC, HSEGLD, etc.), NOT in EGLD. Summing contract EGLD balance produces a near-zero TVL for the entire lending stack. The correct method is to sum the H-token market caps, which represent the total deposited collateral.
+
+Applied to Hatom: previous TVL estimate was $528K (sum of EGLD-only contract balances). Corrected: $10.23M ($5.15M LSD + $4.37M Lending + $708K USH). A **19x underestimate** before correction.
+
+### LSD Double-Count Avoidance
+
+When a user stakes EGLD into Hatom LSD they receive SEGLD. If they then deposit SEGLD into Hatom Money Market they receive HSEGLD. Both SEGLD and HSEGLD have non-zero market caps, but counting both double-counts the same underlying EGLD. Same applies to SWTAO/HSWTAO and XEGLD (XOXNO's LSD has its own deposit market via the LSD Composability contract).
+
+Rule: when computing protocol TVL, **exclude H-tokens that wrap LSDs**. Count the LSD itself once.
+
+### TVL Method by Protocol Category
+
+| Category | Method | Reason |
+|----------|--------|--------|
+| Liquid staking | LSD-token market cap | Underlying is delegated to validators, not held in contract |
+| Lending | Sum of deposit-receipt token market caps | Balance is denominated in lent tokens, not EGLD |
+| DEX (AMM) | Sum contract balance × 2 (pool ratio) | Both sides of pair counted |
+| DEX (aggregator) | `transfers_24h` only — TVL is irrelevant | Non-custodial routing |
+| NFT marketplace | NFT trading volume — contract balance is operational only | NFTs are escrowed but value is in NFTs not EGLD |
+| Stablecoin | Stablecoin market cap | Direct measure of collateralized value |
 
 **Health signal mapping**:
 - `growing` — TVL up >5% WoW, transfers up
@@ -316,3 +343,4 @@ Before committing the report, verify:
 | 4 | 2026-04-20 | Confirmed routing wallet nonce is NOT always near-zero (nonce 80 wallet was pure pass-through). Confirmed low nonce ≠ cold storage guarantee (nonce 4 wallet reactivated). Established Coinbase OTC pattern: simultaneous large inflows+outflows from different counterparties = OTC intermediation — watch net balance, not gross flows. mex/pairs field names confirmed: baseName, quoteName, volume24h, totalValue. 4-run z-score baselines now active. |
 | 5 | 2026-04-27 | **Schema v2 expansion**: top 10/10/5 token coverage, whale tier stratification (mega/large/mid >1M / 100K-1M / 10K-100K), exchange entity netting, per-protocol DeFi breakdown (xExchange, Hatom, AshSwap, OneDex, XOXNO, JEXchange), APR distribution histogram, staking churn metric, top APR + lowest fee outliers, dormant_days field on dormant_activations, graceful-degradation z-scores (z when N>=4, % threshold when N<4, rule_based always), new trend_indicators section (accelerating_exchange_outflows, validator_movements, token_supply_events, consecutive_streaks, regime_shifts). All schema additions backward-compatible. |
 | 5.1 | 2026-04-27 | **XOXNO ecosystem expansion**: added 14 XOXNO contracts to known-addresses.json under new `defi_xoxno` section. Split XOXNO tracking into 4 sub-protocols (LSD, Aggregator, Marketplace, Other) since they have different metrics. **TVL method discovery**: for liquid staking protocols, contract balance is misleading — use the staked-derivative token's market cap as TVL proxy (XEGLD-e413ed market cap = $1.54M = ~359K EGLD staked). For non-custodial routers (XOXNO Aggregator, OneDex), TVL is irrelevant — the metric is `transfers_24h`. **Activity ranking**: XOXNO Aggregator handles 21,926 transfers/24h (highest single-contract throughput on the network); OneDex 13,308; JEXchange 3,772; xExchange 5 contracts combined 3,120. **Dashboard ergonomics**: added expand/collapse to long DataTables (top 5 default → "Show all (N)" footer button) for providers, wallets, transactions, tokens, protocol breakdown — full-set sort still active when collapsed. |
+| 5.2 | 2026-04-27 | **Hatom ecosystem expansion + lending TVL methodology fix**. Hatom has 59 contracts total (deployer wallet erd1cc2yw...99pvt); previously tracked 16 → now 39. Added: 13 money markets (EGLD, sEGLD, USDC, USDT, WBTC, WETH, BUSD, HTM, MEX, UTK, wTAO, swTAO), TAO Liquid Staking + Wrapped TAO Minter, isolated lending (EGLD + wTAO), USH stablecoin suite (4 strategy contracts), 7 asset facilitators (cross-protocol), Booster v2, Price Aggregator v2, deployer wallet. **CRITICAL TVL FIX**: lending protocols denominate balance in H-tokens (deposit receipts), not EGLD — summing contract EGLD balances missed the entire lending stack. Corrected method: sum H-token market caps. **Hatom TVL recalibrated $528K → $10.23M** (~19x underestimate before correction). Split Hatom into 3 sub-protocols in `protocol_breakdown`: Lending ($4.37M), Liquid Staking ($5.15M = SEGLD + SWTAO), USH ($708K). **New ranking**: Hatom dominates MultiversX DeFi with 70% of total tracked TVL ($10.23M of $14.7M total). xExchange $2.32M, XOXNO LSD $1.54M. **Double-count avoidance rule**: exclude H-tokens that wrap LSDs (HSEGLD, HSWTAO) since the underlying value is already in the LSD-token market cap. |

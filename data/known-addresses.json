@@ -338,6 +338,150 @@
       "category": "defi",
       "subcategory": "lending",
       "notes": "Wrapped ETH lending and borrowing market."
+    },
+    "erd1qqqqqqqqqqqqqpgqg47t8v5nwzvdxgf6g5jkxleuplu8y4f678ssfcg5gy": {
+      "name": "Hatom: WBTC Money Market",
+      "category": "defi",
+      "subcategory": "lending",
+      "notes": "Wrapped BTC lending market. H-token: HWBTC-49ca31. Market cap ~$1.14M (TVL proxy)."
+    },
+    "erd1qqqqqqqqqqqqqpgq2rnjnp543m5d8fac8v2ltkr5w2quh0v978ssswj939": {
+      "name": "Hatom: MEX Money Market",
+      "category": "defi",
+      "subcategory": "lending",
+      "notes": "MEX token lending market. H-token: HMEX-df6df7. Market cap ~$33K (TVL proxy)."
+    },
+    "erd1qqqqqqqqqqqqqpgqhykmg59ny8tem37m0gng3ygwtphmefyz78ssfecn6q": {
+      "name": "Hatom: TAO Liquid Staking",
+      "category": "defi",
+      "subcategory": "liquid_staking",
+      "notes": "Hatom's liquid staking for TAO (Bittensor). Issues SWTAO-356a25. Market cap ~$1.08M."
+    },
+    "erd1qqqqqqqqqqqqqpgq7sspywe6e2ehy7dn5dz00ved3aa450mv78ssllmln6": {
+      "name": "Hatom: swTAO Money Market",
+      "category": "defi",
+      "subcategory": "lending",
+      "notes": "Staked WTAO lending market. H-token: HSWTAO-6df80c. Market cap ~$1.02M."
+    },
+    "erd1qqqqqqqqqqqqqpgqz9pvuz22qvqxfqpk6r3rluj0u2can55c78ssgcqs00": {
+      "name": "Hatom: wTAO Money Market",
+      "category": "defi",
+      "subcategory": "lending",
+      "notes": "Wrapped TAO lending market. H-token: HWTAO-2e9136. Market cap ~$203K."
+    },
+    "erd1qqqqqqqqqqqqqpgqajq8kvm8qq045s2fvj4sa7dph8kpqx9d78ssxjzjdh": {
+      "name": "Hatom: Wrapped TAO Minter",
+      "category": "defi",
+      "subcategory": "bridge_wrapper",
+      "notes": "Issues Wrapped TAO (WTAO) on MultiversX from Bittensor."
+    },
+    "erd1qqqqqqqqqqqqqpgqzwv6tfg63m8nrxlw2lpl4y8nve3lmrqv78ssqtghs5": {
+      "name": "Hatom: EGLD Isolated Lending",
+      "category": "defi",
+      "subcategory": "isolated_lending",
+      "notes": "Isolated lending market for EGLD with stricter risk parameters."
+    },
+    "erd1qqqqqqqqqqqqqpgq2202fyeklanhzmeewzlnz65ahvm5aynf78sssulpam": {
+      "name": "Hatom: wTAO Isolated Lending",
+      "category": "defi",
+      "subcategory": "isolated_lending",
+      "notes": "Isolated lending market for WTAO."
+    },
+    "erd1qqqqqqqqqqqqqpgqfalcv4c705d457x23hz5d3y5qa2f0p5u78sspe9rh6": {
+      "name": "Hatom: Booster v2",
+      "category": "defi",
+      "subcategory": "boost_rewards",
+      "notes": "Hatom Booster v2 — reward boost mechanics for stakers and lenders."
+    },
+    "erd1qqqqqqqqqqqqqpgqjcmh08y6ejad07qr2dn8mju9x2fea85578sscjkrvy": {
+      "name": "Hatom: USH Staking Module",
+      "category": "defi",
+      "subcategory": "stablecoin",
+      "notes": "USH stablecoin staking module."
+    },
+    "erd1qqqqqqqqqqqqqpgq2y55sf0tqsdncxcrpe67tce4hc0qagv478ssaw9vkl": {
+      "name": "Hatom: USH Minter (v2)",
+      "category": "defi",
+      "subcategory": "stablecoin",
+      "notes": "USH stablecoin minter contract."
+    },
+    "erd1qqqqqqqqqqqqqpgqs65chjxt09sar8yl4jc5mnqf9rqrwvf478ss5wqent": {
+      "name": "Hatom: USH Redeem Strategy",
+      "category": "defi",
+      "subcategory": "stablecoin",
+      "notes": "USH redemption strategy contract."
+    },
+    "erd1qqqqqqqqqqqqqpgqdetfak4dc0p74jaxvaj27qugpj7wcckq78ssjjqhtj": {
+      "name": "Hatom: USH Depeg Strategy",
+      "category": "defi",
+      "subcategory": "stablecoin",
+      "notes": "USH depeg recovery strategy contract."
+    },
+    "erd1qqqqqqqqqqqqqpgq3uwr0j0dnus8uj9z9eufqsgzg0rflkcz78ss63jydh": {
+      "name": "Hatom: USDT Stable Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Facilitates USDT operations across Hatom money markets."
+    },
+    "erd1qqqqqqqqqqqqqpgqzwys0dcnds29afeh3kj8cqlr3p2708gf78sss5tvn0": {
+      "name": "Hatom: USDC Stable Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Facilitates USDC operations across Hatom money markets."
+    },
+    "erd1qqqqqqqqqqqqqpgqa06423cvtpf0uqxzy7txpt0v92qfzmga78ssz23wj7": {
+      "name": "Hatom: AshSwap Crypto Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Cross-protocol facilitator for AshSwap integration."
+    },
+    "erd1qqqqqqqqqqqqqpgq05zpndkpchz029067dg4rxeh7rlkvzvs78sslvw0aw": {
+      "name": "Hatom: Hatom Crypto Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Hatom internal asset facilitator."
+    },
+    "erd1qqqqqqqqqqqqqpgqcsglyu8pv06ncww4d9aqlqjyvsh0w70y78ssws5tqk": {
+      "name": "Hatom: xExchange Crypto Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Cross-protocol facilitator for xExchange integration."
+    },
+    "erd1qqqqqqqqqqqqqpgqfwu4uqm2ngtpwakzh0j43rcqvz0pd9qn78ssty0r6p": {
+      "name": "Hatom: Foxsy Crypto Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Cross-protocol facilitator for Foxsy integration."
+    },
+    "erd1qqqqqqqqqqqqqpgqeya0gzk74lrmrn5txn0xml9pl0nc4yu078ssax057w": {
+      "name": "Hatom: xMoney Crypto Asset Facilitator",
+      "category": "defi",
+      "subcategory": "facilitator",
+      "notes": "Cross-protocol facilitator for xMoney integration."
+    },
+    "erd1qqqqqqqqqqqqqpgqh3e67630mm7t6awvgdrh78ws9hfh85tz78sssecur8": {
+      "name": "Hatom: Price Aggregator v2",
+      "category": "defi",
+      "subcategory": "oracle",
+      "notes": "Hatom price aggregator v2 (replaces v1)."
+    },
+    "erd1qqqqqqqqqqqqqpgq6pez48walf8wuwg8fdw9aavrsuw8gffq78ssy30hfx": {
+      "name": "Hatom: TAO Lendegate Strategy",
+      "category": "defi",
+      "subcategory": "yield_strategy",
+      "notes": "TAO lendegate / unlendegate yield strategy."
+    },
+    "erd1qqqqqqqqqqqqqpgqvtpg5nxgrjmr3nfl8zknama86putgxdz78ss7dcj4g": {
+      "name": "Hatom: Lendegate Strategy",
+      "category": "defi",
+      "subcategory": "yield_strategy",
+      "notes": "Generic lendegate / unlendegate yield strategy."
+    },
+    "erd1cc2yw3reulhshp3x73q2wye0pq8f4a3xz3pt7xj79phv9wm978ssu99pvt": {
+      "name": "Hatom: Deployer Wallet",
+      "category": "defi",
+      "subcategory": "deployer",
+      "notes": "Hatom main account that owns and deploys the 59-contract Hatom suite."
     }
   },
 

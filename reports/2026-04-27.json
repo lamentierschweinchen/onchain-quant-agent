@@ -44,6 +44,11 @@
       "category": "trend"
     },
     {
+      "finding": "Hatom emerges as MultiversX's dominant DeFi protocol after a TVL methodology fix: $10.23M total ($5.15M Liquid Staking + $4.37M Lending + $708K USH stablecoin), 7x larger than xExchange ($2.32M) and previously ~5x underestimated. The fix: lending protocols denominate balance in deposit-receipt tokens (HUSDC, HWBTC, etc.), so TVL must be measured via H-token market caps rather than contract EGLD balance.",
+      "severity": "high",
+      "category": "defi"
+    },
+    {
       "finding": "XOXNO is now properly tracked as MultiversX's second-largest DeFi protocol by TVL: 359K EGLD ($1.54M) liquid-staked via XEGLD-e413ed, versus Hatom's $528K combined. XOXNO's Swap Aggregator is the network's highest-throughput on-chain swap router with 21,926 transfers/24h \u2014 7x xExchange's direct-contract activity.",
       "severity": "medium",
       "category": "defi"
@@ -62,11 +67,6 @@
       "finding": "Five providers now offer \u22659% APR with 0% fee \u2014 Ninja Staking (9.14%), Egld Staking Provider (9.12%), Maple Leaf (9.06%), Star Staking (9.04%), Synexis (8.99%, 2% fee). Combined locked: 738K EGLD (6.5% of delegated supply). The asymmetric value zone for delegators has widened: the spread between top APR (9.14%) and Binance Staking (6.14%) is now 3pp.",
       "severity": "medium",
       "category": "staking"
-    },
-    {
-      "finding": "Zero new fungible token issuances in the past 7 days \u2014 a notable quietness given last week's ZPAY +33% rally. Combined with the fifth consecutive week of declining holder counts across the top 15 tracked tokens, this confirms the broader pattern: capital is consolidating in existing positions, not bootstrapping new ones.",
-      "severity": "low",
-      "category": "token"
     }
   ],
   "network_health": {
@@ -1457,14 +1457,34 @@
   "defi_activity": {
     "protocols": [
       {
+        "name": "Hatom Liquid Staking",
+        "category": "liquid_staking",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 313,
+        "tvl_egld": 1200821.9114219113,
+        "tvl_usd": 5151526,
+        "tvl_wow_change_pct": null
+      },
+      {
+        "name": "Hatom Lending",
+        "category": "lending",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 330,
+        "tvl_egld": 1019314.6853146853,
+        "tvl_usd": 4372860,
+        "tvl_wow_change_pct": null
+      },
+      {
         "name": "xExchange",
         "category": "dex",
         "volume_24h_usd": 95356.38691685404,
         "active_pairs": 544,
         "transfers_24h": 3120,
-        "tvl_egld": 541219.3784059425,
-        "tvl_usd": 2321831.1333614932,
-        "tvl_wow_change_pct": -0.20518750974615566
+        "tvl_egld": 541219,
+        "tvl_usd": 2321831,
+        "tvl_wow_change_pct": -0.21
       },
       {
         "name": "XOXNO Liquid Staking",
@@ -1472,19 +1492,9 @@
         "volume_24h_usd": null,
         "active_pairs": null,
         "transfers_24h": 435,
-        "tvl_egld": 359119.8988466681,
-        "tvl_usd": 1540624.3660522061,
+        "tvl_egld": 359120,
+        "tvl_usd": 1540624,
         "tvl_wow_change_pct": null
-      },
-      {
-        "name": "Hatom",
-        "category": "lending",
-        "volume_24h_usd": null,
-        "active_pairs": null,
-        "transfers_24h": 389,
-        "tvl_egld": 123151.75535686628,
-        "tvl_usd": 528321.0304809563,
-        "tvl_wow_change_pct": 1.5769148817308305
       },
       {
         "name": "XOXNO Swap Aggregator",
@@ -1497,17 +1507,43 @@
         "tvl_wow_change_pct": null
       },
       {
-        "name": "OneDex",
-        "category": "aggregator",
+        "name": "Hatom USH",
+        "category": "other",
         "volume_24h_usd": null,
         "active_pairs": null,
-        "transfers_24h": 13308,
-        "tvl_egld": 135.78013793259117,
-        "tvl_usd": 582.4967917308161,
-        "tvl_wow_change_pct": 124.58294965428782
+        "transfers_24h": 0,
+        "tvl_egld": 165035.66433566433,
+        "tvl_usd": 708003,
+        "tvl_wow_change_pct": null
       }
     ],
     "protocol_breakdown": [
+      {
+        "protocol": "Hatom Liquid Staking",
+        "category": "liquid_staking",
+        "addresses_tracked": 2,
+        "tvl_egld": 1200821.9114219113,
+        "tvl_usd": 5151526,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 313,
+        "unique_users_7d": null,
+        "notable_events": "SEGLD-3ad2d0 ($4.07M) + SWTAO-356a25 ($1.08M). 3.3x larger than XOXNO LSD.",
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "Hatom Lending",
+        "category": "lending",
+        "addresses_tracked": 13,
+        "tvl_egld": 1019314.6853146853,
+        "tvl_usd": 4372860,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 330,
+        "unique_users_7d": null,
+        "notable_events": "TVL recomputed via H-token market caps (HUSDC + HWBTC + HEGLD + HWETH + HUSDT + HWTAO + HHTM + HMEX + HUTK + HBUSD). Excludes HSEGLD/HSWTAO to avoid double-counting LSD value.",
+        "health_signal": "flat"
+      },
       {
         "protocol": "xExchange",
         "category": "dex",
@@ -1535,16 +1571,16 @@
         "health_signal": "flat"
       },
       {
-        "protocol": "Hatom",
-        "category": "lending",
-        "addresses_tracked": 5,
-        "tvl_egld": 123151.75535686628,
-        "tvl_usd": 528321.0304809563,
-        "tvl_wow_change_pct": 1.5769148817308305,
-        "tvl_wow_change_egld": 1911.8501084585005,
-        "transfers_24h": 389,
+        "protocol": "Hatom USH",
+        "category": "other",
+        "addresses_tracked": 6,
+        "tvl_egld": 165035.66433566433,
+        "tvl_usd": 708003,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 0,
         "unique_users_7d": null,
-        "notable_events": null,
+        "notable_events": "USH stablecoin market cap ($708K). MultiversX-native overcollateralized stablecoin.",
         "health_signal": "flat"
       },
       {
@@ -1574,16 +1610,16 @@
         "health_signal": "draining"
       },
       {
-        "protocol": "XOXNO Aggregator",
-        "category": "aggregator",
-        "addresses_tracked": 1,
-        "tvl_egld": 7.322621684241415,
-        "tvl_usd": 31.41404702539567,
-        "tvl_wow_change_pct": null,
-        "tvl_wow_change_egld": null,
-        "transfers_24h": 21926,
+        "protocol": "JewelSwap",
+        "category": "other",
+        "addresses_tracked": 2,
+        "tvl_egld": 852.0691307264658,
+        "tvl_usd": 3655.3765708165383,
+        "tvl_wow_change_pct": 0.0,
+        "tvl_wow_change_egld": 0.0,
+        "transfers_24h": 64,
         "unique_users_7d": null,
-        "notable_events": "Routing volume \u2014 contract is non-custodial",
+        "notable_events": null,
         "health_signal": "flat"
       },
       {
@@ -1600,6 +1636,19 @@
         "health_signal": "spiking"
       },
       {
+        "protocol": "XOXNO Aggregator",
+        "category": "aggregator",
+        "addresses_tracked": 1,
+        "tvl_egld": 7.322621684241415,
+        "tvl_usd": 31.41404702539567,
+        "tvl_wow_change_pct": null,
+        "tvl_wow_change_egld": null,
+        "transfers_24h": 21926,
+        "unique_users_7d": null,
+        "notable_events": "Routing volume \u2014 contract is non-custodial",
+        "health_signal": "flat"
+      },
+      {
         "protocol": "JEXchange",
         "category": "dex",
         "addresses_tracked": 4,
@@ -1608,19 +1657,6 @@
         "tvl_wow_change_pct": 0.0,
         "tvl_wow_change_egld": 0.0,
         "transfers_24h": 3772,
-        "unique_users_7d": null,
-        "notable_events": null,
-        "health_signal": "flat"
-      },
-      {
-        "protocol": "JewelSwap",
-        "category": "other",
-        "addresses_tracked": 2,
-        "tvl_egld": 852.0691307264658,
-        "tvl_usd": 3655.3765708165383,
-        "tvl_wow_change_pct": 0.0,
-        "tvl_wow_change_egld": 0.0,
-        "transfers_24h": 64,
         "unique_users_7d": null,
         "notable_events": null,
         "health_signal": "flat"
@@ -1640,7 +1676,7 @@
       }
     ],
     "sc_deployments": [],
-    "analysis": "The expanded DeFi breakdown reveals XOXNO as the dominant DeFi-native protocol on MultiversX. **XOXNO Liquid Staking** is now tracked as a top-2 DeFi protocol by TVL: ~359K EGLD (~$1.54M) staked through it, derived from XEGLD-e413ed market cap (XEGLD/EGLD ratio 1.13 reflects accrued staking rewards). It surpasses Hatom's combined TVL ($528K) by ~3x.\n\n**XOXNO Swap Aggregator** is the highest-throughput contract in the tracked DeFi set: 21,926 transfers in 24h (vs xExchange's combined 3,120, OneDex's 13,308, JEXchange's 3,772). The aggregator is non-custodial \u2014 its 7 EGLD balance is operational. The throughput shows that on-chain swap routing on MultiversX is dominated by aggregators rather than direct DEX use, which has implications for liquidity fragmentation analysis.\n\nxExchange aggregate TVL (5 sampled contracts) is 541K EGLD ($2.32M) \u2014 flat WoW (-0.2%). Hatom +1.6% WoW. OneDex contract balance jumped 125% but at very small absolute scale ($582 \u2192 previous baseline noise). XOXNO Marketplace shows 3K EGLD in operational balance \u2014 NFT volume is the real metric here, not balance.\n\nBottom line: MultiversX's DeFi top three by TVL is xExchange ($2.32M) > XOXNO LSD ($1.54M) > Hatom ($528K). And by activity, XOXNO Aggregator and OneDex aggregators dominate over direct DEX contracts."
+    "analysis": "The DeFi TVL ranking has been materially recalibrated this week after a methodology fix: lending protocols on MultiversX denominate balance in deposit-receipt tokens (HUSDC, HWBTC, etc.), not in EGLD. Summing contract balances in EGLD missed nearly all of Hatom's actual TVL. The corrected method uses H-token market caps as TVL proxy.\n\n**New protocol ranking by TVL:**\n1. **Hatom Liquid Staking \u2014 $5.15M** (SEGLD $4.07M + SWTAO $1.08M). 3.3x bigger than XOXNO LSD.\n2. **Hatom Lending \u2014 $4.37M** (HUSDC $1.41M + HWBTC $1.14M + HEGLD $767K + HWETH $353K + HUSDT $351K + HWTAO $203K + smaller markets). Excludes HSEGLD/HSWTAO to avoid double-counting LSD-deposited value.\n3. **xExchange \u2014 $2.32M** (sampled contracts).\n4. **XOXNO Liquid Staking \u2014 $1.54M** (XEGLD market cap).\n5. **Hatom USH \u2014 $708K** (USH stablecoin market cap; MultiversX-native overcollateralized stablecoin).\n\n**Total Hatom: $10.23M** \u2014 by far the largest DeFi protocol on MultiversX, ~5x what we previously tracked. Hatom dominates lending, liquid staking, and runs the network's most established stablecoin.\n\n**Activity layer**: Hatom Liquid Staking sees 313 transfers/24h vs XOXNO LSD's 435 \u2014 Hatom's LSD has more value but XOXNO's is more transactionally active (smaller, more retail-style activity). Aggregators continue to dominate raw throughput: XOXNO Aggregator (21,926 txs/24h) >> any Hatom subsystem.\n\n**Bottom line**: MultiversX DeFi is heavily Hatom-centric on TVL ($10.23M of $14.7M total ~ 70%), with XOXNO and xExchange splitting the remaining 30%. The aggregator-routed DEX activity (XOXNO + OneDex + JEXchange) shows that on-chain swap UX is dominated by routing layers, not direct DEX use."
   },
   "anomalies": [
     {
@@ -1843,7 +1879,9 @@
       "5 zero-fee providers now offer \u22659% APR (738K combined locked = 6.5% of delegated). Asymmetric value zone widened.",
       "Zero new fungible token issuances this week \u2014 combined with 5 weeks of holder declines, this is structural consolidation, not noise",
       "XOXNO Liquid Staking emerges as MultiversX's 2nd-largest DeFi protocol: ~359K EGLD ($1.54M) staked via XEGLD-e413ed (3x larger than Hatom)",
-      "XOXNO Swap Aggregator dominates routing throughput: 21,926 transfers/24h, exceeds combined xExchange contract activity by 7x"
+      "XOXNO Swap Aggregator dominates routing throughput: 21,926 transfers/24h, exceeds combined xExchange contract activity by 7x",
+      "Hatom TVL recalibrated: $10.23M total (5.15M LSD + 4.37M Lending + 0.71M USH) \u2014 by far the largest DeFi protocol on MultiversX",
+      "TVL methodology fix: lending markets denominate balance in H-tokens, not EGLD. Summing contract EGLD balances missed ~95% of Hatom's actual TVL."
     ],
     "action_items_from_previous": 7,
     "action_items_completed": 5,
@@ -1854,7 +1892,9 @@
       "ESTABLISHED: APR distribution histogram + APR/fee outliers as routine staking analysis",
       "ESTABLISHED: Newly-issued token detection via /transactions to ESDT contract (with deployer cross-reference)",
       "ESTABLISHED: Z-score with |z|>1.5 \"approaching anomaly\" tier; |z|>2 medium; |z|>3 high",
-      "CONFIRMED: Low-nonce \u2260 cold-storage guarantee. Three reactivations in five weeks. This is now a *structural pattern*, not anecdotal."
+      "CONFIRMED: Low-nonce \u2260 cold-storage guarantee. Three reactivations in five weeks. This is now a *structural pattern*, not anecdotal.",
+      "CHANGED: TVL methodology for lending protocols. PREVIOUS: sum contract EGLD balances. NEW: use deposit-receipt token market caps (e.g. HUSDC market cap = USDC TVL in Hatom). For Hatom this corrected the TVL from $528K to $10.23M \u2014 a 19x understated figure.",
+      "ADDED: Full Hatom contract suite to known-addresses.json (39 entries up from 16). Now covers: 13 money markets, liquid staking (EGLD + TAO), USH stablecoin (4 strategy contracts), 7 asset facilitators, booster v2, isolated lending markets, oracle, deployer wallet."
     ],
     "new_addresses_discovered": 1,
     "most_valuable_insight": "EGLD price hit a +3.29\u03c3 z-score anomaly while xExchange DEX volume simultaneously reverted from a +1.6\u03c3 spike to baseline \u2014 the price move is therefore NOT DEX-driven, meaning it must be CEX-driven (off-chain) or driven by structural staking compression. This decouples the price signal from on-chain activity, which is a meaningful market-microstructure read.",
