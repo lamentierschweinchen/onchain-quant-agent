@@ -2,7 +2,7 @@
 
 **Period**: YYYY-MM-DD to YYYY-MM-DD
 **Generated**: YYYY-MM-DD HH:MM UTC
-**EGLD Price**: $X.XX (WoW: +X.X%)
+**Run #**: N · **EGLD Price**: $X.XX (WoW: +X.X%) · **BTC**: $XXK · **ETH**: $X,XXX
 
 ---
 
@@ -13,24 +13,28 @@
 - Finding 3
 - Finding 4
 - Finding 5
+- Finding 6
+- Finding 7
 
 ---
 
 ## Risk Dashboard
 
 ```
-METRIC                   VALUE          WoW CHANGE    SIGNAL
-────────────────────────────────────────────────────────────
-EGLD Price               $X.XX          +X.X%         ●
-Staked Ratio             XX.X%          +X.Xpp        ●
-Staking APR              X.X%           -X.Xpp        ●
-Exchange Net Flow        +XX,XXX EGLD   ───           ●  (● = sell pressure)
-Active Accounts (7d)     XXX,XXX        +X.X%         ●
-TX Volume (7d)           X.XM           +X.X%         ●
-Top 5 Validator Share    XX.X%          +X.Xpp        ●
-Anomalies Detected       X              ───           ●
-────────────────────────────────────────────────────────────
-● = bullish/healthy   ● = neutral   ● = bearish/concern
+METRIC                       VALUE          WoW CHANGE     SIGNAL
+──────────────────────────────────────────────────────────────────
+EGLD Price                   $X.XX          +X.X%          🟢
+Staked Ratio                 XX.X%          +X.Xpp         🟢
+Staking APR                  X.X%           -X.Xpp         🟡
+Exchange Net Flow            +XX,XXX EGLD   ───            🔴 (sell pressure)
+Active Accounts (7d)         XXX,XXX        +X.X%          🟢
+TX Volume (7d)               X.XM           +X.X%          🟢
+Top 5 Validator Share        XX.X%          +X.Xpp         🟢
+Mega Whale Net Change        ±XXX,XXX EGLD  ───            🟡
+Anomalies Detected           X (Z high)     ───            🟡
+Trend Indicators Active      X              ───            🟢
+──────────────────────────────────────────────────────────────────
+🟢 = bullish/healthy   🟡 = neutral/watch   🔴 = bearish/concern
 ```
 
 ---
@@ -45,134 +49,254 @@ Anomalies Detected       X              ───           ●
 | Circulating Supply | XX.XM EGLD | +X,XXX |
 | Staked EGLD | XX.XM | +X,XXX |
 | Staked Ratio | XX.X% | +X.Xpp |
-| Staking APR | X.X% | -X.Xpp |
+| Staking APR (avg) | X.X% | -X.Xpp |
+| Base APR / TopUp APR | X.X% / X.X% | — |
 | Total Accounts | X.XXM | +X,XXX |
 | Total Transactions | XXXM | +X.XM |
+| Avg Daily TX (7d) | XXX,XXX | +X.X% |
 | Epoch | XXXX | +XX |
 
-**Analysis**: [Narrative interpreting the numbers — what the staked ratio trend means, whether APR compression is attracting/repelling capital, supply dynamics commentary]
+**Analysis**: [Narrative on staked ratio trajectory, APR compression dynamics, supply changes, account growth quality]
 
 ---
 
 ## 2. Whale Intelligence
 
-### Large Transactions (>5,000 EGLD)
+### 2.1 Whale Tier Stratification
+
+| Tier | Threshold | Wallets | Total Balance | WoW Change |
+|------|-----------|---------|---------------|------------|
+| Mega Whale | > 1M EGLD | N | XX.XM EGLD | ±XXX,XXX (±X.X%) |
+| Large Whale | 100K — 1M | N | X.XM EGLD | ±XXX,XXX (±X.X%) |
+| Mid Whale | 10K — 100K | N | X.XM EGLD | ±XXX,XXX (±X.X%) |
+
+**Tier read**: [What does the directional movement of each tier mean? E.g., "mega whales contracting while mid whales expand → wealth distribution / OTC settlement"]
+
+### 2.2 Large Transactions (>1,000 EGLD)
 
 | Time | From | To | Amount | USD Value | Flow Type |
 |------|------|----|--------|-----------|-----------|
-| Mon 14:32 | Binance Hot Wallet | erd1...abc | 25,000 EGLD | $91,750 | Exchange Outflow |
-| Tue 09:15 | Unknown Whale | Hatom: EGLD Money Market | 10,000 EGLD | $36,700 | DeFi Deposit |
+| Mon 14:32 | Binance Hot 1 | erd1...abc | 25,000 EGLD | $100K | Exchange Outflow |
+| Tue 09:15 | Unknown Whale | Hatom: EGLD MM | 10,000 EGLD | $40K | DeFi Deposit |
 
-### Top Wallet Balance Changes
+### 2.3 Top Wallet Balance Changes
 
-| Wallet | Current | Previous | Change | % Change |
-|--------|---------|----------|--------|----------|
-| Binance Hot Wallet 1 | 517,000 EGLD | 525,000 EGLD | -8,000 | -1.5% |
-| Unknown Whale #3 | 350,000 EGLD | 346,000 EGLD | +4,000 | +1.2% |
+| Tier | Wallet | Current | Previous | Δ EGLD | Δ % |
+|------|--------|---------|----------|--------|-----|
+| 🐳 Mega | Unknown Mega Whale | 991K | 192K | +799K | +414% |
+| 🐳 Mega | UPbit | 1.30M | 1.43M | -139K | -9.7% |
+| ⚓ Large | Bybit | 515K | 403K | +112K | +27.9% |
 
-### Exchange Flow Summary
+### 2.4 Exchange Flow Summary
 
-| Exchange | Inflow | Outflow | Net Flow | Signal |
-|----------|--------|---------|----------|--------|
-| Binance | XX,XXX | XX,XXX | -X,XXX | Accumulation |
-| Bybit | XX,XXX | XX,XXX | +X,XXX | Distribution |
-| **Total** | **XX,XXX** | **XX,XXX** | **-X,XXX** | **Net Accumulation** |
+#### Per-wallet Detail
+| Exchange Wallet | Δ EGLD | Δ % |
+|-----------------|--------|-----|
+| Binance Hot 1 | -X,XXX | -X.X% |
+| Binance Hot 2 | -X,XXX | -X.X% |
+| ... | ... | ... |
 
-### Dormant Wallet Activations
+#### Entity-Netted Flows (NEW)
+| Entity | Net Flow | Wallets | Interpretation |
+|--------|----------|---------|----------------|
+| Binance | -50K EGLD | 4 | Mild distribution |
+| Coinbase | -7K EGLD | 2 | Net-neutral OTC week |
+| UPbit | -139K EGLD | 1 | OTC desk distribution phase |
 
-_None detected this week._ / _X wallets inactive for 6+ months moved funds._
+**Net change across all exchanges**: ±XXX,XXX EGLD ([accumulation | distribution | neutral])
 
-**Analysis**: [Smart money narrative — are whales accumulating or distributing? What does exchange flow tell us? Any dormant wallets suggesting early investor/team activity?]
+### 2.5 Dormant Wallet Activations
+
+| Address | Label | Balance | Dormant Days | Action |
+|---------|-------|---------|--------------|--------|
+| erd1kn38... | Unknown Whale A | 143K EGLD | 287 | Liquidated 352K to Coinbase Apr 17-18 |
+
+**Analysis**: [Smart money narrative — accumulation vs distribution signals, OTC desk patterns, tier-specific behavior, dormant reactivations]
 
 ---
 
 ## 3. Staking Power Map
 
-### Top 15 Providers
+### 3.1 Top 10 Providers
 
-| Rank | Provider | Locked EGLD | WoW Change | Delegators | APR | Fee |
-|------|----------|-------------|------------|------------|-----|-----|
-| 1 | Figment | 584,000 | +2,000 | 5,200 | 6.5% | 12% |
-| 2 | Binance Staking | 432,000 | -1,500 | 8,500 | 7.3% | 7.9% |
+| Rank | Provider | Locked EGLD | Δ WoW | Delegators | APR | Fee | Nodes |
+|------|----------|-------------|-------|------------|-----|-----|-------|
+| 1 | Figment | 587,983 | +501 | 306 | 6.29% | 12% | 32 |
+| 2 | Binance Staking | 524,344 | -1,477 | 8,479 | 6.14% | 7.9% | 28 |
+| ... | ... | ... | ... | ... | ... | ... | ... |
 
-### Concentration Metrics
+### 3.2 Concentration
 
 | Metric | Current | Previous | Trend |
 |--------|---------|----------|-------|
-| Top 5 Share | XX.X% | XX.X% | Improving / Worsening |
-| Top 10 Share | XX.X% | XX.X% | |
-| Herfindahl Index | 0.XXX | 0.XXX | More/Less decentralized |
+| Top 5 Share | XX.X% | XX.X% | [improving/worsening] |
+| Top 10 Share | XX.X% | XX.X% | — |
+| HHI | 0.0XXX | 0.0XXX | [more/less decentralized] |
+| HHI Interpretation | competitive_unconcentrated | — | — |
 
-**Analysis**: [Commentary on decentralization trends, whether concentration is healthy, notable delegation migrations]
+### 3.3 APR Distribution Histogram (NEW)
+
+```
+APR BUCKET     PROVIDERS      TOTAL LOCKED    SHARE
+───────────────────────────────────────────────────
+5-6%           N              X,XXX EGLD      X.X%
+6-7%           N              X,XXX EGLD      X.X%
+7-8%           N              X,XXX EGLD      X.X%
+8-9%           N              X,XXX EGLD      X.X%
+9-10%          N              X,XXX EGLD      X.X%
+10%+           N              X,XXX EGLD      X.X%
+───────────────────────────────────────────────────
+```
+
+**Read**: [Tight cluster vs wide spread interpretation]
+
+### 3.4 APR Outliers (NEW)
+
+#### Top 5 Highest APR
+| Provider | APR | Fee | Locked |
+|----------|-----|-----|--------|
+| Maple Leaf | 9.28% | 0.0% | 12K EGLD |
+| Incal | 8.58% | 1.0% | 224K EGLD |
+
+#### Top 5 Lowest Fee
+| Provider | Fee | APR | Locked |
+|----------|-----|-----|--------|
+| Maple Leaf | 0.0% | 9.28% | 12K EGLD |
+| Incal | 1.0% | 8.58% | 224K EGLD |
+
+**Best delegator value**: [provider with highest APR-after-fee, called out explicitly]
+
+### 3.5 Churn Metric (NEW)
+
+| Metric | Current | Previous | Change |
+|--------|---------|----------|--------|
+| Total Delegators | XXX,XXX | XXX,XXX | +X,XXX (+X.X%) |
+| Providers Gaining | N | — | — |
+| Providers Losing | N | — | — |
+
+**Interpretation**: [Delegator growth + EGLD growth = healthy retail | Delegator drop + EGLD growth = whale consolidation | etc.]
+
+**Analysis**: [Decentralization trajectory, delegation migration patterns, APR equilibrium dynamics]
 
 ---
 
 ## 4. Token & DeFi Activity
 
-### Top Tokens by Holder Count
+### 4.1 Top 10 Tokens by Holder Count
 
-| Token | Holders | WoW | Price | Market Cap |
-|-------|---------|-----|-------|------------|
-| WEGLD-bd4d79 | XXX,XXX | +X,XXX | $X.XX | $XXM |
-| USDC-c76f1f | XXX,XXX | +XXX | $1.00 | $XXM |
+| Token | Holders | WoW Δ | Price | Market Cap |
+|-------|---------|-------|-------|------------|
+| WEGLD-bd4d79 | 134,289 | -26 | $4.03 | $2.2M |
+| ... (10 rows) | ... | ... | ... | ... |
 
-### Top Tokens by Transaction Volume
+### 4.2 Top 10 Tokens by Volume
 
-| Token | Transactions | WoW Change | Price |
-|-------|-------------|------------|-------|
-| WEGLD-bd4d79 | XXX,XXX | +X.X% | $X.XX |
+| Token | Transactions (24h) | WoW Δ% | Price |
+|-------|--------------------|--------|-------|
+| WEGLD-bd4d79 | XXX,XXX | +X.X% | $4.03 |
+| ... (10 rows) | ... | ... | ... |
 
-### xExchange Summary
+### 4.3 Top 5 Newly-Issued Tokens This Week
 
-| Metric | Value |
-|--------|-------|
-| Active Pairs | XXX |
-| 24h Volume | $X.XM |
-| MEX Price | $0.0000XXX |
-| Top Pair (by volume) | WEGLD/USDC: $XXK |
+| Token | Name | Deployer | Holders | Transactions | Issued |
+|-------|------|----------|---------|--------------|--------|
+| NEWT-abc123 | NewToken | erd1...abc (label) | 234 | 89 | Apr 26 |
+| ... | ... | ... | ... | ... | ... |
 
-### New Token Issuances
+### 4.4 xExchange Summary
 
-_X new tokens issued this week. Y gained >100 holders._
+| Metric | Value | Δ |
+|--------|-------|---|
+| Active Pairs | XXX | — |
+| 24h Volume | $XXX,XXX | +XX% WoW |
+| MEX Price | $0.0000XXX | +X.X% WoW |
+| MEX Market Cap | $X.XM | — |
+| Top Pair | WEGLD/USDC: $XXK | XX.X% dominance |
 
-**Analysis**: [Which tokens are gaining traction, any volume anomalies, DEX health]
-
----
-
-## 5. DeFi Protocol Activity
-
-| Protocol | Category | TX Count | Notable Events |
-|----------|----------|----------|----------------|
-| xExchange | DEX | XXX,XXX | New pair listed: X/Y |
-| Hatom | Lending | XX,XXX | TVL increase in EGLD market |
-| AshSwap | Aggregator | XX,XXX | — |
-
-### New Smart Contract Deployments
-
-_X new contracts deployed. Y received >100 interactions._
-
-**Analysis**: [DeFi health, capital rotation between protocols, new project launches]
+**Analysis**: [Token holder trajectory, DEX health, newly-issued quality, sector rotation if any]
 
 ---
 
-## 6. Anomaly Alerts
+## 5. DeFi Per-Protocol Breakdown (NEW)
 
-| Severity | Metric | Current | Average | Z-Score | Description |
-|----------|--------|---------|---------|---------|-------------|
-| HIGH | Token X volume | 50,000 | 5,000 | 4.7 | 10x normal volume spike |
-| MEDIUM | Account creation rate | 15,000/day | 8,000/day | 2.3 | Unusual growth |
+| Protocol | Category | TVL EGLD | TVL USD | WoW Δ% | 24h Transfers | Health |
+|----------|----------|----------|---------|--------|---------------|--------|
+| xExchange | DEX | XXX,XXX | $X.XM | +X.X% | XXX | 🟢 growing |
+| Hatom Money Market | Lending | XX,XXX | $XXX,XXX | +X.X% | XX | 🟢 growing |
+| Hatom Liquid Staking | Liquid Staking | XX,XXX | $XXX,XXX | -X.X% | XXX | 🟡 flat |
+| AshSwap | DEX (stableswap) | XX,XXX | $XXX,XXX | ±X.X% | XX | 🟡 flat |
+| OneDex | Aggregator | XX,XXX | $XXX,XXX | ±X.X% | XX | 🟡 flat |
+| XOXNO | NFT Marketplace | — | — | — | XXX | 🟢 active |
+| JEXchange | DEX (orderbook) | X,XXX | $XX,XXX | ±X.X% | X | 🟡 flat |
+
+**Analysis**: [Per-protocol commentary — which sectors are gaining vs losing, capital rotation, notable events]
+
+### 5.1 New Smart Contract Deployments
+
+_X new contracts deployed this week. Y received >100 interactions._
 
 ---
 
-## Watch List
+## 6. Anomalies & Trend Indicators
 
-Items to monitor in coming weeks:
+### 6.1 Anomaly Alerts
+
+| Severity | Method | Metric | Current | Baseline | Z-Score / Δ% | Description |
+|----------|--------|--------|---------|----------|--------------|-------------|
+| HIGH | z_score | DEX Volume | $186K | $109K | +1.6σ | 4-week baseline mean exceeded |
+| MEDIUM | rule_based | Whale A | 143K EGLD | 495K | -71% | Reactivated after 4 weeks dormant |
+| LOW | percent_threshold | New Token X holders | 50 | 5 | +900% | Degraded mode (N=2 only) |
+
+### 6.2 Trend Indicators (NEW)
+
+#### Accelerating Exchange Outflows
+| Exchange | Trend | Cumulative Δ% | Weeks | Interpretation |
+|----------|-------|----------------|-------|----------------|
+| Gate.io | 4 consecutive weeks of decline | -54% | 4 | Customer exit or treasury rebalance |
+
+#### Validator Movements
+| Type | Count | Notable |
+|------|-------|---------|
+| Joining | N | [list with locked amounts] |
+| Leaving | N | [list with previous locked] |
+| Net change | ±N | — |
+
+#### Token Supply Events
+| Token | Event | Magnitude | Description |
+|-------|-------|-----------|-------------|
+| TOKEN-abc | Mint | +5% | Treasury issuance |
+| WTAO | Burn | -2% | Reverse-bridge to Bittensor |
+
+#### Consecutive Streaks
+| Metric | Direction | Weeks | Cumulative | Interpretation |
+|--------|-----------|-------|------------|----------------|
+| EGLD price | up | 3 | +12% | Momentum regime |
+| WTAO holders | down | 5 | -2.4% | Bridge interest fading |
+
+#### Regime Shifts
+| Metric | Before | After | Description |
+|--------|--------|-------|-------------|
+| DEX 7d avg volume | $80K | $180K | Step change persisting 2+ weeks |
+
+---
+
+## 7. Watch List
 
 | Item | Reason | Weeks Tracked |
 |------|--------|---------------|
-| Unknown Whale erd1...abc | Accumulated 50K EGLD over 3 weeks | 2 |
-| Token XYZ-123456 | Growing holder base, no price action yet | 1 |
+| Unknown Mega Whale erd18mv2... | 991K EGLD parked since Apr 18, no movement | 2 |
+| UPbit OTC Desk Cycle 2 | Distribution ongoing, ~30% complete | 5 |
+| Gate.io declining streak | -54% over 4 weeks, breakdown threshold approaching | 4 |
 
 ---
 
-*Report generated by [onchain-quant-agent](https://github.com/lamentierschweinchen/onchain-quant-agent)*
+## 8. Methodology Footer
+
+- Z-score baselines: N=X data points across [list of metrics]
+- Action items completed from previous run: X / Y
+- New addresses flagged for investigation: N
+- Methodology changes this run: [bullet list, brief]
+
+---
+
+*Report generated by [onchain-quant-agent](https://github.com/lamentierschweinchen/onchain-quant-agent) — schema v2*

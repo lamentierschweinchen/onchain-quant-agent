@@ -1,43 +1,231 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0F1219;
-  --color-surface: #1A1F2E;
-  --color-surface-hover: #242B3D;
-  --color-border: #2A3144;
-  --color-text-primary: #E2E8F0;
-  --color-text-secondary: #94A3B8;
+  /* Background tiers — slightly cooler than pure neutral so cards "lift" */
+  --color-bg: #0A0D14;
+  --color-bg-elevated: #0F1219;
+  --color-surface: #141926;
+  --color-surface-hover: #1B2233;
+  --color-surface-strong: #1F273A;
+
+  /* Borders — paper-thin lines, never thick */
+  --color-border: #232A3D;
+  --color-border-strong: #2D364D;
+  --color-border-subtle: #1A2030;
+
+  /* Text — clear hierarchy */
+  --color-text-primary: #E8EDF5;
+  --color-text-secondary: #8B97AC;
+  --color-text-muted: #5C6679;
+  --color-text-faint: #3F4759;
+
+  /* Single accent — used sparingly */
   --color-accent-cyan: #23F7DD;
+  --color-accent-cyan-dim: #18B5A2;
+  --color-accent-cyan-glow: rgba(35, 247, 221, 0.18);
   --color-accent-blue: #1B46C2;
 
-  --color-severity-critical: #EF4444;
-  --color-severity-high: #F97316;
-  --color-severity-medium: #EAB308;
-  --color-severity-low: #3B82F6;
-  --color-severity-info: #6B7280;
+  /* Severity — only for severity */
+  --color-severity-critical: #F4525A;
+  --color-severity-high: #FB8534;
+  --color-severity-medium: #E8B43A;
+  --color-severity-low: #5896F2;
+  --color-severity-info: #6B7587;
 
-  --color-category-exchange: #3B82F6;
-  --color-category-defi: #A855F7;
-  --color-category-team: #22C55E;
-  --color-category-system: #6B7280;
-  --color-category-other: #94A3B8;
+  /* Direction — used only for deltas */
+  --color-up: #34D196;
+  --color-down: #F4525A;
+  --color-flat: #8B97AC;
 
-  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Category accents — restrained */
+  --color-category-exchange: #5896F2;
+  --color-category-defi: #B975F0;
+  --color-category-team: #34D196;
+  --color-category-system: #6B7587;
+  --color-category-other: #8B97AC;
+  --color-category-trend: #23F7DD;
+
+  /* Whale tier accents */
+  --color-tier-mega: #F4525A;
+  --color-tier-large: #FB8534;
+  --color-tier-mid: #E8B43A;
+
+  /* Health signal accents */
+  --color-health-growing: #34D196;
+  --color-health-flat: #8B97AC;
+  --color-health-shrinking: #FB8534;
+  --color-health-spiking: #23F7DD;
+  --color-health-draining: #F4525A;
+
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", "Fira Code", ui-monospace, monospace;
+  --font-sans: "Inter", "SF Pro Text", system-ui, -apple-system, sans-serif;
+  --font-display: "Inter", "SF Pro Display", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  font-feature-settings: "tnum", "ss01";
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
 }
 
-/* Scrollbar styling */
+/* Mono digits should be tabular for clean column alignment */
+.font-mono,
+.tabular {
+  font-feature-settings: "tnum", "zero", "ss01";
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Subtle grid background — Bloomberg-like ambient texture */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(35, 247, 221, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 247, 221, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Section dividers — thin and quiet */
+.divider-thin {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-border) 50%,
+    transparent 100%
+  );
+}
+
+/* Card — the foundational surface */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-hover {
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.card-hover:hover {
+  border-color: var(--color-border-strong);
+}
+
+/* Card with a thin accent stripe on the left */
+.card-accent {
+  position: relative;
+}
+
+.card-accent::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--color-accent-cyan);
+  opacity: 0.4;
+}
+
+/* Table cells — terminal density */
+table.terminal-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+table.terminal-table th {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+}
+
+table.terminal-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  font-size: 13px;
+}
+
+table.terminal-table tbody tr:hover td {
+  background-color: var(--color-surface-hover);
+}
+
+/* The "hero number" pattern — large, monospace, with quiet unit */
+.hero-number {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-number-sm {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-unit {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-left: 6px;
+}
+
+/* Eyebrow label — the small label above a hero number */
+.eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Tickerlike numeric — for sparkline tickers */
+.ticker {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Color helpers for direction */
+.text-up { color: var(--color-up); }
+.text-down { color: var(--color-down); }
+.text-flat { color: var(--color-flat); }
+
+/* Scrollbar — visible but discreet */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -53,5 +241,29 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-surface-hover);
+  background: var(--color-border-strong);
+}
+
+/* Subtle fade for stuck table headers */
+.sticky-header-fade {
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-elevated) 80%,
+    transparent 100%
+  );
+}
+
+/* Tier badges */
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
 }

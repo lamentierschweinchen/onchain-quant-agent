@@ -1,304 +1,1108 @@
 {
-  "snapshot_date": "2026-04-20",
+  "snapshot_date": "2026-04-27",
   "economics": {
-    "egld_price_usd": 4.02,
-    "market_cap_usd": 119646934,
-    "total_supply": 29762919,
-    "circulating_supply": 29762919,
-    "staked_egld": 14729755,
-    "staked_ratio": 0.49499,
-    "staking_apr": 0.086053,
-    "base_apr": 0.106077,
-    "topup_apr": 0.062070,
-    "token_market_cap_usd": 54088427,
-    "btc_price_usd": 74524,
-    "eth_price_usd": 2279.53
+    "egld_price_usd": 4.29,
+    "market_cap_usd": 127887448,
+    "total_supply": 29810594,
+    "circulating_supply": 29810594,
+    "staked_egld": 14738926,
+    "staked_ratio": 0.4944190645781832,
+    "staking_apr": 0.086056,
+    "base_apr": 0.106054,
+    "topup_apr": 0.062086,
+    "token_market_cap_usd": 54282278,
+    "btc_price_usd": 77656,
+    "eth_price_usd": 2319.42
   },
   "activity": {
-    "total_accounts": 9191355,
-    "total_transactions": 599993620,
-    "epoch": 2089,
-    "blocks": 120256521,
+    "total_accounts": 9192953,
+    "total_transactions": 601307161,
+    "epoch": 2096,
+    "blocks": 120661422,
     "shards": 3
   },
   "top_accounts": [
     {
       "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l",
-      "balance_egld": 14729689.35,
+      "balance_egld": 14732004.063298315,
       "label": "System: Staking Module"
     },
     {
       "address": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p",
-      "balance_egld": 2734121.48,
+      "balance_egld": 2734121.475120339,
       "label": "Binance Staking"
     },
     {
       "address": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
-      "balance_egld": 1295197.16,
+      "balance_egld": 1212522.9392605345,
       "label": "UPbit"
     },
     {
       "address": "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw",
-      "balance_egld": 991555.40,
+      "balance_egld": 985485.2645304131,
       "label": "Unknown Mega Whale (received from Coinbase)"
     },
     {
-      "address": "erd1ylwuswz9zuk4acuq4aa6d0x9ys293yhlpwg6vpuwntndyej4u44q896zlz",
-      "balance_egld": 516992.52,
-      "label": "Binance.com Hot 1"
-    },
-    {
       "address": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
-      "balance_egld": 515369.69,
+      "balance_egld": 517786.3829010252,
       "label": "Bybit"
     },
     {
-      "address": "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj",
-      "balance_egld": 143148.86,
-      "label": "Unknown Whale A (reactivated)"
-    },
-    {
-      "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
-      "balance_egld": 302016.67,
-      "label": "Binance.com Hot 2"
+      "address": "erd1ylwuswz9zuk4acuq4aa6d0x9ys293yhlpwg6vpuwntndyej4u44q896zlz",
+      "balance_egld": 516992.52327805944,
+      "label": "Binance.com"
     },
     {
       "address": "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd",
-      "balance_egld": 346046.63,
-      "label": "Unknown Whale C"
+      "balance_egld": 432261.70929639327,
+      "label": "Unknown Whale"
+    },
+    {
+      "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+      "balance_egld": 340883.23259222275,
+      "label": "Binance.com"
     },
     {
       "address": "erd1qqqqqqqqqqqqqpgqvc7gdl0p4s97guh498wgz75k8sav6sjfjlwqh679jy",
-      "balance_egld": 311846.00,
+      "balance_egld": 311921.0472550947,
       "label": "xExchange: WrappedEGLD Contract Shard 0"
     },
     {
       "address": "erd1v4ms58e22zjcp08suzqgm9ajmumwxcy4hfkdc23gvynnegjdflmsj6gmaq",
-      "balance_egld": 300009.05,
-      "label": "Binance.com Cold"
+      "balance_egld": 300009.05085,
+      "label": "Binance.com"
     },
     {
       "address": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
-      "balance_egld": 258238.93,
-      "label": "Unknown Whale D"
+      "balance_egld": 249481.1851585229,
+      "label": "Unknown Whale"
     },
     {
       "address": "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3",
-      "balance_egld": 233525.00,
+      "balance_egld": 222907.05241979696,
       "label": "xExchange: WrappedEGLD Contract Shard 1"
     },
     {
       "address": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
-      "balance_egld": 215761.65,
-      "label": "Unknown Whale E"
-    },
-    {
-      "address": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
-      "balance_egld": 188396.87,
-      "label": "Unknown Whale F"
-    },
-    {
-      "address": "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4",
-      "balance_egld": 179718.35,
-      "label": "Crypto.com"
-    },
-    {
-      "address": "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg",
-      "balance_egld": 176111.69,
-      "label": "Ecosystem Growth Fund for Builders"
+      "balance_egld": 217703.03148237968,
+      "label": "Unknown Whale"
     },
     {
       "address": "erd1qqqqqqqqqqqqqpgqa9unh4m4j3nyg3l7cvlw8wshumx58m6089pspt29xm",
-      "balance_egld": 176111.69,
+      "balance_egld": 195255.3425068456,
+      "label": "Ecosystem Growth Fund for Builders"
+    },
+    {
+      "address": "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg",
+      "balance_egld": 195255.3425068456,
       "label": "Growth Dividend Fund for Users"
     },
     {
-      "address": "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j",
-      "balance_egld": 165005.64,
-      "label": "Unknown Whale G (dormant)"
+      "address": "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4",
+      "balance_egld": 191984.52690371135,
+      "label": "Crypto.com"
+    },
+    {
+      "address": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
+      "balance_egld": 188271.40921100002,
+      "label": "Unknown Whale"
     },
     {
       "address": "erd15ku2r2j6smlwumftumlpw0mfpqxy32wyt4ewxzyhs3ugsjee8stq2xh84e",
-      "balance_egld": 153173.72,
-      "label": "Unknown Whale H"
+      "balance_egld": 165442.9880824437,
+      "label": "Unknown Whale"
+    },
+    {
+      "address": "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j",
+      "balance_egld": 165005.64440000002,
+      "label": "Unknown Whale"
+    },
+    {
+      "address": "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj",
+      "balance_egld": 143148.86105600654,
+      "label": "Unknown Whale A (reactivated)"
     },
     {
       "address": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
-      "balance_egld": 138618.14,
-      "label": "Unknown Whale I (active, watch)"
+      "balance_egld": 142559.7017955718,
+      "label": "Unknown Whale I (active)"
     },
     {
       "address": "erd1qqqqqqqqqqqqqpgqxwakt2g7u9atsnr03gqcgmhcv38pt7mkd94q6shuwt",
-      "balance_egld": 132971.00,
+      "balance_egld": 130268.4222740696,
       "label": "Staking: MultiversX Community Delegation"
     },
     {
       "address": "erd1v3undjd5mrvqq3tg3re8u9z55tc3ysxaw7ladqrvq9m69r4tv0yqrkfryq",
-      "balance_egld": 105237.85,
-      "label": "Unknown Whale H2"
+      "balance_egld": 105199.33229386627,
+      "label": null
+    },
+    {
+      "address": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+      "balance_egld": 93808.36590342753,
+      "label": "UPbit OTC Desk"
+    },
+    {
+      "address": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+      "balance_egld": 93762.52784244159,
+      "label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)"
     },
     {
       "address": "erd1ezp86jwmcp4fmmu2mfqz0438py392z5wp6kzuqsjldgd68nwt89qshfs0y",
-      "balance_egld": 84538.66,
+      "balance_egld": 93703.74868865119,
       "label": "MEXC"
     },
     {
       "address": "erd1w547kw69kpd60vlpr9pe0pn9nnqeljrcaz73znenjpgt0h3qlqqqm3szxj",
-      "balance_egld": 77035.35,
+      "balance_egld": 79386.5829802588,
       "label": "Bitget"
     },
     {
       "address": "erd1qqqqqqqqqqqqqpgq35qkf34a8svu4r2zmfzuztmeltqclapv78ss5jleq3",
-      "balance_egld": 77848.00,
+      "balance_egld": 77716.68253112813,
       "label": "Hatom: EGLD Money Market"
     },
     {
       "address": "erd1eae23a530qymlpvfrudzsge5wgl003wl92saax74cew7j549eqqq3jklut",
-      "balance_egld": 65090.00,
+      "balance_egld": 65089.99995,
       "label": "Coinbase Custody"
     },
     {
-      "address": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
-      "balance_egld": 63529.00,
-      "label": "OTC Distribution Wallet (partner of UPbit OTC Desk)"
+      "address": "erd1usn3cyzrrxrqcyjwlama06lfl5ftpstrewmalge4dvvqammazz2sws94q4",
+      "balance_egld": 55010.986917229,
+      "label": null
+    },
+    {
+      "address": "erd1r4aap2kmsagkk3pfh8zm5wlxk3qjrmlvycc9vkksev9c8h9v3q6qggmhey",
+      "balance_egld": 54455.2582636,
+      "label": null
+    },
+    {
+      "address": "erd1a6lte0wqwwdjtt0nvv62c6pacltznzgq93gjxu6el44cx6lqx3fsu48u4l",
+      "balance_egld": 51889.63708556145,
+      "label": null
     },
     {
       "address": "erd16jruked88jgtsar78ej85hjp3qsd9jkjcw4swsn7k0teqh3wgcqqgyrupq",
-      "balance_egld": 56029.66,
+      "balance_egld": 50767.64259651057,
       "label": "Coinbase"
     },
     {
-      "address": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
-      "balance_egld": 62927.00,
-      "label": "UPbit OTC Desk (cycle 2)"
+      "address": "erd1rlqdj67qxp9l4gt895hwsjl7akrw6td3hhxwm2u4l2te9fzr3gjq6qzh4e",
+      "balance_egld": 50653.816221810004,
+      "label": null
     },
     {
       "address": "erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw",
-      "balance_egld": 35610.32,
+      "balance_egld": 47609.30536698891,
       "label": "Gate.io"
     },
     {
+      "address": "erd1rlfewaqppgk2mmdqvkums9rjklg3w7kh80st6hwr333hl5mnwt0qmu4tml",
+      "balance_egld": 44453.470819388174,
+      "label": null
+    },
+    {
+      "address": "erd1hhvfrwvqj5jhxqwlac9vftwgnlkv0s9y7xy7xp98vehlq74qee6srkqgdh",
+      "balance_egld": 43739.809939036604,
+      "label": null
+    },
+    {
+      "address": "erd1qqqqqqqqqqqqqpgq4gzfcw7kmkjy8zsf04ce6dl0auhtzjx078sslvrf4e",
+      "balance_egld": 43523.11221727965,
+      "label": "Hatom: Liquid Staking"
+    },
+    {
+      "address": "erd1yxvscrnwul5u5gpdy7gsqggm6l6wyzr8mtngytp3apppl5zg3skqggmpg8",
+      "balance_egld": 43493.196419,
+      "label": null
+    },
+    {
+      "address": "erd1s0p8hjnhhen9hfeer0gzm6ggjk73pgzjwshs0n6eglzu9u4st2jqkxyyjg",
+      "balance_egld": 43403.77938061912,
+      "label": null
+    },
+    {
       "address": "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy",
-      "balance_egld": 45898.06,
+      "balance_egld": 38936.282836624254,
       "label": "KuCoin"
     },
     {
-      "address": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul",
-      "balance_egld": 27.00,
-      "label": "Unknown Whale B (liquidated to Coinbase)"
+      "address": "erd1vadknqe8tasfwz62sn5gre0ws8x08rnuy2lp6cw0np5aktl7sndsh9wtw7",
+      "balance_egld": 36888.935225398294,
+      "label": null
     },
     {
-      "address": "erd1a56dkgcpwwx6grmcvw9w5vpf9zeq53w3w7n6dmxcpxjry3l7uh2s3h9dtr",
-      "balance_egld": 17249.12,
-      "label": "Bitfinex"
+      "address": "erd1lq9prnnnkxk080dew3rxacuqamv8uxu2udmush44zm59whuxurnq66yx60",
+      "balance_egld": 31052.586456635738,
+      "label": null
+    },
+    {
+      "address": "erd1cyuh4n74xc230q2rv88cca6e73vd8t2w6yrc27f0dr0x2j92rv8syjwxvp",
+      "balance_egld": 29536.420015828215,
+      "label": null
+    },
+    {
+      "address": "erd1dhtpgm490pvt9av7tpcl8nwuj9sf2re9aqc5ktys8gwrg8hyaglqyucw2t",
+      "balance_egld": 25658.64653201887,
+      "label": null
+    },
+    {
+      "address": "erd1rpvpgwk55snsmj87ydjsjdzlfrghex0wy9ukmrzqtrrh7k9q88zsew7n9t",
+      "balance_egld": 25001.914879999997,
+      "label": null
+    },
+    {
+      "address": "erd1qkazru7aw5heycg7c79lwmcnnczgjj2td2dg8j574h586ahwkptq20zlgy",
+      "balance_egld": 23000.57963479,
+      "label": null
+    },
+    {
+      "address": "erd19hncm534lcga7vgtg78934eaz8khp7smj7yryxennrcsa5z7w09sa8kltu",
+      "balance_egld": 20485.410168684,
+      "label": null
+    },
+    {
+      "address": "erd1gtju0j42xnzxn2h22wjy084pqw90v5ec5wffaqy9pucqrtrx2mmqe87khd",
+      "balance_egld": 19145.31044264,
+      "label": null
+    },
+    {
+      "address": "erd18w7s4xgkpkel5d4yg58rmuc52zg3mly0fjcfc4627vt63t20l63sft3c9x",
+      "balance_egld": 18513.002845461007,
+      "label": null
     }
   ],
   "top_tokens_by_holders": [
-    {"identifier": "DRX-b7f337", "name": "DoctorX", "holders": 2469177, "price_usd": 1.82e-7},
-    {"identifier": "WEGLD-bd4d79", "name": "WrappedEGLD", "holders": 133624, "price_usd": 4.028},
-    {"identifier": "HYPE-619661", "name": "HYPE", "holders": 119646, "price_usd": 1.1e-7},
-    {"identifier": "MEX-455c57", "name": "MEX", "holders": 104144, "price_usd": 4.064e-7},
-    {"identifier": "RIDE-7d18e9", "name": "holoride", "holders": 98768, "price_usd": 0.000263},
-    {"identifier": "ZPAY-247875", "name": "ZoidPay", "holders": 93015, "price_usd": 0.005297},
-    {"identifier": "USDC-c76f1f", "name": "WrappedUSDC", "holders": 82900, "price_usd": 0.9998},
-    {"identifier": "UTK-2f80e9", "name": "xMoney UTK", "holders": 76741, "price_usd": 0.01946},
-    {"identifier": "ITHEUM-df6f26", "name": "Itheum", "holders": 67895, "price_usd": 0.000258},
-    {"identifier": "WTAO-4f5363", "name": "WrappedTAO", "holders": 1256, "price_usd": 238.92}
+    {
+      "identifier": "DRX-b7f337",
+      "name": "DoctorX",
+      "holders": 2469125,
+      "price_usd": 1.8051891983115894e-07
+    },
+    {
+      "identifier": "WEGLD-bd4d79",
+      "name": "WrappedEGLD",
+      "holders": 133402,
+      "price_usd": 4.295669918783876
+    },
+    {
+      "identifier": "HYPE-619661",
+      "name": "HYPE",
+      "holders": 119445,
+      "price_usd": 1.0909630243765737e-07
+    },
+    {
+      "identifier": "MEX-455c57",
+      "name": "MEX",
+      "holders": 104031,
+      "price_usd": 4.301553288167235e-07
+    },
+    {
+      "identifier": "RIDE-7d18e9",
+      "name": "holoride",
+      "holders": 98602,
+      "price_usd": 0.00028265718056416774
+    },
+    {
+      "identifier": "QWT-46ac01",
+      "name": "QoWatt",
+      "holders": 96204,
+      "price_usd": 0.0002903494558597782
+    },
+    {
+      "identifier": "ZPAY-247875",
+      "name": "ZoidPay",
+      "holders": 92851,
+      "price_usd": 0.005567744704012906
+    },
+    {
+      "identifier": "BHAT-c1fde3",
+      "name": "BHNetwork",
+      "holders": 87914,
+      "price_usd": 0.00016412159362626648
+    },
+    {
+      "identifier": "USDC-c76f1f",
+      "name": "WrappedUSDC",
+      "holders": 82714,
+      "price_usd": 0.9999048683994187
+    },
+    {
+      "identifier": "UTK-2f80e9",
+      "name": "xMoney UTK",
+      "holders": 76596,
+      "price_usd": 0.01945563617736078
+    },
+    {
+      "identifier": "AERO-458bbf",
+      "name": "Aerovek",
+      "holders": 76420,
+      "price_usd": 6.562241664327589e-05
+    },
+    {
+      "identifier": "ISET-84e55e",
+      "name": "IsengardToken",
+      "holders": 75800,
+      "price_usd": 2.57592518660777e-05
+    },
+    {
+      "identifier": "EFFORT-a13513",
+      "name": "EffortToken",
+      "holders": 75663,
+      "price_usd": 0.00012363314976303607
+    },
+    {
+      "identifier": "WATER-9ed400",
+      "name": "Water",
+      "holders": 68437,
+      "price_usd": null
+    },
+    {
+      "identifier": "ITHEUM-df6f26",
+      "name": "Itheum",
+      "holders": 67720,
+      "price_usd": 0.00026573609181338576
+    },
+    {
+      "identifier": "ASH-a642d1",
+      "name": "AshSwap",
+      "holders": 66724,
+      "price_usd": 0.0004293152437581148
+    },
+    {
+      "identifier": "CRT-52decf",
+      "name": "CantinaRoyale",
+      "holders": 65072,
+      "price_usd": 7.668214173291986e-05
+    },
+    {
+      "identifier": "PLATA-9ba6c3",
+      "name": "PLATA",
+      "holders": 63842,
+      "price_usd": 1.992559968958316e-05
+    },
+    {
+      "identifier": "CRU-a5f4aa",
+      "name": "CrustNetwork",
+      "holders": 62537,
+      "price_usd": 0.016940108369332997
+    },
+    {
+      "identifier": "USDT-f8c08c",
+      "name": "WrappedUSDT",
+      "holders": 56561,
+      "price_usd": 1.000207796484798
+    },
+    {
+      "identifier": "SHARD-99a172",
+      "name": "ShardCoin",
+      "holders": 53279,
+      "price_usd": 0
+    },
+    {
+      "identifier": "HTM-f51d55",
+      "name": "Hatom",
+      "holders": 51455,
+      "price_usd": 0.013521605852036165
+    },
+    {
+      "identifier": "TALION-496bab",
+      "name": "TALION",
+      "holders": 51046,
+      "price_usd": 2.485361098297053e-06
+    },
+    {
+      "identifier": "SFIT-aebc90",
+      "name": "Sense4FIT",
+      "holders": 50135,
+      "price_usd": 3.3814691324465805e-05
+    },
+    {
+      "identifier": "WETH-b4ca29",
+      "name": "WrappedETH",
+      "holders": 49902,
+      "price_usd": 2317.4442941729126
+    }
   ],
   "top_tokens_by_volume": [
-    {"identifier": "WEGLD-bd4d79", "name": "WrappedEGLD", "transactions": 8602170},
-    {"identifier": "USDC-c76f1f", "name": "WrappedUSDC", "transactions": 2126699},
-    {"identifier": "MEX-455c57", "name": "MEX", "transactions": 2024629},
-    {"identifier": "UTK-2f80e9", "name": "xMoney UTK", "transactions": 856880},
-    {"identifier": "BOBER-9eb764", "name": "BOBER", "transactions": 759036},
-    {"identifier": "ZPAY-247875", "name": "ZoidPay", "transactions": 753374},
-    {"identifier": "RIDE-7d18e9", "name": "holoride", "transactions": 667693}
+    {
+      "identifier": "WEGLD-bd4d79",
+      "name": "WrappedEGLD",
+      "transactions": 8605095
+    },
+    {
+      "identifier": "USDC-c76f1f",
+      "name": "WrappedUSDC",
+      "transactions": 2129074
+    },
+    {
+      "identifier": "MEX-455c57",
+      "name": "MEX",
+      "transactions": 2025514
+    },
+    {
+      "identifier": "UTK-2f80e9",
+      "name": "xMoney UTK",
+      "transactions": 857091
+    },
+    {
+      "identifier": "BOBER-9eb764",
+      "name": "BOBER",
+      "transactions": 759647
+    },
+    {
+      "identifier": "ZPAY-247875",
+      "name": "ZoidPay",
+      "transactions": 753714
+    },
+    {
+      "identifier": "RIDE-7d18e9",
+      "name": "holoride",
+      "transactions": 667928
+    },
+    {
+      "identifier": "EGLDMEX-0be9e5",
+      "name": "EGLDMEXLP",
+      "transactions": 663898
+    },
+    {
+      "identifier": "CGO-5e9528",
+      "name": "CathenaGold",
+      "transactions": 520969
+    },
+    {
+      "identifier": "AERO-458bbf",
+      "name": "Aerovek",
+      "transactions": 507902
+    },
+    {
+      "identifier": "BHAT-c1fde3",
+      "name": "BHNetwork",
+      "transactions": 485492
+    },
+    {
+      "identifier": "DRX-b7f337",
+      "name": "DoctorX",
+      "transactions": 482259
+    },
+    {
+      "identifier": "TADA-5c032c",
+      "name": "Tada",
+      "transactions": 396728
+    },
+    {
+      "identifier": "HTM-f51d55",
+      "name": "Hatom",
+      "transactions": 331764
+    },
+    {
+      "identifier": "WATER-9ed400",
+      "name": "Water",
+      "transactions": 323945
+    },
+    {
+      "identifier": "KVRI-743439",
+      "name": "Kavarii",
+      "transactions": 304541
+    },
+    {
+      "identifier": "ASH-a642d1",
+      "name": "AshSwap",
+      "transactions": 267300
+    },
+    {
+      "identifier": "ITHEUM-df6f26",
+      "name": "Itheum",
+      "transactions": 239055
+    },
+    {
+      "identifier": "CRT-52decf",
+      "name": "CantinaRoyale",
+      "transactions": 236311
+    },
+    {
+      "identifier": "FOXSY-5d5f3e",
+      "name": "Foxsy",
+      "transactions": 233285
+    },
+    {
+      "identifier": "QWT-46ac01",
+      "name": "QoWatt",
+      "transactions": 230796
+    },
+    {
+      "identifier": "CYBER-489c1c",
+      "name": "CyberpunkCity",
+      "transactions": 224868
+    },
+    {
+      "identifier": "USDT-f8c08c",
+      "name": "WrappedUSDT",
+      "transactions": 220236
+    },
+    {
+      "identifier": "RARE-99e8b0",
+      "name": "RARE",
+      "transactions": 217654
+    },
+    {
+      "identifier": "EGLDUSDC-594e5e",
+      "name": "EGLDUSDCLP",
+      "transactions": 201126
+    }
   ],
+  "newly_issued_tokens": [],
   "staking_providers": [
-    {"provider": "figment-networks", "name": "Figment", "locked_egld": 587983, "num_delegators": 306, "apr": 6.29, "fee": 0.12},
-    {"provider": "binance_staking", "name": "Binance Staking", "locked_egld": 524344, "num_delegators": 8479, "apr": 6.14, "fee": 0.079},
-    {"provider": "stakingagency", "name": "Staking Agency", "locked_egld": 422402, "num_delegators": 10013, "apr": 7.89, "fee": 0.12},
-    {"provider": "truststaking", "name": "Trust Staking", "locked_egld": 374986, "num_delegators": 7193, "apr": 7.94, "fee": 0.12},
-    {"provider": "meria", "name": "Meria", "locked_egld": 340140, "num_delegators": 10987, "apr": 7.88, "fee": 0.12}
+    {
+      "provider": "figment-networks",
+      "name": "Figment",
+      "locked_egld": 589274.3413477117,
+      "num_delegators": 305,
+      "apr": 6.28,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "binance_staking",
+      "name": "Binance Staking",
+      "locked_egld": 523454.48394312593,
+      "num_delegators": 8476,
+      "apr": 6.14,
+      "fee": 0.0792,
+      "num_nodes": 50
+    },
+    {
+      "provider": "stakingagency",
+      "name": "Staking Agency",
+      "locked_egld": 422056.5543999991,
+      "num_delegators": 10008,
+      "apr": 7.89,
+      "fee": 0.12,
+      "num_nodes": 106
+    },
+    {
+      "provider": "truststaking",
+      "name": "Trust Staking",
+      "locked_egld": 376278.3873511281,
+      "num_delegators": 7189,
+      "apr": 7.93,
+      "fee": 0.12,
+      "num_nodes": 96
+    },
+    {
+      "provider": "meria",
+      "name": "Meria",
+      "locked_egld": 340672.93995826814,
+      "num_delegators": 10981,
+      "apr": 7.88,
+      "fee": 0.12,
+      "num_nodes": 94
+    },
+    {
+      "provider": "istariv",
+      "name": "iVerse Vision",
+      "locked_egld": 285313.78539986693,
+      "num_delegators": 4093,
+      "apr": 8.04,
+      "fee": 0.12,
+      "num_nodes": 137
+    },
+    {
+      "provider": "thepalmtreenw",
+      "name": "The Palm Tree Network",
+      "locked_egld": 269792.1316387591,
+      "num_delegators": 3674,
+      "apr": 7.11,
+      "fee": 0.12,
+      "num_nodes": 76
+    },
+    {
+      "provider": "incalng",
+      "name": "Incal 2026=(\ud83d\udd4a+\u2665\ufe0f+\u23f3).\ud83c\udf0d",
+      "locked_egld": 225156.19275011178,
+      "num_delegators": 2788,
+      "apr": 8.56,
+      "fee": 0.01,
+      "num_nodes": 50
+    },
+    {
+      "provider": "p2p_org_",
+      "name": "P2P Validator",
+      "locked_egld": 217840.50409000154,
+      "num_delegators": 1244,
+      "apr": 7.68,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "validblocks",
+      "name": "Valid Blocks",
+      "locked_egld": 213833.57960828763,
+      "num_delegators": 4517,
+      "apr": 8.16,
+      "fee": 0.07,
+      "num_nodes": 50
+    },
+    {
+      "provider": "orangestaking",
+      "name": "Orange Staking",
+      "locked_egld": 212965.07858667863,
+      "num_delegators": 2907,
+      "apr": 7.73,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "aurentum",
+      "name": "Aurentum GmbH",
+      "locked_egld": 203699.63946998608,
+      "num_delegators": 1611,
+      "apr": 8.02,
+      "fee": 0.1,
+      "num_nodes": 50
+    },
+    {
+      "provider": "orius",
+      "name": "Orius International",
+      "locked_egld": 194401.09885697855,
+      "num_delegators": 1215,
+      "apr": 8.31,
+      "fee": 0.0799,
+      "num_nodes": 50
+    },
+    {
+      "provider": "valuestaking",
+      "name": "Valuestaking",
+      "locked_egld": 193430.26085244407,
+      "num_delegators": 1279,
+      "apr": 8.14,
+      "fee": 0.1,
+      "num_nodes": 50
+    },
+    {
+      "provider": "mapleleafnetwork",
+      "name": "Maple Leaf Network",
+      "locked_egld": 192500.0,
+      "num_delegators": 965,
+      "apr": 9.06,
+      "fee": 0,
+      "num_nodes": 50
+    },
+    {
+      "provider": "primal-block-one",
+      "name": "Primal Block One",
+      "locked_egld": 191318.28360994137,
+      "num_delegators": 3558,
+      "apr": 8.17,
+      "fee": 0.1,
+      "num_nodes": 67
+    },
+    {
+      "provider": "bober",
+      "name": "$BOBER",
+      "locked_egld": 188733.8340537205,
+      "num_delegators": 1086,
+      "apr": 8.48,
+      "fee": 0.07,
+      "num_nodes": 50
+    },
+    {
+      "provider": "procryptostaking",
+      "name": "ProCrypto Distributed Staking",
+      "locked_egld": 187902.93828424142,
+      "num_delegators": 7140,
+      "apr": 8.23,
+      "fee": 0.099,
+      "num_nodes": 50
+    },
+    {
+      "provider": "core-block",
+      "name": "Core Block",
+      "locked_egld": 186451.16071018725,
+      "num_delegators": 2017,
+      "apr": 8.24,
+      "fee": 0.1,
+      "num_nodes": 50
+    },
+    {
+      "provider": "xoxno",
+      "name": "XOXNO",
+      "locked_egld": 184781.35841526196,
+      "num_delegators": 4028,
+      "apr": 8.08,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "colombiastaking",
+      "name": "Colombia Staking (up to 50%)",
+      "locked_egld": 181033.43918286834,
+      "num_delegators": 842,
+      "apr": 7.93,
+      "fee": 0.1,
+      "num_nodes": 50
+    },
+    {
+      "provider": "ledgerbyfigment",
+      "name": "Ledger by Figment",
+      "locked_egld": 178717.33304235656,
+      "num_delegators": 4007,
+      "apr": 5.84,
+      "fee": 0.12,
+      "num_nodes": 7
+    },
+    {
+      "provider": "cslabsio",
+      "name": "Chain State Labs",
+      "locked_egld": 177877.31056844615,
+      "num_delegators": 1051,
+      "apr": 8.2,
+      "fee": 0.1,
+      "num_nodes": 50
+    },
+    {
+      "provider": "arcstake",
+      "name": "ARC Stake",
+      "locked_egld": 169740.451193388,
+      "num_delegators": 4273,
+      "apr": 7.97,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "MrEGLD",
+      "name": "MrEGLD",
+      "locked_egld": 168035.7065914087,
+      "num_delegators": 3781,
+      "apr": 8.05,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "star_staking",
+      "name": "Star Staking",
+      "locked_egld": 166870.43096827544,
+      "num_delegators": 236,
+      "apr": 9.04,
+      "fee": 0,
+      "num_nodes": 43
+    },
+    {
+      "provider": "oxsyai",
+      "name": "Foxsy AI (+12% APR w/ \ud83e\udd8a bonus)",
+      "locked_egld": 166842.14808534068,
+      "num_delegators": 1187,
+      "apr": 8.36,
+      "fee": 0.089,
+      "num_nodes": 50
+    },
+    {
+      "provider": "ProjectX",
+      "name": "Project X (up to 15% APR)",
+      "locked_egld": 166384.74549771412,
+      "num_delegators": 226,
+      "apr": 8.54,
+      "fee": 0.07,
+      "num_nodes": 45
+    },
+    {
+      "provider": "westake",
+      "name": "WeStake",
+      "locked_egld": 165767.8757428232,
+      "num_delegators": 2435,
+      "apr": 8.76,
+      "fee": 0.04,
+      "num_nodes": 46
+    },
+    {
+      "provider": "rosettastake",
+      "name": "RosettaStake",
+      "locked_egld": 163739.24635510438,
+      "num_delegators": 3243,
+      "apr": 8.43,
+      "fee": 0.08,
+      "num_nodes": 50
+    },
+    {
+      "provider": "mgstaking",
+      "name": "MGStaking",
+      "locked_egld": 162870.25212712275,
+      "num_delegators": 4919,
+      "apr": 8.02,
+      "fee": 0.12,
+      "num_nodes": 50
+    },
+    {
+      "provider": "ninjastaking",
+      "name": "Ninja Staking",
+      "locked_egld": 157455.4850831965,
+      "num_delegators": 1510,
+      "apr": 9.14,
+      "fee": 0,
+      "num_nodes": 42
+    },
+    {
+      "provider": "egldstakingprovider",
+      "name": "Egld Staking Provider \ud83c\udf96",
+      "locked_egld": 151190.7826755251,
+      "num_delegators": 1178,
+      "apr": 9.12,
+      "fee": 0,
+      "num_nodes": 40
+    },
+    {
+      "provider": "ctdg",
+      "name": "Cointelegraph Decentralization Guardians",
+      "locked_egld": 148636.57695692,
+      "num_delegators": 583,
+      "apr": 8,
+      "fee": 0.12,
+      "num_nodes": 45
+    },
+    {
+      "provider": "stakegen",
+      "name": "stakeGEN",
+      "locked_egld": 140031.60345859354,
+      "num_delegators": 1450,
+      "apr": 8.13,
+      "fee": 0.1,
+      "num_nodes": 48
+    },
+    {
+      "provider": "alchemycapital",
+      "name": "Alchemy Capital",
+      "locked_egld": 136515.85945526732,
+      "num_delegators": 3252,
+      "apr": 7.13,
+      "fee": 0.07,
+      "num_nodes": 39
+    },
+    {
+      "provider": "alchemiststakexyz",
+      "name": "Alchemist Stake",
+      "locked_egld": 125970.31798135924,
+      "num_delegators": 5277,
+      "apr": 8.07,
+      "fee": 0.12,
+      "num_nodes": 34
+    },
+    {
+      "provider": "titanstake",
+      "name": "TitanStake",
+      "locked_egld": 125688.57263900907,
+      "num_delegators": 1505,
+      "apr": 8.19,
+      "fee": 0.1,
+      "num_nodes": 42
+    },
+    {
+      "provider": "vaporrepublic",
+      "name": "Vapor Republic ",
+      "locked_egld": 125569.74367882835,
+      "num_delegators": 1051,
+      "apr": 8.87,
+      "fee": 0.025,
+      "num_nodes": 45
+    },
+    {
+      "provider": "partnerstaking",
+      "name": "PartnerStaking",
+      "locked_egld": 117003.24046911417,
+      "num_delegators": 5124,
+      "apr": 8.03,
+      "fee": 0.12,
+      "num_nodes": 34
+    },
+    {
+      "provider": "web3water",
+      "name": "\ud83d\udca7 0% fee + monthly aidrop $WATER Works",
+      "locked_egld": 115179.10268477554,
+      "num_delegators": 1610,
+      "apr": 7.99,
+      "fee": 0.1,
+      "num_nodes": 44
+    },
+    {
+      "provider": null,
+      "name": null,
+      "locked_egld": 114477.44152129136,
+      "num_delegators": 7,
+      "apr": 7.49,
+      "fee": 0.12,
+      "num_nodes": 24
+    },
+    {
+      "provider": "equinoxecapital",
+      "name": "Equinoxe Capital",
+      "locked_egld": 107909.88118487212,
+      "num_delegators": 1463,
+      "apr": 7.67,
+      "fee": 0.08,
+      "num_nodes": 37
+    },
+    {
+      "provider": "eapesvalidator",
+      "name": "EAPES Validator",
+      "locked_egld": 94102.28024043137,
+      "num_delegators": 993,
+      "apr": 8.4,
+      "fee": 0.08,
+      "num_nodes": 26
+    },
+    {
+      "provider": "owlhero",
+      "name": "OwlHero",
+      "locked_egld": 89694.2244777935,
+      "num_delegators": 96,
+      "apr": 8.23,
+      "fee": 0.1,
+      "num_nodes": 24
+    },
+    {
+      "provider": "disruptivedigital",
+      "name": "\u26a1\ufe0fDisruptive Digital\u26a1\ufe0f",
+      "locked_egld": 84126.13065862295,
+      "num_delegators": 1503,
+      "apr": 8.63,
+      "fee": 0.05,
+      "num_nodes": 24
+    },
+    {
+      "provider": "animocabrandsnaas",
+      "name": "Animoca Brands NAAS",
+      "locked_egld": 83238.32417028603,
+      "num_delegators": 1109,
+      "apr": 8.41,
+      "fee": 0.05,
+      "num_nodes": 20
+    },
+    {
+      "provider": "xtechlabs",
+      "name": "xTech Labs",
+      "locked_egld": 80672.85760160205,
+      "num_delegators": 1432,
+      "apr": 7.73,
+      "fee": 0.12,
+      "num_nodes": 32
+    },
+    {
+      "provider": "carpathianstake",
+      "name": "Carpathian Stake",
+      "locked_egld": 79489.77508428422,
+      "num_delegators": 2766,
+      "apr": 8.29,
+      "fee": 0.09,
+      "num_nodes": 29
+    },
+    {
+      "provider": "middlestaking",
+      "name": "Middle Staking",
+      "locked_egld": 76449.24611774672,
+      "num_delegators": 2676,
+      "apr": 7.99,
+      "fee": 0.12,
+      "num_nodes": 21
+    }
   ],
   "staking_concentration": {
-    "hhi": 0.0188,
-    "top_5_share_pct": 20.02,
-    "top_10_share_pct": 30.78,
-    "num_providers": 185
+    "hhi": 0.018894415394946178,
+    "top_5_share_pct": 20.016450654268887,
+    "top_10_share_pct": 30.789762177609887,
+    "num_providers": 108,
+    "total_delegators": 179038
   },
   "exchange_balances": {
-    "Binance Staking": 2734121.48,
-    "Binance Hot 1 (erd1ylwu)": 516992.52,
-    "Binance Hot 2 (erd1sdsl)": 302016.67,
-    "Binance Cold (erd1v4ms)": 300009.05,
-    "UPbit": 1295197.16,
-    "Bybit": 515369.69,
-    "Crypto.com": 179718.35,
-    "MEXC": 84538.66,
-    "Bitget": 77035.35,
-    "Coinbase (erd116jr)": 56029.66,
-    "Coinbase Custody": 65090.00,
-    "Gate.io": 35610.32,
-    "KuCoin": 45898.06
+    "Binance Staking (erd1rf4h)": 2734121.475120339,
+    "Binance.com (erd1ylwu)": 516992.52327805944,
+    "Binance.com (erd1sdsl)": 340883.23259222275,
+    "Binance.com (erd1v4ms)": 300009.05085,
+    "UPbit (erd1fcxu)": 1212522.9392605345,
+    "Bybit (erd1vj3e)": 517786.3829010252,
+    "Crypto.com (erd1hzcc)": 191984.52690371135,
+    "Crypto.com (erd1qr9a)": 3155.0332730638356,
+    "MEXC (erd1ezp8)": 93703.74868865119,
+    "Bitget (erd1w547)": 79386.5829802588,
+    "Coinbase (erd16jru)": 50767.64259651057,
+    "Coinbase Custody (erd1eae2)": 65089.99995,
+    "Coinbase (secondary) (erd1m9qn)": 12517.77848450037,
+    "Gate.io (erd1p4vy)": 47609.30536698891,
+    "KuCoin (erd1ty4p)": 38936.282836624254,
+    "Bitfinex (erd1a56d)": 16548.64517167787,
+    "Tokero (erd1ra67)": 8382.360082833222,
+    "Coinbase Routing Wallet (erd1lgdl)": 60.1958289107833
   },
   "defi_tvl": {
-    "WEGLD Contract S0 (erd1qqqq...679jy)": 311846.00,
-    "WEGLD Contract S1 (erd1qqqq...ntjj3)": 233525.00,
-    "Hatom EGLD Money Market": 77848.00,
-    "Hatom Liquid Staking": 42651.00,
-    "MultiversX Community Delegation": 132971.00
+    "xExchange": 542332.1762930303,
+    "Hatom": 121239.90524840778,
+    "AshSwap": 0.0,
+    "OneDex": 60.45879179234425,
+    "JEXchange": 0.21516562704166942,
+    "XOXNO": 9239.036851310153,
+    "JewelSwap": 852.0691307264658
   },
   "xexchange": {
-    "volume_24h_usd": 186015,
-    "total_pairs": 543,
-    "mex_price_usd": 4.077e-7,
-    "mex_market_cap_usd": 1651355,
-    "egld_usdc_volume_24h_usd": 78892,
-    "egld_mex_volume_24h_usd": 14898
+    "volume_24h_usd": 95356.38691685404,
+    "total_pairs": 544,
+    "mex_price_usd": 4.3015089585338986e-07,
+    "mex_market_cap_usd": 1739854
   },
   "watch_addresses": [
     {
       "address": "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw",
       "label": "Unknown Mega Whale (received 798K from Coinbase Apr 18)",
-      "balance_egld": 991555.40,
-      "weeks_tracked": 1,
+      "balance_egld": 985485.2645304131,
+      "weeks_tracked": 2,
       "first_seen": "2026-04-20"
     },
     {
       "address": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
       "label": "UPbit OTC Desk (cycle 2, 220K injected Apr 17)",
-      "balance_egld": 62927.00,
-      "weeks_tracked": 4,
+      "balance_egld": 93808.36590342753,
+      "weeks_tracked": 5,
       "first_seen": "2026-04-02"
     },
     {
       "address": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
       "label": "OTC Distribution Partner (coordinated with UPbit OTC Desk)",
-      "balance_egld": 63529.00,
-      "weeks_tracked": 2,
+      "balance_egld": 93762.52784244159,
+      "weeks_tracked": 3,
       "first_seen": "2026-04-13"
     },
     {
       "address": "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj",
       "label": "Unknown Whale A (liquidated 352K to Coinbase, holds 143K)",
-      "balance_egld": 143148.86,
-      "weeks_tracked": 1,
+      "balance_egld": 143148.86105600654,
+      "weeks_tracked": 2,
       "first_seen": "2026-04-20"
     },
     {
       "address": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
       "label": "Unknown Whale I (active)",
-      "balance_egld": 138618.14,
-      "weeks_tracked": 3,
+      "balance_egld": 142559.7017955718,
+      "weeks_tracked": 4,
       "first_seen": "2026-04-07"
     },
     {
       "address": "erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw",
       "label": "Gate.io (3rd week declining)",
-      "balance_egld": 35610.32,
-      "weeks_tracked": 3,
+      "balance_egld": 47609.30536698891,
+      "weeks_tracked": 4,
       "first_seen": "2026-04-07"
+    },
+    {
+      "address": "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd",
+      "label": "Unknown Whale C (reactivated +86K, watch funding source)",
+      "balance_egld": 432261.70929639327,
+      "weeks_tracked": 1,
+      "first_seen": "2026-04-27"
+    },
+    {
+      "address": "erd1qr9av6ar4ymr05xj93jzdxyezdrp6r4hz6u0scz4dtzvv7kmlldse7zktc",
+      "label": "Crypto.com secondary wallet (baseline established)",
+      "balance_egld": 3155.0332730638356,
+      "weeks_tracked": 1,
+      "first_seen": "2026-04-27"
     }
   ]
 }

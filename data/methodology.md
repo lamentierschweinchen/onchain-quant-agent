@@ -1,6 +1,6 @@
 # Analysis Methodology — Living Document
 
-**Last updated**: 2026-04-02 (run #1)
+**Last updated**: 2026-04-27 (run #5, schema v2)
 **Status**: This document is read and updated by the agent on every run. It contains proven practices, known pitfalls, and evolving heuristics.
 
 ---
@@ -11,6 +11,8 @@
 2. **Deltas matter more than absolutes** — "Staked ratio is 48.1%" is a fact. "Staked ratio rose 0.3pp this week, continuing a 4-week trend of increasing lockup" is intelligence.
 3. **Name everything** — Addresses are meaningless to readers. Always resolve via known-addresses.json. If you can't label it, note it for investigation.
 4. **Flag what you can't see** — Missing data is itself a signal. If an endpoint fails or returns unexpected results, say so explicitly.
+5. **Forward-looking beats backward-looking** — Anomalies tell you what already happened. Trend indicators tell you what is about to happen. Both matter, but the second is the higher-value insight.
+6. **Stratify before aggregating** — A single "exchange flow" number hides whether retail or whales drove it. Tier the data: by whale size, by exchange entity, by protocol category.
 
 ---
 
@@ -68,6 +70,24 @@ When Coinbase shows large inflows AND outflows in the same week:
 3. **Accounts from previous.json that dropped out of top 50** — potential large outflows
 4. **Addresses flagged in learnings.json** — follow up on previously discovered unknowns
 
+### Whale Tier Stratification (v2)
+Stratify the top-100 wallets into balance tiers and report the aggregate movement of each tier separately.
+
+| Tier | Threshold | Typical Holders |
+|------|-----------|-----------------|
+| `mega_whale` | > 1,000,000 EGLD | Exchange staking pools, mega-OTC counterparties, foundation wallets |
+| `large_whale` | 100,000 — 1,000,000 EGLD | Exchange hot wallets, individual mega-holders, large delegation contracts |
+| `mid_whale` | 10,000 — 100,000 EGLD | Smaller exchanges, active traders, mid-tier holders |
+
+**Why it matters**: a single "exchange flow" number is too coarse. If mega_whales are net-shrinking while mid_whales are net-growing, that's wealth distribution. If mega_whales grow while mid_whales shrink, that's accumulation by the very largest holders. Each pattern has different implications for liquidity and price stability.
+
+### Entity Netting (v2)
+Many entities (Binance, Coinbase) operate from multiple wallets. The per-wallet view is noisy. Collapse them to a single net-flow figure per parent entity.
+
+Example: Binance Hot 1 (-77K) + Binance Hot 2 (-23K) + Binance Cold (0) + Binance Staking (+50K) = -50K Binance net.
+
+Use entity netting alongside, not instead of, per-wallet flows. The per-wallet detail explains the *mechanism*; the entity-level netting tells you the *direction*.
+
 ### Transaction Classification
 | Flow Type | Logic |
 |-----------|-------|
@@ -104,6 +124,34 @@ When Coinbase shows large inflows AND outflows in the same week:
 - Provider APR varies from ~6.5% to ~9.3% — the spread is meaningful for delegators
 - Low-fee providers (Incal 1%, Maple Leaf 0%) vs standard 12% fee is worth highlighting
 
+### APR Distribution Histogram (v2)
+Bucket all providers by APR into: `5-6%`, `6-7%`, `7-8%`, `8-9%`, `9-10%`, `10%+`. For each bucket, output `provider_count` and `total_locked_egld`.
+
+**Interpretation**:
+- Tight cluster around one bucket (e.g. all providers in 7-8%) → competitive equilibrium, fees converged
+- Wide spread → market opportunity, delegators can earn meaningfully more by switching
+- Most stake concentrated in a low-APR bucket while a high-APR bucket exists with little stake → delegator inertia (they're not chasing yield)
+
+### APR vs Fee Outliers (v2)
+- `top_apr` — top 5 providers ranked by APR (the highest yield available)
+- `lowest_fee` — top 5 providers ranked by lowest fee (highest delegator-share value)
+
+The intersection of these two lists is the asymmetric value zone. A high-APR + low-fee provider that has *not* attracted proportional stake is a clear delegator opportunity worth flagging.
+
+### Churn Metric (v2)
+Sum `numUsers` across all providers → `total_delegators_current`. Compare to previous week's sum:
+- `delegators_added` — net new delegators this week
+- `providers_gaining_delegators` / `providers_losing_delegators` — breadth of churn
+
+**Interpretation matrix**:
+| Delegators | Staked EGLD | Read |
+|------------|-------------|------|
+| ↑ | ↑ | Healthy retail growth |
+| ↑ | flat | Retail joining, no whale conviction |
+| flat | ↑ | Whale consolidation, no new participation |
+| ↓ | ↑ | Concentrated re-staking by fewer larger holders (e.g. exchange restaking events) |
+| ↓ | ↓ | Outflow / unstaking pressure |
+
 ---
 
 ## Token Analysis
@@ -119,22 +167,107 @@ When Coinbase shows large inflows AND outflows in the same week:
 - Number of pairs with >$1K daily volume: measures how many pairs are "alive"
 - WEGLD/USDC dominance %: if one pair is >50% of all volume, the DEX is thin
 
+### Newly-Issued Tokens (v2)
+Pull `/tokens?sort=timestamp&order=desc&size=50` and filter client-side for `timestamp >= SEVEN_DAYS_AGO`. Rank by holder traction.
+
+**Quality filter** (in this order):
+1. Has > 10 holders (filters spam mints)
+2. Has > 5 transactions (filters dormant deploys)
+3. Has identifiable deployer (cross-reference deployer against known-addresses.json)
+
+Report top 5. A new token deployed by a known team or DeFi protocol is a higher-signal launch than an unknown deployer.
+
+## DeFi Per-Protocol Breakdown (v2)
+
+Each tracked protocol gets its own row in `protocol_breakdown`. Address sets come from `data/known-addresses.json`:
+
+| Protocol | Category | Address Set | What to Track |
+|----------|----------|-------------|---------------|
+| xExchange | dex | `defi_xexchange` (16 addresses) | TVL across pair contracts, 24h volume from `/mex/pairs`, transfers |
+| Hatom | lending + liquid_staking | `defi_hatom` (16 addresses) | EGLD Money Market TVL, sEGLD supply, borrow utilization |
+| AshSwap | dex (stableswap) | `defi_ashswap` (9 addresses) | Pool TVL, swap volume |
+| OneDex | dex (aggregator) | `defi_onedex` (5 addresses) | Aggregator routing volume |
+| XOXNO | nft_marketplace | `defi_other` subset | Marketplace contract activity |
+| JEXchange | dex (orderbook) | `defi_jexchange` (4 addresses) | Order book depth proxies |
+
+**Health signal mapping**:
+- `growing` — TVL up >5% WoW, transfers up
+- `flat` — TVL within ±2%, transfers stable
+- `shrinking` — TVL down 2-15% WoW, sustained
+- `spiking` — TVL or transfers up >50% WoW (likely event-driven)
+- `draining` — TVL down >15% WoW (concerning, investigate)
+
+Always sum addresses per protocol — a single address can be misleading. xExchange has separate WEGLD contracts per shard; both must be summed for accurate TVL.
+
 ---
 
-## Anomaly Detection
+## Anomaly Detection — Graceful Degradation (v2)
 
-### Z-Score Method
-- Requires 4+ weeks of historical data to be meaningful
-- Threshold: flag anything > 2 standard deviations
-- For first 4 weeks, use simple % change thresholds instead:
-  - >50% change = noteworthy
-  - >100% change = significant
-  - >200% change = investigate immediately
+The agent now ships z-score logic on every run, with a documented fallback when sample size is insufficient.
+
+### Three Methods, Selected by Data Availability
+
+**Method 1 — Z-score** (used when N >= 4 data points exist for the metric in `learnings.json` `running_baselines`)
+- mean = average of baseline array (excluding current)
+- stddev = population stddev of baseline array
+- z = (current - mean) / stddev
+- Severity:
+  - |z| > 4 → critical
+  - |z| > 3 → high
+  - |z| > 2 → medium
+  - |z| > 1.5 → low (note as "approaching anomaly threshold")
+- Set `method: "z_score"` and populate `average_value`, `stddev`, `z_score`
+
+**Method 2 — Percent threshold** (fallback when N < 4 data points)
+- |% change vs previous| > 50% → low
+- > 100% → medium
+- > 200% → high
+- > 500% → critical
+- Set `method: "percent_threshold"` and populate `change_pct`. Note in `description` that this is degraded mode and full z-score will activate at week N+1.
+
+**Method 3 — Rule-based** (always available, complements above)
+- Dormant wallet activations
+- Exchange exits >25% in a single week
+- Validator joining/leaving events with >50K EGLD
+- Token holder declines on a streak ≥3 consecutive weeks
+- Set `method: "rule_based"`
 
 ### Common False Positives to Filter
 - Epoch transitions can cause temporary metric spikes
 - Token listing/delisting on xExchange creates volume anomalies
 - Weekend/holiday activity dips are not anomalies
+- Single-week routing wallet activity (Binance restaking, OTC desk injection) is *expected* once flagged — don't re-flag the same pattern week after week
+
+## Trend Indicators (v2)
+
+Distinct from anomalies (point-in-time deviations), trend indicators capture multi-week trajectories — the leading edge of where the network is going.
+
+### accelerating_exchange_outflows
+For each exchange in `previous.json` `exchange_balances`, check whether the current WoW change is in the same direction as previous 2+ weeks.
+- 3 consecutive weeks of decline → emit a trend entry with `cumulative_change_pct` and `interpretation`
+- Example: Gate.io declined 3 weeks running (-25%, -22%, -22%) cumulating -54% — likely customer exit or treasury rebalance
+
+### validator_movements
+Compare provider list this week vs previous week:
+- `providers_joining` — providers in current `/providers` but not in `previous.staking_providers`
+- `providers_leaving` — providers in previous but not in current (or current locked = 0)
+- `notable_joiners`/`notable_leavers` — providers with >50K EGLD locked
+
+Sustained net validator joining = network growth signal. Net leaving = consolidation pressure.
+
+### token_supply_events
+Compare `supply` field for tracked tokens vs previous week:
+- > 1% supply change for normal tokens → mint or burn event
+- > 0.1% for stablecoins (USDC, USDT) → meaningful issuance/redemption
+- 100% supply change (zero → nonzero or vice versa) → lock/unlock event
+
+### consecutive_streaks
+Across the running_baselines arrays, identify metrics that have moved in the same direction for 3+ consecutive weeks. The interpretation field should explain *what* the streak means (e.g. "EGLD price up 5 weeks → momentum regime").
+
+### regime_shifts
+Step-changes that look like regime breaks rather than mean-reverting noise. Distinct from anomalies — an anomaly is a point spike that could revert; a regime shift is a level change that persists.
+
+Heuristic: if a metric jumps >2 sigma AND the new level is sustained for 2+ weeks, promote it from anomaly to regime_shift.
 
 ---
 
@@ -181,3 +314,4 @@ Before committing the report, verify:
 | 2 | 2026-04-07 | Added BTC/ETH price context. Confirmed OTC desk pattern for recurring large exchange outflows. Added `exchange_balances` and `watch_addresses` to previous.json for cleaner WoW tracking. Discovered that `/providers` total locked ≠ `/economics` staked (different metrics). |
 | 3 | 2026-04-13 | Established intermediary wallet investigation pattern for routing wallets (check nonce + immediate txs). Confirmed mex/tokens volume24h is unreliable (returns $0) — use mex/pairs exclusively. OTC desk lifecycle confirmed at ~3 weeks. Begin 3-point running baselines for z-score prep. |
 | 4 | 2026-04-20 | Confirmed routing wallet nonce is NOT always near-zero (nonce 80 wallet was pure pass-through). Confirmed low nonce ≠ cold storage guarantee (nonce 4 wallet reactivated). Established Coinbase OTC pattern: simultaneous large inflows+outflows from different counterparties = OTC intermediation — watch net balance, not gross flows. mex/pairs field names confirmed: baseName, quoteName, volume24h, totalValue. 4-run z-score baselines now active. |
+| 5 | 2026-04-27 | **Schema v2 expansion**: top 10/10/5 token coverage, whale tier stratification (mega/large/mid >1M / 100K-1M / 10K-100K), exchange entity netting, per-protocol DeFi breakdown (xExchange, Hatom, AshSwap, OneDex, XOXNO, JEXchange), APR distribution histogram, staking churn metric, top APR + lowest fee outliers, dormant_days field on dormant_activations, graceful-degradation z-scores (z when N>=4, % threshold when N<4, rule_based always), new trend_indicators section (accelerating_exchange_outflows, validator_movements, token_supply_events, consecutive_streaks, regime_shifts). All schema additions backward-compatible. |

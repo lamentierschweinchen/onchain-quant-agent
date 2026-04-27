@@ -1,29 +1,26 @@
 import type { Finding, Category, Severity } from '../types/report'
 import { SEVERITY_COLORS } from '../lib/constants'
 
-// Map finding categories to display colors (hex).
-// Category tokens in the CSS cover exchange/defi/team/system/other.
-// Finding categories use a different vocabulary, so we map manually.
 const FINDING_CATEGORY_COLORS: Record<Category, string> = {
-  whale: '#3B82F6',    // exchange blue — large holders / market actors
-  staking: '#22C55E',  // team green — validator / staking ecosystem
-  token: '#A855F7',    // defi purple — token activity
-  defi: '#A855F7',     // defi purple
-  network: '#6B7280',  // system grey — infrastructure / baseline
-  anomaly: '#F97316',  // orange — flagged deviation
+  whale: '#5896F2',
+  staking: '#34D196',
+  token: '#B975F0',
+  defi: '#B975F0',
+  network: '#8B97AC',
+  anomaly: '#FB8534',
+  trend: '#23F7DD',
 }
 
-// Category display labels (capitalised)
 const CATEGORY_LABELS: Record<Category, string> = {
-  whale: 'Whale',
-  staking: 'Staking',
-  token: 'Token',
-  defi: 'DeFi',
-  network: 'Network',
-  anomaly: 'Anomaly',
+  whale: 'WHALE',
+  staking: 'STAKING',
+  token: 'TOKEN',
+  defi: 'DEFI',
+  network: 'NETWORK',
+  anomaly: 'ANOMALY',
+  trend: 'TREND',
 }
 
-// Severities that get a glow effect
 const GLOW_SEVERITIES = new Set<Severity>(['critical', 'high'])
 
 interface ExecutiveSummaryProps {
@@ -32,42 +29,43 @@ interface ExecutiveSummaryProps {
 
 export function ExecutiveSummary({ findings }: ExecutiveSummaryProps) {
   return (
-    <div className="flex flex-row gap-4 overflow-x-auto pb-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       {findings.map((finding, idx) => {
         const borderColor = SEVERITY_COLORS[finding.severity]
-        const categoryColor = FINDING_CATEGORY_COLORS[finding.category]
+        const categoryColor =
+          FINDING_CATEGORY_COLORS[finding.category] ?? '#8B97AC'
         const hasGlow = GLOW_SEVERITIES.has(finding.severity)
 
         return (
-          <div
+          <article
             key={idx}
-            className="min-w-[280px] max-w-[400px] flex-shrink-0 bg-surface rounded-lg p-4 border border-border"
+            className="relative bg-surface border border-border rounded-md p-4 card-hover overflow-hidden"
             style={{
-              borderLeft: `3px solid ${borderColor}`,
-              boxShadow: hasGlow
-                ? `0 0 12px ${borderColor}33` // 33 = ~20% opacity in hex
-                : undefined,
+              boxShadow: hasGlow ? `inset 3px 0 0 ${borderColor}` : `inset 2px 0 0 ${borderColor}`,
             }}
           >
-            {/* Category pill — top right */}
-            <div className="flex justify-end mb-2">
+            {/* Top row: index + category */}
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-mono text-text-muted">
+                #{String(idx + 1).padStart(2, '0')}
+              </span>
               <span
-                className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium uppercase tracking-wide"
+                className="inline-flex items-center px-1.5 py-[1px] rounded text-[10px] font-mono font-semibold tracking-wider"
                 style={{
                   color: categoryColor,
-                  backgroundColor: `${categoryColor}22`,
-                  border: `1px solid ${categoryColor}44`,
+                  backgroundColor: `${categoryColor}1A`,
+                  border: `1px solid ${categoryColor}33`,
                 }}
               >
-                {CATEGORY_LABELS[finding.category]}
+                {CATEGORY_LABELS[finding.category] ?? finding.category}
               </span>
             </div>
 
             {/* Finding text */}
-            <p className="text-sm text-text-primary leading-relaxed">
+            <p className="text-[13px] text-text-primary leading-relaxed">
               {finding.finding}
             </p>
-          </div>
+          </article>
         )
       })}
     </div>
