@@ -1,4 +1,4 @@
-import { ResponsiveBar } from '@nivo/bar'
+import { ResponsivePie } from '@nivo/pie'
 import type {
   TokenActivity,
   DefiActivity,
@@ -7,6 +7,7 @@ import type {
   NewlyIssuedToken,
   ProtocolBreakdown,
   HealthSignal,
+  PairByVolume,
 } from '../types/report'
 import {
   formatNumber,
@@ -363,11 +364,66 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
     .map((t) => ({ ...t }) as NewRow)
 
   // -------------------------------------------------------------------------
-  // xExchange top pair bar (small)
+  // xExchange top pairs donut (NEW): pairs with >=1% share + "Other" bucket
   // -------------------------------------------------------------------------
-  const xexBarData = xexchange.top_pair
-    ? [{ name: xexchange.top_pair, volume: xexchange.top_pair_volume_24h_usd ?? 0 }]
-    : []
+  const pairsForDonut: PairByVolume[] = xexchange.top_pairs_by_volume ?? []
+
+  // Synthesize from legacy fields if the array is missing on older reports
+  const fallbackDonut: PairByVolume[] =
+    pairsForDonut.length === 0 && xexchange.top_pair
+      ? [
+          {
+            name: xexchange.top_pair,
+            volume_24h_usd: xexchange.top_pair_volume_24h_usd ?? 0,
+            share_pct: xexchange.top_pair_dominance_pct ?? 100,
+            is_other: false,
+          },
+          ...(xexchange.top_pair_dominance_pct != null &&
+          xexchange.top_pair_dominance_pct < 100 &&
+          xexchange.total_volume_24h_usd
+            ? [
+                {
+                  name: 'Other pairs',
+                  volume_24h_usd:
+                    xexchange.total_volume_24h_usd -
+                    (xexchange.top_pair_volume_24h_usd ?? 0),
+                  share_pct: 100 - (xexchange.top_pair_dominance_pct ?? 0),
+                  is_other: true as const,
+                },
+              ]
+            : []),
+        ]
+      : []
+
+  const donutData = (pairsForDonut.length > 0 ? pairsForDonut : fallbackDonut).map(
+    (p) => ({
+      id: p.name,
+      label: p.name,
+      value: p.volume_24h_usd,
+      share_pct: p.share_pct,
+      tvl_usd: p.tvl_usd,
+      trades_count_24h: p.trades_count_24h,
+      is_other: p.is_other,
+    }),
+  )
+
+  // Restrained palette: cyan accent for the dominant pair, fading desaturation
+  const PAIR_COLORS = [
+    '#23F7DD', // dominant — accent cyan
+    '#5896F2', // 2nd — exchange blue
+    '#B975F0', // 3rd — defi purple
+    '#34D196', // 4th — up green
+    '#E8B43A', // 5th — medium yellow
+    '#FB8534', // 6th — high orange
+    '#5C6679', // 7+
+    '#3F4759',
+  ]
+  const otherColor = '#2D364D' // muted gray for "Other pairs"
+
+  const donutWithColor = donutData.map((d, i) => ({
+    ...d,
+    color: d.is_other ? otherColor : PAIR_COLORS[i] ?? '#5C6679',
+  }))
 
   // -------------------------------------------------------------------------
   // Per-protocol breakdown table
@@ -497,41 +553,97 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
         />
       </div>
 
-      {/* xExchange top pair bar */}
-      {xexBarData.length > 0 && xexchange.top_pair_dominance_pct != null && (
+      {/* xExchange volume share donut */}
+      {donutWithColor.length > 0 && (
         <CardSection
-          title="Top Pair by 24h Volume"
-          subtitle={`${xexchange.top_pair} dominates ${xexchange.top_pair_dominance_pct.toFixed(1)}% of DEX volume`}
+          title="Volume Share by Pair (24h)"
+          subtitle={
+            xexchange.top_pair_dominance_pct != null
+              ? `${donutWithColor[0].label} commands ${xexchange.top_pair_dominance_pct.toFixed(1)}% — pairs <1% rolled into "Other"`
+              : 'Pairs ≥1% of DEX volume — long tail rolled into "Other"'
+          }
         >
-          <div className="p-4" style={{ height: 220 }}>
-            <ResponsiveBar
-              data={xexBarData}
-              keys={['volume']}
-              indexBy="name"
-              layout="vertical"
-              theme={darkTheme}
-              colors={['#23F7DD']}
-              margin={{ top: 12, right: 20, bottom: 50, left: 60 }}
-              padding={0.5}
-              valueFormat={(v) => formatUsd(v)}
-              axisBottom={{ tickSize: 0, tickPadding: 8 }}
-              axisLeft={{
-                tickSize: 0,
-                tickPadding: 6,
-                format: (v) => formatUsd(v as number),
-              }}
-              enableGridY={true}
-              enableGridX={false}
-              labelTextColor="#0A0D14"
-              labelSkipHeight={20}
-              tooltip={({ indexValue, value }) => (
-                <div style={tooltipStyle}>
-                  <strong>{indexValue}</strong>
-                  <br />
-                  24h Volume: {formatUsd(value)}
+          <div className="p-4 grid grid-cols-1 md:grid-cols-[1fr_320px] gap-6 items-center">
+            {/* Donut */}
+            <div style={{ height: 280 }}>
+              <ResponsivePie
+                data={donutWithColor}
+                theme={darkTheme}
+                colors={({ data }) => data.color as string}
+                innerRadius={0.62}
+                cornerRadius={2}
+                padAngle={1}
+                activeOuterRadiusOffset={6}
+                borderWidth={0}
+                arcLinkLabelsSkipAngle={360}
+                arcLabelsSkipAngle={360}
+                tooltip={({ datum }) => {
+                  const d = datum.data as (typeof donutWithColor)[number]
+                  return (
+                    <div style={tooltipStyle}>
+                      <strong>{d.label}</strong>
+                      <br />
+                      Volume: {formatUsd(d.value)}
+                      <br />
+                      Share: {d.share_pct.toFixed(2)}%
+                      {d.tvl_usd != null && (
+                        <>
+                          <br />
+                          TVL: {formatUsd(d.tvl_usd)}
+                        </>
+                      )}
+                    </div>
+                  )
+                }}
+                margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+              />
+            </div>
+
+            {/* Legend table */}
+            <div className="text-[12px] font-mono">
+              <div className="flex justify-between text-text-muted text-[10px] uppercase tracking-wider pb-2 border-b border-border-subtle mb-1">
+                <span>Pair</span>
+                <span>Volume / Share</span>
+              </div>
+              <ul className="space-y-1.5">
+                {donutWithColor.map((d) => (
+                  <li
+                    key={d.id}
+                    className="flex items-center justify-between gap-3 py-0.5"
+                  >
+                    <span className="flex items-center gap-2 min-w-0">
+                      <span
+                        className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                        style={{ backgroundColor: d.color }}
+                      />
+                      <span
+                        className={`truncate ${d.is_other ? 'text-text-muted italic' : 'text-text-primary'}`}
+                      >
+                        {d.label}
+                      </span>
+                    </span>
+                    <span className="flex-shrink-0 text-right">
+                      <span className="text-text-secondary tabular">
+                        {formatUsd(d.value)}
+                      </span>
+                      <span className="text-text-muted tabular ml-2 inline-block w-12 text-right">
+                        {d.share_pct.toFixed(1)}%
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              {xexchange.total_volume_24h_usd != null && (
+                <div className="flex justify-between mt-2 pt-2 border-t border-border-subtle text-text-muted">
+                  <span className="uppercase tracking-wider text-[10px]">
+                    Total
+                  </span>
+                  <span className="tabular text-text-primary">
+                    {formatUsd(xexchange.total_volume_24h_usd)}
+                  </span>
                 </div>
               )}
-            />
+            </div>
           </div>
         </CardSection>
       )}

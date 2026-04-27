@@ -1411,7 +1411,41 @@
       "mex_price_change_wow_pct": 5.506719610838825,
       "top_pair": "WrappedEGLD/WrappedUSDC",
       "top_pair_volume_24h_usd": 81453.7393594959,
-      "top_pair_dominance_pct": 85.42032892932431
+      "top_pair_dominance_pct": 85.42032892932431,
+      "top_pairs_by_volume": [
+        {
+          "name": "WrappedEGLD/WrappedUSDC",
+          "volume_24h_usd": 81453.7393594959,
+          "share_pct": 85.42032892932431,
+          "tvl_usd": 1742588.781182125,
+          "trades_count_24h": 558,
+          "is_other": false
+        },
+        {
+          "name": "ZoidPay/WrappedEGLD",
+          "volume_24h_usd": 9237.476708838476,
+          "share_pct": 9.68731828827899,
+          "tvl_usd": 58113.100205743736,
+          "trades_count_24h": 116,
+          "is_other": false
+        },
+        {
+          "name": "MEX/WrappedEGLD",
+          "volume_24h_usd": 3711.9558704824112,
+          "share_pct": 3.89271866363713,
+          "tvl_usd": 475937.79583398596,
+          "trades_count_24h": 280,
+          "is_other": false
+        },
+        {
+          "name": "Other pairs (22)",
+          "volume_24h_usd": 953.2149780372503,
+          "share_pct": 0.99963411875956,
+          "tvl_usd": null,
+          "trades_count_24h": 297,
+          "is_other": true
+        }
+      ]
     },
     "analysis": "The fifth consecutive week of broad token holder declines: every major token in the tracked set lost holders WoW (DRX -3, WEGLD typically -200 to -400, MEX, USDC, UTK, etc.). This is no longer noise \u2014 it's a structural pattern of position consolidation. New token issuance this week: zero. Combined, these signals confirm the network is in a \"consolidate existing positions\" regime, not a \"bootstrap new positions\" regime.\n\nxExchange volume reverted hard from last week's $186K spike to $95K \u2014 the prior anomaly is fully reversed. WEGLD/USDC remains dominant at 85% of volume ($81K of $95K). MEX price gained +5.4% WoW to $4.30e-7. ZPAY/WEGLD remains the second-most active pair ($9K volume), so the ZPAY momentum is not yet exhausted.\n\nThe market is seeing EGLD price appreciation without DEX volume confirmation \u2014 typically a signal that the move is leveraged/CEX-driven rather than spot-DEX accumulation."
   },

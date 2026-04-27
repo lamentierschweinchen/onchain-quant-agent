@@ -330,6 +330,15 @@ export interface NewlyIssuedToken {
   decimals?: number | null
 }
 
+export interface PairByVolume {
+  name: string
+  volume_24h_usd: number
+  share_pct: number
+  tvl_usd?: number | null
+  trades_count_24h?: number | null
+  is_other?: boolean
+}
+
 export interface XExchangeSummary {
   total_pairs: number
   total_volume_24h_usd: number | null
@@ -340,6 +349,7 @@ export interface XExchangeSummary {
   top_pair: string | null
   top_pair_volume_24h_usd: number | null
   top_pair_dominance_pct: number | null
+  top_pairs_by_volume?: PairByVolume[]
 }
 
 export interface TokenActivity {

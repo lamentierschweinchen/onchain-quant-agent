@@ -419,7 +419,22 @@
             "mex_price_change_wow_pct": { "type": ["number", "null"] },
             "top_pair": { "type": ["string", "null"] },
             "top_pair_volume_24h_usd": { "type": ["number", "null"] },
-            "top_pair_dominance_pct": { "type": ["number", "null"] }
+            "top_pair_dominance_pct": { "type": ["number", "null"] },
+            "top_pairs_by_volume": {
+              "type": "array",
+              "description": "All pairs with >=1% of 24h DEX volume, plus a single 'Other pairs' bucket aggregating the long tail. Designed for donut-chart visualization.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "volume_24h_usd": { "type": "number" },
+                  "share_pct": { "type": "number" },
+                  "tvl_usd": { "type": ["number", "null"] },
+                  "trades_count_24h": { "type": ["integer", "null"] },
+                  "is_other": { "type": "boolean", "description": "true for the aggregated 'Other pairs' bucket" }
+                }
+              }
+            }
           }
         },
         "analysis": { "type": "string" }
