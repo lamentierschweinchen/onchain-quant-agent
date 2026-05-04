@@ -1,5 +1,5 @@
 {
-  "_description": "Accumulated intelligence from each agent run. The agent reads this at the start of every run and appends to it at the end. This is the self-learning loop \u2014 each run builds on all previous runs.",
+  "_description": "Accumulated intelligence from each agent run. The agent reads this at the start of every run and appends to it at the end. This is the self-learning loop — each run builds on all previous runs.",
   "runs": [
     {
       "date": "2026-04-02",
@@ -21,11 +21,11 @@
         ],
         "endpoints_that_failed": [],
         "api_quirks_discovered": [
-          "minValue parameter on /transactions is accepted but silently ignored \u2014 does NOT filter by transaction value",
-          "Global /transactions only returns most recent 100 txs network-wide \u2014 useless for whale detection",
+          "minValue parameter on /transactions is accepted but silently ignored — does NOT filter by transaction value",
+          "Global /transactions only returns most recent 100 txs network-wide — useless for whale detection",
           "Per-account /accounts/{addr}/transactions is the only reliable way to find large transactions",
-          "Binance hot wallet (erd1ylw...) returned 0 txs in 7 days \u2014 may use internal transfers that don't show as standard txs",
-          "Zero-nonce whale wallets (495K, 495K, 346K EGLD) literally have no transaction history at all \u2014 pure cold storage receiving via internal transfers or genesis"
+          "Binance hot wallet (erd1ylw...) returned 0 txs in 7 days — may use internal transfers that don't show as standard txs",
+          "Zero-nonce whale wallets (495K, 495K, 346K EGLD) literally have no transaction history at all — pure cold storage receiving via internal transfers or genesis"
         ],
         "data_gaps": [
           "No way to query all transactions above a value threshold network-wide",
@@ -35,23 +35,23 @@
       },
       "analysis_insights": {
         "what_worked": [
-          "Entity resolution via known-addresses.json \u2014 correctly labeled all major exchanges and DeFi contracts",
+          "Entity resolution via known-addresses.json — correctly labeled all major exchanges and DeFi contracts",
           "Per-account transaction queries found 28 whale txs that global endpoint missed entirely",
-          "UPbit showed net outflow of ~170K EGLD in the period \u2014 the biggest whale signal, only visible via per-account queries",
+          "UPbit showed net outflow of ~170K EGLD in the period — the biggest whale signal, only visible via per-account queries",
           "Staking concentration HHI calculation gives a single meaningful number (0.018 = competitive)"
         ],
         "what_needs_improvement": [
-          "Dormant wallet detection not yet implemented \u2014 need to compare account timestamps",
-          "Exchange flow is currently balance-snapshot-only \u2014 should also sum individual tx values for precision",
-          "No new token detection yet \u2014 need to filter tokens by creation timestamp",
+          "Dormant wallet detection not yet implemented — need to compare account timestamps",
+          "Exchange flow is currently balance-snapshot-only — should also sum individual tx values for precision",
+          "No new token detection yet — need to filter tokens by creation timestamp",
           "DeFi TVL tracking requires querying individual protocol contracts for balances",
           "Anomaly z-scores need at least 4 weeks of data to be statistically meaningful"
         ],
         "surprising_findings": [
-          "DRX (DoctorX) has 2.47M holders but near-zero value \u2014 airdrop/spam distribution, not real adoption",
-          "xExchange daily volume only $210K across 541 pairs \u2014 most pairs are essentially dead",
-          "Binance holds 64.8% of all exchange EGLD \u2014 extreme single-exchange dependency",
-          "48.1% of all EGLD is staked \u2014 nearly half the supply is illiquid"
+          "DRX (DoctorX) has 2.47M holders but near-zero value — airdrop/spam distribution, not real adoption",
+          "xExchange daily volume only $210K across 541 pairs — most pairs are essentially dead",
+          "Binance holds 64.8% of all exchange EGLD — extreme single-exchange dependency",
+          "48.1% of all EGLD is staked — nearly half the supply is illiquid"
         ]
       },
       "methodology_changes": [
@@ -72,8 +72,8 @@
         "Add new token detection by filtering /tokens for creation timestamps within the report period",
         "Query Hatom liquid staking contract (erd1qqqq...4gzf...) balance directly for sEGLD TVL tracking",
         "Explore /accounts/{addr}/transfers endpoint as alternative to /transactions for more complete flow data",
-        "Start building z-score baselines \u2014 need 4+ weeks before anomaly detection is meaningful",
-        "Investigate the UPbit outflow destination address \u2014 if it keeps receiving, it's likely an OTC desk or cold wallet"
+        "Start building z-score baselines — need 4+ weeks before anomaly detection is meaningful",
+        "Investigate the UPbit outflow destination address — if it keeps receiving, it's likely an OTC desk or cold wallet"
       ]
     },
     {
@@ -96,25 +96,25 @@
         ],
         "endpoints_that_failed": [],
         "api_quirks_discovered": [
-          "Persisted output files from tool results contain a metadata header before the JSON \u2014 must find first '[' character before parsing",
-          "Provider total locked (11.17M EGLD from /providers) differs significantly from /economics staked (14.25M) \u2014 difference is direct node staking, not via delegation contracts. These are different metrics.",
-          "MEXC balance grew +8.8% but sampled transactions only showed tiny flows \u2014 large exchange transfers likely go through internal or smart contract mechanisms, not standard transactions",
+          "Persisted output files from tool results contain a metadata header before the JSON — must find first '[' character before parsing",
+          "Provider total locked (11.17M EGLD from /providers) differs significantly from /economics staked (14.25M) — difference is direct node staking, not via delegation contracts. These are different metrics.",
+          "MEXC balance grew +8.8% but sampled transactions only showed tiny flows — large exchange transfers likely go through internal or smart contract mechanisms, not standard transactions",
           "coingecko simple/price endpoint worked without rate limiting when called once per run",
-          "Per-account query window (7 days ago = 1743894000) correctly captures 5-day period from Apr 1\u20137; need to verify exact UNIX timestamps each run"
+          "Per-account query window (7 days ago = 1743894000) correctly captures 5-day period from Apr 1–7; need to verify exact UNIX timestamps each run"
         ],
         "data_gaps": [
-          "Cannot easily trace MEXC internal transfer source \u2014 requires deeper subaccount investigation",
+          "Cannot easily trace MEXC internal transfer source — requires deeper subaccount investigation",
           "Cannot query 'who funded Unknown Whale I' without iterating through many potential sender accounts",
           "Exchange internal sweeps between their own wallets are invisible to standard tx queries"
         ]
       },
       "analysis_insights": {
         "what_worked": [
-          "UPbit OTC pattern confirmed second week in a row \u2014 same address receiving large outflows",
+          "UPbit OTC pattern confirmed second week in a row — same address receiving large outflows",
           "Exchange balance diff table caught MEXC +8.8% growth that wouldn't have been obvious from txs alone",
           "Wallet balance change table correctly identified Unknown Whale I (+14.2%) as the biggest unreported movement",
           "Staking HHI cross-check: 0.0183 unchanged from baseline, confirms stable competitive market",
-          "Previous.json comparison correctly revealed that MEXC in run #1 was reported as 83,519 EGLD (not 165K \u2014 that was a different unlabeled account)"
+          "Previous.json comparison correctly revealed that MEXC in run #1 was reported as 83,519 EGLD (not 165K — that was a different unlabeled account)"
         ],
         "what_needs_improvement": [
           "Need direct query on Unknown Whale I (erd1vd76) to find funding source",
@@ -124,18 +124,18 @@
           "Z-score baselines need 2 more runs before statistical anomaly detection is meaningful"
         ],
         "surprising_findings": [
-          "Unknown Whale I gained +18,167 EGLD (+14.2%) in one week \u2014 no obvious source visible in sampled exchange data",
-          "WEGLD holder count declined for first time (134,315 \u2192 134,289, -26) while MEX and USDC both gained holders",
-          "MultiversX Community Delegation grew +6.7% in one week \u2014 largest single-week staking growth among tracked contracts",
-          "EmoryaSportsX claimed $23.2M market cap despite only 10K holders \u2014 likely custom price feed artifact, not real market depth",
+          "Unknown Whale I gained +18,167 EGLD (+14.2%) in one week — no obvious source visible in sampled exchange data",
+          "WEGLD holder count declined for first time (134,315 → 134,289, -26) while MEX and USDC both gained holders",
+          "MultiversX Community Delegation grew +6.7% in one week — largest single-week staking growth among tracked contracts",
+          "EmoryaSportsX claimed $23.2M market cap despite only 10K holders — likely custom price feed artifact, not real market depth",
           "WrappedTAO (Bittensor) at $307/token with 1,287 holders showing real cross-chain AI token interest on MultiversX"
         ]
       },
       "methodology_changes": [
-        "CONFIRMED: Previous.json balance comparison is the primary exchange flow signal \u2014 WoW delta table is more reliable than trying to sum individual transactions",
+        "CONFIRMED: Previous.json balance comparison is the primary exchange flow signal — WoW delta table is more reliable than trying to sum individual transactions",
         "ESTABLISHED: Separate 'exchange_balances' section in previous.json for clean WoW exchange flow tracking",
         "ADDED: watch_addresses section to previous.json for persistent address monitoring",
-        "DISCOVERED: Provider total locked (from /providers) \u2260 staked from /economics \u2014 document this distinction clearly",
+        "DISCOVERED: Provider total locked (from /providers) ≠ staked from /economics — document this distinction clearly",
         "ADDED: BTC and ETH prices to economics snapshot for macro context"
       ],
       "new_addresses_discovered": [
@@ -148,13 +148,13 @@
       ],
       "recommendations_for_next_run": [
         "Query erd1vd76...z0 (Unknown Whale I) transactions to find funding source",
-        "Query erd1v6x9...hcxnk5 outflows \u2014 does it only receive or does it also send? If it sends, to where?",
+        "Query erd1v6x9...hcxnk5 outflows — does it only receive or does it also send? If it sends, to where?",
         "Query MultiversX Community Delegation contract recent large delegation events to explain +6.7% growth",
-        "Add Coinbase secondary (erd1m9qn...dc3) to exchange_balances tracking \u2014 was in top-50 this week",
+        "Add Coinbase secondary (erd1m9qn...dc3) to exchange_balances tracking — was in top-50 this week",
         "Investigate EmoryaSportsX $23M market cap vs actual on-chain DEX liquidity depth",
         "Try /accounts/{addr}/transfers endpoint as alternative to /transactions for MEXC to catch internal transfers",
         "Start tracking WrappedTAO (Bittensor bridge activity) as a cross-chain sentiment indicator",
-        "Next run will have 3 data points \u2014 begin building mean/stddev baselines for z-score anomaly detection"
+        "Next run will have 3 data points — begin building mean/stddev baselines for z-score anomaly detection"
       ]
     },
     {
@@ -177,7 +177,7 @@
         ],
         "endpoints_that_failed": [],
         "api_quirks_discovered": [
-          "mex/tokens volume24h field returns $0 for all tokens despite volume being visible in mex/pairs \u2014 use mex/pairs for volume data, not mex/tokens",
+          "mex/tokens volume24h field returns $0 for all tokens despite volume being visible in mex/pairs — use mex/pairs for volume data, not mex/tokens",
           "Per-account /transactions correctly captured the Binance Staking 470K intermediary routing in a single query",
           "mex/pairs tradesCount24h is available and useful for spotting thin liquidity pairs",
           "UPbit OTC desk (erd1v6x9) completed its cycle in 3 weeks: accumulated for 2 weeks, distributed in week 3"
@@ -185,34 +185,34 @@
         "data_gaps": [
           "Still cannot determine exact Gate.io outflow destination without querying their historical transactions",
           "Cannot see Coinbase custody transfer destination without more detailed tx query",
-          "mex/tokens volume data appears unreliable (all zeros) \u2014 needs investigation"
+          "mex/tokens volume data appears unreliable (all zeros) — needs investigation"
         ]
       },
       "analysis_insights": {
         "what_worked": [
-          "Intermediary wallet investigation: spotted 470K EGLD routing through erd1r3w62 (nonce 3 = purpose-built), immediately delegated \u2014 correctly classified as re-staking not withdrawal",
+          "Intermediary wallet investigation: spotted 470K EGLD routing through erd1r3w62 (nonce 3 = purpose-built), immediately delegated — correctly classified as re-staking not withdrawal",
           "Exchange balance diff table revealed Gate.io's 25% single-week reduction, which no tx query would have surfaced",
-          "UPbit OTC desk tracking paid off in week 3 \u2014 the reversal pattern (50K back to UPbit + smaller distributions) confirms it was a 3-week institutional accumulation/distribution cycle",
-          "Coinbase \u2192 Unknown Whale B connection found by querying the whale's transactions, revealing two Coinbase wallets as sources"
+          "UPbit OTC desk tracking paid off in week 3 — the reversal pattern (50K back to UPbit + smaller distributions) confirms it was a 3-week institutional accumulation/distribution cycle",
+          "Coinbase → Unknown Whale B connection found by querying the whale's transactions, revealing two Coinbase wallets as sources"
         ],
         "what_needs_improvement": [
           "Should query /accounts/{addr}/transfers as backup for exchanges with 0 visible transactions (Binance Hot 1 still shows 0 txs)",
           "Still need to investigate erd1z7fnqf4... (new top-50, nonce 4777) transactions to understand what it does",
-          "mex/tokens volume data unreliable \u2014 report notes this but need alternative DEX volume source",
-          "Unknown Whale I (erd1vd76) losing -7810 EGLD in small outflows \u2014 still don't know what this wallet does"
+          "mex/tokens volume data unreliable — report notes this but need alternative DEX volume source",
+          "Unknown Whale I (erd1vd76) losing -7810 EGLD in small outflows — still don't know what this wallet does"
         ],
         "surprising_findings": [
-          "Binance Staking lost 470K EGLD but all of it was immediately re-staked \u2014 total staked EGLD actually jumped +451K (+3.17%) this week",
-          "Staked ratio hit 49.49% \u2014 within 0.5pp of the 50% psychological milestone after this week's jump",
-          "Every major token by holder count DECLINED for second consecutive week \u2014 across 10 tokens ranging from -210 to -441 holders",
-          "Gate.io reduced holdings by 25.1% in one week \u2014 unusual speed of reduction for a major exchange",
-          "UPbit OTC desk pattern completed: accumulated ~170K over 2 weeks, distributed back in week 3 \u2014 total cycle ~3 weeks",
-          "KuCoin grew +18.4% in balance (+5,378 EGLD) \u2014 possible restocking or internal transfer"
+          "Binance Staking lost 470K EGLD but all of it was immediately re-staked — total staked EGLD actually jumped +451K (+3.17%) this week",
+          "Staked ratio hit 49.49% — within 0.5pp of the 50% psychological milestone after this week's jump",
+          "Every major token by holder count DECLINED for second consecutive week — across 10 tokens ranging from -210 to -441 holders",
+          "Gate.io reduced holdings by 25.1% in one week — unusual speed of reduction for a major exchange",
+          "UPbit OTC desk pattern completed: accumulated ~170K over 2 weeks, distributed back in week 3 — total cycle ~3 weeks",
+          "KuCoin grew +18.4% in balance (+5,378 EGLD) — possible restocking or internal transfer"
         ]
       },
       "methodology_changes": [
-        "CONFIRMED: Intermediary wallet investigation is valuable \u2014 always check nonce and immediate txs of recipients of large transfers to classify as routing vs. holding",
-        "ADDED: mex/tokens volume24h is unreliable (returns $0) \u2014 use mex/pairs for volume data exclusively",
+        "CONFIRMED: Intermediary wallet investigation is valuable — always check nonce and immediate txs of recipients of large transfers to classify as routing vs. holding",
+        "ADDED: mex/tokens volume24h is unreliable (returns $0) — use mex/pairs for volume data exclusively",
         "ESTABLISHED: When exchange shows 0 tx in period, use balance delta as the primary signal (not tx data)",
         "CONFIRMED: OTC desk cycle typically 2-4 weeks based on UPbit OTC desk pattern"
       ],
@@ -231,19 +231,19 @@
         }
       ],
       "action_items_completed": [
-        "Queried Unknown Whale I (erd1vd76) transactions \u2014 found it losing 7,810 EGLD in multiple small outflows this week. Still no clear label.",
-        "Queried UPbit OTC desk (erd1v6x9) \u2014 confirmed reversal, sent 50K back to UPbit and smaller amounts to unknown addresses",
-        "Added Coinbase secondary (erd1m9qn) to exchange balance tracking \u2014 confirmed it sent 8,564 EGLD to Unknown Whale B this week",
+        "Queried Unknown Whale I (erd1vd76) transactions — found it losing 7,810 EGLD in multiple small outflows this week. Still no clear label.",
+        "Queried UPbit OTC desk (erd1v6x9) — confirmed reversal, sent 50K back to UPbit and smaller amounts to unknown addresses",
+        "Added Coinbase secondary (erd1m9qn) to exchange balance tracking — confirmed it sent 8,564 EGLD to Unknown Whale B this week",
         "Began building 3-run baseline for metrics: we now have 3 data points for staked EGLD (14.25M, 14.26M, 14.71M), price ($3.71, $3.71, $3.74), and DEX volume ($78K, $79K, $93K)"
       ],
       "recommendations_for_next_run": [
-        "Query erd1z7fnqf4... transactions to identify what this 4,777-nonce wallet does \u2014 trading bot, DEX activity, or large staker",
-        "Query erd1at3jm3... (Unknown Whale B) transactions to see if Coinbase inflows continue \u2014 if so, this may be systematic institutional accumulation",
+        "Query erd1z7fnqf4... transactions to identify what this 4,777-nonce wallet does — trading bot, DEX activity, or large staker",
+        "Query erd1at3jm3... (Unknown Whale B) transactions to see if Coinbase inflows continue — if so, this may be systematic institutional accumulation",
         "Try /accounts/{addr}/transfers endpoint for Binance Hot 1 (erd1ylwu) and Binance Hot 2 to see if it shows more data than /transactions",
-        "Investigate Gate.io continued decline \u2014 query their transactions to find destination of outflows",
+        "Investigate Gate.io continued decline — query their transactions to find destination of outflows",
         "With 3 data points now available: compute running mean and 1 stddev for key metrics (price, staked, DEX volume) to enable simple anomaly flags",
-        "Check if WrappedTAO holders increased this week \u2014 previous was 1,287, this week is 1,261 (down). Is the Bittensor bridge trend reversing?",
-        "Monitor whether 50% staked ratio threshold is breached next week \u2014 if so, worth noting as a milestone in the report"
+        "Check if WrappedTAO holders increased this week — previous was 1,287, this week is 1,261 (down). Is the Bittensor bridge trend reversing?",
+        "Monitor whether 50% staked ratio threshold is breached next week — if so, worth noting as a milestone in the report"
       ]
     },
     {
@@ -265,47 +265,47 @@
           "coingecko/simple/price"
         ],
         "endpoints_that_failed": [
-          "/accounts/{addr}/transfers for Binance Hot 1 (erd1ylwu) \u2014 returned 0 results despite high nonce. Confirmed limitation: exchanges using internal or SC-mediated transfer mechanisms are invisible to /transfers endpoint."
+          "/accounts/{addr}/transfers for Binance Hot 1 (erd1ylwu) — returned 0 results despite high nonce. Confirmed limitation: exchanges using internal or SC-mediated transfer mechanisms are invisible to /transfers endpoint."
         ],
         "api_quirks_discovered": [
           "mex/pairs field names confirmed: 'baseName'/'quoteName' (not 'baseToken.ticker'), 'volume24h' (not 'volumeUSD24h'), 'totalValue' (not 'liquidityUSD')",
-          "Routing wallet nonce 80 (erd1lgdlteq) confirmed as pass-through \u2014 medium-nonce wallets can still be pure routing wallets if they have near-zero balance before/after forwarding",
+          "Routing wallet nonce 80 (erd1lgdlteq) confirmed as pass-through — medium-nonce wallets can still be pure routing wallets if they have near-zero balance before/after forwarding",
           "Low nonce is NOT always cold storage: Unknown Whale A had nonce 4 for 4+ weeks, then was reactivated. Low nonce = lower probability of activity, not certainty.",
           "Coinbase outflow + simultaneous inflow from other whales in same 72h window strongly suggests Coinbase OTC desk intermediation"
         ],
         "data_gaps": [
-          "Cannot confirm identity of erd18mv2z6r2 (Unknown Mega Whale) \u2014 nonce 21 means minimal public activity, no API assets label",
+          "Cannot confirm identity of erd18mv2z6r2 (Unknown Mega Whale) — nonce 21 means minimal public activity, no API assets label",
           "Cannot see Binance Hot 1 transaction flows (internal mechanisms), balance delta is the only signal",
-          "Gate.io outflow destinations are hundreds of small addresses \u2014 labor-intensive to trace, no single large recipient"
+          "Gate.io outflow destinations are hundreds of small addresses — labor-intensive to trace, no single large recipient"
         ]
       },
       "analysis_insights": {
         "what_worked": [
-          "Intermediary wallet investigation again proven valuable: traced Coinbase \u2192 erd1lgdlteq (nonce 80 router) \u2192 erd18mv2z6r2 correctly using the pattern",
+          "Intermediary wallet investigation again proven valuable: traced Coinbase → erd1lgdlteq (nonce 80 router) → erd18mv2z6r2 correctly using the pattern",
           "Exchange balance diff table caught the Coinbase net-neutral position despite massive gross flows (+514K in, -798K out = only -7K net), which confirmed OTC intermediation hypothesis",
           "OTC coordination confirmation: querying erd1z7fnqf4 transactions revealed same recipient addresses as erd1v6x9, proving the two-wallet OTC network",
           "4-run z-score baselines now available: EGLD price [3.71, 3.71, 3.74, 4.02] mean $3.795 SD $0.150; DEX volume [$78K, $79K, $93K, $186K] mean $109K SD $49K",
           "Bybit's +27.9% gain correctly attributed to being downstream of the UPbit OTC distribution pipeline"
         ],
         "what_needs_improvement": [
-          "Still cannot identify erd18mv2z6r2 \u2014 need to query its outflows next week to understand if it's accumulating or distributing",
-          "Binance Hot 1 remains opaque \u2014 /transactions and /transfers both return 0 results",
-          "WrappedTAO declining 4 weeks straight but small sample \u2014 consider graduating from active tracking"
+          "Still cannot identify erd18mv2z6r2 — need to query its outflows next week to understand if it's accumulating or distributing",
+          "Binance Hot 1 remains opaque — /transactions and /transfers both return 0 results",
+          "WrappedTAO declining 4 weeks straight but small sample — consider graduating from active tracking"
         ],
         "surprising_findings": [
-          "Coinbase executed a bilateral OTC deal in 72 hours: received ~1.026M EGLD from Whale A + Whale B simultaneously while distributing 798K to new mega-whale \u2014 net only -7K EGLD",
-          "Unknown Whale A (nonce 4, classified cold storage for 4 weeks) suddenly reactivated \u2014 low nonce is a probability indicator not an absolute",
-          "UPbit OTC desk started Cycle 2 within one week of completing Cycle 1 \u2014 faster than expected, suggesting ongoing institutional demand",
-          "xExchange volume doubled in one week to $186K \u2014 first time in 4 weeks it significantly deviated from baseline",
-          "ZPAY price +33% WoW with no obvious catalytic event \u2014 possible insider accumulation preceding an announcement",
+          "Coinbase executed a bilateral OTC deal in 72 hours: received ~1.026M EGLD from Whale A + Whale B simultaneously while distributing 798K to new mega-whale — net only -7K EGLD",
+          "Unknown Whale A (nonce 4, classified cold storage for 4 weeks) suddenly reactivated — low nonce is a probability indicator not an absolute",
+          "UPbit OTC desk started Cycle 2 within one week of completing Cycle 1 — faster than expected, suggesting ongoing institutional demand",
+          "xExchange volume doubled in one week to $186K — first time in 4 weeks it significantly deviated from baseline",
+          "ZPAY price +33% WoW with no obvious catalytic event — possible insider accumulation preceding an announcement",
           "erd18mv2z6r2 is now the 4th largest non-system account on MultiversX at 991K EGLD ($3.98M)"
         ]
       },
       "methodology_changes": [
-        "CONFIRMED: Medium-nonce wallets (nonce 80) can still be routing wallets \u2014 the diagnostic is near-zero balance before/after, not nonce alone",
-        "CONFIRMED: Low nonce \u2260 cold storage guarantee. Unknown Whale A (nonce 4) proved this. Nonce is a probability indicator only.",
-        "ESTABLISHED: Coinbase OTC pattern \u2014 simultaneous large inflows and outflows from different counterparties = OTC intermediation. Net balance change is the signal, not gross flows.",
-        "ADDED: mex/pairs field names to API quirks reference \u2014 baseName, quoteName, volume24h, totalValue"
+        "CONFIRMED: Medium-nonce wallets (nonce 80) can still be routing wallets — the diagnostic is near-zero balance before/after, not nonce alone",
+        "CONFIRMED: Low nonce ≠ cold storage guarantee. Unknown Whale A (nonce 4) proved this. Nonce is a probability indicator only.",
+        "ESTABLISHED: Coinbase OTC pattern — simultaneous large inflows and outflows from different counterparties = OTC intermediation. Net balance change is the signal, not gross flows.",
+        "ADDED: mex/pairs field names to API quirks reference — baseName, quoteName, volume24h, totalValue"
       ],
       "new_addresses_discovered": [
         {
@@ -322,10 +322,10 @@
         }
       ],
       "action_items_completed": [
-        "Queried erd1z7fnqf4 transactions \u2014 confirmed OTC coordination with erd1v6x9, distributes to same recipients in same amounts",
-        "Tried /accounts/{addr}/transfers for Binance Hot 1 \u2014 confirmed 0 results (limitation documented)",
-        "Investigated Gate.io outflows \u2014 hundreds of small withdrawals (600-1,200 EGLD each) + one 7,500 EGLD outflow, consistent with sustained customer withdrawals",
-        "Checked WrappedTAO holders: 1,256 (was 1,261) \u2014 continuing slow decline",
+        "Queried erd1z7fnqf4 transactions — confirmed OTC coordination with erd1v6x9, distributes to same recipients in same amounts",
+        "Tried /accounts/{addr}/transfers for Binance Hot 1 — confirmed 0 results (limitation documented)",
+        "Investigated Gate.io outflows — hundreds of small withdrawals (600-1,200 EGLD each) + one 7,500 EGLD outflow, consistent with sustained customer withdrawals",
+        "Checked WrappedTAO holders: 1,256 (was 1,261) — continuing slow decline",
         "Applied z-scores now that 4 data points available: DEX volume is 1.6 sigma above mean (anomaly), EGLD price is 1.5 sigma above mean"
       ],
       "running_baselines": {
@@ -350,13 +350,13 @@
         "note": "4 data points now available. Mean and SD are now statistically meaningful for basic anomaly detection."
       },
       "recommendations_for_next_run": [
-        "Query erd18mv2z6r2 transactions \u2014 does the 991K EGLD stay put, get staked, or get distributed? This is the #1 priority. If it sends anywhere, trace the destination immediately.",
-        "Query remaining Unknown Whale A (erd1kn38) \u2014 does it continue selling the remaining 143K EGLD? If yes, continued Coinbase inflow pressure.",
-        "Investigate the ZPAY +33% price surge \u2014 check if there's new protocol activity, an upcoming announcement, or a whale accumulation pattern behind it.",
-        "Continue z-score tracking: update baselines with 5th data point. EGLD price and DEX volume both above 1.5 sigma \u2014 watch if trend continues.",
-        "Gate.io at 35.6K EGLD \u2014 query outflows again. If <25K next week, flag as a significant structural event (exchange delisting EGLD or major customer exodus).",
+        "Query erd18mv2z6r2 transactions — does the 991K EGLD stay put, get staked, or get distributed? This is the #1 priority. If it sends anywhere, trace the destination immediately.",
+        "Query remaining Unknown Whale A (erd1kn38) — does it continue selling the remaining 143K EGLD? If yes, continued Coinbase inflow pressure.",
+        "Investigate the ZPAY +33% price surge — check if there's new protocol activity, an upcoming announcement, or a whale accumulation pattern behind it.",
+        "Continue z-score tracking: update baselines with 5th data point. EGLD price and DEX volume both above 1.5 sigma — watch if trend continues.",
+        "Gate.io at 35.6K EGLD — query outflows again. If <25K next week, flag as a significant structural event (exchange delisting EGLD or major customer exodus).",
         "WrappedTAO at 1,256 holders (4 consecutive declines from 1,287): graduate to 'established declining trend' and reduce monitoring frequency.",
-        "Monitor whether Bybit's +27.9% gain (+112K EGLD) stabilizes or continues \u2014 if UPbit OTC cycle 2 continues at current pace, Bybit may receive more inflows over the next 2-3 weeks."
+        "Monitor whether Bybit's +27.9% gain (+112K EGLD) stabilizes or continues — if UPbit OTC cycle 2 continues at current pace, Bybit may receive more inflows over the next 2-3 weeks."
       ]
     },
     {
@@ -379,67 +379,67 @@
           "coingecko/simple/price"
         ],
         "endpoints_that_failed": [
-          "/tokens?sort=timestamp \u2014 Bad Request (400). The accepted sort fields are: accounts, transactions, price, marketCap. Used /transactions to ESDT contract as a workaround for issuance detection."
+          "/tokens?sort=timestamp — Bad Request (400). The accepted sort fields are: accounts, transactions, price, marketCap. Used /transactions to ESDT contract as a workaround for issuance detection."
         ],
         "api_quirks_discovered": [
-          "tokens endpoint sort field is restricted \u2014 must filter by timestamp client-side after pagination, OR query the ESDT system contract for issuance txs directly.",
+          "tokens endpoint sort field is restricted — must filter by timestamp client-side after pagination, OR query the ESDT system contract for issuance txs directly.",
           "Per-account /accounts/{addr} returns timestamp = last activity. Useful for dormancy classification but does not include transaction history.",
           "mex/pairs has 25 max page size. Total pairs (544) requires multiple pages or sampling top 25.",
-          "Z-score threshold |z|>1.5 produces useful \"approaching anomaly\" flags (EGLD price now +3.29\u03c3 vs baseline mean \u2014 clear high anomaly)."
+          "Z-score threshold |z|>1.5 produces useful \"approaching anomaly\" flags (EGLD price now +3.29σ vs baseline mean — clear high anomaly)."
         ],
         "data_gaps": [
           "Newly-issued token detection requires custom workaround (sort by timestamp not supported)",
           "Provider churn precision limited until previous.json stores FULL provider list (currently top 50 only)",
-          "Per-address last-active timestamp does not include the prior-period activity window \u2014 dormancy detection requires per-wallet historical tx queries"
+          "Per-address last-active timestamp does not include the prior-period activity window — dormancy detection requires per-wallet historical tx queries"
         ]
       },
       "analysis_insights": {
         "what_worked": [
-          "Whale tier stratification produced an actionable directional signal (mega contracting, large+mid expanding) \u2014 clearer than raw exchange flow alone",
+          "Whale tier stratification produced an actionable directional signal (mega contracting, large+mid expanding) — clearer than raw exchange flow alone",
           "Entity netting collapsed Binance's 4 wallets into +39K net which is the right resolution for a directional read",
           "APR distribution histogram pinpoints the asymmetric value zone (4 providers in 9-10% bucket holding 6.5% of stake, all 0% fee) more clearly than the prior leaderboard",
-          "Z-score with 5 data points now produces meaningful anomaly classification (EGLD price +3.29\u03c3 flagged correctly as high)",
-          "Cross-checking two anomalies (price up, DEX volume reverted) yielded a higher-quality insight than either alone \u2014 the price move is CEX-driven, not DEX-driven",
-          "Per-protocol DeFi breakdown established baseline across 7 protocols \u2014 sets up meaningful WoW deltas from next run"
+          "Z-score with 5 data points now produces meaningful anomaly classification (EGLD price +3.29σ flagged correctly as high)",
+          "Cross-checking two anomalies (price up, DEX volume reverted) yielded a higher-quality insight than either alone — the price move is CEX-driven, not DEX-driven",
+          "Per-protocol DeFi breakdown established baseline across 7 protocols — sets up meaningful WoW deltas from next run"
         ],
         "what_needs_improvement": [
           "Dormant activation detection still relies on flagging wallets with sudden balance changes; should add per-wallet historical-tx queries to verify the prior dormancy period directly",
-          "Newly-issued token detection currently requires querying ESDT system contract \u2014 should explore /tokens with timestamp filter via client-side pagination of the full set",
-          "Validator churn comparison is currently uncalibrated because previous.json had only top 5 providers \u2014 next run will have full 50, enabling real churn metrics",
+          "Newly-issued token detection currently requires querying ESDT system contract — should explore /tokens with timestamp filter via client-side pagination of the full set",
+          "Validator churn comparison is currently uncalibrated because previous.json had only top 5 providers — next run will have full 50, enabling real churn metrics",
           "Total delegators baseline established (179,038) but no WoW comparison this run"
         ],
         "surprising_findings": [
-          "EGLD price hit a +3.29\u03c3 z-score anomaly while DEX volume reverted to baseline \u2014 the price rally is decoupled from on-chain activity, signaling CEX/structural drivers",
-          "Crypto.com operates a previously-untracked secondary wallet (erd1qr9av) \u2014 adds 3K to tracked exchange balances. Likely many more secondary wallets exist for major exchanges that we don't know about",
-          "UPbit injected the largest single-week OTC inflow (188K EGLD) \u2014 but desk only distributed 94K (50% absorption rate). Cycle 2 is in early-injection phase, distribution coming next 2-3 weeks",
-          "Three \"cold storage\" wallet reactivations in five weeks (Whale A, Whale B, Whale C) \u2014 this is now a confirmed structural pattern. Low-nonce as cold-storage proxy is unreliable on MultiversX",
-          "xExchange volume reverted from $186K to $95K (-49%) \u2014 the +1.6\u03c3 spike was a one-week event, not a regime shift",
-          "5 zero-fee providers offer \u22659% APR with combined 738K EGLD locked (6.5% of delegated). The asymmetric value zone for delegators has widened \u2014 but stake hasn't migrated there in proportion"
+          "EGLD price hit a +3.29σ z-score anomaly while DEX volume reverted to baseline — the price rally is decoupled from on-chain activity, signaling CEX/structural drivers",
+          "Crypto.com operates a previously-untracked secondary wallet (erd1qr9av) — adds 3K to tracked exchange balances. Likely many more secondary wallets exist for major exchanges that we don't know about",
+          "UPbit injected the largest single-week OTC inflow (188K EGLD) — but desk only distributed 94K (50% absorption rate). Cycle 2 is in early-injection phase, distribution coming next 2-3 weeks",
+          "Three \"cold storage\" wallet reactivations in five weeks (Whale A, Whale B, Whale C) — this is now a confirmed structural pattern. Low-nonce as cold-storage proxy is unreliable on MultiversX",
+          "xExchange volume reverted from $186K to $95K (-49%) — the +1.6σ spike was a one-week event, not a regime shift",
+          "5 zero-fee providers offer ≥9% APR with combined 738K EGLD locked (6.5% of delegated). The asymmetric value zone for delegators has widened — but stake hasn't migrated there in proportion"
         ]
       },
       "methodology_changes": [
-        "ESTABLISHED: Whale tier stratification (mega/large/mid) \u2014 produces actionable directional signal beyond raw exchange flow",
-        "ESTABLISHED: Entity netting (Binance, Coinbase collapsed) \u2014 clearer than per-wallet view for parent-entity directional pressure",
-        "ESTABLISHED: Per-protocol DeFi breakdown across 7 protocols \u2014 baseline established this run",
+        "ESTABLISHED: Whale tier stratification (mega/large/mid) — produces actionable directional signal beyond raw exchange flow",
+        "ESTABLISHED: Entity netting (Binance, Coinbase collapsed) — clearer than per-wallet view for parent-entity directional pressure",
+        "ESTABLISHED: Per-protocol DeFi breakdown across 7 protocols — baseline established this run",
         "ESTABLISHED: APR distribution histogram + APR/fee outliers as routine staking analysis",
         "ESTABLISHED: Newly-issued token detection via /transactions to ESDT contract (with deployer cross-reference)",
         "ESTABLISHED: Z-score with |z|>1.5 \"approaching anomaly\" tier; |z|>2 medium; |z|>3 high",
-        "CONFIRMED: Low-nonce \u2260 cold-storage guarantee. Three reactivations in five weeks. This is now a *structural pattern*, not anecdotal."
+        "CONFIRMED: Low-nonce ≠ cold-storage guarantee. Three reactivations in five weeks. This is now a *structural pattern*, not anecdotal."
       ],
       "new_addresses_discovered": [
         {
           "address": "erd1qr9av6ar4ymr05xj93jzdxyezdrp6r4hz6u0scz4dtzvv7kmlldse7zktc",
-          "reason": "Crypto.com secondary wallet \u2014 already labeled in known-addresses.json but appearing with 3K EGLD this run. Establishes new tracking baseline.",
+          "reason": "Crypto.com secondary wallet — already labeled in known-addresses.json but appearing with 3K EGLD this run. Establishes new tracking baseline.",
           "suggested_label": "Crypto.com Secondary",
           "priority": "low"
         }
       ],
       "action_items_completed": [
         "Investigated Unknown Mega Whale (erd18mv2z6r2): held position with -6K EGLD movement back to Coinbase routing. Largely stationary.",
-        "Computed proper 5-data-point z-scores for EGLD price (+3.29\u03c3 high), DEX volume (-0.26\u03c3 neutral), staked EGLD (+0.94\u03c3 neutral)",
+        "Computed proper 5-data-point z-scores for EGLD price (+3.29σ high), DEX volume (-0.26σ neutral), staked EGLD (+0.94σ neutral)",
         "Implemented entity netting for Binance/Coinbase/Crypto.com (collapsed multi-wallet entities)",
         "Tracked Bybit: stable +2K EGLD WoW after last week's +112K spike",
-        "Tracked Gate.io: REVERSED its 4-week decline (+33.7% WoW) \u2014 flagged in trend_indicators",
+        "Tracked Gate.io: REVERSED its 4-week decline (+33.7% WoW) — flagged in trend_indicators",
         "Newly-issued token check: zero new fungible tokens this period (verified via /transactions to ESDT contract)",
         "Implemented full v2 schema additions (whale_tiers, entity_netting, apr_distribution, apr_outliers, churn, protocol_breakdown, trend_indicators)"
       ],
@@ -474,13 +474,167 @@
       },
       "recommendations_for_next_run": [
         "Query Unknown Whale C (erd1a2t7xu4...0mgd) recent transactions to identify funding source for +86K EGLD inflow",
-        "Track UPbit OTC desk distribution rate: this week injected 188K, distributed only 94K (50% absorption). Watch if rate accelerates next week \u2014 typical cycle is 3 weeks.",
-        "Investigate why Gate.io reversed its 4-week decline \u2014 query its inflows for this week to see if it's a customer wave or treasury reload",
-        "Add provider-level WoW tracking by storing the FULL provider list in previous.json (currently only top 5 stored \u2014 limits churn analysis precision)",
+        "Track UPbit OTC desk distribution rate: this week injected 188K, distributed only 94K (50% absorption). Watch if rate accelerates next week — typical cycle is 3 weeks.",
+        "Investigate why Gate.io reversed its 4-week decline — query its inflows for this week to see if it's a customer wave or treasury reload",
+        "Add provider-level WoW tracking by storing the FULL provider list in previous.json (currently only top 5 stored — limits churn analysis precision)",
         "Compute z-score for MEX price now that we have 1 baseline data point starting next run",
-        "Crypto.com secondary wallet (erd1qr9av) only had 3K \u2014 investigate if this is a short-term routing wallet or a longer-term custody position",
-        "Investigate 4 providers in 9-10% APR bucket with 0% fees \u2014 are these likely to attract delegator migration? Track their delegator counts WoW",
-        "Token holder declines now in 5th consecutive week \u2014 graduate from \"anomaly\" to \"established structural trend\" in trend_indicators consecutive_streaks"
+        "Crypto.com secondary wallet (erd1qr9av) only had 3K — investigate if this is a short-term routing wallet or a longer-term custody position",
+        "Investigate 4 providers in 9-10% APR bucket with 0% fees — are these likely to attract delegator migration? Track their delegator counts WoW",
+        "Token holder declines now in 5th consecutive week — graduate from \"anomaly\" to \"established structural trend\" in trend_indicators consecutive_streaks"
+      ]
+    },
+    {
+      "date": "2026-05-04",
+      "run_number": 6,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?sort=locked",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "/accounts/{addr}",
+          "/accounts/{addr}/transactions",
+          "/accounts/{addr}/transfers/count",
+          "/tokens/{identifier}",
+          "/tokens?search=...",
+          "coingecko/simple/price"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "/accounts/{addr}/transfers/count?after={ts} is the correct endpoint for protocol transfers_24h — NOT scrCount or transfersLast24h fields on the account object (those are not present in /accounts/{addr} response).",
+          "When searching for Hatom H-tokens, /tokens/{identifier} returns 404 for incorrectly-formatted identifiers; /tokens?search={ticker} returns multiple hits and you can filter for ones starting with 'Hatom' — this is the reliable token discovery path.",
+          "Routing wallet detection refined: medium-nonce wallets (147, 169, 180) drained to near-zero (~0 to 5,999 EGLD) immediately after each receipt = pure pass-through. Combined with consistent identical-amount routing (5,999 / 7,999 / 8,000 EGLD chunks), this is the fingerprint of a managed cross-exchange OTC infrastructure.",
+          "/accounts/{addr} balance for routing wallets is sometimes near-zero with scientific notation '5999.9994' — must parse correctly without rounding."
+        ],
+        "data_gaps": [
+          "Newly-issued token detection still requires workaround — /tokens?sort=timestamp returns 400.",
+          "Cannot query Binance Hot 1 (erd1ylw) transactions — only 1 visible (last 7 days). Internal sweeps remain opaque.",
+          "Provider full-list churn now possible from next run since we're storing 108 providers in previous.json (was top 50 only)."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Discovered cross-exchange OTC funnel by tracing routing wallet recipients in OTC Distribution Wallet's transaction list — saw matching 5,999/7,999/8,000 chunks coming from Binance.com 2 within minutes. This is the highest-quality finding of any run.",
+          "Yield-chasing migration prediction from run #5 came true: Ninja Staking and Egld Staking Provider were top-2 gainers, exactly the 0%-fee 9%+ APR profile flagged. The asymmetric value zone is now actively pulling capital.",
+          "Whale tier stratification flipped this week (mega+large gain, mid loss) vs last week (mega contracting, mid expanding). The reversal makes the directional signal sharper — OTC distribution is going UP the whale tier, not dispersing.",
+          "Z-score reversion validated: EGLD price went from +3.29σ (high, last week) to +0.77σ (normal, this week). The agent's 'one-week event' classification was correct — this is the kind of self-correction that builds trust.",
+          "Storing FULL provider list (108) in previous.json this run unlocks meaningful churn analysis from run #7."
+        ],
+        "what_needs_improvement": [
+          "MEX price baseline still has only N=2; need 2 more weeks for z-score.",
+          "Staked ratio baseline only N=2; same gap.",
+          "Newly-issued token detection still degraded — need to figure out client-side timestamp filter or a different endpoint.",
+          "Could validate the cross-exchange OTC theory by querying the OTC Desk recipients (erd1f4kcxxn4, erd1tuvllxaf, erd1krmy7xld, erd142cjv2r5) to see if THEY also forward to other exchanges' deposit addresses.",
+          "Hatom Lending TVL might be missing some H-tokens (ETH versions, isolated lending positions). Should explore the Hatom factory contract for the full deployed-tokens list."
+        ],
+        "surprising_findings": [
+          "Binance.com 2 (erd1sdsl) is funding UPbit OTC desks via 3 routing wallets — first observed cross-exchange OTC infrastructure on MultiversX. Volume: 80K+ EGLD this week. This rewrites the OTC narrative: it's shared infrastructure, not exchange-specific.",
+          "Two 0%-fee 9%+ APR providers gained the equivalent of what 5 lower-APR providers lost in a single week. After 4 weeks of inertia, the yield-chase finally activated.",
+          "Mega whale tier +78K, mid whale tier -78K — almost exactly offsetting. Wealth concentrated upward by ~78K EGLD this week with no net change in whale-tier supply.",
+          "JEXchange Lite Pool (erd1272et87...) — first appearance with non-trivial transfer count (2,229 in 24h). Was effectively invisible in prior runs.",
+          "Token holder declines now in 6th consecutive week — from anomaly to confirmed structural pattern. Yet active-token base (>$1M mcap) is stable. Implication: airdrop wallet decay, not real adoption decline.",
+          "UPbit absorbed +78K EGLD this week, the largest single-wallet gain on the network. Source: 79K returned from OTC desks + customer deposits + 18K from unknown."
+        ]
+      },
+      "methodology_changes": [
+        "ESTABLISHED: Cross-exchange OTC funnel pattern. Pattern: high-nonce routing wallets (100-200 nonce range) with near-zero balance, receiving identical-amount chunks (5,999/7,999/8,000 EGLD) from one exchange and forwarding within minutes to another exchange's OTC desk. To detect: query OTC desk inflows, then query each upstream sender for upstream pattern.",
+        "ESTABLISHED: Yield-chasing migration as a recurring trend indicator. To detect: compare top staking gainers/losers WoW, classify by APR bucket, count net rotation across the 9%+ vs <8% APR boundary.",
+        "ADDED: /accounts/{addr}/transfers/count?after={ts} as the correct endpoint for protocol-level transfers_24h. Previous attempts using account object fields returned 0/null.",
+        "CONFIRMED: 50% staked ratio is the next observable milestone. Current 49.50% with consistent +0.06pp/week rate of approach → 1-2 weeks until breach.",
+        "ADDED: Storing FULL /providers list (108 providers, was top 50) in previous.json — enables proper churn detection from next run."
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd16nws00klkag9g25nv3v4cuf2elsa83f5pa0jsqn0zt5jq3qufd9q4w8cfm",
+          "reason": "Binance→OTC routing wallet. Nonce 169. Receives 8K EGLD from Binance.com 2 (erd1sdsl), forwards to UPbit OTC Desk or OTC Distribution Wallet within minutes. ~40K EGLD routed this week.",
+          "suggested_label": "Binance→OTC Router 1",
+          "priority": "high"
+        },
+        {
+          "address": "erd1k4r6kyjq7gevgg75pkvjevkyr2q62puet4lrfpuheytx9qacnzfqgmjx5z",
+          "reason": "Binance→OTC routing wallet. Nonce 180. Same pattern — 8K EGLD chunks from Binance.com 2 to OTC Distribution Wallet. ~24K EGLD routed this week.",
+          "suggested_label": "Binance→OTC Router 2",
+          "priority": "high"
+        },
+        {
+          "address": "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0",
+          "reason": "Binance→OTC routing wallet. Nonce 147. 5,999 EGLD chunks from Binance.com 2 to UPbit OTC Desk. ~18K EGLD routed this week.",
+          "suggested_label": "Binance→OTC Router 3",
+          "priority": "high"
+        },
+        {
+          "address": "erd1gwux8p0lkm6g5sawykwdhtfrryc4hqgpe7asepeyc3cuu69e0kyqd07s88",
+          "reason": "New top-50 entrant with 18,321 EGLD. Nonce 313 (active). Small back-and-forth flows with erd1s9gusy and erd1s9nvc2 — likely small trader/multi-sig. Worth monitoring.",
+          "suggested_label": "Unknown New Mid-Whale",
+          "priority": "low"
+        }
+      ],
+      "action_items_completed": [
+        "Queried Unknown Whale C (erd1a2t7) — confirmed flat at 432K, dormant (action item from run 5).",
+        "Tracked UPbit OTC desk distribution: Cycle 2 closed, Cycle 3 began May 1 with 20K injection (action item from run 5).",
+        "Investigated Gate.io reversal — confirmed 2nd consecutive growth week (+9.5%), continued the trend reversal flagged last run.",
+        "Computed APR distribution histogram and outliers — same structure as last run, validated the yield migration thesis.",
+        "Validated yield-chasing prediction: Ninja Staking +15.5K and Egld Staking Provider +14.2K — both 0%-fee 9%+ APR.",
+        "Computed full z-scores: EGLD price reverted to +0.77σ (was +3.29σ) — confirmed last week's 'one-week event' classification.",
+        "Stored FULL provider list (108 providers) in previous.json for next run's churn analysis (action item from run 5).",
+        "Token holder decline graduated to 6-week consecutive streak (was 5)."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.71,
+          3.71,
+          3.74,
+          4.02,
+          4.29,
+          4.07
+        ],
+        "dex_volume_24h_usd": [
+          78000,
+          79000,
+          93065,
+          186015,
+          95356,
+          74843
+        ],
+        "staked_egld": [
+          14250000,
+          14260000,
+          14706521,
+          14729755,
+          14738926,
+          14779606
+        ],
+        "mex_price_usd": [
+          4.3e-07,
+          3.7888e-07
+        ],
+        "total_delegators": [
+          179038,
+          179060
+        ],
+        "staked_ratio": [
+          0.4949,
+          0.4944,
+          0.495
+        ]
+      },
+      "recommendations_for_next_run": [
+        "VALIDATE cross-exchange OTC theory: query OTC distribution recipients (erd1f4kcxxn4, erd1tuvllxaf, erd1krmy7xld, erd142cjv2r5) — if any of them forward to deposit addresses of yet another exchange (Bybit, Coinbase, KuCoin), that confirms the multi-hop OTC pipeline. Top priority — would be a major narrative finding.",
+        "Track yield-chase momentum: did Ninja Staking and Egld Staking Provider continue gaining? Did Figment and Trust Staking continue losing? If sustained for 2 more weeks → promote to regime shift.",
+        "Monitor 50% staked ratio milestone — at +0.06pp/week, breach expected within 1-2 weeks. Worth a callout headline if it happens.",
+        "Track new mid-whale erd1gwux8 (18K EGLD, nonce 313) — does it grow or stabilize?",
+        "Investigate Hatom Lending growth (+0.93% in USD despite -5.13% EGLD price) — is the underlying deposit base actually growing? Query individual H-token supplies WoW to confirm.",
+        "Query Bybit's outflow patterns next week — if it loses 100K+ similar to UPbit's OTC redistribution, that confirms it's downstream of the same OTC pipeline.",
+        "MEX z-score baseline now N=3 — needs 1 more week before z-score is meaningful.",
+        "Track total delegators trajectory — N=2 baseline. If +22 was a fluke and the next reading is materially different, re-examine the whale-consolidation thesis.",
+        "Investigate JEXchange Lite Pool (erd1272et87...) — 2,229 transfers in 24h is a new appearance. What's driving the volume?"
       ]
     }
   ]

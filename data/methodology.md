@@ -1,6 +1,6 @@
 # Analysis Methodology — Living Document
 
-**Last updated**: 2026-04-27 (run #5, schema v2)
+**Last updated**: 2026-05-04 (run #6, schema v2)
 **Status**: This document is read and updated by the agent on every run. It contains proven practices, known pitfalls, and evolving heuristics.
 
 ---
@@ -108,6 +108,23 @@ Use entity netting alongside, not instead of, per-wallet flows. The per-wallet d
 - Track exchange total balance WoW for the net flow signal
 
 ---
+
+
+### Cross-Exchange OTC Funnel Pattern (run #6, 2026-05-04)
+
+The OTC desks on MultiversX are NOT exchange-internal infrastructure — they are shared infrastructure that aggregates flow from multiple exchanges.
+
+**Detection signature**:
+1. Routing wallet receives identical-amount chunks (e.g. 5,999 / 7,999 / 8,000 EGLD) from a known exchange wallet
+2. Routing wallet has near-zero balance immediately before AND immediately after the receipt
+3. Within minutes, the same amount is forwarded to a known OTC desk
+4. Wallet has medium-high nonce (>100) but low active balance — pure pass-through pattern
+
+**First documented case**: Binance.com 2 (erd1sdsl) → 3 routing wallets (erd16nws nonce 169, erd1k4r6 nonce 180, erd1de38 nonce 147) → UPbit OTC Desk + OTC Distribution Wallet. ~80K EGLD routed in week 1.
+
+**Implication**: A single OTC desk's gross inflows do NOT represent a single exchange's customer flow — they aggregate flows from multiple exchange counterparties. Net OTC flow analysis must consider the entire upstream chain.
+
+**To validate next run**: query the OTC desks' downstream recipients (erd1f4kcxxn4, erd1tuvllxaf, erd1krmy7xld, erd142cjv2r5) — if they forward to other exchanges' deposit addresses, the multi-hop pipeline is confirmed.
 
 ## Staking Analysis
 
@@ -228,6 +245,16 @@ Always sum addresses per protocol — a single address can be misleading. xExcha
 
 ---
 
+
+### Protocol-level transfers_24h (run #6, 2026-05-04)
+
+The correct endpoint for protocol activity throughput is:
+```
+/accounts/{addr}/transfers/count?after={unix_ts}
+```
+
+Previous attempts using account-object fields (`scrCount`, `transfersLast24h`) returned 0 or null because those fields are not present in `/accounts/{addr}` response. The dedicated `/transfers/count` endpoint is the correct path. Verified with XOXNO Aggregator (12,181 transfers in 24h), OneDex (8,110), JEXchange Lite Pool (2,229).
+
 ## Anomaly Detection — Graceful Degradation (v2)
 
 The agent now ships z-score logic on every run, with a documented fallback when sample size is insufficient.
@@ -344,3 +371,4 @@ Before committing the report, verify:
 | 5 | 2026-04-27 | **Schema v2 expansion**: top 10/10/5 token coverage, whale tier stratification (mega/large/mid >1M / 100K-1M / 10K-100K), exchange entity netting, per-protocol DeFi breakdown (xExchange, Hatom, AshSwap, OneDex, XOXNO, JEXchange), APR distribution histogram, staking churn metric, top APR + lowest fee outliers, dormant_days field on dormant_activations, graceful-degradation z-scores (z when N>=4, % threshold when N<4, rule_based always), new trend_indicators section (accelerating_exchange_outflows, validator_movements, token_supply_events, consecutive_streaks, regime_shifts). All schema additions backward-compatible. |
 | 5.1 | 2026-04-27 | **XOXNO ecosystem expansion**: added 14 XOXNO contracts to known-addresses.json under new `defi_xoxno` section. Split XOXNO tracking into 4 sub-protocols (LSD, Aggregator, Marketplace, Other) since they have different metrics. **TVL method discovery**: for liquid staking protocols, contract balance is misleading — use the staked-derivative token's market cap as TVL proxy (XEGLD-e413ed market cap = $1.54M = ~359K EGLD staked). For non-custodial routers (XOXNO Aggregator, OneDex), TVL is irrelevant — the metric is `transfers_24h`. **Activity ranking**: XOXNO Aggregator handles 21,926 transfers/24h (highest single-contract throughput on the network); OneDex 13,308; JEXchange 3,772; xExchange 5 contracts combined 3,120. **Dashboard ergonomics**: added expand/collapse to long DataTables (top 5 default → "Show all (N)" footer button) for providers, wallets, transactions, tokens, protocol breakdown — full-set sort still active when collapsed. |
 | 5.2 | 2026-04-27 | **Hatom ecosystem expansion + lending TVL methodology fix**. Hatom has 59 contracts total (deployer wallet erd1cc2yw...99pvt); previously tracked 16 → now 39. Added: 13 money markets (EGLD, sEGLD, USDC, USDT, WBTC, WETH, BUSD, HTM, MEX, UTK, wTAO, swTAO), TAO Liquid Staking + Wrapped TAO Minter, isolated lending (EGLD + wTAO), USH stablecoin suite (4 strategy contracts), 7 asset facilitators (cross-protocol), Booster v2, Price Aggregator v2, deployer wallet. **CRITICAL TVL FIX**: lending protocols denominate balance in H-tokens (deposit receipts), not EGLD — summing contract EGLD balances missed the entire lending stack. Corrected method: sum H-token market caps. **Hatom TVL recalibrated $528K → $10.23M** (~19x underestimate before correction). Split Hatom into 3 sub-protocols in `protocol_breakdown`: Lending ($4.37M), Liquid Staking ($5.15M = SEGLD + SWTAO), USH ($708K). **New ranking**: Hatom dominates MultiversX DeFi with 70% of total tracked TVL ($10.23M of $14.7M total). xExchange $2.32M, XOXNO LSD $1.54M. **Double-count avoidance rule**: exclude H-tokens that wrap LSDs (HSEGLD, HSWTAO) since the underlying value is already in the LSD-token market cap. |
+| 6 | 2026-05-04 | **Cross-exchange OTC funnel discovery**: First observed shared OTC infrastructure on MultiversX. Binance.com 2 (erd1sdsl) → 3 routing wallets (erd16nws nonce 169, erd1k4r6 nonce 180, erd1de38 nonce 147) → UPbit OTC Desk + OTC Distribution Wallet. Pattern: identical-amount chunks (5,999/7,999/8,000 EGLD), forwarded within minutes, near-zero-balance routers. **Yield-chasing migration confirmed** as a recurring trend indicator: Ninja Staking +15.5K and Egld Staking Provider +14.2K (both 0%-fee, 9%+ APR) gained the equivalent of what 5 lower-APR providers lost — first activation after 4 weeks of inertia. **API endpoint discovery**: /accounts/{addr}/transfers/count?after={ts} is the correct endpoint for protocol-level transfers_24h (NOT account object fields). **Hatom H-token discovery**: /tokens?search={ticker} filtered for 'Hatom' name prefix is reliable token-discovery path; full Hatom Lending stack: HUSDC + HUSDT + HEGLD + HWBTC + HWETH + HHTM + HMEX + HUTK + HWTAO + HBUSD = $4.41M. **Z-score reversion validated**: EGLD price went +3.29σ → +0.77σ in one week, confirming the run #5 'one-week event' classification. Stored FULL provider list (108) in previous.json — enables churn analysis from run #7. New section in known-addresses.json: 'exchange_routers' with 3 entries. |

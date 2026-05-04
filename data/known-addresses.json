@@ -8,9 +8,11 @@
       "Web search verification",
       "SDK documentation (system contracts)"
     ],
-    "total_entries": 130
+    "total_entries": 130,
+    "last_updated": "2026-05-04",
+    "updated_by_run": 6,
+    "notes": " | Run 6 added 3 cross-exchange OTC routing wallets (Binance.com 2 → UPbit OTC infrastructure)."
   },
-
   "system_contracts": {
     "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l": {
       "name": "System: Staking Module",
@@ -37,7 +39,6 @@
       "notes": "On-chain governance contract for protocol proposals and voting."
     }
   },
-
   "exchanges": {
     "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p": {
       "name": "Binance Staking",
@@ -142,7 +143,6 @@
       "notes": "Romanian exchange. ~8K EGLD."
     }
   },
-
   "defi_xexchange": {
     "erd1qqqqqqqqqqqqqpgqq66xk9gfr4esuhem3jru86wg5hvp33a62jps2fy57p": {
       "name": "xExchange: Router",
@@ -241,7 +241,6 @@
       "notes": "Owner address of the xExchange router, WEGLD contracts, and major xExchange infrastructure. Key governance address."
     }
   },
-
   "defi_hatom": {
     "erd1qqqqqqqqqqqqqpgq35qkf34a8svu4r2zmfzuztmeltqclapv78ss5jleq3": {
       "name": "Hatom: EGLD Money Market",
@@ -268,10 +267,10 @@
       "notes": "Hatom money market oracle for asset pricing."
     },
     "erd1qqqqqqqqqqqqqpgq2y55sf0tqsdncxcrpe67tce4hc0qagv478ssaw9vkl": {
-      "name": "Hatom: USH Minter",
+      "name": "Hatom: USH Minter (v2)",
       "category": "defi",
       "subcategory": "stablecoin",
-      "notes": "Minter contract for USH stablecoin (Hatom's native stablecoin)."
+      "notes": "USH stablecoin minter contract."
     },
     "erd1qqqqqqqqqqqqqpgqcvyhpnfqscnqwt0j5z5szwsarypha7ur78ssjjwh02": {
       "name": "Hatom: USH Money Market",
@@ -399,12 +398,6 @@
       "subcategory": "stablecoin",
       "notes": "USH stablecoin staking module."
     },
-    "erd1qqqqqqqqqqqqqpgq2y55sf0tqsdncxcrpe67tce4hc0qagv478ssaw9vkl": {
-      "name": "Hatom: USH Minter (v2)",
-      "category": "defi",
-      "subcategory": "stablecoin",
-      "notes": "USH stablecoin minter contract."
-    },
     "erd1qqqqqqqqqqqqqpgqs65chjxt09sar8yl4jc5mnqf9rqrwvf478ss5wqent": {
       "name": "Hatom: USH Redeem Strategy",
       "category": "defi",
@@ -484,7 +477,6 @@
       "notes": "Hatom main account that owns and deploys the 59-contract Hatom suite."
     }
   },
-
   "defi_ashswap": {
     "erd1qqqqqqqqqqqqqpgqglgkaxm73j7mhw5u940fsmmncnayxj884fvs54lnr6": {
       "name": "AshSwap: Aggregator v1.2",
@@ -541,7 +533,6 @@
       "notes": "AshSwap stable swap pool for BUSD/WEGLD."
     }
   },
-
   "defi_onedex": {
     "erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc": {
       "name": "OneDex: Swap",
@@ -574,7 +565,6 @@
       "notes": "OneDex token launchpad."
     }
   },
-
   "defi_jexchange": {
     "erd1qqqqqqqqqqqqqpgqqvs2jvf64wzcz2836er0j98l3ytshpcr5sns997aga": {
       "name": "JEXchange: Swap Aggregator",
@@ -601,7 +591,6 @@
       "notes": "JEXchange protocol fee collection wallet."
     }
   },
-
   "defi_xoxno": {
     "erd1qqqqqqqqqqqqqpgq5rf2sppxk2xu4m0pkmugw2es4gak3rgjah0sxvajva": {
       "name": "XOXNO: Swap Aggregator",
@@ -688,7 +677,6 @@
       "notes": "XOXNO main account that owns and deploys the XOXNO contract suite."
     }
   },
-
   "defi_other": {
     "erd1qqqqqqqqqqqqqpgqx6833qjac6uqztgsa8jhlztexucke0hrdfys6wd7qt": {
       "name": "JewelSwap: Liquid Staking",
@@ -715,7 +703,6 @@
       "notes": "QuantumX integration with AshSwap aggregator."
     }
   },
-
   "bridge": {
     "erd1qqqqqqqqqqqqqpgqxexs26vrvhwh2m4he62d6y3jzmv3qkujyfkq8yh4z2": {
       "name": "xBridge v2: Ethereum Multisig",
@@ -784,7 +771,6 @@
       "notes": "Ofero Network's BNB to MultiversX bridge."
     }
   },
-
   "team_and_foundation": {
     "erd1vup7q384decm8l8mu4ehz75c5mfs089nd32fteru95tm8d0a8dqs8g0yst": {
       "name": "MultiversX Foundation",
@@ -823,7 +809,6 @@
       "notes": "MultiversX Foundation Council DAO on PeerMe."
     }
   },
-
   "staking_providers": {
     "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j": {
       "name": "Staking: Figment",
@@ -970,7 +955,6 @@
       "notes": "Stake Capital Group institutional validator."
     }
   },
-
   "launchpad": {
     "erd1qqqqqqqqqqqqqpgqsnjkkezhxfuep9fggkgrta5s6yr4huuq4klqp9wfv0": {
       "name": "xLaunchpad: Itheum",
@@ -1009,7 +993,6 @@
       "notes": "Hatom (HTM) token launch via xLaunchpad."
     }
   },
-
   "unlabeled_whales": {
     "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj": {
       "name": "Unknown Whale A (reactivated)",
@@ -1094,6 +1077,26 @@
       "category": "other",
       "subcategory": "otc",
       "notes": "High-nonce active wallet (nonce 5,041). Confirmed coordinated OTC partner with erd1v6x9 (UPbit OTC Desk): both wallets send to the same recipient addresses (erd1ghfrqvvyf7, erd1wyj8uf, erd1tr5lahv) in the same 1,000-2,000 EGLD range. Balance stable at ~63K EGLD. Likely same institutional actor or tightly coordinated trading network. Discovered 2026-04-13."
+    }
+  },
+  "exchange_routers": {
+    "erd16nws00klkag9g25nv3v4cuf2elsa83f5pa0jsqn0zt5jq3qufd9q4w8cfm": {
+      "name": "Binance→OTC Router 1",
+      "category": "exchange_router",
+      "subcategory": "otc_intermediary",
+      "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC infrastructure. Nonce 169. Receives 8K EGLD chunks, forwards within minutes. Discovered run #6 (2026-05-04). ~40K EGLD routed in week 1."
+    },
+    "erd1k4r6kyjq7gevgg75pkvjevkyr2q62puet4lrfpuheytx9qacnzfqgmjx5z": {
+      "name": "Binance→OTC Router 2",
+      "category": "exchange_router",
+      "subcategory": "otc_intermediary",
+      "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and OTC Distribution Wallet. Nonce 180. ~24K EGLD routed in week 1. Discovered run #6."
+    },
+    "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0": {
+      "name": "Binance→OTC Router 3",
+      "category": "exchange_router",
+      "subcategory": "otc_intermediary",
+      "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC Desk. Nonce 147. 5,999 EGLD chunks. ~18K EGLD routed in week 1. Discovered run #6."
     }
   }
 }
