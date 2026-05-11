@@ -1097,6 +1097,75 @@
       "category": "exchange_router",
       "subcategory": "otc_intermediary",
       "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC Desk. Nonce 147. 5,999 EGLD chunks. ~18K EGLD routed in week 1. Discovered run #6."
+    },
+    "erd1g8ll9qrhmevdhjmtk8q02klu8a6q8z7xk0aqml7vncvpxdjwrdgq5ve8we": {
+      "name": "OTC→Bybit Router (UPbit-side, nonce 150)",
+      "category": "exchange_router",
+      "notes": "Receives 2K chunks from UPbit OTC Desk, forwards to Bybit within minutes. Near-zero balance.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1n5wcuda4vnh9umg8trwxqlzg4rglmcl3sjpvf7zdfw3ky2k3j95shk7wlm": {
+      "name": "OTC→Binance Router 1 (nonce 28)",
+      "category": "exchange_router",
+      "notes": "Aggregates 1-2K chunks from UPbit OTC + OTC Distribution, forwards 5-7K to Binance.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1cwkw3qlv4m30dp2gnxed5azy4224ennwfnldvs8rf5jekr6ca4ls4kkuwf": {
+      "name": "OTC→Binance Router 2 (nonce 3924)",
+      "category": "exchange_router",
+      "notes": "High-nonce well-established router. UPbit OTC + OTC Dist → Binance.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1dmmh5xxfwafcacef2z0d6mduxz7yemg3p9dqdwpefeu5jvexelcs254wu7": {
+      "name": "OTC→Bybit Router 2 (nonce 405)",
+      "category": "exchange_router",
+      "notes": "OTC Distribution → Bybit, 1-2K chunks.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1fs0c43welvqv6njhe7k3g26rysc2zaav23hydedq65phyca8dz9s44hwc2": {
+      "name": "OTC→Bybit Router 3 (nonce 53)",
+      "category": "exchange_router",
+      "notes": "OTC Distribution → Bybit, varied sizes.",
+      "first_seen": "2026-05-11"
+    },
+    "erd17cfk3d984xr6eef7smc5a7z480rn3klgu7pt2va7u37ehr7slmtqv6r2pe": {
+      "name": "OTC→Bybit Router 4 (nonce 16)",
+      "category": "exchange_router",
+      "notes": "Newer router. OTC Distribution → Bybit, 1.8-2K chunks.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1fdkq6mdyg7vt5wzs6039cf00xfmxmlg2kg8xkxkdzv8hw976rk2swhnc35": {
+      "name": "OTC→Binance Router 3 (nonce 663)",
+      "category": "exchange_router",
+      "notes": "Aggregates UPbit OTC + OTC Dist chunks, forwards 6K to Binance.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1ljlcx0wflzwvppyq8vfngs4ryaefvl9ruj7n75q467znw4k9c5dsht33kp": {
+      "name": "Bidirectional Router (Binance↔Bybit, nonce 573)",
+      "category": "exchange_router",
+      "notes": "Receives from BOTH UPbit OTC and Binance, forwards to Bybit. First bidirectional pattern.",
+      "first_seen": "2026-05-11"
+    },
+    "erd14n5vtgezssp7742g97djcuz5nss6wy9q2ecps2l77ha75q2t394swhz2yj": {
+      "name": "Cross-Exchange Settlement Router 1 (nonce 355)",
+      "category": "exchange_router",
+      "notes": "Receives from KuCoin + Binance, forwards to Bybit. Clearest CEX-CEX settlement node.",
+      "first_seen": "2026-05-11"
+    },
+    "erd1rffkz8zwp3pvnm02c6aexef5f53d64rjs8nj7qm5t0e8q5lnvutsuhnl73": {
+      "name": "Bybit→KuCoin Reverse Router (nonce 380)",
+      "category": "exchange_router",
+      "notes": "First documented reverse-direction CEX-CEX flow: Bybit → erd1rffkz8 → KuCoin.",
+      "first_seen": "2026-05-11"
+    }
+  },
+  "unknown_whales": {
+    "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
+      "name": "Unknown Whale (+58K 2026-05-11, now 318K EGLD)",
+      "category": "whale",
+      "notes": "Single largest non-exchange whale gain this week (+22.6%). Funding source unknown — top investigation priority.",
+      "first_seen": "2026-04-02",
+      "balance_egld_2026_05_11": 318122
     }
   }
 }
