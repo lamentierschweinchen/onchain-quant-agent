@@ -848,6 +848,216 @@
         "Track if EGLD/BTC ratio continues outperformance. 2 weeks running (+25.9% cumulative). Third week \u2192 regime shift. Look for catalyst (announcement, listing, partnership).",
         "MEX z-score eligible next run (N will be 4)."
       ]
+    },
+    {
+      "date": "2026-05-18",
+      "run_number": 8,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "/accounts/{addr}",
+          "/accounts/{addr}/transactions",
+          "/accounts/{addr}/transfers/count",
+          "/tokens?search=",
+          "/tokens/{identifier}",
+          "coingecko/simple/price"
+        ],
+        "endpoints_that_failed": [
+          "/tokens?sort=timestamp \u2192 HTTP 400 (silently unsupported, accepts only accounts/transactions/price/marketCap). Client-side filter on 500-token sample yielded 0 issuances."
+        ],
+        "api_quirks_discovered": [
+          "Whale tier deltas need top-50-vs-top-50 comparison; fetching top-100 vs prev top-50 silently inflated mid_whale +30 wallets when actual was +1. Trim current sample to match previous sample size before computing tier deltas.",
+          "OTC source trace pattern: query a whale's top 1-2 outbound recipients \u2192 trace through 2-3 hops \u2192 typically terminates at a known OTC desk. Validated this run with erd17l22 \u2192 erd1nhtq4 \u2192 erd1ecyftln \u2192 OTC Distribution + UPbit OTC. Reproducible.",
+          "Hatom H-token identifiers: use /tokens?search=Hatom and match by name prefix; raw identifier guesses (HEGLD-99fe43) yield 404. Correct mainnet suffixes: HUSDC-d80042, HEGLD-d61095, HUSDT-6f0914, HWBTC-49ca31, HWETH-b3d17e, HBUSD-ac1fca, HHTM-e03ba5, HMEX-df6df7, HUTK-4fa4b2, HWTAO-2e9136, HSEGLD-c13a4e, HSWTAO-6df80c."
+        ],
+        "data_gaps": [
+          "Newly-issued token detection still degraded (3 runs carrying). /tokens?sort=timestamp returns 400. Client-side filter on 500-token /tokens?sort=transactions sample also returns 0 \u2014 either no issuances in window or the sort=transactions sample excludes brand-new low-tx tokens. Try ESDT system SC /transactions filter next run.",
+          "erd17l22 funding source (last week's +58K) still unknown. Found the OUTBOUND chain, not the INBOUND.",
+          "AshSwap admin contracts return zero EGLD \u2014 the actual stableswap TVL sits in pool contracts not in known-addresses.json defi_ashswap. Expand address set."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Successful OTC source-trace investigation: erd17l22 \u2192 erd1nhtq4 \u2192 erd1ecyftln \u2192 OTC Distribution + UPbit OTC, fully validated within 3 hops. Pattern is reproducible and adds the missing upstream-of-desks link in the cross-exchange settlement taxonomy.",
+          "Bilateral inverse rule confirmed: Hatom Lending +13.6% EGLD during -16.9% decline (this week) mirrors run #7's -13% EGLD during +14.7% rally. Symmetric, predictable, usable as forward signal.",
+          "Yield-chase regime shift confirmed (3rd consecutive week). Both ninjastaking and egldstakingprovider near-tripled stake (cumulative +37.9K, +38.1K).",
+          "DEX volume reversion fully validates run #7's 'event-driven' classification. -77% retrace from peak. Closing the regime-shift watch was correct.",
+          "Entity-level exchange netting clear bearish signal: +169K net inflow during -17% decline. The per-wallet detail (Binance +76K dominant) shows the mechanism; the entity total shows direction."
+        ],
+        "what_needs_improvement": [
+          "Did not investigate erd17l22 INBOUND transactions (funding source). Carrying over.",
+          "Newly-issued token detection still TODO (3rd run carrying). Try ESDT system SC scan next.",
+          "AshSwap address set expansion still needed.",
+          "Did not query individual H-token holder/supply changes WoW \u2014 the token-supply-events array is empty for non-stablecoin/non-WEGLD tokens."
+        ],
+        "surprising_findings": [
+          "Complete one-week round-trip on EGLD: +14.7% (run #7) \u2192 -16.9% (run #8). The 'structural rally' / 'second elevation in 4 weeks' narrative was wrong; it was event-driven and fully unwound.",
+          "Binance.com erd1sdsl +76K (single largest exchange wallet inflow). All major exchanges net inflow during the decline \u2014 textbook bearish setup.",
+          "Coinbase +64.9%, Gate.io +67.7% \u2014 mid-size exchanges saw the largest percentage inflows. Suggests retail capitulation deposits, not whale flow.",
+          "New validator MrsEGLD entered with 158K first-week stake \u2014 unusual for a new identity to launch with that much off-chain liquidity.",
+          "erd17l22 distributing in 2K-chunk waves over 7+ days (May 11-18) is a clean OTC-source signature: regular intervals, identical amounts, predictable destinations.",
+          "Hatom LSD TVL +21.9% in EGLD terms during the -16.9% decline \u2014 strongest LSD accumulation signal recorded.",
+          "Yield-chase pattern persisting at scale: 0%-fee 9%+ APR providers absorbed ~+60K EGLD over 3 weeks at the expense of 7-8% APR 0.1% fee providers. Approximately 1pp of APR is enough to pull capital structurally.",
+          "XOXNO Aggregator throughput -40.8% retracement confirms run #7's +37.8% spike was event-driven."
+        ]
+      },
+      "methodology_changes": [
+        "ESTABLISHED: OTC source trace template via erd17l22 case. 3-hop trace from a flagged whale terminates at known OTC desk infrastructure. Pattern is reproducible \u2014 apply to all top-100 non-exchange whales with WoW balance change >5%.",
+        "ESTABLISHED: Bilateral inverse rule for lending TVL. During EGLD price rallies, lending TVL declines in EGLD terms (depositors capture gains). During declines, lending TVL grows in EGLD terms (depositors DCA). Symmetric, useful as forward indicator.",
+        "PROMOTED: yield-chase migration is now a CONFIRMED REGIME SHIFT (3 consecutive weeks). Capital reallocation appears structural, ~1pp APR spread is sufficient threshold.",
+        "CLOSED: DEX volume regime-shift watch \u2014 NOT a regime shift. Run #7 +5.86\u03c3 single-week event, fully mean-reverted to -0.67\u03c3.",
+        "TIGHTENED: whale tier comparison must be top-50-vs-top-50 (apples-to-apples). Always trim current sample to match previous sample size before computing tier deltas."
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu",
+          "reason": "OTC source-chain router for erd17l22's distribution. Nonce 2543, ~7.5K balance. Receives 2K chunks from erd17l22, forwards 1.2K chunks to erd1ecyftln. Confirmed upstream-of-desks layer.",
+          "suggested_label": "OTC Source-Chain Router (erd17l22 distribution)",
+          "priority": "high"
+        },
+        {
+          "address": "erd1ecyftln6n8ej5mxu0ejzxayfmtxfmzc08sp55qr8aj74yst4ejus4em6ce",
+          "reason": "OTC pass-through wallet, nonce 50, 0 balance. Receives from erd1nhtq4 router, forwards 7\u00d7~1.7K to OTC Distribution + 1\u00d7 to UPbit OTC. Completes the upstream chain for the OTC infrastructure.",
+          "suggested_label": "OTC Source Pass-through (erd17l22 chain)",
+          "priority": "high"
+        },
+        {
+          "address": "MrsEGLD (identity)",
+          "reason": "New validator joiner with 158K first-week stake \u2014 largest single new joiner tracked. Significant off-chain liquidity behind the launch. Investigate identity background and source of funds.",
+          "suggested_label": "Validator: MrsEGLD (new joiner, run #8)",
+          "priority": "medium"
+        }
+      ],
+      "action_items_completed": [
+        "DONE: Built OTC-flow throughput tracker (4 main edges identified, 76.6K total throughput over 7d through 55 router txs).",
+        "DONE: Investigated Unknown Whale erd17l22 OUTFLOW chain \u2014 OTC source confirmed via 3-hop trace. Funding source still TBD.",
+        "DONE: Tracked 377K Binance Staking parked capital \u2014 unchanged for 2nd week (open option confirmed).",
+        "DONE: Verified yield-chase regime shift \u2014 PROMOTED after 3 weeks. Ninja Staking +19.4K largest single gain.",
+        "DONE: Verified DEX volume regime \u2014 NOT a regime shift, fully reverted -77%. Closing watch.",
+        "DONE: Cross-exchange OTC monitoring continues \u2014 76.6K throughput, Bybit primary destination.",
+        "DONE: XOXNO Aggregator investigation \u2014 confirmed event-driven (-40.8% retrace).",
+        "DONE: Hatom H-token TVL via market-cap proxy + EGLD-term comparison \u2014 validated bilateral inverse rule.",
+        "NOT DONE: Newly-issued token detection (3rd run carrying \u2014 ESDT SC workaround still TODO).",
+        "RESOLVED: EGLD/BTC outperformance \u2014 reverted in one week, thesis dead.",
+        "DEFERRED: MEX z-score eligibility \u2014 N will be 4 next run."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.71,
+          3.74,
+          4.02,
+          4.29,
+          4.07,
+          4.67,
+          3.88
+        ],
+        "dex_volume_24h_usd": [
+          79000,
+          93065,
+          186015,
+          95356,
+          74843,
+          328098,
+          74915
+        ],
+        "staked_egld": [
+          14260000,
+          14706521,
+          14729755,
+          14738926,
+          14779606,
+          14454668,
+          14465903
+        ],
+        "mex_price_usd": [
+          4.3e-07,
+          3.7888e-07,
+          4.1144487024798363e-07,
+          3.7090115412287983e-07
+        ],
+        "total_delegators": [
+          179038,
+          179060,
+          179050,
+          179011
+        ],
+        "staked_ratio": [
+          0.4949,
+          0.4944,
+          0.495,
+          0.48333121059510425,
+          0.482931675993471
+        ],
+        "exchange_net_flow_egld": [
+          168942
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "OTC pipeline graph view (Sankey or force-directed)",
+          "motivation": "Run #8 confirmed the full OTC taxonomy: source whale (erd17l22) \u2192 source-chain router (erd1nhtq4 nonce 2543) \u2192 pass-through (erd1ecyftln nonce 50) \u2192 desk (OTC Distribution + UPbit OTC) \u2192 desk-router \u2192 exchange. The current dashboard renders OTC throughput as a flat number; a graph view would let users follow flows source-to-exchange and spot newly-emerging source wallets.",
+          "suggested_visualization": "force-directed graph with edge thickness proportional to 7d throughput, node color by tier (source/router/desk/exchange). Hover shows weekly tx count + EGLD volume on the edge.",
+          "data_already_available": true,
+          "data_source": "report JSON whale_intelligence.exchange_flows + whale_intelligence.large_transactions for edges; known-addresses.json sections for node tier classification",
+          "priority": "high"
+        },
+        {
+          "title": "Bilateral inverse rule chart (EGLD-price vs Hatom Lending TVL in EGLD)",
+          "motivation": "Run #7-#8 confirmed a clean inverse relationship: during +14.7% rally, Hatom Lending dropped -13% in EGLD; during -16.9% decline, Hatom Lending grew +13.6% in EGLD. Two data points already show negative correlation \u2014 the dashboard should plot price change vs lending-TVL change weekly to make this rule visible and predictive.",
+          "suggested_visualization": "Two-axis line chart: weekly EGLD price (left axis) vs Hatom Lending TVL in EGLD (right axis, inverted). Or scatter plot with weekly points and linear fit.",
+          "data_already_available": true,
+          "data_source": "report JSON defi_activity.protocol_breakdown.tvl_egld + network_health.economics.egld_price_usd across reports",
+          "priority": "medium"
+        },
+        {
+          "title": "Yield-chase migration cumulative chart",
+          "motivation": "After 3 weeks the yield-chase regime shift is structural \u2014 ninjastaking +37.9K cumulative, egldstakingprovider +38.1K cumulative. The current dashboard shows current-week deltas only; a stacked cumulative chart over 4-8 weeks would visualize the capital reallocation magnitude better than weekly snapshots.",
+          "suggested_visualization": "Stacked area chart showing top 5 yield-chase gainers + top 5 losers, cumulative WoW deltas over rolling 8 weeks.",
+          "data_already_available": true,
+          "data_source": "report JSON staking_intelligence.top_providers.wow_change_egld across reports",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 7,
+          "title": "No suggestions logged in run #7 (this feature loop is new in run #8)",
+          "status": "n/a",
+          "note": "Run #7 predates the dashboard_feature_suggestions field. Starting fresh this run."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "OTC source wallet template confirmed via erd17l22. The cross-exchange OTC pipeline taxonomy is now complete: source whale \u2192 source-chain router \u2192 pass-through \u2192 desk \u2192 desk-router \u2192 exchange. We can now systematically discover OTC sources by tracing top-100 non-exchange whale outbound flows.",
+        "actions_completed_count": 8,
+        "actions_attempted_count": 11,
+        "what_would_2x_next_week": "Build the OTC supply tracker described in top_recommendation. Enumerate top-100 non-exchange whales with WoW balance change >5%, trace their top outbound recipients 2-3 hops, flag any that terminate at known OTC desks. Likely reveals 3-5 additional source wallets and validates whether erd17l22 is a one-off or part of a larger pattern."
+      },
+      "recommendations_for_next_run": [
+        "TOP PRIORITY: Build OTC supply-source tracker. Scan top-100 non-exchange whales for ones distributing regular-amount EGLD chunks (1-5K) to nonce-1000+ routing wallets with near-zero balance. Trace 2-3 hops to identify terminus at known OTC desks. The erd17l22 template should reveal 3-5 additional source wallets if pattern is structural.",
+        "Investigate erd17l22 INBOUND transactions spanning 14+ days. Last week's +58K accumulation source remains unknown \u2014 the only piece of the pipeline not yet identified.",
+        "Watch staked_ratio for z<-2\u03c3 threshold breach (currently -1.81\u03c3 at 48.29%). If breached, would be first staking-side anomaly in tracking history.",
+        "Track if Binance Staking 3.11M stays parked for a 3rd week (open option), or starts moving (capital deployment). Cross-check Binance hot wallets for sudden balance jumps.",
+        "Verify yield-chase regime: 4th-week persistence \u2192 'permanent reallocation'. Reversal \u2192 still regime shift but lower confidence.",
+        "Verify exchange net-inflow trend: 2+ consecutive weeks of >+100K \u2192 multi-week capitulation. Reversal \u2192 single-week reaction.",
+        "Build identity background dossier for new joiner MrsEGLD (158K first-week stake). Cross-reference identity profile, owner wallet, source of funds, prior validator history.",
+        "Newly-issued token detection STILL TODO. Try /transactions?receiver=erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls8a5w6u with status=success and function filter to catch ESDT issuance calls.",
+        "Expand AshSwap address set in known-addresses.json defi_ashswap to include the stableswap pool contracts (current 9 admin contracts return zero EGLD \u2014 missing the actual TVL).",
+        "Apply OTC trace template to Unknown Mega Whale erd18mv2z6r2 (992K, dormant 5 weeks). If it starts distributing, the chain should resolve quickly.",
+        "MEX z-score eligibility \u2014 N=4 next week, activate z-score method."
+      ]
     }
   ]
 }

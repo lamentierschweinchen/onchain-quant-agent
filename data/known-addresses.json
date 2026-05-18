@@ -8,10 +8,10 @@
       "Web search verification",
       "SDK documentation (system contracts)"
     ],
-    "total_entries": 130,
-    "last_updated": "2026-05-04",
-    "updated_by_run": 6,
-    "notes": " | Run 6 added 3 cross-exchange OTC routing wallets (Binance.com 2 → UPbit OTC infrastructure)."
+    "total_entries": 145,
+    "last_updated": "2026-05-18",
+    "updated_by_run": 8,
+    "notes": " | Run 6: +3 routing wallets (Binance.com 2 → UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50)."
   },
   "system_contracts": {
     "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l": {
@@ -1157,15 +1157,30 @@
       "category": "exchange_router",
       "notes": "First documented reverse-direction CEX-CEX flow: Bybit → erd1rffkz8 → KuCoin.",
       "first_seen": "2026-05-11"
+    },
+    "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu": {
+      "name": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
+      "category": "exchange_router",
+      "subcategory": "otc_source_router",
+      "notes": "Receives 2K-EGLD chunks from Unknown Whale erd17l22, forwards in 1.2K chunks to erd1ecyftln pass-through. Nonce 2543, ~7.5K EGLD balance. First documented OTC SOURCE upstream layer — discovered run #8 (2026-05-18).",
+      "first_seen": "2026-05-18"
+    },
+    "erd1ecyftln6n8ej5mxu0ejzxayfmtxfmzc08sp55qr8aj74yst4ejus4em6ce": {
+      "name": "OTC Source Pass-through (erd17l22 chain, nonce 50)",
+      "category": "exchange_router",
+      "subcategory": "otc_source_router",
+      "notes": "Receives from erd1nhtq4 router, forwards 7×~1.7K to OTC Distribution Wallet + 1× to UPbit OTC Desk. Nonce 50, 0 EGLD balance. Run #8 completes the upstream-of-OTC-desks pipeline taxonomy.",
+      "first_seen": "2026-05-18"
     }
   },
   "unknown_whales": {
     "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
-      "name": "Unknown Whale (+58K 2026-05-11, now 318K EGLD)",
+      "name": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4→erd1ecyftln→OTC Distribution+UPbit OTC; funding source still TBD)",
       "category": "whale",
-      "notes": "Single largest non-exchange whale gain this week (+22.6%). Funding source unknown — top investigation priority.",
+      "subcategory": "otc_source",
+      "notes": "Run #7 +58K accumulation, Run #8 -26K distributed in 13 chunks of 2K EGLD to routing wallet erd1nhtq4 (nonce 2543), terminating at OTC Distribution Wallet + UPbit OTC Desk. Now confirmed as OTC SOURCE wallet upstream of the desk layer. Investigate funding source.",
       "first_seen": "2026-04-02",
-      "balance_egld_2026_05_11": 318122
+      "balance_egld_2026_05_18": 292122
     }
   }
 }
