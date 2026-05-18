@@ -100,7 +100,7 @@
               "receiver_label": { "type": ["string", "null"] },
               "value_egld": { "type": "number" },
               "value_usd": { "type": "number" },
-              "flow_type": { "type": "string", "enum": ["exchange_inflow", "exchange_outflow", "defi_deposit", "defi_withdrawal", "whale_to_whale", "staking", "unstaking", "bridge", "unknown"] }
+              "flow_type": { "type": "string", "enum": ["exchange_inflow", "exchange_outflow", "exchange_to_exchange", "defi_deposit", "defi_withdrawal", "whale_to_whale", "staking", "unstaking", "bridge", "unknown"] }
             }
           }
         },
@@ -450,7 +450,7 @@
             "type": "object",
             "properties": {
               "name": { "type": "string" },
-              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "nft_marketplace", "bridge", "perpetuals", "other"] },
+              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "stablecoin", "nft_marketplace", "bridge", "perpetuals", "aggregator", "other"] },
               "volume_24h_usd": { "type": ["number", "null"] },
               "active_pairs": { "type": ["integer", "null"] },
               "transfers_24h": { "type": ["integer", "null"] },
@@ -467,7 +467,7 @@
             "type": "object",
             "properties": {
               "protocol": { "type": "string" },
-              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "nft_marketplace", "bridge", "perpetuals", "aggregator", "other"] },
+              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "stablecoin", "nft_marketplace", "bridge", "perpetuals", "aggregator", "other"] },
               "addresses_tracked": { "type": "integer" },
               "tvl_egld": { "type": ["number", "null"] },
               "tvl_usd": { "type": ["number", "null"] },

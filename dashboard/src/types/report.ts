@@ -19,6 +19,7 @@ export type Category =
 export type FlowType =
   | 'exchange_inflow'
   | 'exchange_outflow'
+  | 'exchange_to_exchange'
   | 'defi_deposit'
   | 'defi_withdrawal'
   | 'whale_to_whale'
@@ -30,6 +31,7 @@ export type ProtocolCategory =
   | 'dex'
   | 'lending'
   | 'liquid_staking'
+  | 'stablecoin'
   | 'nft_marketplace'
   | 'bridge'
   | 'perpetuals'

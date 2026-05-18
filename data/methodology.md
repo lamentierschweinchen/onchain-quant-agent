@@ -329,7 +329,7 @@ Heuristic: if a metric jumps >2 sigma AND the new level is sustained for 2+ week
 
 ## Report JSON Schema — CRITICAL
 
-The dashboard (`dashboard/src/types/report.ts`) enforces a strict schema. A blank page means the JSON doesn't match. The report JSON **must** have these exact top-level keys:
+The dashboard (`dashboard/src/types/report.ts`) enforces a strict schema. **A blank page means the JSON doesn't match** and the React tree unmounted due to an unhandled error (no App-level error boundary). The report JSON **must** have these exact top-level keys:
 
 ```
 metadata, executive_summary, network_health, whale_intelligence,
@@ -337,9 +337,47 @@ staking_intelligence, token_activity, defi_activity, anomalies,
 watch_list, meta_learning
 ```
 
-Use `dashboard/public/reports/2026-04-07.json` as the canonical reference. Do NOT invent a flat schema — it will break the dashboard silently.
+### Run validator BEFORE manifest/commit/deploy
 
-After generating the JSON, also run the deployment steps:
+This is the mandatory gate added after run #8's blank-page incident:
+
+```bash
+python3 scripts/validate_report.py reports/${REPORT_DATE}.json
+```
+
+Checks three layers:
+1. JSON Schema (`data/report-schema.json`) — types and enums
+2. Dashboard-rendering invariants — required fields the React components call methods on
+3. Enum string-literal unions
+
+Exit 0 means safe to manifest+deploy. Non-zero exit means **do not push**; fix the JSON and re-run.
+
+### Field-name canon (the parts the validator can't infer)
+
+The dashboard's `dashboard/src/types/report.ts` is the source of truth. Common gotchas worth memorizing:
+
+| Section | Required field name | Common wrong name |
+|---|---|---|
+| `trend_indicators.validator_movements.notable_leavers[]` | `previous_locked_egld` | `locked_egld_previous` ← run #8 broke this |
+| `whale_intelligence.whale_tiers.{tier}_whales` | `count_current`, `total_balance_egld`, `previous_total_balance_egld` | `count`, `total_egld`, `total_egld_previous` |
+| `whale_intelligence.exchange_flows.by_exchange[]` | `exchange`, `change_egld`, `pct` | `name`, `flow_egld` |
+| `staking_intelligence.apr_distribution.buckets[]` | `label`, `min_apr_pct`, `max_apr_pct`, `provider_count`, `total_locked_egld` | `bucket`, `min`, `max`, `count`, `locked` |
+| `token_activity.top_by_holders[]` | `previous_holders`, `holders_change` | `holders_previous`, `holders_wow_change` |
+| `whale_intelligence.large_transactions[].timestamp` | ISO 8601 string | Unix int |
+
+### Extending enums
+
+If you genuinely need a new enum value (new flow type, new protocol category), extend ALL THREE in the same commit:
+1. `data/report-schema.json` (the schema)
+2. `dashboard/src/types/report.ts` (the TS union — additive only)
+3. `scripts/validate_report.py` `ENUM_INVARIANTS` table
+4. Then rebuild + redeploy the dashboard
+
+### Why this matters
+
+Run #8 had `locked_egld_previous` instead of `previous_locked_egld` in notable_leavers. JSON loaded fine, HTTP 200, but `formatEgldBare(undefined).toLocaleString()` threw at first render. Because there's no App-level error boundary, the WHOLE React tree unmounted — page completely blank, no spinner, no error message. The validator catches this class of bug before deploy.
+
+### Deployment steps (run AFTER validator passes)
 1. `cd dashboard && npx tsx scripts/generate-manifest.ts` — copies JSON to public/
 2. `git add ... && git push`
 3. `cd dashboard && vercel --prod` — deploy to Vercel

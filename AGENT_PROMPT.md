@@ -329,9 +329,31 @@ Update `data/previous.json` with this week's data so the next run can compute de
 }
 ```
 
-### 3.4 Dashboard Manifest
+### 3.4 Validate Against Schema — MANDATORY GATE
 
-After writing the JSON, update the dashboard's manifest:
+**Before** generating the manifest, validate the JSON against the canonical schema and dashboard-rendering invariants:
+
+```bash
+python3 scripts/validate_report.py reports/${REPORT_DATE}.json
+```
+
+The validator must exit 0. If it fails, fix the report JSON and re-run — **do not proceed to manifest/commit/deploy**. This catches:
+- JSON Schema violations (`data/report-schema.json`)
+- Dashboard-invariant violations (fields the React components call methods on)
+- Enum violations (`flow_type`, `category`, `severity`, `direction`, `method`)
+
+Why this is mandatory: a single wrong field name (e.g. `locked_egld_previous` instead of `previous_locked_egld`) crashes the entire React tree because there's no App-level error boundary. The HTTP request returns 200 and the page goes completely blank — silent failure that's hard to diagnose post-deploy. Run #8 hit this exact issue.
+
+If you genuinely need a new enum value (a new protocol category, a new flow type), extend BOTH:
+1. `data/report-schema.json` (the canonical schema)
+2. `dashboard/src/types/report.ts` (the TypeScript types — additive only)
+3. The `ENUM_INVARIANTS` table in `scripts/validate_report.py`
+
+Then rebuild and redeploy the dashboard. Never just silently produce a value not in the union.
+
+### 3.5 Dashboard Manifest
+
+After validation passes, update the dashboard's manifest:
 
 ```bash
 cd dashboard && npx tsx scripts/generate-manifest.ts && cd ..
