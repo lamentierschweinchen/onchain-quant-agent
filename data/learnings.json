@@ -1058,6 +1058,212 @@
         "Apply OTC trace template to Unknown Mega Whale erd18mv2z6r2 (992K, dormant 5 weeks). If it starts distributing, the chain should resolve quickly.",
         "MEX z-score eligibility \u2014 N=4 next week, activate z-score method."
       ]
+    },
+    {
+      "date": "2026-05-25",
+      "run_number": 9,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/tokens?sort=transactions&order=asc",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x35",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x14"
+        ],
+        "endpoints_that_failed": [
+          "/tokens?sort=timestamp (HTTP 400)"
+        ],
+        "api_quirks_discovered": [
+          "total_delegators z-score is DEGENERATE: baseline sd ~18 over a ~179K base means a -53 (-0.03%) move shows z=-4.5 sigma. Near-constant metrics produce spurious z-scores - always cross-check absolute % change before assigning severity.",
+          "mex/economics volume24h returned a NONZERO value ($121K) this run (historically $0). Still prefer mex/pairs sum ($81.9K) for consistency, but the eco field may be becoming usable.",
+          "Token supply comparison broken across runs: previous.json historically stored decimals-adjusted supply while /tokens returns raw integer supply. Fixed this run by storing supply_raw in previous.json for like-for-like diffs from run #10.",
+          "Intra-entity wallet shuffles can dominate the headline exchange-flow figure (Binance hot->staking-custody +267K). Decompose entity netting into per-wallet moves before interpreting direction."
+        ],
+        "data_gaps": [
+          "erd17l22 +58K (run #7) original funding source still not fully resolved - this week only a 2K top-up from erd12tq6ax5k observed (the big inflow predates the 14d window).",
+          "Newly-issued token detection still degraded (5 runs). /tokens?sort=timestamp HTTP 400; ESDT system-SC issuance scan still TODO.",
+          "AshSwap stableswap pool TVL still missing (admin contracts return zero EGLD); address set needs pool contracts."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Decomposing the Binance entity flow surfaced the real story: hot wallet -316K -> staking custody +267K, a parked-capital accumulation, not an exchange inflow/outflow. Per-wallet decomposition beat the entity-net headline.",
+          "Catching the degenerate total_delegators z-score (z=-4.5 from sd=18) and downgrading it - avoided a false 'critical' anomaly. Methodology self-correction.",
+          "ZoidPay anomaly caught via DEX pair-composition shift (WEGLD/USDC 91.6%->56.2%) cross-referenced with the +59% price move - two independent signals confirming one event.",
+          "Exchange-flow reversal (+169K -> -56K) validated the run #8 two-week confirmation rule: single-week capitulation reads should not be extrapolated."
+        ],
+        "what_needs_improvement": [
+          "Newly-issued token detection still TODO (5th run).",
+          "Validator joiner/leaver matching is unreliable for anonymous (no-identity) delegation contracts - matched by name only. Need contract-address-based matching (store provider addresses in previous.json).",
+          "AshSwap address set expansion still pending."
+        ],
+        "surprising_findings": [
+          "Binance moved 267K from hot wallet into staking-custody wallet (now 3.38M) but did NOT delegate it - the protocol staked module barely moved. A large undeployed position is accumulating.",
+          "ZoidPay/WEGLD captured 40.8% of DEX volume - first time ANY non-WEGLD/USDC pair broke 40% in tracking history. WEGLD/USDC dominance fell from 91.6% to 56.2%.",
+          "Last week's bearish +169K exchange inflow fully reversed to -56K - a clean single-week reaction, not the start of capitulation.",
+          "Yield-chase leadership rotated within the 0%-fee cohort: procryptostaking +17K and valuestaking +16K took over from ninjastaking/egldstakingprovider."
+        ]
+      },
+      "methodology_changes": [
+        "NEW RULE: degenerate z-scores - downgrade severity when baseline stddev is tiny relative to the metric and the absolute % move is <0.1% (total_delegators case).",
+        "CONFIRMED: decompose entity netting into per-wallet moves; intra-entity shuffles (Binance hot->staking) masquerade as exchange flow.",
+        "CONFIRMED (mild): bilateral inverse rule scales with price-move magnitude (+2.3% price -> Hatom Lending -1% EGLD).",
+        "VALIDATED: run #8 exchange-flow two-week confirmation rule - the +169K inflow was a single-week reaction (reverted -56K)."
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp",
+          "reason": "Sent ~2K EGLD in two chunks to OTC source wallet erd17l22 this week. Candidate upstream funder of the OTC source layer. erd17l22 was otherwise dormant.",
+          "suggested_label": "OTC Source Funder (erd17l22 upstream)",
+          "priority": "medium"
+        }
+      ],
+      "action_items_completed": [
+        "DONE: Applied OTC-source detection template to top-100 whales - erd17l22 now dormant (winding down after run #8 wave); traced inbound funder erd12tq6ax5k.",
+        "DONE: erd17l22 inbound investigation - 14d inbound is just +2K from erd12tq6ax5k; the original +58K predates the window.",
+        "DONE: staked_ratio z-watch - did NOT breach -2 sigma (receded to -1.38). Ratio stabilized at 48.22%.",
+        "DONE: Binance Staking parked capital tracked - it GREW +267K (now 3.38M), capital added not deployed. Major finding.",
+        "DONE: yield-chase week 4 verified - persists with rotating leadership (procryptostaking +17K, valuestaking +16K).",
+        "DONE: exchange net-inflow trend - REVERSED to -56K (single-week reaction confirmed, not multi-week capitulation).",
+        "DONE: MEX z-score activated (N=4, z=-0.83, normal).",
+        "DONE: applied OTC trace to Unknown Mega Whale erd18mv2 - resumed small bidirectional Coinbase flow, balance flat.",
+        "PARTIAL: MrsEGLD dossier - still present ~158K, quiet week, no new info.",
+        "NOT DONE: newly-issued token detection (5th run carrying).",
+        "NOT DONE: AshSwap address set expansion."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.74,
+          4.02,
+          4.29,
+          4.07,
+          4.67,
+          3.88,
+          3.97
+        ],
+        "dex_volume_24h_usd": [
+          93065,
+          186015,
+          95356,
+          74843,
+          328098,
+          74915,
+          81933.26158545031
+        ],
+        "staked_egld": [
+          14706521,
+          14729755,
+          14738926,
+          14779606,
+          14454668,
+          14465903,
+          14467981
+        ],
+        "mex_price_usd": [
+          4.3e-07,
+          3.7888e-07,
+          4.1144487024798363e-07,
+          3.7090115412287983e-07,
+          3.7792186273497485e-07
+        ],
+        "total_delegators": [
+          179038,
+          179060,
+          179050,
+          179011,
+          178958
+        ],
+        "staked_ratio": [
+          0.4949,
+          0.4944,
+          0.495,
+          0.48333121059510425,
+          0.482931675993471,
+          0.48222713367788334
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Multi-week net exchange-flow oscillation chart",
+          "motivation": "Run #8 was +169K net inflow (bearish), run #9 reversed to -56K outflow. The single-week dashboard can't show that the +169K did NOT persist. A weekly net-flow bar chart (green outflow / red inflow) would make the single-week-reaction vs multi-week-capitulation distinction visible at a glance.",
+          "suggested_visualization": "diverging bar chart, one bar per week, net exchange EGLD flow, colored by sign; overlay EGLD price line.",
+          "data_already_available": true,
+          "data_source": "learnings.json running_baselines.exchange_net_flow_egld + report whale_intelligence.exchange_flows.net_change_egld",
+          "priority": "high"
+        },
+        {
+          "title": "DEX pair-composition stacked-area over time",
+          "motivation": "This run WEGLD/USDC dominance collapsed 91.6%->56.2% as ZoidPay/WEGLD took 40.8%. The current dashboard shows one week's pair list; a stacked-area of pair-share over weeks would surface emerging second markets (the ZPAY event) and revert/persist dynamics.",
+          "suggested_visualization": "100% stacked area chart of top-5 pair volume share per week.",
+          "data_already_available": true,
+          "data_source": "report token_activity.xexchange.top_pairs_by_volume across reports",
+          "priority": "medium"
+        },
+        {
+          "title": "Binance staking-custody vs protocol-staked-module tracker",
+          "motivation": "The week's top finding: Binance's staking-custody wallet grew to 3.38M (+267K) while the protocol staked module barely moved - capital parked, not delegated. A two-line chart (custody wallet balance vs staked module) would make 'parked vs delegated' obvious and flag the moment Binance deploys or distributes.",
+          "suggested_visualization": "dual-line time series: Binance Staking wallet balance vs economics.staked, weekly.",
+          "data_already_available": true,
+          "data_source": "previous.json exchange_balances['Binance Staking'] + economics.staked_egld across reports",
+          "priority": "high"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "Still unbuilt; data available. Even more relevant now - pipeline in distribution phase (~145K throughput) and source layer (erd17l22 + funder erd12tq6ax5k) extended."
+        },
+        {
+          "from_run": 8,
+          "title": "Bilateral inverse rule chart (price vs Hatom Lending TVL in EGLD)",
+          "status": "pending",
+          "note": "3rd data point added this run (+2.3% price -> -1% EGLD lending). Now have rally/decline/mild-recovery points - good time to build."
+        },
+        {
+          "from_run": 8,
+          "title": "Yield-chase migration cumulative chart",
+          "status": "pending",
+          "note": "Week 4 confirmed with rotating leadership; cumulative chart would now show the rotation within the 0%-fee cohort. Still unbuilt."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "Binance's staking-custody wallet has quietly grown to 3.38M EGLD - run #7's 377K unstaking parked here, and this week another 267K arrived from the hot wallet, yet the protocol staked module barely moved. Binance is accumulating a large undeployed EGLD position in its staking-designated wallet. Whether it gets delegated (multi-week lockup, bullish) or routed to hot wallets (distribution, bearish) is now the single highest-signal thing to watch on the network.",
+        "actions_completed_count": 8,
+        "actions_attempted_count": 11,
+        "what_would_2x_next_week": "Build the Binance staking-custody vs staked-module tracker and wire exchange_net_flow_egld into a multi-week chart. The two highest-signal forward indicators (Binance's 3.38M undeployed position; whether exchange flows re-accelerate) are exactly the things the current single-week dashboard cannot show."
+      },
+      "recommendations_for_next_run": [
+        "Watch Binance Staking custody (3.38M): delegated (staked module jumps) vs moved to hot wallets (sell). Highest-signal indicator.",
+        "Track ZoidPay (ZPAY): does the +59% / 40% DEX-share hold or revert? If sustained 2 weeks, a genuine second active DEX market. Look for a catalyst (listing, announcement).",
+        "Verify yield-chase week 5: still rotating within the 0%-fee cohort? procryptostaking + valuestaking now lead.",
+        "Monitor erd12tq6ax5k as the candidate upstream funder of OTC source erd17l22; query its inbound/outbound.",
+        "Newly-issued token detection (5th run carrying): implement decimals-aware /tokens supply diff AND try /transactions to ESDT system SC (erd1qqqq...llls8a5w6u) with function=issue filter.",
+        "Fix token_supply_events: store raw integer supply in previous.json so next run can diff like-for-like.",
+        "Expand AshSwap address set in known-addresses.json defi_ashswap with stableswap pool contracts (admin contracts return zero EGLD).",
+        "Confirm exchange-flow direction: 2nd week of net outflow = off-exchange accumulation (bullish); reversal to inflow = renewed sell pressure.",
+        "Apply OTC trace to any new top-100 whale with >5% WoW balance change (template from erd17l22)."
+      ]
     }
   ]
 }
