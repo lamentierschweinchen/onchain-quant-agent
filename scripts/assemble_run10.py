@@ -170,7 +170,7 @@ for i,p in enumerate(provs[:20],1):
     pl=prevp.get(nm)
     top_providers.append({"rank":i,"identity":nm,"name":nm,"provider_address":p["provider"],
         "locked_egld":p["_lk"],"previous_locked_egld":pl,"share_pct":p["_lk"]/total_locked*100,
-        "apr_pct":aprp(p),"fee_pct":feep(p),"num_users":p.get("numUsers"),"num_nodes":p.get("numNodes"),
+        "apr_pct":aprp(p),"fee_pct":feep(p)*100,"num_users":p.get("numUsers"),"num_nodes":p.get("numNodes"),
         "wow_change_egld":(p["_lk"]-pl) if pl is not None else None})
 apr_w=sum(p["_lk"]*aprp(p) for p in provs)/total_locked
 buckets=[]
@@ -179,9 +179,9 @@ for lbl,mn,mx in [("5-6%",5,6),("6-7%",6,7),("7-8%",7,8),("8-9%",8,9),("9-10%",9
     buckets.append({"label":lbl,"min_apr_pct":mn,"max_apr_pct":mx,"provider_count":len(sub),
         "total_locked_egld":sum(p["_lk"] for p in sub)})
 qual=[p for p in provs if p["_lk"]>5000]
-top_apr=[{"identity":p.get("identity") or p["provider"],"apr_pct":aprp(p),"fee_pct":feep(p),
+top_apr=[{"identity":p.get("identity") or p["provider"],"apr_pct":aprp(p),"fee_pct":feep(p)*100,
     "locked_egld":p["_lk"],"name":p.get("identity") or p["provider"]} for p in sorted(qual,key=lambda p:-aprp(p))[:5]]
-lowest_fee=[{"identity":p.get("identity") or p["provider"],"apr_pct":aprp(p),"fee_pct":feep(p),
+lowest_fee=[{"identity":p.get("identity") or p["provider"],"apr_pct":aprp(p),"fee_pct":feep(p)*100,
     "locked_egld":p["_lk"],"name":p.get("identity") or p["provider"]} for p in sorted(qual,key=lambda p:(feep(p),-aprp(p)))[:5]]
 cur_deleg=sum(p.get("numUsers",0) for p in provs); prev_deleg=sum(prevp_u.values())
 gain=sum(1 for p in provs if prevp_u.get(p.get("identity") or p.get("provider")) is not None and p.get("numUsers",0)>prevp_u.get(p.get("identity") or p.get("provider")))
@@ -430,7 +430,7 @@ whale_analysis=("THE WEEK'S DOMINANT MOVE (continuing run #9's pattern): Binance
 # ---------- staking analysis ----------
 staking_analysis=(f"Staking concentration remains low (HHI {hhi:.4f}, top-5 {top5:.1f}%). Total delegated {total_locked:,.0f} EGLD across {len(provs)} active providers. Active delegator base {cur_deleg:,} (-24 WoW, -0.013% - degenerate z-score, real signal flat).\n\n"
  "YIELD-CHASE WEEK 5 - PATTERN WEAKENING. Net flow into the 0%-fee 9%+ APR cohort dropped from ~+50K cumulative across weeks 1-4 to only +3.5K this week. procryptostaking still leads (+7.5K, ~9% APR, 7,187 users) - the only material gainer in the cohort. But last week's other leaders all REVERSED: valuestaking -3.1K, egldstakingprovider -1.9K, orius -1.7K, ninjastaking nearly flat (+0.7K). The regime shift is stalling. One more week of contractions ends it.\n\n"
- f"APR distribution: 70% of stake in the 8-9% bucket ({buckets[3]['provider_count']} providers, {buckets[3]['total_locked_egld']/1e6:.1f}M). The 9-10% bucket holds {buckets[4]['provider_count']} providers / {buckets[4]['total_locked_egld']/1e3:.0f}K EGLD. The 5-6% bucket has only 1 provider ({buckets[0]['total_locked_egld']/1e3:.0f}K) and 10%+ is empty (was empty across all 2026 runs). Apr-weighted average: {apr_w*100:.2f}%.\n\n"
+ f"APR distribution: 70% of stake in the 8-9% bucket ({buckets[3]['provider_count']} providers, {buckets[3]['total_locked_egld']/1e6:.1f}M). The 9-10% bucket holds {buckets[4]['provider_count']} providers / {buckets[4]['total_locked_egld']/1e3:.0f}K EGLD. The 5-6% bucket has only 1 provider ({buckets[0]['total_locked_egld']/1e3:.0f}K) and 10%+ is empty (was empty across all 2026 runs). Apr-weighted average: {apr_w:.2f}%.\n\n"
  f"DELEGATOR CHURN: {gain} providers gaining vs {lose} losing delegators (broad mid-tier exodus continues). Total delegators flat for 6 readings (179,038 -> 179,060 -> 179,050 -> 179,011 -> 178,958 -> 178,934) while staked EGLD up +30K = concentrated re-staking by fewer/larger holders. Classic whale-consolidation signature.\n\n"
  "VALIDATOR MOVEMENTS: 6 system-contract addresses (erd1qqqq...llllll...) dropped out of the providers list - these are protocol-level direct-node staking aggregators whose locked totals fell below threshold or to zero. Treated as data artifact, not real validator exits. Notable named validator movements: none this week.")
 

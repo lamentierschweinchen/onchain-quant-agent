@@ -88,7 +88,7 @@ w("## Staking Power Map"); w()
 s=si["summary"]
 w(f"- **Total delegated**: {egld(s['total_delegated_egld'])} EGLD across {s['num_providers']} active providers")
 w(f"- **Concentration**: top-5 {si['concentration']['top_5_share_pct']:.1f}%, top-10 {si['concentration']['top_10_share_pct']:.1f}%, HHI {si['concentration']['hhi']:.4f} ({si['concentration']['hhi_interpretation']})")
-w(f"- **APR**: weighted avg {s['apr_weighted_avg']*100:.2f}%, range {s['apr_min']*100:.1f}%-{s['apr_max']*100:.2f}%")
+w(f"- **APR**: weighted avg {s['apr_weighted_avg']:.2f}%, range {s['apr_min']:.1f}%-{s['apr_max']:.2f}%")
 w(f"- **Delegators**: {si['churn']['total_delegators_current']:,} ({si['churn']['delegators_added']:+}), {si['churn']['providers_gaining_delegators']} gaining / {si['churn']['providers_losing_delegators']} losing")
 w()
 w("### Top Providers (WoW)"); w()
@@ -96,7 +96,7 @@ w("| # | Provider | Locked EGLD | APR | Fee | WoW Δ |")
 w("|---|---|---|---|---|---|")
 for p in si["top_providers"][:12]:
     wow=f"{p['wow_change_egld']:+,.0f}" if p['wow_change_egld'] is not None else "n/a"
-    w(f"| {p['rank']} | {p['identity']} | {egld(p['locked_egld'])} | {p['apr_pct']*100:.2f}% | {p['fee_pct']*100:.1f}% | {wow} |")
+    w(f"| {p['rank']} | {p['identity']} | {egld(p['locked_egld'])} | {p['apr_pct']:.2f}% | {p['fee_pct']:.1f}% | {wow} |")
 w()
 w("### APR Distribution"); w()
 w("| Bucket | Providers | Locked EGLD |")
@@ -107,11 +107,11 @@ w()
 w("### APR Outliers"); w()
 w("**Top APR (qualified, >5K locked):**"); w()
 for p in si["apr_outliers"]["top_apr"]:
-    w(f"- {p['identity']}: {p['apr_pct']*100:.2f}% APR @ {p['fee_pct']*100:.1f}% fee — {egld(p['locked_egld'])} EGLD")
+    w(f"- {p['identity']}: {p['apr_pct']:.2f}% APR @ {p['fee_pct']:.1f}% fee — {egld(p['locked_egld'])} EGLD")
 w()
 w("**Lowest fee (qualified, >5K locked):**"); w()
 for p in si["apr_outliers"]["lowest_fee"]:
-    w(f"- {p['identity']}: {p['fee_pct']*100:.1f}% fee @ {p['apr_pct']*100:.2f}% APR — {egld(p['locked_egld'])} EGLD")
+    w(f"- {p['identity']}: {p['fee_pct']:.1f}% fee @ {p['apr_pct']:.2f}% APR — {egld(p['locked_egld'])} EGLD")
 w()
 w("### Analysis"); w(); w(si["analysis"]); w(); w("---"); w()
 
