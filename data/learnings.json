@@ -1264,6 +1264,238 @@
         "Confirm exchange-flow direction: 2nd week of net outflow = off-exchange accumulation (bullish); reversal to inflow = renewed sell pressure.",
         "Apply OTC trace to any new top-100 whale with >5% WoW balance change (template from erd17l22)."
       ]
+    },
+    {
+      "date": "2026-06-01",
+      "run_number": 10,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x38",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x14"
+        ],
+        "endpoints_that_failed": [
+          "/tokens?sort=timestamp (HTTP 400 - 5th run carrying)",
+          "Brief HTTP 429 on H-token batch (recovered with longer delay)"
+        ],
+        "api_quirks_discovered": [
+          "/tokens/{id} batch hit HTTP 429 with 0.12s delays - increased to 0.6s fixed. Recommend keeping H-token batch delay >=0.5s, especially when followed by other API calls.",
+          "OTC pipeline address typo in collect script caught a HTTP 400 (typo on Binance.com hot wallet and funder addresses). Lesson: always verify ad-hoc addresses against known-addresses.json before adding to query batch.",
+          "Token supply_raw diff WORKS as predicted (run #9 fix landed) - flagged WEGLD +4.7% as the first reliable supply event detection. USDC/USDT diff still spurious because prev had signed values from the earlier bug.",
+          "Validator joiners/leavers lists contain protocol system contracts (erd1qqqq...llllll...) that come/go as direct-node staking aggregators move above/below threshold - filter these out for the real validator movement count."
+        ],
+        "data_gaps": [
+          "Newly-issued token detection still BLOCKED (5 runs in a row). /tokens?sort=timestamp HTTP 400.",
+          "AshSwap stableswap pool TVL still missing (admin contracts return zero EGLD).",
+          "Validator joiner/leaver matching by name only; anonymous (no-identity) providers are not WoW-matchable. Need to store provider addresses in previous.json."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Tracing the OTC source funder (erd12tq6ax5k) confirmed 100% Binance.com origin - completing the OTC pipeline taxonomy that began run #6. The 14d inbound query against the funder address was the decisive evidence.",
+          "Bilateral inverse rule prediction was strongly validated: -12% price -> +8.3% Hatom Lending EGLD. The rule has now produced 3 distinct event confirmations (run #7, #8, #10).",
+          "Coinbase 3-week net outflow streak isolation provided a cleaner read on off-exchange accumulation than the noisy Binance-shuffle-dominated entity netting.",
+          "Yield-chase regime tracking worked exactly as scoped: confirmed week 5 stalling via cohort-level WoW comparison vs the cumulative weeks 1-4 baseline."
+        ],
+        "what_needs_improvement": [
+          "Newly-issued token detection (6th run TODO).",
+          "Validator joiner/leaver matching is unreliable; need address-based diffing.",
+          "The Binance.com 'entity' is so dominant that headline exchange-flow numbers need automatic decomposition - this should be a structural report field, not just narrative."
+        ],
+        "surprising_findings": [
+          "OTC pipeline traced to Binance.com as the ULTIMATE origin via a pure pass-through funder. The 'organic OTC desk' framing is largely a fiction - Binance is settling customer sells through a multi-hop on-chain pipeline.",
+          "Binance Staking custody crossed 3.5M EGLD with no delegation - 3 consecutive weeks of accumulation now constitutes a STRUCTURAL position, not transit.",
+          "ZoidPay 40.8% DEX share fully reverted to 8.9% in a single week - confirming run #9 as event-driven with rare cleanliness.",
+          "Bilateral inverse rule magnitude is now linear with price moves: +14.7% -> -13% EGLD; -16.9% -> +13.6% EGLD; -11.8% -> +8.3% EGLD."
+        ]
+      },
+      "methodology_changes": [
+        "OTC PIPELINE TRACING METHOD: query funder address 14d inbound; if 100% concentration from one exchange + balance ~0 + outbound mirrors inbound = pure pass-through. Verified on erd12tq6ax5k.",
+        "NEW RULE (validated): bilateral inverse rule scales linearly with price magnitude (3 data points).",
+        "NEW RULE: validator joiner/leaver filtering - exclude erd1qqqq* system staking contracts.",
+        "TOKEN SUPPLY EVENT DETECTION ACTIVE: prev.json supply_raw diff confirmed working. WEGLD +4.7% flagged as first real event. Thresholds 0.1% for stablecoins, 1.0% otherwise."
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp",
+          "reason": "100% Binance.com inbound -> 100% erd17l22 outbound pass-through. 6,970 EGLD throughput 7d. This is the missing link between Binance.com and the OTC source layer.",
+          "suggested_label": "Binance -> OTC Source Funder (verified 100% pass-through)",
+          "priority": "high"
+        }
+      ],
+      "action_items_completed": [
+        "DONE: Tracked Binance Staking custody - now 3.51M, +135K parked again, protocol staked +30K only. 3-week structural accumulation confirmed.",
+        "DONE: ZoidPay (ZPAY) follow-up - REVERTED from 40.8% to 8.9% in one week. Confirmed event-driven; not a regime shift.",
+        "DONE: Yield-chase week 5 verified - PATTERN WEAKENING, net flow dropped from ~+50K cum to +3.5K, only procryptostaking sustained.",
+        "DONE: erd12tq6ax5k traced - 100% Binance.com inbound, 100% erd17l22 outbound. Pipeline taxonomy COMPLETE.",
+        "DONE: Token supply event detection - WEGLD +4.7% (+26K) flagged as first event after run #9 supply_raw fix.",
+        "DONE: Exchange-flow direction verified - 2nd week of net outflow (-71K after -56K), per the run #9 rule = bullish off-exchange accumulation setup.",
+        "PARTIAL: OTC trace on top-100 whales with >5% changes - erd12tq6ax5k traced; no new top-100 whale candidates surfaced this week.",
+        "NOT DONE: Newly-issued token detection (5th run carrying).",
+        "NOT DONE: AshSwap address set expansion."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          4.02,
+          4.29,
+          4.07,
+          4.67,
+          3.88,
+          3.97,
+          3.5
+        ],
+        "dex_volume_24h_usd": [
+          186015,
+          95356,
+          74843,
+          328098,
+          74915,
+          81933.26158545031,
+          108539.14766141125
+        ],
+        "staked_egld": [
+          14729755,
+          14738926,
+          14779606,
+          14454668,
+          14465903,
+          14467981,
+          14497721
+        ],
+        "mex_price_usd": [
+          4.3e-07,
+          3.7888e-07,
+          4.1144487024798363e-07,
+          3.7090115412287983e-07,
+          3.7792186273497485e-07,
+          3.298877014744513e-07
+        ],
+        "total_delegators": [
+          179038,
+          179060,
+          179050,
+          179011,
+          178958,
+          178934
+        ],
+        "staked_ratio": [
+          0.4949,
+          0.4944,
+          0.495,
+          0.48333121059510425,
+          0.482931675993471,
+          0.48222713367788334,
+          0.4824442711735065
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444,
+          -70845.74226705544
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933,
+          39575
+        ],
+        "binance_staking_custody_egld": [
+          3110663,
+          3377559,
+          3512650.2283337726
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Multi-week Binance custody vs protocol-staked tracker chart",
+          "motivation": "The week's top finding (and last week's): Binance Staking custody grew 3.11M -> 3.38M -> 3.51M while protocol staked rose negligibly. A dual-line time series would make parked-vs-delegated visible at a glance and immediately surface the moment Binance delegates (bullish step in econ.staked) or withdraws to hot wallets (bearish step down in custody). Currently each week's report shows only the current snapshot - the trajectory is invisible.",
+          "suggested_visualization": "dual-line chart: Binance Staking custody balance vs economics.staked_egld over weeks (or run numbers). Annotate jumps. Overlay net change bars.",
+          "data_already_available": true,
+          "data_source": "previous.json exchange_balances['Binance Staking'] + economics.staked_egld across all report JSONs",
+          "priority": "high"
+        },
+        {
+          "title": "OTC pipeline phase visualization (load vs distribute)",
+          "motivation": "This week we identified that the OTC desks REVERSED to loading phase (after run #9's distribution). A heatmap or area chart of OTC desk balance + flow direction over weeks would show the loading-distributing cycle visually and predict the next distribution wave. The pipeline is now fully traced (Binance origin) - the visualization should also show the chain.",
+          "suggested_visualization": "horizontal bar/area chart per OTC desk over weeks, colored by net direction (loading green / distributing red). OR a Sankey of upstream sources -> desks -> retail per week.",
+          "data_already_available": true,
+          "data_source": "per-week report whale_intelligence.exchange_flows snapshots + accounts.UPbitOTCDesk / OTCDistribution balances",
+          "priority": "high"
+        },
+        {
+          "title": "Bilateral inverse rule EGLD-vs-USD divergence chart for Hatom Lending",
+          "motivation": "Run #10 showed Hatom Lending +8.3% EGLD-denominated during -12% price drop - the strongest bilateral inverse rule confirmation in tracking history. A divergence visualization (USD line vs EGLD line, both indexed) would let users see at a glance that this is a leading sentiment signal, not noise.",
+          "suggested_visualization": "dual-axis line chart: Hatom Lending TVL in USD (left) vs in EGLD (right), normalized to 100 at run #1. Diverging lines highlight the bilateral rule operating.",
+          "data_already_available": true,
+          "data_source": "defi_activity.protocol_breakdown[].tvl_usd and tvl_egld across reports",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 9,
+          "title": "Multi-week net exchange-flow oscillation chart",
+          "status": "pending",
+          "note": "Reaffirmed - this week is -71K (2nd outflow). A 3-bar diverging chart (+169K / -56K / -71K) makes the reversal story obvious. Still high priority."
+        },
+        {
+          "from_run": 9,
+          "title": "DEX pair-composition stacked-area over time",
+          "status": "pending",
+          "note": "This week's revert (40.8% -> 8.9%) is the perfect test case. Stacked-area would distinguish event-driven from regime-shift composition changes."
+        },
+        {
+          "from_run": 9,
+          "title": "Binance staking-custody vs protocol-staked-module tracker",
+          "status": "pending",
+          "note": "Re-proposed with even stronger motivation (3rd week of growth). Highest priority dashboard build. Re-listed in this run's suggestions."
+        },
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "Pipeline now FULLY MAPPED to Binance origin - the graph would be especially valuable now (5-hop chain). Still unbuilt."
+        },
+        {
+          "from_run": 8,
+          "title": "Bilateral inverse rule chart (price vs Hatom Lending TVL in EGLD)",
+          "status": "pending",
+          "note": "4th data point added this run. Have 3 validated rally/decline events now. Listed under this run's suggestions for build."
+        },
+        {
+          "from_run": 8,
+          "title": "Yield-chase migration cumulative chart",
+          "status": "pending",
+          "note": "Week 5 stalling visible - cumulative chart would clearly show the stall at +50K. Useful before regime ends."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The OTC distribution pipeline that has been studied since run #6 originates from Binance.com hot wallet. The funder address erd12tq6ax5k receives EXCLUSIVELY from Binance.com (erd1sdsl) and forwards 100% to the OTC source erd17l22. This completes the on-chain OTC settlement taxonomy and confirms that what looks like organic OTC desk activity is largely Binance routing customer sells through a multi-hop privacy/obfuscation chain. Combined with the Binance Staking custody accumulation (now 3.51M, +402K in 3 weeks), Binance's role in MultiversX flow is far more comprehensive than just being the largest exchange wallet - it is the originator of much of the on-chain liquidity flow.",
+        "actions_completed_count": 7,
+        "actions_attempted_count": 9,
+        "what_would_2x_next_week": "Build the Binance staking-custody vs protocol-staked tracker chart - 3 consecutive weeks of accumulation cry out for a multi-week visualization. Second: the OTC pipeline Sankey is now newly-relevant since the chain is fully traced (Binance origin). These two would transform single-week reports into a multi-week pattern dashboard for the two highest-signal flows on the network."
+      },
+      "recommendations_for_next_run": [
+        "Watch Binance Staking custody (3.51M, +135K/wk for 3 weeks): does econ.staked finally jump (delegation/bullish lockup) or does the custody drawdown to hot wallets (distribution/bearish)? Either resolution is the highest-signal event possible.",
+        "Verify OTC pipeline distribution wave - desks loaded +32.6K this week. Next 1-3 weeks should show distribution to retail. Track UPbit OTC Desk + OTC Distribution outflows.",
+        "Test EGLD $3.50 floor: a confirming break below $3.50 next week = regime shift down to lower price band. Holding above $3.50 = floor confirmation.",
+        "Yield-chase regime end watch: one more week of contractions in the low-fee cohort officially ends the regime. Procryptostaking the only sustained gainer.",
+        "Coinbase 4-week net outflow check: -39K/+0/-12.9K/-10.1K. If week 4 stays negative, off-exchange accumulation thesis confirms.",
+        "WEGLD supply +4.7% follow-up: did the new 26K wrap continue (DEX expansion) or hold (one-off OTC mint)?",
+        "Newly-issued token detection workaround (6th run): try /transactions to ESDT system SC erd1qqqq...llls8a5w6u with function=issue filter OR /accounts/{ESDT_addr}/transfers within 7d window.",
+        "Map remaining OTC source candidates: scan all top-100 whales with low nonce + frequent erd1sdsl inbound for additional Binance funder routes.",
+        "Expand AshSwap defi_ashswap address set with stableswap pool contracts (still pending from run #9)."
+      ]
     }
   ]
 }

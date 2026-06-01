@@ -11,7 +11,7 @@
     "total_entries": 146,
     "last_updated": "2026-05-25",
     "updated_by_run": 9,
-    "notes": " | Run 6: +3 routing wallets (Binance.com 2 → UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream)."
+    "notes": " | Run 6: +3 routing wallets (Binance.com 2 → UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end."
   },
   "system_contracts": {
     "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l": {
@@ -1184,11 +1184,12 @@
       "notes_run9": "Dormant run #9 (only +2K inbound from erd12tq6ax5k; -6K outbound at the May 18 boundary). Distribution cycle appears complete. Funder candidate identified."
     },
     "erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp": {
-      "name": "OTC Source Funder (erd17l22 upstream)",
+      "name": "Binance -> OTC Source Funder (verified pass-through)",
       "category": "whale",
       "subcategory": "otc_source_funder",
-      "notes": "Sent ~2K EGLD in two chunks (1,083 + 919) to OTC source wallet erd17l22 during run #9 (2026-05-25). Only inbound counterparty to erd17l22 in the 14d window. Candidate upstream funder of the OTC source layer. Investigate its own inbound chain next run.",
-      "first_seen": "2026-05-25"
+      "notes": "Sent ~2K EGLD in two chunks (1,083 + 919) to OTC source wallet erd17l22 during run #9 (2026-05-25). Run #10: VERIFIED as pure pass-through. 14d inbound = 100% from Binance.com hot (erd1sdsl, 8,972 EGLD); 7d throughput 6,970 EGLD all forwarded to erd17l22. Balance 0. Nonce 1505 (heavy historical use). Completes the OTC pipeline taxonomy: Binance.com -> this -> erd17l22 -> routers -> OTC desks -> retail.",
+      "first_seen": "2026-05-25",
+      "verified_binance_origin": "2026-06-01"
     }
   }
 }
