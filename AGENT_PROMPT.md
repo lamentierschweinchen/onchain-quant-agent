@@ -36,6 +36,15 @@ Read the `recommendations_for_next_run` array from the most recent entry in `dat
 
 Add 200ms delays between requests. If any endpoint fails, note it in `data_sources_failed` and continue with available data.
 
+**MANDATORY: persist the raw collected snapshot.** At the end of collection, save the full collected.json to `data/collected/${REPORT_DATE}.json` (and commit it in Step 5). The /tmp scratch path is fine during the run, but the canonical home is in the repo so that retroactive schema fixes don't require re-querying the API. Added 2026-06-01 after a fee_pct units bug forced an expensive retroactive fix that could only patch the JSON, not re-derive any field that wasn't already stored. Don't gzip — the file compresses well in git's pack files anyway, and keeping it readable is worth more than the ~5x size savings.
+
+```python
+# At the end of your collector script:
+json.dump(D, open(f"{REPO}/data/collected/{REPORT_DATE}.json", "w"))
+```
+
+Typical raw snapshot size: 1-2 MB. ~50 MB/year is the steady-state cost.
+
 ### 1.1 Network Economics & Stats
 
 ```bash
@@ -413,7 +422,7 @@ Honestly answer in your learnings entry:
 ## Step 5: Commit & Push
 
 ```bash
-git add reports/ data/previous.json data/learnings.json data/methodology.md data/known-addresses.json data/report-schema.json dashboard/public/
+git add reports/ data/collected/ data/previous.json data/learnings.json data/methodology.md data/known-addresses.json data/report-schema.json dashboard/public/
 git commit -m "Weekly intel report: ${REPORT_DATE}
 
 - Network health, whale intelligence (with tier stratification), staking
