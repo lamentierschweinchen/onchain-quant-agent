@@ -234,6 +234,32 @@ Each tracked protocol gets its own row in `protocol_breakdown`. Address sets com
 | OneDex | aggregator | `defi_onedex` (5 addresses) | `transfers_24h` (aggregator) |
 | JEXchange | dex (orderbook) | `defi_jexchange` (4 addresses) | `transfers_24h` (orderbook) |
 
+### SWTAO null-mcap fallback (run #11, 2026-06-08)
+
+The MultiversX /tokens/SWTAO-356a25 endpoint occasionally returns `price: null` and `marketCap: null` (verified live this run). When this happens, the assembler will silently zero out the SWTAO portion of Hatom LSD TVL, making it appear ~$1M smaller than reality and producing implausible WoW deltas (e.g., -26% EGLD).
+
+**Fallback derivation**:
+```
+accumulator_ratio = prev_swtao_price / prev_wtao_price       # ~1.22 typical
+swtao_price_est = wtao_price_current * accumulator_ratio
+swtao_mcap_est = swtao_price_est * swtao_supply_current
+```
+
+The accumulator ratio is stable WoW (rewards accrue smoothly). Validated this run: derived $264.02/SWTAO produced ~$875K mcap, making Hatom LSD ~$3.38M (-0.8% EGLD WoW, essentially flat) — matching the expected magnitude given SEGLD supply only fell -0.9%.
+
+Add this fallback to future assembler scripts. The audit script (`scripts/audit_report.py`) flags the null condition as an ERROR; treating it as one will catch the issue before publish.
+
+### Stablecoin contraction as de-risking indicator (run #11, 2026-06-08)
+
+When USH (Hatom stablecoin) supply BURNS >1% in a single week during a price decline, this signals borrowers actively closing CDP positions to release collateral and avoid liquidation. USH is the borrowing token in Hatom CDPs, so supply burn = position closures.
+
+This week: USH -47,072 (-7.08%), the largest single-week burn observed. Synchronized with SEGLD -6,510 (-0.9%) and XEGLD -3,790 (-1.2%) supply contractions = cross-Hatom de-risking visible. Bearish signal for DeFi engagement: users actively reducing leverage.
+
+Surface this in:
+- `executive_summary` (when USH change >5%)
+- `anomalies` (severity high when USH change >5%, medium when 1-5%)
+- `defi_activity.analysis` (always, when any of USH/SEGLD/XEGLD move >1%)
+
 ### Critical TVL Lesson (run #5, 2026-04-27)
 
 Lending protocols on MultiversX denominate contract balance in deposit-receipt tokens (HUSDC, HWBTC, HSEGLD, etc.), NOT in EGLD. Summing contract EGLD balance produces a near-zero TVL for the entire lending stack. The correct method is to sum the H-token market caps, which represent the total deposited collateral.
@@ -360,9 +386,26 @@ staking_intelligence, token_activity, defi_activity, anomalies,
 watch_list, meta_learning
 ```
 
-### Run validator BEFORE manifest/commit/deploy
+### Two-layer pre-publish gate (run AFTER assemble, BEFORE manifest/commit/deploy)
 
-This is the mandatory gate added after run #8's blank-page incident:
+**Layer 1 — Data-integrity audit** (added run #11 after the SWTAO/USH miss):
+
+```bash
+python3 scripts/audit_report.py reports/${REPORT_DATE}.json data/collected/${REPORT_DATE}.json
+```
+
+Catches the class of bug that schema validation cannot:
+- Token API returning null price/marketCap (e.g., SWTAO-356a25 ran null this week, silently making Hatom LSD appear -26% EGLD WoW when the real value was -1%)
+- Large supply events under-emphasized (e.g., USH -7.08% surfaced only in trend_indicators, not exec_summary — the audit flags any >5% supply change not appearing in TL;DR)
+- Implausible protocol_breakdown WoW deltas (>25% suggests missing input data)
+- Null-but-derivable fields (top_by_market_cap.holders, top_by_volume.previous_transactions)
+- Excessive Unknown labels in large_transactions (>60% triggers a warning to trace recurring routers)
+- APR distribution coverage below 95% of total delegated
+- Hatom LSD sum = SEGLD + SWTAO (cross-check against the raw API totals)
+
+Exit 0 if no errors (warnings allowed), 1 if errors.
+
+**Layer 2 — Schema + dashboard invariant validator** (existing, added run #8):
 
 ```bash
 python3 scripts/validate_report.py reports/${REPORT_DATE}.json

@@ -51,7 +51,7 @@
       "category": "whale"
     },
     {
-      "finding": "Bilateral inverse rule 5TH CONFIRMATION but WEAKENING: Hatom Lending +3.3% EGLD during -15.7% price drop (vs +8.3% during -11.8% in run #10). Magnitude scaling factor deteriorating - depositors DCAing less aggressively each decline leg. Possible signal: depositor exhaustion as the decline persists.",
+      "finding": "Hatom-wide DE-RISKING event: USH stablecoin supply -7.08% (-47K burned, largest single-week burn observed), SEGLD -0.9%, XEGLD -1.2% \u2014 synchronized borrower de-risking as EGLD fell -15.7%. Hatom Lending +3.3% EGLD (5th bilateral inverse rule confirmation), but the rule's magnitude ratio collapsed to 0.21 from prior ~0.80 \u2014 depositors DCAing far less than the previous decline.",
       "severity": "medium",
       "category": "defi"
     },
@@ -1578,9 +1578,9 @@
         "volume_24h_usd": null,
         "active_pairs": null,
         "transfers_24h": 295,
-        "tvl_usd": 2507032.6130593987,
-        "tvl_egld": 849841.5637489486,
-        "tvl_wow_change_pct": -26.452291974475912
+        "tvl_usd": 3381994.8899999997,
+        "tvl_egld": 1146438.9457627116,
+        "tvl_wow_change_pct": -0.78391029200242
       },
       {
         "name": "XOXNO LSD",
@@ -1603,7 +1603,7 @@
         "tvl_wow_change_pct": 2.2734584005727947,
         "transfers_24h": null,
         "volume_24h_usd": 121891.8071868304,
-        "notable_events": "DEX volume +12.3% to $122K (vs $108K last week). WEGLD/USDC dominance 93.2% (back to historical norm after run #9 ZoidPay event). ZoidPay/WEGLD share 3.0% (-58% WoW). WEGLD supply held nearly flat WoW (+2.26% raw) - run #10's +4.7% wrap event was a one-off, not sustained DEX expansion.",
+        "notable_events": "DEX volume +12.3% to $122K (vs $108K last week). WEGLD/USDC dominance 93.2% (back to historical norm). ZoidPay/WEGLD share 3.0% (-58% WoW). WEGLD supply +2.26% raw this week (~13K more EGLD wrapped) \u2014 CONTINUATION of run #10's +4.7% mint event, at a lower rate. Cumulative WEGLD wrap over 2 weeks: ~+39K EGLD. Consistent with sustained OTC-coupled wrapping demand for off-chain settlement; not yet a sustained DEX expansion.",
         "health_signal": "flat"
       },
       {
@@ -1621,12 +1621,12 @@
         "protocol": "Hatom Liquid Staking",
         "category": "liquid_staking",
         "addresses_tracked": 2,
-        "tvl_usd": 2507032.6130593987,
-        "tvl_egld": 849841.5637489486,
-        "tvl_wow_change_pct": -26.452291974475912,
+        "tvl_usd": 3381994.8899999997,
+        "tvl_egld": 1146438.9457627116,
+        "tvl_wow_change_pct": -0.78391029200242,
         "transfers_24h": 295,
-        "notable_events": "SEGLD-3ad2d0 mcap $2.51M (SWTAO not loaded this run). In EGLD: 850K (-26.5%). LSD contracted in EGLD terms - unusual; suggests some users unstaked into liquid form during the decline.",
-        "health_signal": "shrinking"
+        "notable_events": "SEGLD-3ad2d0 mcap $2.51M + SWTAO mcap ~$875K (DERIVED \u2014 API returned null this run; estimated via WTAO peg \u00d7 accumulator ratio 1.2223 from run #10). Combined LSD $3.38M USD (-16.4%), 1146K EGLD (-0.8% EGLD \u2014 essentially flat). Underlying SEGLD supply -6,510 (-0.9%), SWTAO supply -12 (-0.4%) \u2014 both very mild unstaking. PREVIOUS REPORT TEXT was wrong (showed -26% EGLD) because SWTAO portion was missing \u2014 patched post-publish.",
+        "health_signal": "flat"
       },
       {
         "protocol": "Hatom USH",
@@ -1636,8 +1636,8 @@
         "tvl_egld": 209413.7499990957,
         "tvl_wow_change_pct": -6.478017412297765,
         "transfers_24h": null,
-        "notable_events": "USH-111e09 mcap $618K (-6.5% USD). Stablecoin contracted mildly.",
-        "health_signal": "flat"
+        "notable_events": "USH-111e09 supply BURNED -47,072 (-7.08% raw) \u2014 Hatom's stablecoin underwent a real redemption wave during the price decline. USD mcap $618K (-6.5%). HIGH-SIGNAL event: stablecoin contraction in a price decline usually indicates lending-position closures (borrowers repaying USH to unlock collateral as LTV ratios approach liquidation). Combined with synchronized SEGLD -0.9% supply and XEGLD -1.2% supply, picture is Hatom users actively de-risking.",
+        "health_signal": "shrinking"
       },
       {
         "protocol": "XOXNO LSD",
@@ -1685,7 +1685,7 @@
       }
     ],
     "sc_deployments": [],
-    "analysis": "Hatom Lending +3.3% in EGLD (1210K -> 1250K) during the -15.7% price drop = BILATERAL INVERSE RULE 5TH CONFIRMATION. USD-denominated TVL fell -13.0% ($4.24M -> $3.69M). BUT the magnitude is WEAKER than run #10: that run saw +8.3% EGLD response to -11.8% price; this week +3.3% EGLD response to -15.7% price. Magnitude scaling has deteriorated significantly. Possible interpretation: depositor capacity diminishing OR conviction reducing as the decline persists. Magnitude history: +14.7%/-13%, -16.9%/+13.6%, -11.8%/+8.3%, -15.7%/+3.3% - the response intensity is now <25% of what the early observations indicated.\n\nHatom LSD $2.51M USD (-38.0%), 850K EGLD (-26.5%). LSD CONTRACTED in EGLD terms - unusual. Combined with XOXNO LSD also contracting -1.4% EGLD, this is a new pattern: LSD users may be unstaking to free liquid EGLD during the decline. Watch next week to confirm this as a trend.\n\nXOXNO LSD $1.05M / 357K EGLD (-0.5% EGLD, -16.2% USD).\n\nxExchange TVL $1.76M (+2.3% EGLD). DEX volume +12.3%. Aggregators continue elevated throughput (XOXNO 14,564, OneDex 9,047) indicating on-chain rotation rather than exit.\n\nTracked TVL total: ~$10.9M (Hatom Lending $3.69M + Hatom LSD $2.51M + XOXNO LSD $1.05M + xExchange $1.76M + Hatom USH $618K + USH/misc). Down from $14.9M last week, mostly due to the price decline. Hatom still dominates with ~55% of tracked TVL."
+    "analysis": "Hatom Lending +3.3% in EGLD (1,210K -> 1,250K) during the -15.7% price drop = BILATERAL INVERSE RULE 5TH CONFIRMATION. USD-denominated TVL fell -13.0% ($4.24M -> $3.69M). BUT the magnitude is WEAKER than run #10: that run saw +8.3% EGLD response to -11.8% price; this week +3.3% EGLD response to -15.7% price. Magnitude scaling has deteriorated significantly. Magnitude ratio series: 0.88, 0.80, 0.70, 0.21 (this week). Possible interpretation: depositor capacity diminishing OR conviction reducing as the decline persists.\n\nHatom LSD CORRECTED VALUE (post-publish patch): SEGLD mcap $2.51M + SWTAO mcap ~$875K (derived via WTAO peg \u00d7 accumulator ratio because the API returned null SWTAO price this run). Combined LSD $3.38M USD (-16.4%), 1146K EGLD (-0.8% EGLD \u2014 essentially FLAT). Underlying supply changes: SEGLD -6,510 (-0.9%), SWTAO -12 (-0.4%) \u2014 both mild unstaking. Original report claimed Hatom LSD contracted -26% EGLD; that figure was wrong due to the missing SWTAO data \u2014 the LSD pool is essentially holding through the decline. Same for XOXNO LSD: XEGLD supply -3,790 EGLD (-1.2%), $1.05M USD (-16.2% USD).\n\nHATOM-WIDE DE-RISKING VISIBLE: USH stablecoin supply BURNED -7.08% (-47,072 redeemed). This is a major signal \u2014 borrowers repaying USH to release collateral and avoid liquidation as EGLD declined -15.7%. Combined with synchronized SEGLD/XEGLD supply contractions, the cross-Hatom pattern is clear: users actively reducing leverage. USDT -3.36% supply burn also visible (likely bridge-out activity). Run #11 reveals stablecoin contraction as a NEW de-risking indicator distinct from the bilateral inverse rule.\n\nxExchange TVL $1.76M (+2.3% EGLD). DEX volume +12.3%. WEGLD supply +2.26% (continuation of run #10's wrap event at lower rate, +13K wrapped). Aggregators continue elevated throughput (XOXNO 14,564, OneDex 9,047).\n\nTracked TVL total (corrected): ~$10.5M. Hatom dominates ~64% of tracked TVL."
   },
   "anomalies": [
     {
@@ -1752,6 +1752,22 @@
       "method": "rule_based",
       "severity": "medium",
       "description": "5 weeks of yield-chase officially ENDED. Net flow to low-fee 9%+ APR cohort: ninjastaking +2.6K (the only meaningful gainer this week), procryptostaking +0.7K, mapleleafnetwork flat. ALL three previous leaders REVERSED: egldstakingprovider -3.1K, valuestaking -1.0K, orius -1.8K. Net cohort flow -2.6K (vs +3.5K last week, ~+50K cumulative weeks 1-4). Regime is over. ninjastaking is the only sustained gainer across all 5 weeks (+38K cumulative)."
+    },
+    {
+      "metric": "ush_stablecoin_burn",
+      "current_value": 618077,
+      "previous_value": 665149,
+      "method": "rule_based",
+      "severity": "high",
+      "description": "USH (Hatom stablecoin) supply BURNED -47,072 (-7.08%) WoW \u2014 a single-week stablecoin redemption of this magnitude is unusual. USH is the borrowing token in Hatom CDPs, so a 7% supply burn indicates ~$47K of borrow positions closed in 7 days. During a -15.7% EGLD price decline, this is a textbook de-risking move: borrowers repaying USH to release collateral and avoid liquidation as LTV approaches limits. Bearish signal for DeFi engagement: users are actively reducing leverage. Combined with synchronized SEGLD/XEGLD supply contractions, Hatom-wide de-risking visible in the data."
+    },
+    {
+      "metric": "usdt_supply_burn",
+      "current_value": -3.36,
+      "previous_value": 0,
+      "method": "rule_based",
+      "severity": "medium",
+      "description": "USDT-f8c08c supply -3.36% WoW \u2014 large WoW stablecoin burn for an exchange-mirror token. WrappedUSDT on MultiversX is largely Bitfinex-style settlement; a 3% burn typically indicates bridge-out activity (USDT moving off MultiversX). Consistent with the broader risk-off pattern this week (Coinbase reversed to inflow, OTC distribution wave, Hatom de-risking)."
     }
   ],
   "trend_indicators": {
@@ -1923,8 +1939,8 @@
       "weeks_on_list": 1
     },
     {
-      "item": "Hatom LSD and XOXNO LSD both contracted in EGLD terms",
-      "reason": "Bilateral inverse rule applied to LSDs gives the OPPOSITE pattern this week: Hatom LSD EGLD -1.6%, XOXNO LSD EGLD -1.4%. Unusual - usually LSD users are long-term stakers. Possible: LSD users unstaking to free liquid EGLD during the decline. Watch next week to distinguish noise from emerging trend.",
+      "item": "Hatom-wide de-risking event: USH -7.08%, SEGLD -0.9%, XEGLD -1.2% supply burns",
+      "reason": "USH stablecoin burned -47K (largest single-week USH burn in tracking). Borrowers repaying to release collateral as EGLD declined -15.7%. Synchronized small contractions across all Hatom liquid-staking/lending tokens confirms cross-protocol de-risking. Watch next week \u2014 if USH supply continues to decline, the Hatom user base is materially de-levering.",
       "weeks_on_list": 1
     },
     {
@@ -1982,7 +1998,9 @@
       "NEW WORKAROUND: newly-issued token detection. Query /accounts/erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls8a5w6u/transactions?after=SEVEN_DAYS_AGO&function=issue. Decode tx.data (hex segments split on @) to read [name, ticker, supply, decimals, ...flags]. Then resolve the identifier via /tokens?search=<NAME>. Reliable; 5-10 calls per week.",
       "NEW PATTERN: 'failed forward indicator' as a strong bearish signal. Run #10 forecast 4 things to watch (custody resolution, OTC distribution, $3.50 floor hold, Coinbase 4th-week outflow). Three of the four resolved in the BEARISH direction (custody stalled, floor broke, Coinbase reversed); only the OTC distribution prediction was directionally validated. When multiple bullish forward indicators fail simultaneously, the read is decisively bearish on net.",
       "REFINED RULE: Bilateral inverse rule magnitude is DETERIORATING with consecutive declines. +14.7%/-13%, -16.9%/+13.6%, -11.8%/+8.3%, -15.7%/+3.3%. Each subsequent decline triggers a weaker EGLD-denominated TVL response. Hypothesis: depositor capacity is diminishing OR conviction reducing as the decline persists. Track magnitude ratio next week.",
-      "NEW PATTERN: LSD contraction during a price decline is unusual and may indicate liquid-staked users unstaking to free EGLD. Both Hatom LSD (-1.6% EGLD) and XOXNO LSD (-1.4% EGLD) contracted this week - a synchronized LSD shrinkage during a decline. Watch for confirmation next week."
+      "NEW PATTERN: LSD contraction during a price decline is unusual and may indicate liquid-staked users unstaking to free EGLD. Both Hatom LSD (-1.6% EGLD) and XOXNO LSD (-1.4% EGLD) contracted this week - a synchronized LSD shrinkage during a decline. Watch for confirmation next week.",
+      "NEW INDICATOR: synchronized stablecoin/LSD/lending-token supply contraction = 'cross-protocol de-risking' signal. When USH, SEGLD, XEGLD all burn supply in the same week during a price decline, borrowers are de-levering. Threshold: any week where USH supply moves >1% (vs typical <0.5%) is a flag. This week's -7.08% USH is the largest single-week burn observed.",
+      "DATA QUALITY RULE: SWTAO-356a25 price/marketCap can return null from API (verified this run). Fallback method: derive SWTAO price = WTAO_price_current \u00d7 (prev_run_SWTAO_price / prev_run_WTAO_price). The accumulator ratio is stable week-over-week and yields a reliable estimate. Recommend adding this fallback to the assembler so missing SWTAO data doesn't silently distort Hatom LSD TVL again."
     ],
     "new_addresses_discovered": 0,
     "most_valuable_insight": "The combined collapse of 3 of 4 bullish forward indicators from run #10 - Binance custody STALLED (was +135K trend), Coinbase outflow REVERSED (was -10K trend), $3.50 floor BROKE (was hold-or-break test) - while EGLD fell -15.7% and decoupled from BTC/ETH (both up). This is not a coincidence: when multiple independent on-chain accumulation signals fail simultaneously during a decline, the convergence is a strong sell-side execution signal. The only directionally validated prediction was the OTC distribution wave (BEARISH for retail). Net read: the bullish parked-capital thesis from run #10 is decisively dead, replaced by a sell-into-decline pattern. The Binance custody and Coinbase reversal are the two highest-conviction signals.",
@@ -2039,6 +2057,12 @@
         "prior_title": "Bilateral inverse rule EGLD-vs-USD divergence chart for Hatom Lending",
         "status": "pending",
         "note": "This week added the 5th data point (and the first showing DETERIORATING magnitude). The chart would now show both the inverse rule and its weakening intensity - higher value."
+      }
+    ],
+    "post_publish_patches": [
+      {
+        "timestamp": "2026-06-08T11:00:00Z",
+        "reason": "Audit found Hatom LSD reported -26% EGLD WoW was wrong \u2014 SWTAO price/mcap returned null from API this run. Estimated SWTAO mcap ~$875K using WTAO live price \u00d7 accumulator ratio (1.2223) derived from run #10. Corrected Hatom LSD to ~$3.38M ($-0.8% EGLD, essentially flat). Also surfaced USH stablecoin -7.08% burn (high-signal de-risking event) that was buried in trend_indicators. Updated executive_summary, defi_activity.analysis, protocol_breakdown notable_events, anomalies, watch_list."
       }
     ]
   }

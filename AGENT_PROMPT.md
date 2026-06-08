@@ -338,13 +338,20 @@ Update `data/previous.json` with this week's data so the next run can compute de
 }
 ```
 
-### 3.4 Validate Against Schema — MANDATORY GATE
+### 3.4 Two-Layer Pre-Publish Gate — MANDATORY
 
-**Before** generating the manifest, validate the JSON against the canonical schema and dashboard-rendering invariants:
+**Before** generating the manifest, run BOTH layers. Layer 1 catches data-integrity issues (silent API nulls, under-surfaced supply events); layer 2 catches schema/dashboard issues.
 
 ```bash
+# Layer 1 - data integrity audit (added run #11)
+python3 scripts/audit_report.py reports/${REPORT_DATE}.json data/collected/${REPORT_DATE}.json
+# Layer 2 - schema + dashboard invariants
 python3 scripts/validate_report.py reports/${REPORT_DATE}.json
 ```
+
+The audit script catches issues that schema validation cannot. Run #11 hit this exact class of bug: SWTAO-356a25 API returned null price/marketCap, silently making Hatom LSD appear -26% EGLD WoW when the actual value was -1% (essentially flat). See `data/methodology.md` for the full list of audit checks.
+
+**Validator gate (unchanged)**:
 
 The validator must exit 0. If it fails, fix the report JSON and re-run — **do not proceed to manifest/commit/deploy**. This catches:
 - JSON Schema violations (`data/report-schema.json`)

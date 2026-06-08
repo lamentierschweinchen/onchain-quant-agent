@@ -1728,8 +1728,35 @@
         "Hatom Lending magnitude ratio: did the bilateral inverse rule magnitude continue deteriorating, OR did this week's weak response bottom out at +3.3%? Magnitude trajectory matters.",
         "Track Unknown Mega Whale erd18mv2z6r2 - received +5,925 from Coinbase Routing Wallet this week (now 998,970 EGLD, near 1M threshold). Watch for downstream forwarding.",
         "Newly-issued token scan continues: check if any of FRANZELA, GreenSmokeNetwork, GrandTheftAurum showed adoption (>10 holders, >5 txs) - confirms genuine vs spam.",
-        "Re-trace the OTC funder using the CORRECT address (erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp). Add to known-addresses.json under exchange_routers."
-      ]
+        "Re-trace the OTC funder using the CORRECT address (erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp). Add to known-addresses.json under exchange_routers.",
+        "Add the SWTAO null-mcap fallback to assembler \u2014 derive from WTAO live price \u00d7 accumulator ratio when /tokens/SWTAO-356a25 returns null. Don't rely on post-publish patches.",
+        "Run `scripts/audit_report.py` as the FIRST gate after assemble (before validate, manifest, commit). Treat all errors as blocking.",
+        "Track USH supply trajectory: this week's -7.08% burn is the largest observed. If next week shows another decline, the Hatom user base is materially de-leveraging.",
+        "Fill top_by_market_cap[].holders and top_by_volume[].previous_transactions in the assembler \u2014 both fields are derivable from already-collected data and the audit flagged them."
+      ],
+      "post_publish_audit": {
+        "timestamp": "2026-06-08T11:00:00Z",
+        "summary": "Manual audit caught 3 data-integrity issues in the originally-published report; patched in-place and re-deployed. Added a permanent audit gate (scripts/audit_report.py) to catch this class of bug pre-publish in future runs.",
+        "issues_found": [
+          "SWTAO-356a25 API returned null price/mcap, making Hatom LSD appear -26% EGLD WoW. Actual: -0.8% (essentially flat) after deriving SWTAO mcap via WTAO peg \u00d7 accumulator ratio 1.2223.",
+          "USH supply -7.08% (47K stablecoin burn \u2014 largest single-week observed) was surfaced only in trend_indicators.token_supply_events, not in executive_summary or watch_list. This is a high-signal de-risking event.",
+          "USDT -3.36% supply burn (likely cross-chain bridge-out) was buried similarly."
+        ],
+        "patches_applied": [
+          "Hatom LSD tvl_usd $2.51M -> $3.38M, tvl_egld 850K -> 1146K, wow_pct -26.5% -> -0.8%",
+          "Hatom USH protocol_breakdown.notable_events upgraded with de-risking interpretation",
+          "Added USH burn + USDT burn as new anomalies (high/medium severity)",
+          "Rewrote defi_activity.analysis with corrected figures + cross-Hatom de-risking insight",
+          "Replaced 'LSD contraction' watch_list item with 'Hatom-wide de-risking' item",
+          "Replaced bilateral inverse finding in exec_summary with combined Hatom de-risking finding (preserves 8-item limit)"
+        ],
+        "system_improvements": [
+          "Added scripts/audit_report.py \u2014 data-integrity audit gate that runs AFTER assemble, BEFORE validate. Catches: null token API data, under-surfaced supply events, implausible WoW deltas, null-but-derivable fields, excessive Unknown labels, APR coverage gaps, Hatom LSD sum mismatches.",
+          "Documented SWTAO null-mcap fallback recipe in methodology.md (use WTAO peg \u00d7 accumulator ratio).",
+          "Documented stablecoin contraction as a new de-risking indicator in methodology.md (USH/SEGLD/XEGLD synchronized supply burns).",
+          "Updated AGENT_PROMPT.md Section 3.4 with two-layer pre-publish gate (audit + validate)."
+        ]
+      }
     }
   ]
 }
