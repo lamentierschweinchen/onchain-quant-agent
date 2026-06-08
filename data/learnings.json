@@ -1496,6 +1496,240 @@
         "Map remaining OTC source candidates: scan all top-100 whales with low nonce + frequent erd1sdsl inbound for additional Binance funder routes.",
         "Expand AshSwap defi_ashswap address set with stableswap pool contracts (still pending from run #9)."
       ]
+    },
+    {
+      "date": "2026-06-08",
+      "run_number": 11,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x38",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x14"
+        ],
+        "endpoints_that_failed": [
+          "/tokens?sort=timestamp (HTTP 400 - resolved via ESDT system SC workaround)"
+        ],
+        "api_quirks_discovered": [
+          "Newly-issued token detection workaround SUCCESSFUL: /accounts/erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls8a5w6u/transactions?after=SEVEN_DAYS_AGO&function=issue returns recent issuance txs. Decode tx.data (hex segments split on @) to extract [name_hex, ticker_hex, supply_hex, decimals_hex, ...flags]. Then look up resulting identifier via /tokens?search=<NAME>.",
+          "Funder address mistype discovered: the run #10 collect script used erd12tq6ax5k49dkp4lwgxz8ed62gz3xc3xwa30dgxqhke9awz58z2qq07ny36 but the ACTUAL funder is erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp. Both prefixes match for the first ~16 chars. Visible from erd17l22 inbound list as the sender of 9,411 EGLD. Recommend canonicalizing this address in known-addresses.json under exchange_routers.",
+          "previous.json supply_raw diff WORKS: WEGLD diff this week showed essentially flat (run #10's +4.7% was a one-off). The 0.1% / 1.0% thresholds catch genuine events.",
+          "OTC cycle period confirmed: run #10 loading -> run #11 distribution = ~1 week minimum. Faster than initial 1-3 week estimate."
+        ],
+        "data_gaps": [
+          "AshSwap stableswap pool TVL still missing (admin contracts return zero EGLD).",
+          "Validator joiner/leaver matching by name only; anonymous (no-identity) providers are not WoW-matchable. Need to store provider addresses in previous.json.",
+          "SWTAO market cap returned 0 this run (Hatom LSD-only used SEGLD - check next week if SWTAO continues to register)."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Forward-indicator validation: 3 of 4 run #10 predictions resolved BEARISH (Binance custody stalled, $3.50 floor broke, Coinbase outflow streak ended). The 'failed forward indicator' is a strong new bearish signal pattern.",
+          "OTC distribution wave prediction validated within 1 week of the predicted 1-3 week window - confirms the load-distribute cycle as empirically reliable.",
+          "Newly-issued token detection workaround works in production - the ESDT system SC scan approach took 6 runs to design but resolves the blocker cleanly.",
+          "Bilateral inverse rule remains directionally correct on 5th observation; the magnitude trajectory (now WEAKENING) is itself a new piece of intelligence."
+        ],
+        "what_needs_improvement": [
+          "Track the magnitude scaling of the bilateral inverse rule over time - the current weakening trend needs quantitative tracking.",
+          "Coinbase entity netting still mixes primary/custody/routing - need to track each separately for cleaner OTC pattern detection.",
+          "LSD contraction during a decline is a new pattern that doesn't have an established interpretation yet. Need 2-3 more confirmations to formalize."
+        ],
+        "surprising_findings": [
+          "EGLD decoupled to the downside from BTC (+1.3%) and ETH (+3.6%) - both up while EGLD -15.7%. MultiversX-specific weakness, not crypto-macro.",
+          "Coinbase 3-week outflow streak (the cleanest bullish signal) reversed sharply in a single week to +43K inflow. Off-exchange-accumulation thesis killed.",
+          "Binance Staking custody stalled at exactly the moment the bullish thesis needed it to escalate. Three weeks of accumulation, then stall, no resolution.",
+          "OTC distribution wave hit in week 1 of the predicted window - aggressive sell-side execution given the price decline.",
+          "Hatom LSD AND XOXNO LSD both contracted in EGLD terms - unusual; LSD users typically don't unstake during declines."
+        ]
+      },
+      "methodology_changes": [
+        "NEW WORKAROUND: newly-issued token detection via ESDT system SC issue function scan. Now standard.",
+        "NEW PATTERN: 'failed forward indicator' as bearish signal. When 3+ bullish predictions fail simultaneously during a decline, the convergence is decisive.",
+        "REFINED RULE: Bilateral inverse rule magnitude is DETERIORATING (track ratio: response/|price chg|).",
+        "NEW PATTERN: synchronized LSD contraction during decline (Hatom -1.6%, XOXNO -1.4% EGLD). Watch list item; needs 2-3 more observations to formalize.",
+        "OTC cycle period confirmed at 1 week minimum (load->distribute)."
+      ],
+      "new_addresses_discovered": [],
+      "action_items_completed": [
+        "DONE: Binance Staking custody resolution check - STALLED at 3.51M (neither delegated nor distributed). The 'either resolution is highest signal' question is half-resolved into a hold state.",
+        "DONE: OTC distribution wave verification - HIT ON SCHEDULE in week 1 (UPbit OTC -14K, OTC Dist -12.4K = -26.4K).",
+        "DONE: $3.50 floor test - FLOOR BROKE to $2.95 (-15.7%). Regime shift down to lower band confirmed.",
+        "DONE: Yield-chase regime end watch - REGIME ENDED. Cohort net -2.6K, 3 of 5 leaders reversed.",
+        "DONE: Coinbase 4-week net outflow check - FAILED. +43K inflow this week broke the streak. Off-exchange-accumulation thesis collapsed.",
+        "DONE: WEGLD supply follow-up - flat WoW; run #10's +4.7% was a one-off (not sustained DEX expansion).",
+        "DONE: Newly-issued token detection workaround - SUCCESSFUL via ESDT system SC scan. 3 issuances detected (FRA, GSN, GTA - all low-quality spam).",
+        "PARTIAL: OTC source candidates mapping - no new Binance funder routes surfaced this run.",
+        "NOT DONE: AshSwap address set expansion (4th run carrying)."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          4.29,
+          4.07,
+          4.67,
+          3.88,
+          3.97,
+          3.5,
+          2.95
+        ],
+        "dex_volume_24h_usd": [
+          74843,
+          328098,
+          74915,
+          81933.26158545031,
+          108539.14766141125,
+          121891.8071868304
+        ],
+        "staked_egld": [
+          14779606,
+          14454668,
+          14465903,
+          14467981,
+          14497721,
+          14471101
+        ],
+        "mex_price_usd": [
+          4.3e-07,
+          3.7888e-07,
+          4.1144487024798363e-07,
+          3.7090115412287983e-07,
+          3.7792186273497485e-07,
+          3.298877014744513e-07,
+          2.761419779228928e-07
+        ],
+        "total_delegators": [
+          179038,
+          179060,
+          179050,
+          179011,
+          178958,
+          178934,
+          178487
+        ],
+        "staked_ratio": [
+          0.495,
+          0.48333121059510425,
+          0.482931675993471,
+          0.48222713367788334,
+          0.4824442711735065,
+          0.48078822404993493
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444,
+          -70845.74226705544,
+          24901.97406237945
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933,
+          39575,
+          -26410
+        ],
+        "binance_staking_custody_egld": [
+          3110663,
+          3377559,
+          3512650.2283337726,
+          3512650.2283337726
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Forward-indicator scorecard widget",
+          "motivation": "Run #11's single most valuable insight came from tracking whether last week's PREDICTIONS were validated or invalidated. 3 of 4 run #10 predictions resolved bearish. A scorecard showing each report's open predictions with status (pending/validated/invalidated) would make this pattern visible at a glance and let users see when consensus bullish indicators are all failing simultaneously.",
+          "suggested_visualization": "vertical list per report, each row: prediction text + outcome icon (green/red/grey pending). Group by report. Top of dashboard.",
+          "data_already_available": true,
+          "data_source": "meta_learning.recommendations_for_next_run in each report JSON + manual status tagging from the following week's run",
+          "priority": "high"
+        },
+        {
+          "title": "OTC cycle phase indicator",
+          "motivation": "Run #10 said 'desks loaded, expect distribution 1-3 weeks'. Run #11 confirmed distribution arrived in week 1. The load-distribute cycle is now empirically validated. A simple phase-tracker (LOADING / DISTRIBUTING / DRAINED) per desk with countdown to expected reversal would let users anticipate the next event.",
+          "suggested_visualization": "phase chip per desk + 'expected reversal in N days' text. Optional: timeline view of phase transitions across past 5 weeks.",
+          "data_already_available": true,
+          "data_source": "OTC desk balance + WoW change from report JSONs + simple state machine logic",
+          "priority": "high"
+        },
+        {
+          "title": "Bilateral inverse rule magnitude trajectory",
+          "motivation": "Run #11 noted the rule's magnitude is DETERIORATING - response intensity now <25% of early observations. A chart of (Hatom Lending EGLD response %) divided by (|EGLD price change %|) across all confirmed events would show whether the rule's signal strength is fading - critical for interpreting future readings.",
+          "suggested_visualization": "line chart of response ratio across confirmed events; reference line at 1.0 = unit elasticity, declining trend = depositor fatigue",
+          "data_already_available": true,
+          "data_source": "defi_activity.protocol_breakdown[Hatom Lending].tvl_wow_change_pct + network_health.deltas.price_change_pct across reports",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 10,
+          "title": "Multi-week Binance custody vs protocol-staked tracker chart",
+          "status": "pending",
+          "note": "Even more relevant this week: custody STALLED at 3.51M for first time after 3 wks of growth. Visualization would make the resolution moment unmissable. Re-listed in this run's suggestions."
+        },
+        {
+          "from_run": 10,
+          "title": "OTC pipeline phase visualization (load vs distribute)",
+          "status": "pending",
+          "note": "Empirically VALIDATED this week (run #10 loading -> run #11 distribution in 1 week). The visualization is now strongly motivated by validated data. Re-listed in this run's suggestions."
+        },
+        {
+          "from_run": 10,
+          "title": "Bilateral inverse rule EGLD-vs-USD divergence chart for Hatom Lending",
+          "status": "pending",
+          "note": "5th data point added, magnitude DETERIORATING. Chart would now show both the rule and its weakening intensity - higher value. Re-listed in this run's suggestions."
+        },
+        {
+          "from_run": 9,
+          "title": "Multi-week net exchange-flow oscillation chart",
+          "status": "pending",
+          "note": "Trajectory now +169K / -56K / -71K / +25K = bearish-bullish-bullish-bearish noisy oscillation. The chart would make the noise pattern obvious."
+        },
+        {
+          "from_run": 9,
+          "title": "DEX pair-composition stacked-area over time",
+          "status": "pending",
+          "note": "ZoidPay revert continued (3.0% this week). Stacked-area would show event-driven vs regime composition changes."
+        },
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "Pipeline fully traced (Binance origin) AND distribution wave validated this week. The Sankey view becomes especially valuable now."
+        },
+        {
+          "from_run": 8,
+          "title": "Yield-chase migration cumulative chart",
+          "status": "deprioritized",
+          "note": "Yield-chase regime ENDED this week. The chart would now show a completed pattern - useful for retrospective analysis but not for active monitoring."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The combined collapse of 3 of 4 bullish forward indicators from run #10 - Binance custody STALLED (was +135K trend), Coinbase outflow REVERSED (was -10K trend), $3.50 floor BROKE (was hold-or-break test) - while EGLD fell -15.7% and decoupled from BTC/ETH (both up). This is not a coincidence: when multiple independent on-chain accumulation signals fail simultaneously during a decline, the convergence is a strong sell-side execution signal. The only directionally validated prediction was the OTC distribution wave (BEARISH for retail). Net read: the bullish parked-capital thesis from run #10 is decisively dead, replaced by a sell-into-decline pattern. The Binance custody and Coinbase reversal are the two highest-conviction signals.",
+        "actions_completed_count": 7,
+        "actions_attempted_count": 9,
+        "what_would_2x_next_week": "Implement the forward-indicator scorecard widget. Run #10 made 4 predictions; this run found 3 of 4 resolved BEARISH. That cluster of failed bullish predictions IS the bearish signal - more decisive than any individual anomaly. A widget tracking each run's recommendations_for_next_run with weekly outcome status would surface this 'all bullish forwards failing' pattern automatically. Second-best: build the Binance staking-custody chart now that we have 4 weekly data points showing accumulate-accumulate-accumulate-STALL."
+      },
+      "recommendations_for_next_run": [
+        "Verify Binance Staking custody resolution: 4th week of stall, delegation jump, or hot-wallet drawdown. Each week without movement makes the eventual move more decisive.",
+        "Check EGLD price action at $2.95: a bounce indicates capitulation low; a continued decline locks in the lower regime. BTC/ETH likely up suggests this remains MultiversX-specific.",
+        "OTC desk reload check: after this week's distribution wave (-26.4K), expect loading phase to return within 1-2 weeks. Confirm cycle period.",
+        "Track Coinbase entity for 2nd consecutive inflow: confirmation of sell-into-decline pattern requires a second week.",
+        "LSD contraction follow-up: Hatom LSD and XOXNO LSD both contracted in EGLD terms this week. If next week confirms, this is a new bearish trend indicator (LSD users unstaking).",
+        "Hatom Lending magnitude ratio: did the bilateral inverse rule magnitude continue deteriorating, OR did this week's weak response bottom out at +3.3%? Magnitude trajectory matters.",
+        "Track Unknown Mega Whale erd18mv2z6r2 - received +5,925 from Coinbase Routing Wallet this week (now 998,970 EGLD, near 1M threshold). Watch for downstream forwarding.",
+        "Newly-issued token scan continues: check if any of FRANZELA, GreenSmokeNetwork, GrandTheftAurum showed adoption (>10 holders, >5 txs) - confirms genuine vs spam.",
+        "Re-trace the OTC funder using the CORRECT address (erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp). Add to known-addresses.json under exchange_routers."
+      ]
     }
   ]
 }
