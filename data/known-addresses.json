@@ -11,7 +11,7 @@
     "total_entries": 146,
     "last_updated": "2026-05-25",
     "updated_by_run": 9,
-    "notes": " | Run 6: +3 routing wallets (Binance.com 2 → UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
+    "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
   "system_contracts": {
     "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l": {
@@ -390,7 +390,7 @@
       "name": "Hatom: Booster v2",
       "category": "defi",
       "subcategory": "boost_rewards",
-      "notes": "Hatom Booster v2 — reward boost mechanics for stakers and lenders."
+      "notes": "Hatom Booster v2 \u2014 reward boost mechanics for stakers and lenders."
     },
     "erd1qqqqqqqqqqqqqpgqjcmh08y6ejad07qr2dn8mju9x2fea85578sscjkrvy": {
       "name": "Hatom: USH Staking Module",
@@ -596,13 +596,13 @@
       "name": "XOXNO: Swap Aggregator",
       "category": "defi",
       "subcategory": "aggregator",
-      "notes": "XOXNO swap aggregator — routes trades across xExchange, AshSwap, OneDex, and other DEXs. >115K transfers per week, the highest-throughput aggregator on MultiversX. Operational EGLD only (~7); routing volume is the metric."
+      "notes": "XOXNO swap aggregator \u2014 routes trades across xExchange, AshSwap, OneDex, and other DEXs. >115K transfers per week, the highest-throughput aggregator on MultiversX. Operational EGLD only (~7); routing volume is the metric."
     },
     "erd1qqqqqqqqqqqqqpgq6uzdzy54wnesfnlaycxwymrn9texlnmyah0ssrfvk6": {
       "name": "XOXNO: EGLD Liquid Staking",
       "category": "defi",
       "subcategory": "liquid_staking",
-      "notes": "XOXNO liquid staking protocol — issues XEGLD-e413ed (StakedEGLD). ~358K EGLD staked through this contract (XEGLD supply 318,778 * 1.13 EGLD/XEGLD ratio = ~358K)."
+      "notes": "XOXNO liquid staking protocol \u2014 issues XEGLD-e413ed (StakedEGLD). ~358K EGLD staked through this contract (XEGLD supply 318,778 * 1.13 EGLD/XEGLD ratio = ~358K)."
     },
     "erd1qqqqqqqqqqqqqpgqdnpmeseu3j5t7grds9dfj8ttt70pev66ah0sydkq9x": {
       "name": "XOXNO: Governance Proxy xEGLD",
@@ -614,7 +614,7 @@
       "name": "XOXNO: LSD Composability",
       "category": "defi",
       "subcategory": "liquid_staking",
-      "notes": "XOXNO LSD composability layer — wraps XEGLD usage across DeFi protocols."
+      "notes": "XOXNO LSD composability layer \u2014 wraps XEGLD usage across DeFi protocols."
     },
     "erd1qqqqqqqqqqqqqpgq47v57jzpwrpc89dhmd6d3g9ds94t9sm445qs4k7cgj": {
       "name": "XOXNO: xLend EGLD Liquidity Layer",
@@ -674,7 +674,8 @@
       "name": "XOXNO: Deployer Wallet",
       "category": "defi",
       "subcategory": "deployer",
-      "notes": "XOXNO main account that owns and deploys the XOXNO contract suite."
+      "notes": "XOXNO main account that owns and deploys the XOXNO contract suite. | Run 11: VERIFIED operates `truststaking` provider (366K locked, 7171 users \u2014 4th largest by locked). 30d operator outbound 341 EGLD: 205 EGLD to held_or_other + 135 EGLD to defi_deposit (likely XOXNO LSD or related contract). XOXNO has both a flagship LSD AND control of a top delegation provider \u2014 significant strategic position.",
+      "also_operates": "truststaking delegation provider (discovered run #11)"
     }
   },
   "defi_other": {
@@ -998,13 +999,13 @@
       "name": "Unknown Whale A (reactivated)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Originally cold storage (nonce 4 for 4+ weeks). Reactivated Apr 17-18 2026 — sent ~514K EGLD to Coinbase in four tranches, received ~154K EGLD back. Net: -352K EGLD to Coinbase. Current balance ~143K EGLD. Nonce advanced to 8. Partial exit — still holds significant position. Watch for continued liquidation."
+      "notes": "Originally cold storage (nonce 4 for 4+ weeks). Reactivated Apr 17-18 2026 \u2014 sent ~514K EGLD to Coinbase in four tranches, received ~154K EGLD back. Net: -352K EGLD to Coinbase. Current balance ~143K EGLD. Nonce advanced to 8. Partial exit \u2014 still holds significant position. Watch for continued liquidation."
     },
     "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul": {
       "name": "Unknown Whale B (liquidated to Coinbase)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Previously received ~512K EGLD from Coinbase over multiple weeks ending Apr 10 2026. Fully liquidated back to Coinbase on Apr 14-17 2026 — balance went from 512K to ~27 EGLD. Complete OTC cycle: accumulated from Coinbase, held ~1 week, returned to Coinbase. Consistent with bilateral institutional OTC deal where Coinbase intermediated both legs."
+      "notes": "Previously received ~512K EGLD from Coinbase over multiple weeks ending Apr 10 2026. Fully liquidated back to Coinbase on Apr 14-17 2026 \u2014 balance went from 512K to ~27 EGLD. Complete OTC cycle: accumulated from Coinbase, held ~1 week, returned to Coinbase. Consistent with bilateral institutional OTC deal where Coinbase intermediated both legs."
     },
     "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd": {
       "name": "Unknown Whale",
@@ -1034,7 +1035,7 @@
       "name": "Unknown Mega Whale (received from Coinbase)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Received 798,649 EGLD from Coinbase via routing wallet (erd1lgdlteq) on Apr 18 2026 in three tranches (70K + 566K + 161K). Balance jumped from 192,900 to 991,555 EGLD (+414%). Nonce 21 = minimal prior activity. Now 4th-largest non-system account on MultiversX. Identity unknown — could be institutional OTC buyer, fund custodian, or large holder. HIGH PRIORITY to watch for outflows. Added 2026-04-20."
+      "notes": "Received 798,649 EGLD from Coinbase via routing wallet (erd1lgdlteq) on Apr 18 2026 in three tranches (70K + 566K + 161K). Balance jumped from 192,900 to 991,555 EGLD (+414%). Nonce 21 = minimal prior activity. Now 4th-largest non-system account on MultiversX. Identity unknown \u2014 could be institutional OTC buyer, fund custodian, or large holder. HIGH PRIORITY to watch for outflows. Added 2026-04-20."
     },
     "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j": {
       "name": "Unknown Whale",
@@ -1070,7 +1071,7 @@
       "name": "Coinbase Routing Wallet",
       "category": "exchange",
       "subcategory": "routing",
-      "notes": "Routing wallet used by Coinbase on Apr 18 2026. Received 798,649 EGLD from erd116jr (Coinbase) in three tranches and immediately forwarded entire amount to erd18mv2z6r2 (Unknown Mega Whale). Nonce 80 = medium-use routing wallet. Near-zero balance before and after the Apr 18 routing event. Not pure cold storage — actively used for large routing operations."
+      "notes": "Routing wallet used by Coinbase on Apr 18 2026. Received 798,649 EGLD from erd116jr (Coinbase) in three tranches and immediately forwarded entire amount to erd18mv2z6r2 (Unknown Mega Whale). Nonce 80 = medium-use routing wallet. Near-zero balance before and after the Apr 18 routing event. Not pure cold storage \u2014 actively used for large routing operations."
     },
     "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r": {
       "name": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
@@ -1081,67 +1082,67 @@
   },
   "exchange_routers": {
     "erd16nws00klkag9g25nv3v4cuf2elsa83f5pa0jsqn0zt5jq3qufd9q4w8cfm": {
-      "name": "Binance→OTC Router 1",
+      "name": "Binance\u2192OTC Router 1",
       "category": "exchange_router",
       "subcategory": "otc_intermediary",
       "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC infrastructure. Nonce 169. Receives 8K EGLD chunks, forwards within minutes. Discovered run #6 (2026-05-04). ~40K EGLD routed in week 1."
     },
     "erd1k4r6kyjq7gevgg75pkvjevkyr2q62puet4lrfpuheytx9qacnzfqgmjx5z": {
-      "name": "Binance→OTC Router 2",
+      "name": "Binance\u2192OTC Router 2",
       "category": "exchange_router",
       "subcategory": "otc_intermediary",
       "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and OTC Distribution Wallet. Nonce 180. ~24K EGLD routed in week 1. Discovered run #6."
     },
     "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0": {
-      "name": "Binance→OTC Router 3",
+      "name": "Binance\u2192OTC Router 3",
       "category": "exchange_router",
       "subcategory": "otc_intermediary",
       "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC Desk. Nonce 147. 5,999 EGLD chunks. ~18K EGLD routed in week 1. Discovered run #6."
     },
     "erd1g8ll9qrhmevdhjmtk8q02klu8a6q8z7xk0aqml7vncvpxdjwrdgq5ve8we": {
-      "name": "OTC→Bybit Router (UPbit-side, nonce 150)",
+      "name": "OTC\u2192Bybit Router (UPbit-side, nonce 150)",
       "category": "exchange_router",
       "notes": "Receives 2K chunks from UPbit OTC Desk, forwards to Bybit within minutes. Near-zero balance.",
       "first_seen": "2026-05-11"
     },
     "erd1n5wcuda4vnh9umg8trwxqlzg4rglmcl3sjpvf7zdfw3ky2k3j95shk7wlm": {
-      "name": "OTC→Binance Router 1 (nonce 28)",
+      "name": "OTC\u2192Binance Router 1 (nonce 28)",
       "category": "exchange_router",
       "notes": "Aggregates 1-2K chunks from UPbit OTC + OTC Distribution, forwards 5-7K to Binance.",
       "first_seen": "2026-05-11"
     },
     "erd1cwkw3qlv4m30dp2gnxed5azy4224ennwfnldvs8rf5jekr6ca4ls4kkuwf": {
-      "name": "OTC→Binance Router 2 (nonce 3924)",
+      "name": "OTC\u2192Binance Router 2 (nonce 3924)",
       "category": "exchange_router",
-      "notes": "High-nonce well-established router. UPbit OTC + OTC Dist → Binance.",
+      "notes": "High-nonce well-established router. UPbit OTC + OTC Dist \u2192 Binance.",
       "first_seen": "2026-05-11"
     },
     "erd1dmmh5xxfwafcacef2z0d6mduxz7yemg3p9dqdwpefeu5jvexelcs254wu7": {
-      "name": "OTC→Bybit Router 2 (nonce 405)",
+      "name": "OTC\u2192Bybit Router 2 (nonce 405)",
       "category": "exchange_router",
-      "notes": "OTC Distribution → Bybit, 1-2K chunks.",
+      "notes": "OTC Distribution \u2192 Bybit, 1-2K chunks.",
       "first_seen": "2026-05-11"
     },
     "erd1fs0c43welvqv6njhe7k3g26rysc2zaav23hydedq65phyca8dz9s44hwc2": {
-      "name": "OTC→Bybit Router 3 (nonce 53)",
+      "name": "OTC\u2192Bybit Router 3 (nonce 53)",
       "category": "exchange_router",
-      "notes": "OTC Distribution → Bybit, varied sizes.",
+      "notes": "OTC Distribution \u2192 Bybit, varied sizes.",
       "first_seen": "2026-05-11"
     },
     "erd17cfk3d984xr6eef7smc5a7z480rn3klgu7pt2va7u37ehr7slmtqv6r2pe": {
-      "name": "OTC→Bybit Router 4 (nonce 16)",
+      "name": "OTC\u2192Bybit Router 4 (nonce 16)",
       "category": "exchange_router",
-      "notes": "Newer router. OTC Distribution → Bybit, 1.8-2K chunks.",
+      "notes": "Newer router. OTC Distribution \u2192 Bybit, 1.8-2K chunks.",
       "first_seen": "2026-05-11"
     },
     "erd1fdkq6mdyg7vt5wzs6039cf00xfmxmlg2kg8xkxkdzv8hw976rk2swhnc35": {
-      "name": "OTC→Binance Router 3 (nonce 663)",
+      "name": "OTC\u2192Binance Router 3 (nonce 663)",
       "category": "exchange_router",
       "notes": "Aggregates UPbit OTC + OTC Dist chunks, forwards 6K to Binance.",
       "first_seen": "2026-05-11"
     },
     "erd1ljlcx0wflzwvppyq8vfngs4ryaefvl9ruj7n75q467znw4k9c5dsht33kp": {
-      "name": "Bidirectional Router (Binance↔Bybit, nonce 573)",
+      "name": "Bidirectional Router (Binance\u2194Bybit, nonce 573)",
       "category": "exchange_router",
       "notes": "Receives from BOTH UPbit OTC and Binance, forwards to Bybit. First bidirectional pattern.",
       "first_seen": "2026-05-11"
@@ -1153,29 +1154,29 @@
       "first_seen": "2026-05-11"
     },
     "erd1rffkz8zwp3pvnm02c6aexef5f53d64rjs8nj7qm5t0e8q5lnvutsuhnl73": {
-      "name": "Bybit→KuCoin Reverse Router (nonce 380)",
+      "name": "Bybit\u2192KuCoin Reverse Router (nonce 380)",
       "category": "exchange_router",
-      "notes": "First documented reverse-direction CEX-CEX flow: Bybit → erd1rffkz8 → KuCoin.",
+      "notes": "First documented reverse-direction CEX-CEX flow: Bybit \u2192 erd1rffkz8 \u2192 KuCoin.",
       "first_seen": "2026-05-11"
     },
     "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu": {
       "name": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
       "category": "exchange_router",
       "subcategory": "otc_source_router",
-      "notes": "Receives 2K-EGLD chunks from Unknown Whale erd17l22, forwards in 1.2K chunks to erd1ecyftln pass-through. Nonce 2543, ~7.5K EGLD balance. First documented OTC SOURCE upstream layer — discovered run #8 (2026-05-18).",
+      "notes": "Receives 2K-EGLD chunks from Unknown Whale erd17l22, forwards in 1.2K chunks to erd1ecyftln pass-through. Nonce 2543, ~7.5K EGLD balance. First documented OTC SOURCE upstream layer \u2014 discovered run #8 (2026-05-18).",
       "first_seen": "2026-05-18"
     },
     "erd1ecyftln6n8ej5mxu0ejzxayfmtxfmzc08sp55qr8aj74yst4ejus4em6ce": {
       "name": "OTC Source Pass-through (erd17l22 chain, nonce 50)",
       "category": "exchange_router",
       "subcategory": "otc_source_router",
-      "notes": "Receives from erd1nhtq4 router, forwards 7×~1.7K to OTC Distribution Wallet + 1× to UPbit OTC Desk. Nonce 50, 0 EGLD balance. Run #8 completes the upstream-of-OTC-desks pipeline taxonomy.",
+      "notes": "Receives from erd1nhtq4 router, forwards 7\u00d7~1.7K to OTC Distribution Wallet + 1\u00d7 to UPbit OTC Desk. Nonce 50, 0 EGLD balance. Run #8 completes the upstream-of-OTC-desks pipeline taxonomy.",
       "first_seen": "2026-05-18"
     }
   },
   "unknown_whales": {
     "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
-      "name": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4→erd1ecyftln→OTC Distribution+UPbit OTC; funding source still TBD)",
+      "name": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
       "category": "whale",
       "subcategory": "otc_source",
       "notes": "Run #7 +58K accumulation, Run #8 -26K distributed in 13 chunks of 2K EGLD to routing wallet erd1nhtq4 (nonce 2543), terminating at OTC Distribution Wallet + UPbit OTC Desk. Now confirmed as OTC SOURCE wallet upstream of the desk layer. Investigate funding source.",
@@ -1190,6 +1191,57 @@
       "notes": "Sent ~2K EGLD in two chunks (1,083 + 919) to OTC source wallet erd17l22 during run #9 (2026-05-25). Run #10: VERIFIED as pure pass-through. 14d inbound = 100% from Binance.com hot (erd1sdsl, 8,972 EGLD); 7d throughput 6,970 EGLD all forwarded to erd17l22. Balance 0. Nonce 1505 (heavy historical use). Completes the OTC pipeline taxonomy: Binance.com -> this -> erd17l22 -> routers -> OTC desks -> retail.",
       "first_seen": "2026-05-25",
       "verified_binance_origin": "2026-06-01"
+    }
+  },
+  "staking_provider_operators": {
+    "_description": "Top staking provider operator (ownerAddress) wallets. Discovered run #11 via scripts/delegator_behavior.py. These are the wallets that control delegation contract upgrades and extract service-fee revenue.",
+    "_added_run": 11,
+    "erd1nknqh4rw82w67gun6x3meaxw62h627kp86lfjy8mypvgkt6084ps6kr7jm": {
+      "name": "figment-networks operator",
+      "category": "staking_operator",
+      "operates": "figment-networks (604K locked, 333 users)",
+      "first_seen": "2026-06-08"
+    },
+    "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc": {
+      "name": "binance_staking operator",
+      "category": "staking_operator",
+      "operates": "binance_staking (521K locked, 8482 users)",
+      "first_seen": "2026-06-08"
+    },
+    "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl": {
+      "name": "stakingagency operator",
+      "category": "staking_operator",
+      "operates": "stakingagency (425K locked, 9970 users)",
+      "outbound_30d_egld": 463,
+      "first_seen": "2026-06-08"
+    },
+    "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg": {
+      "name": "meria operator",
+      "category": "staking_operator",
+      "operates": "meria (346K locked, 10953 users)",
+      "outbound_30d_egld": 346,
+      "first_seen": "2026-06-08"
+    },
+    "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv": {
+      "name": "istariv operator",
+      "category": "staking_operator",
+      "operates": "istariv (278K locked, 4076 users)",
+      "outbound_30d_egld": 786,
+      "first_seen": "2026-06-08"
+    },
+    "erd1kz2kumr0clug4ht2ek0l4l9drvq3rne9lmkwrjf3qv2luyuuaj2szjwv0f": {
+      "name": "thepalmtreenw operator",
+      "category": "staking_operator",
+      "operates": "thepalmtreenw (262K locked, 3667 users)",
+      "outbound_30d_egld": 550,
+      "first_seen": "2026-06-08"
+    },
+    "erd1mdpdlqyulvf05n87ze8a75fwvg4anz2y4jh8vcd2a67edmarqjlqxfyzzq": {
+      "name": "validblocks operator",
+      "category": "staking_operator",
+      "operates": "validblocks (236K locked, 4505 users)",
+      "outbound_30d_egld": 0,
+      "first_seen": "2026-06-08"
     }
   }
 }
