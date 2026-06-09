@@ -279,6 +279,35 @@ export interface StakingChurn {
   providers_losing_delegators: number | null
 }
 
+export interface RewardFateTier {
+  events: number
+  total_value_egld: number
+  fates_by_count: Record<string, number>
+  fates_by_value_egld: Record<string, number>
+}
+
+export interface RewardOperatorEntry {
+  provider: string
+  owner_address: string | null
+  owner_label: string | null
+  owner_balance_egld: number | null
+  outbound_count: number | null
+  fates_by_count: Record<string, number>
+  fates_by_value_egld: Record<string, number>
+}
+
+export interface RewardBehavior {
+  providers_sampled: number
+  delegator_window_days: number
+  operator_window_days: number
+  function_distribution: Record<string, { count: number; share_pct: number }>
+  compound_pct_at_function_level: number
+  compound_vs_claim: { redelegate_count: number; claim_count: number }
+  delegator_fates_by_tier: Record<string, RewardFateTier>
+  provider_operators: RewardOperatorEntry[]
+  key_findings?: string[]
+}
+
 export interface StakingIntelligence {
   summary?: StakingSummary
   top_providers: StakingProvider[]
@@ -286,6 +315,7 @@ export interface StakingIntelligence {
   apr_distribution?: AprDistribution
   apr_outliers?: AprOutliers
   churn?: StakingChurn
+  reward_behavior?: RewardBehavior
   analysis: string
 }
 

@@ -87,6 +87,7 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
     apr_distribution,
     apr_outliers,
     churn,
+    reward_behavior,
     analysis,
   } = data
 
@@ -485,8 +486,168 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
         </div>
       </CardSection>
 
+      {reward_behavior && <RewardBehaviorSection rb={reward_behavior} />}
+
       <AnalysisBlock label="Staking Intelligence" text={analysis} />
     </div>
+  )
+}
+
+/* -------- Reward Behavior section (new run #11) --------------------------- */
+function RewardBehaviorSection({
+  rb,
+}: {
+  rb: NonNullable<StakingIntelligence['reward_behavior']>
+}) {
+  const compoundCount = rb.compound_vs_claim?.redelegate_count ?? 0
+  const claimCount = rb.compound_vs_claim?.claim_count ?? 0
+  const compoundPct = rb.compound_pct_at_function_level ?? 0
+  const tiers = Object.entries(rb.delegator_fates_by_tier ?? {})
+  const operators = rb.provider_operators ?? []
+
+  const tierOrder: Record<string, number> = {
+    whale: 1,
+    institutional: 2,
+    mid_tier: 3,
+    retail: 4,
+  }
+  const sortedTiers = tiers.sort(
+    (a, b) => (tierOrder[a[0]] ?? 99) - (tierOrder[b[0]] ?? 99),
+  )
+
+  return (
+    <CardSection
+      title="Reward Behavior — What Delegators & Providers Do With Rewards"
+      subtitle={`Sampled ${rb.providers_sampled} top providers · delegators ${rb.delegator_window_days}d · operators ${rb.operator_window_days}d`}
+    >
+      <div className="p-4 space-y-6">
+        {/* Hero: compound vs claim */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-lg border border-border-subtle p-4 bg-bg-soft">
+            <div className="eyebrow">Compound rate (function-level)</div>
+            <div className="hero-number-sm mt-1">{compoundPct.toFixed(1)}%</div>
+            <div className="text-[12px] text-text-muted font-mono mt-1">
+              {compoundCount} reDelegate · {claimCount} claim
+            </div>
+            <p className="text-[12px] text-text-muted mt-2">
+              Single-number measure of delegator conviction. High = compounding-dominant.
+            </p>
+          </div>
+          <div className="md:col-span-2 rounded-lg border border-border-subtle p-4">
+            <div className="eyebrow mb-2">Key findings</div>
+            <ul className="space-y-1.5 text-[12px] leading-snug">
+              {(rb.key_findings ?? []).slice(0, 5).map((f, i) => (
+                <li key={i} className="flex gap-2">
+                  <span className="text-text-muted shrink-0">·</span>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Delegator fates by tier */}
+        <div>
+          <div className="eyebrow mb-2">Delegator fates by tier (last {rb.delegator_window_days}d)</div>
+          <div className="overflow-x-auto rounded-lg border border-border-subtle">
+            <table className="w-full text-[12px] tabular">
+              <thead className="bg-bg-soft">
+                <tr className="text-left">
+                  <th className="px-3 py-2 font-mono">Tier</th>
+                  <th className="px-3 py-2 font-mono text-right">Events</th>
+                  <th className="px-3 py-2 font-mono text-right">EGLD claimed</th>
+                  <th className="px-3 py-2 font-mono">Held</th>
+                  <th className="px-3 py-2 font-mono">Sold</th>
+                  <th className="px-3 py-2 font-mono">Rotated</th>
+                  <th className="px-3 py-2 font-mono">DeFi</th>
+                  <th className="px-3 py-2 font-mono">Other</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedTiers.map(([tier, info]) => (
+                  <tr key={tier} className="border-t border-border-subtle">
+                    <td className="px-3 py-2 font-mono capitalize">
+                      {tier.replace('_', '-')}
+                    </td>
+                    <td className="px-3 py-2 text-right">{info.events}</td>
+                    <td className="px-3 py-2 text-right">
+                      {info.total_value_egld.toFixed(2)}
+                    </td>
+                    <td className="px-3 py-2 text-text-muted">
+                      {info.fates_by_count?.held ?? 0}
+                    </td>
+                    <td className="px-3 py-2 text-down">
+                      {info.fates_by_count?.sold ?? 0}
+                    </td>
+                    <td className="px-3 py-2 text-text-muted">
+                      {info.fates_by_count?.rotated_provider ?? 0}
+                    </td>
+                    <td className="px-3 py-2 text-text-muted">
+                      {info.fates_by_count?.defi_deposit ?? 0}
+                    </td>
+                    <td className="px-3 py-2 text-text-muted">
+                      {info.fates_by_count?.held_or_other ?? 0}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Provider operator behavior */}
+        <div>
+          <div className="eyebrow mb-2">
+            Provider operator behavior (last {rb.operator_window_days}d)
+          </div>
+          <div className="overflow-x-auto rounded-lg border border-border-subtle">
+            <table className="w-full text-[12px] tabular">
+              <thead className="bg-bg-soft">
+                <tr className="text-left">
+                  <th className="px-3 py-2 font-mono">Provider</th>
+                  <th className="px-3 py-2 font-mono">Operator</th>
+                  <th className="px-3 py-2 font-mono text-right">Outbound (count)</th>
+                  <th className="px-3 py-2 font-mono">Top destinations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {operators.map((op) => {
+                  const fates = Object.entries(op.fates_by_value_egld ?? {}).sort(
+                    (a, b) => b[1] - a[1],
+                  )
+                  return (
+                    <tr
+                      key={op.provider}
+                      className="border-t border-border-subtle align-top"
+                    >
+                      <td className="px-3 py-2 font-mono">{op.provider}</td>
+                      <td className="px-3 py-2">
+                        {op.owner_label && op.owner_label !== 'Unknown' ? (
+                          <span className="text-up">{op.owner_label}</span>
+                        ) : (
+                          <span className="text-text-muted">
+                            {op.owner_address?.slice(0, 14) ?? '—'}…
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-right">{op.outbound_count ?? 0}</td>
+                      <td className="px-3 py-2 text-text-muted">
+                        {fates.length
+                          ? fates
+                              .slice(0, 3)
+                              .map(([f, v]) => `${f}: ${v.toFixed(0)}`)
+                              .join(' · ')
+                          : '—'}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </CardSection>
   )
 }
 

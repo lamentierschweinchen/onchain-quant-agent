@@ -228,6 +228,12 @@ Cross-reference: a high APR + low fee provider is a clear "best delegator deal" 
 
 A growing delegator count with flat staked EGLD = retail joining. A shrinking delegator count with rising EGLD = whales consolidating positions.
 
+#### 2.4.5 Reward Behavior — NEW (run #12+)
+
+What delegators do with claimed rewards (sell / hold / compound / rotate) and what providers do with service-fee earnings. Run `scripts/delegator_behavior.py` (see methodology.md for full details). The headline metric is `compound_pct_at_function_level` — the share of reward decisions that compound rather than claim. Stratified by tier (retail/mid/inst/whale) and traced to next-outbound-tx fate.
+
+This section is populated by `scripts/inject_reward_behavior.py` and lives under `staking_intelligence.reward_behavior` in the report JSON. See Step 3.35.
+
 ### 2.5 Token Analysis — Expanded
 
 #### 2.5.1 Top 10 by Holders, Top 10 by Volume
@@ -337,6 +343,29 @@ Update `data/previous.json` with this week's data so the next run can compute de
   "watch_addresses": [ ... ]
 }
 ```
+
+### 3.35 Inject Reward Behavior — STANDARD (run #12+)
+
+After the main assembler runs, run the reward-behavior collector and inject its output into the report:
+
+```bash
+# Collect: ~200 API calls, ~3 minutes
+python3 scripts/delegator_behavior.py \
+    --providers 8 --days 7 --operator-days 30 --claims-per-provider 12 \
+    --output data/collected/delegator_behavior_${REPORT_DATE}.json
+
+# Inject into the weekly report
+python3 scripts/inject_reward_behavior.py \
+    --report reports/${REPORT_DATE}.json \
+    --source data/collected/delegator_behavior_${REPORT_DATE}.json
+```
+
+This populates `staking_intelligence.reward_behavior` with:
+- `compound_pct_at_function_level` — % of reward decisions that are reDelegateRewards
+- `delegator_fates_by_tier` — for each tier (retail/mid/inst/whale), counts of sold/held/rotated/defi
+- `provider_operators` — owner wallet outbound 30d behavior + destination classification
+
+The dashboard renders this as a dedicated section. The compound rate is the single highest-signal new metric.
 
 ### 3.4 Two-Layer Pre-Publish Gate — MANDATORY
 

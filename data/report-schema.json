@@ -323,6 +323,83 @@
             "providers_losing_delegators": { "type": ["integer", "null"] }
           }
         },
+        "reward_behavior": {
+          "type": "object",
+          "description": "What delegators do with claimed rewards, and what providers do with service-fee earnings. Sampled across top providers via scripts/delegator_behavior.py.",
+          "properties": {
+            "providers_sampled": { "type": "integer" },
+            "delegator_window_days": { "type": "integer" },
+            "operator_window_days": { "type": "integer" },
+            "function_distribution": {
+              "type": "object",
+              "description": "Counts and shares of inbound function calls to sampled providers.",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "count": { "type": "integer" },
+                  "share_pct": { "type": "number" }
+                }
+              }
+            },
+            "compound_pct_at_function_level": {
+              "type": "number",
+              "description": "redelegate_count / (redelegate_count + claim_count). Single-number measure of delegator conviction — high = compounding-dominant."
+            },
+            "compound_vs_claim": {
+              "type": "object",
+              "properties": {
+                "redelegate_count": { "type": "integer" },
+                "claim_count": { "type": "integer" }
+              }
+            },
+            "delegator_fates_by_tier": {
+              "type": "object",
+              "description": "Keyed by tier (retail/mid_tier/institutional/whale). Each tier reports total events, total EGLD claimed, and how the claimed EGLD was deployed in the next outbound tx within 72h.",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "events": { "type": "integer" },
+                  "total_value_egld": { "type": "number" },
+                  "fates_by_count": {
+                    "type": "object",
+                    "additionalProperties": { "type": "integer" }
+                  },
+                  "fates_by_value_egld": {
+                    "type": "object",
+                    "additionalProperties": { "type": "number" }
+                  }
+                }
+              }
+            },
+            "provider_operators": {
+              "type": "array",
+              "description": "Per-provider operator wallet behavior over operator_window_days.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "provider": { "type": "string" },
+                  "owner_address": { "type": ["string", "null"] },
+                  "owner_label": { "type": ["string", "null"] },
+                  "owner_balance_egld": { "type": ["number", "null"] },
+                  "outbound_count": { "type": ["integer", "null"] },
+                  "fates_by_count": {
+                    "type": "object",
+                    "additionalProperties": { "type": "integer" }
+                  },
+                  "fates_by_value_egld": {
+                    "type": "object",
+                    "additionalProperties": { "type": "number" }
+                  }
+                }
+              }
+            },
+            "key_findings": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Short bullets summarizing the most actionable observations from this run's sample."
+            }
+          }
+        },
         "analysis": { "type": "string" }
       }
     },

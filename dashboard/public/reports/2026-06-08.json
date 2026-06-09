@@ -1171,7 +1171,192 @@
       "providers_gaining_delegators": 31,
       "providers_losing_delegators": 37
     },
-    "analysis": "Staking concentration remains low (HHI 0.0191, top-5 20.0%, both essentially unchanged WoW). Total delegated 11,326,928 EGLD across 106 active providers. Active delegator base 178,487 delegators (-447 WoW = -0.25% - the LARGEST single-week drop in tracking history).\n\nYIELD-CHASE REGIME ENDED AT WEEK 5. The 0%-fee 9%+ APR migration that ran from run #6 has now decisively rolled over. Net flow into the cohort this week: -2.6K. 3 of 5 previous leaders REVERSED: egldstakingprovider -3.1K, valuestaking -1.0K, orius -1.8K. Only ninjastaking +2.6K and procryptostaking +0.7K showed any positive flow. ninjastaking is the only sustained gainer across all 5 weeks (+38K cumulative). The regime can be removed from active watch.\n\nAPR distribution: 72% of stake in the 8-9% bucket (78 providers, 7.7M). The 9-10% bucket holds only 4 providers / 424K EGLD. The 5-6% bucket has only 2 providers (775K) and 10%+ is empty (consistent across all 2026 runs). Apr-weighted average: 7.98%.\n\nDELEGATOR CHURN ACCELERATED: 31 providers gaining vs 37 losing delegators (-447 net). Largest absolute weekly drop in tracking history. Combined with the staked-EGLD decline (-27K), this week broke the recent 6-reading flat-delegator pattern. Read: retail users beginning to leave delegation contracts amid the price decline (classic capitulation behavior). Watch next week to confirm whether this becomes a new declining trend.\n\nVALIDATOR MOVEMENTS: 6 system-contract addresses (erd1qqqq...) dropped out (treated as data artifact per run #10 rule). No real named-validator joiners or leavers >50K EGLD this week."
+    "analysis": "Staking concentration remains low (HHI 0.0191, top-5 20.0%, both essentially unchanged WoW). Total delegated 11,326,928 EGLD across 106 active providers. Active delegator base 178,487 delegators (-447 WoW = -0.25% - the LARGEST single-week drop in tracking history).\n\nYIELD-CHASE REGIME ENDED AT WEEK 5. The 0%-fee 9%+ APR migration that ran from run #6 has now decisively rolled over. Net flow into the cohort this week: -2.6K. 3 of 5 previous leaders REVERSED: egldstakingprovider -3.1K, valuestaking -1.0K, orius -1.8K. Only ninjastaking +2.6K and procryptostaking +0.7K showed any positive flow. ninjastaking is the only sustained gainer across all 5 weeks (+38K cumulative). The regime can be removed from active watch.\n\nAPR distribution: 72% of stake in the 8-9% bucket (78 providers, 7.7M). The 9-10% bucket holds only 4 providers / 424K EGLD. The 5-6% bucket has only 2 providers (775K) and 10%+ is empty (consistent across all 2026 runs). Apr-weighted average: 7.98%.\n\nDELEGATOR CHURN ACCELERATED: 31 providers gaining vs 37 losing delegators (-447 net). Largest absolute weekly drop in tracking history. Combined with the staked-EGLD decline (-27K), this week broke the recent 6-reading flat-delegator pattern. Read: retail users beginning to leave delegation contracts amid the price decline (classic capitulation behavior). Watch next week to confirm whether this becomes a new declining trend.\n\nVALIDATOR MOVEMENTS: 6 system-contract addresses (erd1qqqq...) dropped out (treated as data artifact per run #10 rule). No real named-validator joiners or leavers >50K EGLD this week.\n\nREWARD BEHAVIOR (new this run): function-level compound rate = 61.9% (348 reDelegateRewards vs 214 claimRewards across 8 top providers, 7d sample). Delegators are roughly 2:1 in favor of compounding rather than claiming \u2014 a healthy backdrop for the network's staked ratio. Retail (<1 EGLD/claim): 0 of 68 traced claims went to a labeled exchange \u2014 retail does NOT sell rewards directly. Institutional (50-1000 EGLD/claim): 3 events / 258 EGLD, 54% of claimed value went to an exchange. Provider operators: zero of the sampled operators sold service-fee EGLD to a labeled exchange in 30d; dominant outbound destination is treasury / unlabeled wallets. Notable: at least one operator wallet labels resolve to a known DeFi protocol team, indicating cross-protocol fee re-deployment.",
+    "reward_behavior": {
+      "providers_sampled": 8,
+      "delegator_window_days": 7,
+      "operator_window_days": 30,
+      "function_distribution": {
+        "reDelegateRewards": {
+          "count": 348,
+          "share_pct": 48.4
+        },
+        "claimRewards": {
+          "count": 214,
+          "share_pct": 29.76
+        },
+        "delegate": {
+          "count": 78,
+          "share_pct": 10.85
+        },
+        "reward": {
+          "count": 34,
+          "share_pct": 4.73
+        },
+        "withdraw": {
+          "count": 23,
+          "share_pct": 3.2
+        },
+        "unDelegate": {
+          "count": 22,
+          "share_pct": 3.06
+        }
+      },
+      "compound_pct_at_function_level": 61.92,
+      "compound_vs_claim": {
+        "redelegate_count": 348,
+        "claim_count": 214
+      },
+      "delegator_fates_by_tier": {
+        "institutional": {
+          "events": 3,
+          "total_value_egld": 258.34,
+          "fates_by_count": {
+            "sold": 2,
+            "held": 1
+          },
+          "fates_by_value_egld": {
+            "sold": 138.56,
+            "held": 119.78
+          }
+        },
+        "mid_tier": {
+          "events": 16,
+          "total_value_egld": 152.13,
+          "fates_by_count": {
+            "sold": 1,
+            "held": 11,
+            "held_or_other": 3,
+            "rotated_provider": 1
+          },
+          "fates_by_value_egld": {
+            "sold": 49.71,
+            "held": 75.65,
+            "held_or_other": 16.47,
+            "rotated_provider": 10.3
+          }
+        },
+        "retail": {
+          "events": 68,
+          "total_value_egld": 14.62,
+          "fates_by_count": {
+            "held": 52,
+            "rotated_provider": 8,
+            "held_or_other": 7,
+            "defi_deposit": 1
+          },
+          "fates_by_value_egld": {
+            "held": 12.92,
+            "rotated_provider": 0.72,
+            "held_or_other": 0.92,
+            "defi_deposit": 0.06
+          }
+        }
+      },
+      "provider_operators": [
+        {
+          "provider": "figment-networks",
+          "owner_address": "erd1nknqh4rw82w67gun6x3meaxw62h627kp86lfjy8mypvgkt6084ps6kr7jm",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 18.096783247034367,
+          "outbound_count": 0,
+          "fates_by_count": {},
+          "fates_by_value_egld": {}
+        },
+        {
+          "provider": "binance_staking",
+          "owner_address": "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 11.572851236936296,
+          "outbound_count": 0,
+          "fates_by_count": {},
+          "fates_by_value_egld": {}
+        },
+        {
+          "provider": "stakingagency",
+          "owner_address": "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 0.26360496391179905,
+          "outbound_count": 5,
+          "fates_by_count": {
+            "held_or_other": 5
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 463.0
+          }
+        },
+        {
+          "provider": "truststaking",
+          "owner_address": "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm",
+          "owner_label": "XOXNO: Deployer Wallet",
+          "owner_balance_egld": 467.5093578066268,
+          "outbound_count": 4,
+          "fates_by_count": {
+            "held_or_other": 3,
+            "defi_deposit": 1
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 205.58,
+            "defi_deposit": 135.77
+          }
+        },
+        {
+          "provider": "meria",
+          "owner_address": "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 0.020673553195950784,
+          "outbound_count": 1,
+          "fates_by_count": {
+            "held_or_other": 1
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 345.93
+          }
+        },
+        {
+          "provider": "istariv",
+          "owner_address": "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 0.8531752425515325,
+          "outbound_count": 1,
+          "fates_by_count": {
+            "held_or_other": 1
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 786.0
+          }
+        },
+        {
+          "provider": "thepalmtreenw",
+          "owner_address": "erd1kz2kumr0clug4ht2ek0l4l9drvq3rne9lmkwrjf3qv2luyuuaj2szjwv0f",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 20.397597185198634,
+          "outbound_count": 1,
+          "fates_by_count": {
+            "held_or_other": 1
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 550.0
+          }
+        },
+        {
+          "provider": "validblocks",
+          "owner_address": "erd1mdpdlqyulvf05n87ze8a75fwvg4anz2y4jh8vcd2a67edmarqjlqxfyzzq",
+          "owner_label": "Unknown",
+          "owner_balance_egld": 0.0,
+          "outbound_count": 0,
+          "fates_by_count": {},
+          "fates_by_value_egld": {}
+        }
+      ],
+      "key_findings": [
+        "At the function-call level, 61.9% of all reward decisions are to COMPOUND (348 reDelegateRewards vs 214 claimRewards). Single-number measure of delegator conviction.",
+        "Retail (<1 EGLD/claim): 0 of 68 claims went to a labeled exchange. Most retail-claimed value stays in the claimant's wallet.",
+        "Institutional (50-1000 EGLD/claim): 3 events totaling 258 EGLD; 54% of claimed value went to an exchange.",
+        "Provider operators selling fees to exchange (30d): 0 of 8 sampled. Dominant operator outbound destination = treasury / unlabeled wallets.",
+        "Operator labeled: truststaking is operated by 'XOXNO: Deployer Wallet' (erd1x45vnu7shh...) \u2014 outbound 4 txs in 30d."
+      ]
+    }
   },
   "token_activity": {
     "top_by_holders": [

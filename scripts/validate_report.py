@@ -55,6 +55,8 @@ DASHBOARD_INVARIANTS = [
     ("staking_intelligence.apr_outliers.top_apr[]", ["identity", "apr_pct", "fee_pct", "locked_egld"]),
     ("staking_intelligence.apr_outliers.lowest_fee[]", ["identity", "apr_pct", "fee_pct", "locked_egld"]),
     ("staking_intelligence.top_providers[]", ["rank", "identity", "locked_egld", "share_pct", "apr_pct", "fee_pct", "num_users"]),
+    ("staking_intelligence.reward_behavior.compound_vs_claim", ["redelegate_count", "claim_count"]),
+    ("staking_intelligence.reward_behavior.provider_operators[]", ["provider", "owner_address"]),
     ("token_activity.top_by_holders[]", ["identifier", "name", "holders"]),
     ("token_activity.xexchange", ["total_pairs", "mex_price_usd", "mex_market_cap_usd"]),
     ("defi_activity.protocol_breakdown[]", ["protocol", "category", "addresses_tracked"]),
