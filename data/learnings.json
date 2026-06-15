@@ -1757,6 +1757,267 @@
           "Updated AGENT_PROMPT.md Section 3.4 with two-layer pre-publish gate (audit + validate)."
         ]
       }
+    },
+    {
+      "date": "2026-06-15",
+      "run_number": 12,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x36",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x14",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [
+          "run #11 broken bech32 address erd1sdslv...29trp...76xc (HTTP 400, excluded)"
+        ],
+        "api_quirks_discovered": [
+          "/tokens/{id} HTTP 429 rate-limit kicks in faster than the 0.5s methodology rule. Initial run-12 collection with 0.55s delays returned ALL 4 LSD/USH tokens (SEGLD, SWTAO, USH, XEGLD) as price=null marketCap=null. Re-fetch with 1.0s delays returned proper data. Diagnosis: run #11 SWTAO 'null price feed' was the same rate-limit miss, not a data-feed outage. New rule: use \u22651.0s between /tokens/{id} queries. The previous 0.5s rule from run #10b is INCORRECT for this endpoint.",
+          "run #11 watch_addresses contained an invalid bech32 address (erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp29trp6qsl2gdvvz2eqra76xc) that the API rejects with HTTP 400. The canonical Binance.com hot is erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets (verified via /accounts?search=). Both share the first ~36 chars but the bad one has incorrect checksum. This caused Binance.com entity to undercount by ~222K in run #11.",
+          "Capitulation bounce predicted at $2.95 floor materialized as +1.4% to $2.99. BTC/ETH both up confirms broad-crypto recovery (not MultiversX-specific).",
+          "DEX volume -55% during the price bounce - traders disengaged. This pattern (price up, DEX volume down) is the inverse of a normal recovery and is a new 'exit liquidity' signature to track."
+        ],
+        "data_gaps": [
+          "LSD/USH price-feed outage means USD-denominated TVLs depend on fallback. Watch for resolution.",
+          "Provider previous list keyed by name only; anonymous providers still not WoW-matchable.",
+          "Newly-issued token scan returned empty - cannot distinguish empty week from method failure without external corroboration."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Capitulation bounce prediction validated: predicted +1.4% to $2.99 off $2.95 floor.",
+          "Coinbase 2-week confirmation rule worked: off-exchange thesis killed in 2 weeks.",
+          "Rate-limit diagnostic on /tokens/{id} resolved last run's SWTAO 'null' anomaly cleanly.",
+          "Engagement-collapse composite as a new bearish read: 5 simultaneous bearish indicators during a price up-week is highly informative.",
+          "Reward behavior compound rate moving as a slow-signal indicator (61.9% -> 59.14% = mild bearish drift)."
+        ],
+        "what_needs_improvement": [
+          "Bilateral inverse rule threshold should be explicitly encoded (5% minimum |\u0394price| from this run's analysis).",
+          "Address validation on storage to known-addresses.json \u2014 bech32 checksum check would have caught run #11's invalid address.",
+          "Newly-issued token scan returned empty - no way to distinguish 'no activity' from 'method failure' without independent verification."
+        ],
+        "surprising_findings": [
+          "Run #11's 'synchronized LSD contraction' was partially a data artifact (SWTAO rate-limit miss caused $1.18M Hatom LSD undercount). Hatom LSD apples-to-apples is actually FLAT, not contracting. Only XOXNO LSD contracting confirmed.",
+          "DEX volume -55% during the price bounce - largest WoW drop in tracking. Liquidity collapsed during what should have been a relief rally.",
+          "Delegator drop 9x larger than last run (-447 -> -4,003). Combined with -38K staked-EGLD decline = retail capitulation during the bounce.",
+          "Run #11's Binance.com 'hot wallet drawdown -36.7K' was partially an artifact of the bad-checksum address returning 0 (HTTP 400). The canonical address actually grew +24K this run, suggesting normal exchange operation continued through the period.",
+          "Reward compound rate fell 61.9% -> 59.14% (mild) AND institutional claims went 100% sold (small sample of 2). Marginal bearish drift in delegator decision quality."
+        ]
+      },
+      "methodology_changes": [
+        "FIXED: /tokens/{id} rate-limit threshold. The 0.5s spacing from run #10b methodology is too aggressive \u2014 HTTP 429 triggers and the response silently has price=null marketCap=null fields (no error returned, just null values). Use \u22651.0s spacing. This single fix resolves the run #11 SWTAO miss and would have prevented the Hatom LSD undercounting.",
+        "NEW PATTERN: 'exit liquidity bounce' as a bearish read on price recoveries. Diagnostic: price recovers WHILE delegator base contracts AND DEX volume drops AND on-exchange capital builds. This run shows all three. The bounce is sell-side execution rather than fresh demand. Should be added as a forward-indicator question (does engagement recover next week?).",
+        "BILATERAL INVERSE RULE EVALUATION GUARDRAIL: rule only applies for meaningful price moves (|\u0394|\u22655% based on the 5 historical observations). Small moves (<3%) cannot test the rule \u2014 EGLD-denominated TVL noise dominates the signal. This run's +1.4% / +0.9% does NOT count as observation #6.",
+        "CRITICAL FIX: validate bech32 checksum when storing addresses to known-addresses.json and watch_addresses. Run #11 stored an invalid-checksum address that produced silent HTTP 400 errors, undercounting Binance.com entity by 222K. Pre-store validation recommended."
+      ],
+      "new_addresses_discovered": [
+        {
+          "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+          "label": "Binance.com hot wallet (canonical address; replaces run #11's invalid-checksum form)"
+        }
+      ],
+      "action_items_completed": [
+        "DONE: Capitulation bounce check - $2.95 -> $2.99 (+1.4%) FIRST UP-WEEK after 5 down-weeks. Bounce real but on collapsing engagement.",
+        "DONE: Binance Staking custody 4th-week check - STALLED 2nd consecutive week at 3.51M (5-week parked position).",
+        "DONE: OTC desk reload check - desks in INTER-CYCLE GAP (combined -0.9K). Pipeline awaiting reload (run #11 predicted 1-2 weeks).",
+        "DONE: Coinbase 2-week inflow confirmation - +43K then +8.3K = 2-week inflow confirmed per run #11's rule.",
+        "DONE: LSD contraction follow-up - run #11 pattern downgraded (data artifact); only XOXNO LSD contracting confirmed.",
+        "DONE: Hatom Lending magnitude check - not evaluable (price move +1.4% below 5% threshold for meaningful rule observation).",
+        "DONE: Mega Whale erd18mv2z6r2 watch - balance UNCHANGED at 998,971. No downstream forwarding.",
+        "NOT APPLICABLE: Newly-issued FRA/GSN/GTA adoption check - 0 issuances this run (system SC scan returned empty).",
+        "NOT DONE: OTC funder re-trace and known-addresses canonicalization (4th run carrying)."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          4.29,
+          4.07,
+          4.67,
+          3.88,
+          3.97,
+          3.5,
+          2.95,
+          2.99
+        ],
+        "dex_volume_24h_usd": [
+          74843,
+          328098,
+          74915,
+          81933.26158545031,
+          108539.14766141125,
+          121891.8071868304,
+          54634.45212423313
+        ],
+        "staked_egld": [
+          14779606,
+          14454668,
+          14465903,
+          14467981,
+          14497721,
+          14471101,
+          14432677
+        ],
+        "mex_price_usd": [
+          4.3e-07,
+          3.7888e-07,
+          4.1144487024798363e-07,
+          3.7090115412287983e-07,
+          3.7792186273497485e-07,
+          3.298877014744513e-07,
+          2.761419779228928e-07,
+          2.738418102638608e-07
+        ],
+        "total_delegators": [
+          179038,
+          179060,
+          179050,
+          179011,
+          178958,
+          178934,
+          178487,
+          174484
+        ],
+        "staked_ratio": [
+          0.495,
+          0.48333121059510425,
+          0.482931675993471,
+          0.48222713367788334,
+          0.4824442711735065,
+          0.48078822404993493,
+          0.4787456139710736
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444,
+          -70845.74226705544,
+          24901.97406237945,
+          41987.5425480064
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933,
+          39575,
+          -26410,
+          -881
+        ],
+        "binance_staking_custody_egld": [
+          3110663,
+          3377559,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Engagement-collapse composite indicator",
+          "motivation": "Run #12's most valuable insight was the simultaneous collapse of FIVE engagement metrics (delegator base, yield-chase cohort, DEX volume, LSD balances, on-exchange capital) during a price bounce. A single 'engagement health' composite would surface this pattern across all weekly reports. The 'exit liquidity bounce' signature is hard to spot unless you look at all 5 metrics at once.",
+          "suggested_visualization": "5-spoke radar chart per week showing each engagement metric's z-score (or %WoW); historic radar overlays show pattern evolution. Lower-left collapse pattern = exit liquidity; balanced radar = healthy.",
+          "data_already_available": true,
+          "data_source": "already-collected staking_intelligence.churn + protocol_breakdown[].tvl_wow_change_pct + token_activity.xexchange.total_volume_24h_usd + whale_intelligence.exchange_flows.net_change_egld",
+          "priority": "high"
+        },
+        {
+          "title": "LSD circulating-supply timeline",
+          "motivation": "Token mcap is sensitive to API rate-limit hiccups (run #11 SWTAO miss caused $1.18M Hatom LSD undercount). A supply-based metric (circulating SEGLD/XEGLD in EGLD units, derived from minted-burnt) bypasses the price feed and is therefore more robust. A timeline of SEGLD and XEGLD circulating supply across weeks would directly track LSD adoption/contraction without dependency on mcap freshness.",
+          "suggested_visualization": "dual-line chart of SEGLD and XEGLD circulating supply over weekly snapshots.",
+          "data_already_available": true,
+          "data_source": "derived from tvl_tokens.{SEGLD,XEGLD}.minted - .burnt in collected.json snapshots",
+          "priority": "medium"
+        },
+        {
+          "title": "Bilateral inverse rule up-week / down-week asymmetry visualization",
+          "motivation": "This week added the FIRST up-week observation to the bilateral inverse rule (5 prior were all down-weeks). The rule's up/down asymmetry is now a tractable analytical question. A scatter plot of |price change %| vs Hatom Lending EGLD response % colored by direction (red=down-week, green=up-week) would make the asymmetry visible at a glance.",
+          "suggested_visualization": "scatter plot, x-axis = signed price change %, y-axis = Hatom Lending EGLD response %, distinct symbols for down/up weeks; trendline per category.",
+          "data_already_available": true,
+          "data_source": "defi_activity.protocol_breakdown[Hatom Lending].tvl_wow_change_pct + network_health.deltas.price_change_pct across all reports",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 11,
+          "title": "Forward-indicator scorecard widget",
+          "status": "pending",
+          "note": "Even more valuable now: this run's 'exit liquidity bounce' detection depends on multiple converging indicators. A scorecard tracking each report's open predictions (capitulation bounce thesis just RESOLVED VALIDATED on the price-up side; engagement thesis is now the new question) would surface these resolutions automatically. Re-listed."
+        },
+        {
+          "from_run": 11,
+          "title": "OTC cycle phase indicator",
+          "status": "pending",
+          "note": "This week's pipeline is in the INTER-CYCLE GAP. The phase indicator would show LOADING(?)->DISTRIBUTING->GAP->[LOADING next?] - the gap state is itself useful information."
+        },
+        {
+          "from_run": 11,
+          "title": "Bilateral inverse rule magnitude trajectory",
+          "status": "pending",
+          "note": "Run #12 added the FIRST up-week observation, changing this from a 1D magnitude question to a 2D up/down asymmetry question. The visualization gains additional dimension."
+        },
+        {
+          "from_run": 10,
+          "title": "Multi-week Binance custody vs protocol-staked tracker chart",
+          "status": "pending",
+          "note": "Now 5 weeks of data: 3 weeks accumulation + 2 weeks stall. The chart is increasingly motivated as the stall persists."
+        },
+        {
+          "from_run": 10,
+          "title": "OTC pipeline phase visualization (load vs distribute)",
+          "status": "pending",
+          "note": "This week's INTER-CYCLE GAP state would benefit from explicit phase tracking. Add 'gap' as a fourth state."
+        },
+        {
+          "from_run": 9,
+          "title": "Multi-week net exchange-flow oscillation chart",
+          "status": "pending",
+          "note": "Trajectory: +169K / -56K / -71K / +25K / +33K = bearish-bullish-bullish-bearish-bearish. The bearish streak now 2 weeks confirms reversal of the bullish off-exchange-accumulation thesis."
+        },
+        {
+          "from_run": 9,
+          "title": "DEX pair-composition stacked-area over time",
+          "status": "pending",
+          "note": "DEX volume cratered -55% this week. The pair composition shift (WEGLD/USDC 93%->85%, ZoidPay 3%->8%) during a volume collapse would be visible."
+        },
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "Pipeline now in inter-cycle gap; visualization would show the rest state of the network."
+        },
+        {
+          "from_run": 8,
+          "title": "Yield-chase migration cumulative chart",
+          "status": "built-this-run-conceptually",
+          "note": "5-week cumulative chart implicitly drawn in the staking analysis: cohort accumulated ~+50K weeks 1-4, +3.5K week 5, -2.6K week 6, -17K week 7 (this run). Could now be made explicit as a visualization given the full lifecycle has been observed."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The 'exit liquidity bounce' signature - EGLD +1.4% recovery happening on COLLAPSING engagement: (1) delegator base -4,003 (largest drop in tracking by 9x), (2) yield-chase cohort fully reversed -17K, (3) DEX volume -55% (largest contraction in tracking), (4) on-exchange capital build 2nd consecutive week. A genuine recovery would show participation expanding; this shows it contracting. The bounce is technical, sell-side execution, not demand-driven. Diagnostic for next week: if engagement metrics recover (DEX volume back >$80K, delegator base flat-to-positive, on-exchange capital flatlines), the bounce is real. If engagement keeps contracting while price holds, the regime is decisively bearish despite the price action.",
+        "actions_completed_count": 7,
+        "actions_attempted_count": 9,
+        "what_would_2x_next_week": "Build the engagement-composite indicator widget. The 'exit liquidity bounce' diagnostic relies on 4-5 metrics moving simultaneously - it's hard to spot at a glance without visualizing them together. A single composite score (or radar chart) would automatically surface this pattern in future bounces. Second-best: validate the LSD circulating-supply timeline visualization, which would be robust to the rate-limit data artifacts that bit us this run."
+      },
+      "recommendations_for_next_run": [
+        "Verify capitulation bounce thesis: does $2.99 hold, extend, or fail back to $2.95 range? Engagement recovery (DEX volume back >$80K, delegator base flat-to-positive) confirms; engagement continues collapsing = exit liquidity confirmed.",
+        "Binance Staking custody 3rd-week stall watch: each additional week increases the decisiveness of the eventual move (delegate or distribute).",
+        "Delegator capitulation follow-up: is -4,003 a one-shot or the start of sustained outflow? Next week's number is the highest-information observation of the period.",
+        "OTC pipeline reload: per cycle pattern, expect loading phase to return next week. UPbit OTC Desk + OTC Distribution combined +10K+ would confirm.",
+        "Confirm LSD/USH rate-limit fix works: verify SEGLD/SWTAO/USH/XEGLD mcaps populated correctly with \u22651.0s spacing. If they go null again with that spacing, escalate to a real outage.",
+        "Coinbase 3rd-week inflow check: +43K -> +8.3K -> ? If a 3rd inflow week, the off-exchange-accumulation reversal becomes structural.",
+        "Yield-chase cohort net redemption follow-up: does ninjastaking continue bleeding? Does any provider in the cohort show positive flow?",
+        "XOXNO LSD 3rd-week contraction watch: Hatom LSD pattern downgraded (data-quality artifact), but XOXNO LSD continues mild contraction. 3rd consecutive week would formalize XOXNO-LSD-as-bearish-indicator (no longer 'synchronized').",
+        "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week."
+      ]
     }
   ]
 }

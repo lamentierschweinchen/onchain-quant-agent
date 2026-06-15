@@ -1,0 +1,2236 @@
+{
+  "metadata": {
+    "report_date": "2026-06-15",
+    "period_start": "2026-06-08T00:00:00Z",
+    "period_end": "2026-06-15T00:00:00Z",
+    "generated_at": "2026-06-15T08:27:56.819932+00:00",
+    "egld_price_usd": 2.99,
+    "btc_price_usd": 65695,
+    "eth_price_usd": 1718.67,
+    "run_number": 12,
+    "data_sources_ok": [
+      "/economics",
+      "/stats",
+      "/accounts?sort=balance",
+      "/tokens?sort=accounts",
+      "/tokens?sort=transactions",
+      "/tokens?sort=marketCap",
+      "/providers?size=200",
+      "/identities",
+      "/mex/economics",
+      "/mex/pairs",
+      "/mex/tokens",
+      "coingecko/simple/price",
+      "/accounts/{addr} + /transactions x36",
+      "/accounts/{addr}/transfers/count x7",
+      "/tokens/{id} x14",
+      "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+    ],
+    "data_sources_failed": [
+      "LSD-token mcap fields: SEGLD/SWTAO/USH/XEGLD all returned price=null this run (supply-fallback used)",
+      "Binance.com hot bad bech32 address from run #11 (HTTP 400, excluded; canonical address used)"
+    ]
+  },
+  "executive_summary": [
+    {
+      "finding": "EGLD +1.36% to $2.99 \u2014 FIRST UP-WEEK after 5 down-weeks. Run #11's predicted capitulation bounce off $2.95 materialized. BTC +2.0%, ETH +2.6% confirm broad-crypto recovery (EGLD trailing but no longer decoupled). Whether this is reversal or dead-cat depends on next 1-2 weeks; the on-exchange capital build during the bounce signals exit liquidity rather than capitulation low.",
+      "severity": "medium",
+      "category": "network"
+    },
+    {
+      "finding": "Delegator base CRATERED -4,003 WoW (-2.24%), the largest single-week drop in tracking history by 9x. Combined with -38K staked-EGLD decline and yield-chase cohort -17K, this is a concentrated retail capitulation event. Run #11's emerging pattern at much larger magnitude.",
+      "severity": "high",
+      "category": "staking"
+    },
+    {
+      "finding": "Binance Staking custody STALLED for 2nd consecutive week at 3.51M EGLD. The 3-week accumulation (runs #7+9+10) plus 2-week stall = 5 weeks parked, 779K total. Now firmly in entrenched structural position; each additional week makes eventual delegation-vs-distribution move more decisive.",
+      "severity": "high",
+      "category": "whale"
+    },
+    {
+      "finding": "Yield-chase cohort FULLY UNWOUND: net -17K. ninjastaking (the only 5-week sustained gainer) reversed -10.5K, procryptostaking -6.8K, egldstakingprovider -3.3K. The 5-week migration regime terminated and now in net redemption.",
+      "severity": "high",
+      "category": "staking"
+    },
+    {
+      "finding": "Coinbase 2-week net inflow CONFIRMED per run #11's 2-week rule: +43K \u2192 +8.3K. Off-exchange accumulation thesis decisively dead. Net exchange flow 2nd consecutive inflow week (+24.9K \u2192 ~+33K). Direction: sellers using bounces as exit liquidity.",
+      "severity": "medium",
+      "category": "whale"
+    },
+    {
+      "finding": "DEX volume -55% to $55K \u2014 largest WoW contraction in tracking history. The price bounce did NOT bring liquidity; traders disengaged. Supports the 'exit liquidity' read on the EGLD recovery.",
+      "severity": "medium",
+      "category": "defi"
+    },
+    {
+      "finding": "XOXNO LSD contraction continues 2nd week (-2.5% EGLD); but the run #11 'synchronized LSD contraction' pattern DOWNGRADED \u2014 Hatom LSD apples-to-apples is flat once the run #11 SWTAO rate-limit miss is corrected. Watch list updated.",
+      "severity": "low",
+      "category": "defi"
+    },
+    {
+      "finding": "Data-quality fix: run #11's 'SWTAO API outage' was actually a rate-limit miss (0.55s delay). All 4 LSD/USH mcaps return cleanly at \u22651.0s spacing. Run #11 Hatom LSD was UNDERCOUNTED by ~$1.18M. New rule: use \u22651.0s between /tokens/{id} queries.",
+      "severity": "low",
+      "category": "network"
+    }
+  ],
+  "network_health": {
+    "economics": {
+      "egld_price_usd": 2.99,
+      "market_cap_usd": 90139111,
+      "total_supply": 30146860,
+      "circulating_supply": 30146860,
+      "staked_egld": 14432677,
+      "staked_ratio": 0.4787456139710736,
+      "staking_apr": 0.087617,
+      "base_apr": 0.106947,
+      "topup_apr": 0.063503,
+      "token_market_cap_usd": 45016444
+    },
+    "activity": {
+      "total_accounts": 9211564,
+      "total_transactions": 610440886,
+      "epoch": 2145,
+      "blocks": 123480431,
+      "shards": 3,
+      "transactions_7d": 1267445,
+      "avg_daily_transactions": 181064
+    },
+    "deltas": {
+      "price_change_pct": 1.3559322033898316,
+      "market_cap_change_pct": 1.518104818713501,
+      "staked_ratio_change_pp": -0.20426100788613066,
+      "apr_change_pp": 0.0020000000000006124,
+      "accounts_added": 1967,
+      "btc_correlation_note": "EGLD +1.36% WoW vs BTC +2.00% / ETH +2.58% (24h). EGLD trailing but back IN LINE with crypto-macro after last week's decoupling. Beta to crypto-majors normalized this week.",
+      "transactions_added": 1267445,
+      "supply_added": 48159,
+      "staked_egld_added": -38424,
+      "epoch_advanced": 7
+    },
+    "analysis": "EGLD +1.36% WoW to $2.99 \u2014 FIRST up-week after 5 consecutive down-weeks. z=-1.78\u03c3 (mild positive). The capitulation bounce predicted in run #11 off the $2.95 floor materialized. BTC +2.00% and ETH +2.58% (24h) confirm broad-crypto recovery; EGLD trailing but no longer DECOUPLED to the downside (last week was -15.7% vs BTC +1.3%). Market cap $90.1M (+1.5%). Staked ratio mildly down to 47.87% (-0.21pp); protocol staked module fell -38K to 14.433M (continuation from last week's -27K). Delegator base CRATERED -4,003 (-2.24%) \u2014 the largest single-week drop by an order of magnitude (last run was -447). Activity: 1.6M txs/day average, account growth modest at +0.3K. The price recovery is real but happening on collapsing engagement (DEX volume -55%, delegator -2.2%, LSD contractions, yield-chase unwind). Read: technical bounce, not demand-driven recovery."
+  },
+  "whale_intelligence": {
+    "large_transactions": [
+      {
+        "hash": "93bef3f7c548107985eee00ffbfe538169745f087683aa90249af52143fc1d68",
+        "timestamp": "2026-06-12T12:00:30+00:00",
+        "sender": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+        "sender_label": "Unknown Whale",
+        "receiver": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
+        "receiver_label": "Unknown Whale",
+        "value_egld": 10049.712688000001,
+        "value_usd": 30048.640937120006,
+        "flow_type": "whale_to_whale"
+      },
+      {
+        "hash": "88e68caadf11d20883de0b8955231452b6a729e839a51eb6adfb3fae6ddbb183",
+        "timestamp": "2026-06-10T12:00:30+00:00",
+        "sender": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+        "sender_label": "Unknown Whale",
+        "receiver": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
+        "receiver_label": "Unknown Whale",
+        "value_egld": 10007.184271999999,
+        "value_usd": 29921.48097328,
+        "flow_type": "whale_to_whale"
+      },
+      {
+        "hash": "575bde3f6a307ad262bdd97c8a5e9fc57e357cc0797997ff7ddcde654cf2a5fe",
+        "timestamp": "2026-06-14T09:07:12+00:00",
+        "sender": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+        "sender_label": "Unknown Whale",
+        "receiver": "erd1389cwq5sy9t6pmyjcmdmmkf0mh6tk6zg0cqua6z78flrh8z5yjpsyn368e",
+        "receiver_label": "Unknown",
+        "value_egld": 6900.0,
+        "value_usd": 20631.0,
+        "flow_type": "unknown"
+      },
+      {
+        "hash": "43cfec7821780321e073ee3717f30a38604779d1625074678b1ff35b8ff8185e",
+        "timestamp": "2026-06-14T01:54:06+00:00",
+        "sender": "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy",
+        "sender_label": "KuCoin",
+        "receiver": "erd1ur9nzy80zlrwgcea9necyxhh5szywexsrp03q3ykuvawpx8e8p8qh9gcm6",
+        "receiver_label": "Unknown",
+        "value_egld": 5799.920800000001,
+        "value_usd": 17341.763192000002,
+        "flow_type": "exchange_outflow"
+      },
+      {
+        "hash": "1605b3bb3ee9ff6faac232f7e698f418a55c653580adb6a58a19a279d94c6b05",
+        "timestamp": "2026-06-09T23:12:06+00:00",
+        "sender": "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0",
+        "sender_label": "Binance\u2192OTC Router 3",
+        "receiver": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+        "receiver_label": "UPbit OTC Desk",
+        "value_egld": 4499.99925,
+        "value_usd": 13454.997757500001,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "54996342a9819ca795a8fa3752e415746944481b0496515bd9adeefd15620363",
+        "timestamp": "2026-06-10T23:54:54+00:00",
+        "sender": "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0",
+        "sender_label": "Binance\u2192OTC Router 3",
+        "receiver": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+        "receiver_label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+        "value_egld": 4499.99925,
+        "value_usd": 13454.997757500001,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "2ad599ec97f74d3e135663605af1cc3a001494bce2b978ae4004efbc35e13aed",
+        "timestamp": "2026-06-09T23:55:30+00:00",
+        "sender": "erd14p79nqemlq98zdf5ttg8f9e8sqa87mvhm2gh2j8z832kjzfmsnsqgc9k40",
+        "sender_label": "Unknown",
+        "receiver": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+        "receiver_label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+        "value_egld": 4299.99925,
+        "value_usd": 12856.997757500001,
+        "flow_type": "exchange_inflow"
+      },
+      {
+        "hash": "c7eb6f3f6996a743eb04c2af95c7ddaa1261e1e7c558194f94f9a9fe07470b97",
+        "timestamp": "2026-06-15T03:09:24+00:00",
+        "sender": "erd1qzf5rwzywumrsvzxlqhzchk559spc3ayeafqgc9qvq4pwp649l6qwx82dv",
+        "sender_label": "Unknown",
+        "receiver": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+        "receiver_label": "Unknown Whale I (active)",
+        "value_egld": 4109.77288162,
+        "value_usd": 12288.2209160438,
+        "flow_type": "unknown"
+      },
+      {
+        "hash": "a9b0dfe9914ba156dbcda872cb016702e889eb55cc91a52adcc824e84bfbc354",
+        "timestamp": "2026-06-14T09:52:30+00:00",
+        "sender": "erd10g543ecmrme0rde37p27zh5xpn4n6xzwp7aw38gtmxj6aus03v3sfssagj",
+        "sender_label": "Unknown",
+        "receiver": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+        "receiver_label": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+        "value_egld": 3937.2211771,
+        "value_usd": 11772.291319529002,
+        "flow_type": "exchange_inflow"
+      },
+      {
+        "hash": "a6c6bb7c6b1784bd2ef0a037754ad6360ee81af5c2f97b436a5bad530c1d50b3",
+        "timestamp": "2026-06-11T00:41:00+00:00",
+        "sender": "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4",
+        "sender_label": "Crypto.com",
+        "receiver": "erd1qr9av6ar4ymr05xj93jzdxyezdrp6r4hz6u0scz4dtzvv7kmlldse7zktc",
+        "receiver_label": "Crypto.com",
+        "value_egld": 3718.0,
+        "value_usd": 11116.820000000002,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "ba8c35c363e2ee02ee9a08966cd60b0ec9c5cce0025843bfd2a7ca9dea191ea1",
+        "timestamp": "2026-06-14T21:55:06+00:00",
+        "sender": "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy",
+        "sender_label": "KuCoin",
+        "receiver": "erd1ur9nzy80zlrwgcea9necyxhh5szywexsrp03q3ykuvawpx8e8p8qh9gcm6",
+        "receiver_label": "Unknown",
+        "value_egld": 3699.9208,
+        "value_usd": 11062.763192,
+        "flow_type": "exchange_outflow"
+      },
+      {
+        "hash": "26c051a3b4bb9e84ee578973526d7e003c2df9e9e817803736f2f73a8221315f",
+        "timestamp": "2026-06-14T22:18:36+00:00",
+        "sender": "erd1ur9nzy80zlrwgcea9necyxhh5szywexsrp03q3ykuvawpx8e8p8qh9gcm6",
+        "sender_label": "Unknown",
+        "receiver": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+        "receiver_label": "Binance.com",
+        "value_egld": 3699.92075,
+        "value_usd": 11062.7630425,
+        "flow_type": "exchange_inflow"
+      },
+      {
+        "hash": "fd90f35d91f1a2b739be0e585f3d830fa703e8902b017a9d98dcbefc67d86d94",
+        "timestamp": "2026-06-15T00:49:24+00:00",
+        "sender": "erd1qzf5rwzywumrsvzxlqhzchk559spc3ayeafqgc9qvq4pwp649l6qwx82dv",
+        "sender_label": "Unknown",
+        "receiver": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+        "receiver_label": "Unknown Whale I (active)",
+        "value_egld": 3498.61126284,
+        "value_usd": 10460.8476758916,
+        "flow_type": "unknown"
+      },
+      {
+        "hash": "5fe371df5b9e7bf6dc76b37ccadbc8b90c865bea9172f8791bd416e64510612a",
+        "timestamp": "2026-06-14T23:59:24+00:00",
+        "sender": "erd1qzf5rwzywumrsvzxlqhzchk559spc3ayeafqgc9qvq4pwp649l6qwx82dv",
+        "sender_label": "Unknown",
+        "receiver": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+        "receiver_label": "Unknown Whale I (active)",
+        "value_egld": 3256.13220593,
+        "value_usd": 9735.835295730702,
+        "flow_type": "unknown"
+      },
+      {
+        "hash": "84c6b5182da60882077591266decaaaedd9937eb8258628503cbd58243896dd6",
+        "timestamp": "2026-06-14T16:39:06+00:00",
+        "sender": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+        "sender_label": "Unknown Whale",
+        "receiver": "erd1389cwq5sy9t6pmyjcmdmmkf0mh6tk6zg0cqua6z78flrh8z5yjpsyn368e",
+        "receiver_label": "Unknown",
+        "value_egld": 3100.271675,
+        "value_usd": 9269.81230825,
+        "flow_type": "unknown"
+      },
+      {
+        "hash": "fff45b7d4271f47be32713c1a89ba5ae7000ef5c36bc58d0ccf71775c51f4afb",
+        "timestamp": "2026-06-14T14:29:24+00:00",
+        "sender": "erd1qzf5rwzywumrsvzxlqhzchk559spc3ayeafqgc9qvq4pwp649l6qwx82dv",
+        "sender_label": "Unknown",
+        "receiver": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+        "receiver_label": "Unknown Whale I (active)",
+        "value_egld": 3056.19050128,
+        "value_usd": 9138.0095988272,
+        "flow_type": "unknown"
+      },
+      {
+        "hash": "f2ca7599f65ff9bd2ffb3dab1d18e0b3845a0c5271142c2fb626e13afa322104",
+        "timestamp": "2026-06-11T17:12:06+00:00",
+        "sender": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+        "sender_label": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+        "receiver": "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu",
+        "receiver_label": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
+        "value_egld": 3000.0,
+        "value_usd": 8970.0,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "dde52546100693e635a88d95f657455895c9c713ba67170946b020badcca5467",
+        "timestamp": "2026-06-11T17:10:12+00:00",
+        "sender": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+        "sender_label": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+        "receiver": "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu",
+        "receiver_label": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
+        "value_egld": 3000.0,
+        "value_usd": 8970.0,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "a0d6162450fe54d954fa03e4a382b1e2f06a6ddda2eee8ea139f831cb0ba694c",
+        "timestamp": "2026-06-11T17:08:06+00:00",
+        "sender": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+        "sender_label": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+        "receiver": "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu",
+        "receiver_label": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
+        "value_egld": 3000.0,
+        "value_usd": 8970.0,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "43ec94a846f5939c40691d75ba3fa5f47d3b5d6a9cbcc2ae339e894a83ee86b0",
+        "timestamp": "2026-06-12T14:07:06+00:00",
+        "sender": "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3",
+        "sender_label": "Coinbase (secondary)",
+        "receiver": "erd1ukxuufpkva67hu8ae097euz9teegzv564sc9pf00u3puwer92h6qf07yl4",
+        "receiver_label": "Unknown",
+        "value_egld": 2932.98995,
+        "value_usd": 8769.6399505,
+        "flow_type": "exchange_outflow"
+      },
+      {
+        "hash": "aaecafa6fa4827b7ff4f6efdc3f56e8d820cabc2fb19b699db6ca469828336c0",
+        "timestamp": "2026-06-15T03:18:36+00:00",
+        "sender": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+        "sender_label": "Unknown Whale I (active)",
+        "receiver": "erd1ljlcx0wflzwvppyq8vfngs4ryaefvl9ruj7n75q467znw4k9c5dsht33kp",
+        "receiver_label": "Bidirectional Router (Binance\u2194Bybit, nonce 573)",
+        "value_egld": 2819.973,
+        "value_usd": 8431.71927,
+        "flow_type": "exchange_inflow"
+      },
+      {
+        "hash": "6bf080baa8aa19cf1d8d7aa2e5c1631a40ade2ad2063b55645ce231a934a1fc8",
+        "timestamp": "2026-06-15T03:19:30+00:00",
+        "sender": "erd1ljlcx0wflzwvppyq8vfngs4ryaefvl9ruj7n75q467znw4k9c5dsht33kp",
+        "sender_label": "Bidirectional Router (Binance\u2194Bybit, nonce 573)",
+        "receiver": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+        "receiver_label": "Bybit",
+        "value_egld": 2819.97295,
+        "value_usd": 8431.7191205,
+        "flow_type": "exchange_to_exchange"
+      },
+      {
+        "hash": "f3954d4f66ef9005531ae8a3003cf55414fa399191979e14b8c1337866c4c01d",
+        "timestamp": "2026-06-15T00:45:06+00:00",
+        "sender": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+        "sender_label": "Bybit",
+        "receiver": "erd1qzf5rwzywumrsvzxlqhzchk559spc3ayeafqgc9qvq4pwp649l6qwx82dv",
+        "receiver_label": "Unknown",
+        "value_egld": 2770.88197967,
+        "value_usd": 8284.9371192133,
+        "flow_type": "exchange_outflow"
+      },
+      {
+        "hash": "57ca4b617d708c24b12d8500ed7feb9609e0108fdd0e9d45700ed1648a424ab0",
+        "timestamp": "2026-06-12T10:15:24+00:00",
+        "sender": "erd17gp7dyz2hu6rr4360pvrtrzp70mj8m79s8tggl5t6eyu0v74qlns6dwna9",
+        "sender_label": "Unknown",
+        "receiver": "erd1w547kw69kpd60vlpr9pe0pn9nnqeljrcaz73znenjpgt0h3qlqqqm3szxj",
+        "receiver_label": "Bitget",
+        "value_egld": 2755.47913835,
+        "value_usd": 8238.8826236665,
+        "flow_type": "exchange_inflow"
+      },
+      {
+        "hash": "2956e13db0dae0ce0a763481beb5c87544fd3beb4e645245e250156889a9ccdd",
+        "timestamp": "2026-06-14T17:54:48+00:00",
+        "sender": "erd1dwd9v42jmrf59k543a0gemqfuqjm4g0svghv0mmergclyqhsve2spgq4em",
+        "sender_label": "Unknown",
+        "receiver": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+        "receiver_label": "UPbit",
+        "value_egld": 2749.81105,
+        "value_usd": 8221.9350395,
+        "flow_type": "exchange_inflow"
+      }
+    ],
+    "wallet_changes": [
+      {
+        "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+        "label": "Binance.com",
+        "category": "exchange",
+        "tier": "large_whale",
+        "balance_current_egld": 222414.85548994096,
+        "balance_previous_egld": 198659.2947286017,
+        "change_egld": 23755.560761339264,
+        "change_pct": 11.95794075167382
+      },
+      {
+        "address": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
+        "label": "Unknown Whale",
+        "category": "other",
+        "tier": "large_whale",
+        "balance_current_egld": 231981.366157,
+        "balance_previous_egld": 210805.51176599998,
+        "change_egld": 21175.85439100003,
+        "change_pct": 10.045209071433492
+      },
+      {
+        "address": "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4",
+        "label": "Crypto.com",
+        "category": "exchange",
+        "tier": "large_whale",
+        "balance_current_egld": 173718.85891091704,
+        "balance_previous_egld": 184084.4558708634,
+        "change_egld": -10365.596959946357,
+        "change_pct": -5.630892033175196
+      },
+      {
+        "address": "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0",
+        "label": "Unknown Whale I (active)",
+        "category": "other",
+        "tier": "large_whale",
+        "balance_current_egld": 145477.184232109,
+        "balance_previous_egld": 135162.70702456898,
+        "change_egld": 10314.47720754001,
+        "change_pct": 7.63115613367015
+      },
+      {
+        "address": "erd1vadknqe8tasfwz62sn5gre0ws8x08rnuy2lp6cw0np5aktl7sndsh9wtw7",
+        "label": "Unknown",
+        "category": "unknown",
+        "tier": "mid_whale",
+        "balance_current_egld": 48204.926541699315,
+        "balance_previous_egld": 38168.94823210191,
+        "change_egld": 10035.978309597405,
+        "change_pct": 26.29356787242219
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg",
+        "label": "Growth Dividend Fund for Users",
+        "category": "team",
+        "tier": "large_whale",
+        "balance_current_egld": 262720.12879623333,
+        "balance_previous_egld": 253058.49739187106,
+        "change_egld": 9661.63140436227,
+        "change_pct": 3.8179438761943065
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqa9unh4m4j3nyg3l7cvlw8wshumx58m6089pspt29xm",
+        "label": "Ecosystem Growth Fund for Builders",
+        "category": "team",
+        "tier": "large_whale",
+        "balance_current_egld": 262720.12879623333,
+        "balance_previous_egld": 253058.49739187106,
+        "change_egld": 9661.63140436227,
+        "change_pct": 3.8179438761943065
+      },
+      {
+        "address": "erd16jruked88jgtsar78ej85hjp3qsd9jkjcw4swsn7k0teqh3wgcqqgyrupq",
+        "label": "Coinbase",
+        "category": "exchange",
+        "tier": "mid_whale",
+        "balance_current_egld": 87305.99358766014,
+        "balance_previous_egld": 78885.86967838099,
+        "change_egld": 8420.123909279151,
+        "change_pct": 10.673805009196371
+      },
+      {
+        "address": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+        "label": "Unknown Whale",
+        "category": "other",
+        "tier": "large_whale",
+        "balance_current_egld": 221645.06283865878,
+        "balance_previous_egld": 229227.6876502011,
+        "change_egld": -7582.624811542308,
+        "change_pct": -3.307900929975488
+      },
+      {
+        "address": "erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw",
+        "label": "Gate.io",
+        "category": "exchange",
+        "tier": "mid_whale",
+        "balance_current_egld": 56615.90934863854,
+        "balance_previous_egld": 51034.43911364211,
+        "change_egld": 5581.470234996428,
+        "change_pct": 10.936674002760688
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3",
+        "label": "xExchange: WrappedEGLD Contract Shard 1",
+        "category": "defi",
+        "tier": "large_whale",
+        "balance_current_egld": 283043.1645491414,
+        "balance_previous_egld": 278266.22236980137,
+        "change_egld": 4776.942179340054,
+        "change_pct": 1.7166805725316334
+      },
+      {
+        "address": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+        "label": "Bybit",
+        "category": "exchange",
+        "tier": "large_whale",
+        "balance_current_egld": 501081.1357310151,
+        "balance_previous_egld": 496960.9291895549,
+        "change_egld": 4120.20654146024,
+        "change_pct": 0.829080577456961
+      },
+      {
+        "address": "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy",
+        "label": "KuCoin",
+        "category": "exchange",
+        "tier": "mid_whale",
+        "balance_current_egld": 31232.9877599834,
+        "balance_previous_egld": 27526.41640205516,
+        "change_egld": 3706.5713579282383,
+        "change_pct": 13.465506384083838
+      },
+      {
+        "address": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+        "label": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+        "category": "whale",
+        "tier": "large_whale",
+        "balance_current_egld": 299341.3370197029,
+        "balance_previous_egld": 302959.1187426029,
+        "change_egld": -3617.781722899992,
+        "change_pct": -1.1941484837674405
+      },
+      {
+        "address": "erd1qkazru7aw5heycg7c79lwmcnnczgjj2td2dg8j574h586ahwkptq20zlgy",
+        "label": "Unknown",
+        "category": "unknown",
+        "tier": "mid_whale",
+        "balance_current_egld": 28973.35263479,
+        "balance_previous_egld": 25604.402309790003,
+        "change_egld": 3368.950324999998,
+        "change_pct": 13.1576995402539
+      },
+      {
+        "address": "erd1v3undjd5mrvqq3tg3re8u9z55tc3ysxaw7ladqrvq9m69r4tv0yqrkfryq",
+        "label": "Unknown",
+        "category": "unknown",
+        "tier": "large_whale",
+        "balance_current_egld": 111959.78052234247,
+        "balance_previous_egld": 108916.97995387089,
+        "change_egld": 3042.8005684715754,
+        "change_pct": 2.793687972031798
+      },
+      {
+        "address": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+        "label": "UPbit",
+        "category": "exchange",
+        "tier": "mega_whale",
+        "balance_current_egld": 1273828.9522319643,
+        "balance_previous_egld": 1270833.9346621647,
+        "change_egld": 2995.0175697996747,
+        "change_pct": 0.2356734021739719
+      },
+      {
+        "address": "erd1qqqqqqqqqqqqqpgqxwakt2g7u9atsnr03gqcgmhcv38pt7mkd94q6shuwt",
+        "label": "Staking: MultiversX Community Delegation",
+        "category": "validator",
+        "tier": "large_whale",
+        "balance_current_egld": 131773.54750050098,
+        "balance_previous_egld": 129088.22659444844,
+        "change_egld": 2685.3209060525405,
+        "change_pct": 2.080221393457446
+      }
+    ],
+    "whale_tiers": {
+      "mega_whales": {
+        "threshold_egld": 1000000,
+        "count_current": 2,
+        "count_previous": 2,
+        "total_balance_egld": 4786479.180565737,
+        "previous_total_balance_egld": 4783484.162995937,
+        "net_change_egld": 2995.0175697999075,
+        "net_change_pct": 0.0626116334400928
+      },
+      "large_whales": {
+        "threshold_egld": 100000,
+        "count_current": 20,
+        "count_previous": 20,
+        "total_balance_egld": 5495769.170216781,
+        "previous_total_balance_egld": 5428696.9910131525,
+        "net_change_egld": 67072.17920362856,
+        "net_change_pct": 1.2355115659367635
+      },
+      "mid_whales": {
+        "threshold_egld": 10000,
+        "count_current": 37,
+        "count_previous": 37,
+        "total_balance_egld": 1435869.0224107835,
+        "previous_total_balance_egld": 1417683.665559785,
+        "net_change_egld": 18185.356850998476,
+        "net_change_pct": 1.2827513847257193
+      }
+    },
+    "exchange_flows": {
+      "total_exchange_egld_current": 6611096.886220761,
+      "total_exchange_egld_previous": 6569109.343672754,
+      "net_change_egld": 41987.5425480064,
+      "net_change_pct": 0.6391664432933825,
+      "direction": "inflow",
+      "signal": "Net exchange flow +41,988 EGLD (+0.64%) - 2nd consecutive week of INFLOW. Last week's collapse of the off-exchange-accumulation thesis is now confirmed by a 2nd inflow week (per run #11's recommended 2-week confirmation rule). The Coinbase 3-week outflow streak followed by 2 inflow weeks marks a directional reversal. With Binance Staking custody STALLED for 2nd consecutive week, the bullish parked-capital thesis remains dead. The on-exchange capital continues rebuilding during the price recovery attempt - a sell-into-bounce setup more than a recovery accumulation. EGLD bounced +1.4% to $2.99 but the on-exchange capital build suggests sellers are using the bounce as exit liquidity.",
+      "by_exchange": [
+        {
+          "exchange": "Binance.com",
+          "change_egld": 23755.560761339264,
+          "pct": 11.95794075167382
+        },
+        {
+          "exchange": "Crypto.com",
+          "change_egld": -10365.596959946357,
+          "pct": -5.630892033175196
+        },
+        {
+          "exchange": "Coinbase",
+          "change_egld": 8420.123909279151,
+          "pct": 10.673805009196371
+        },
+        {
+          "exchange": "Gate.io",
+          "change_egld": 5581.470234996428,
+          "pct": 10.936674002760688
+        },
+        {
+          "exchange": "Bybit",
+          "change_egld": 4120.20654146024,
+          "pct": 0.829080577456961
+        },
+        {
+          "exchange": "KuCoin",
+          "change_egld": 3706.5713579282383,
+          "pct": 13.465506384083838
+        },
+        {
+          "exchange": "UPbit",
+          "change_egld": 2995.0175697996747,
+          "pct": 0.2356734021739719
+        },
+        {
+          "exchange": "MEXC",
+          "change_egld": -2644.6682340810366,
+          "pct": -2.707880557366589
+        },
+        {
+          "exchange": "Bitget",
+          "change_egld": 1407.3070230158482,
+          "pct": 1.6450235211148183
+        },
+        {
+          "exchange": "Coinbase (secondary)",
+          "change_egld": -75.19401262763859,
+          "pct": -0.3609178450826669
+        },
+        {
+          "exchange": "Binance Staking",
+          "change_egld": 0.0,
+          "pct": 0.0
+        },
+        {
+          "exchange": "Binance.com",
+          "change_egld": 0.0,
+          "pct": 0.0
+        },
+        {
+          "exchange": "Binance.com",
+          "change_egld": 0.0,
+          "pct": 0.0
+        },
+        {
+          "exchange": "Coinbase Custody",
+          "change_egld": 0.0,
+          "pct": 0.0
+        }
+      ],
+      "entity_netting": [
+        {
+          "entity": "Binance",
+          "wallets_count": 4,
+          "net_flow_egld": 23755.56076133903,
+          "interpretation": "Hot wallet (corrected addr erd1sdslv...3rgul) +23.8K WoW (+12.0%); Binance.com 3-wallet entity total +23.8K to 689K. Binance Staking custody UNCHANGED at 3,512,650 EGLD for the 2nd consecutive week (3-week accumulation phase now extended into a stall - 779K parked since run #7). The hot-wallet inflow without offsetting custody movement is consistent with on-exchange capital REBUILDING (deposit-side flow, not distribution to retail). Note: a previously-tracked Binance.com address with invalid bech32 checksum was excluded this run; entity now uses 3 canonical addresses."
+        },
+        {
+          "entity": "Coinbase",
+          "wallets_count": 4,
+          "net_flow_egld": 8430.027784412407,
+          "interpretation": "Primary wallet +8.4K (+10.7%), Coinbase 2 -2.6K, Coinbase 3 +2.5K. Combined entity +8.3K - a 2nd consecutive week of net inflow (last week +43K, this week +8.3K). Run #11's off-exchange-accumulation thesis remains DEAD; sell-into-decline pattern continues but at much milder intensity than last week's surge. Per run #11 recommendation #4 (2nd inflow confirmation), this DOES confirm the pattern reversal."
+        },
+        {
+          "entity": "Gate.io",
+          "wallets_count": 1,
+          "net_flow_egld": 5581.470234996428,
+          "interpretation": "+5.6K (+10.9%). Material inflow after a flat run #11."
+        },
+        {
+          "entity": "Crypto.com",
+          "wallets_count": 2,
+          "net_flow_egld": -4616.8356577847735,
+          "interpretation": "-7.3K (-3.9%). Reversed last week's +10.9K inflow. Net 2-week cycle nearly flat."
+        },
+        {
+          "entity": "Bybit",
+          "wallets_count": 1,
+          "net_flow_egld": 4120.20654146024,
+          "interpretation": "+4.1K (+0.8%) on cold wallet. Mild deposit drift."
+        },
+        {
+          "entity": "KuCoin",
+          "wallets_count": 1,
+          "net_flow_egld": 3706.5713579282383,
+          "interpretation": "+3.7K (+13.5%) on cold wallet. Visible deposit step similar to last week."
+        },
+        {
+          "entity": "UPbit",
+          "wallets_count": 1,
+          "net_flow_egld": 2995.0175697996747,
+          "interpretation": "Cold wallet +3.0K (+0.2%) - effectively flat. UPbit OTC Desk separately -1.8K (-6%). OTC Distribution Wallet +0.9K (+3%). Combined OTC desks essentially STATIC after last week's -26.4K distribution; pipeline appears in the inter-cycle gap."
+        },
+        {
+          "entity": "MEXC",
+          "wallets_count": 1,
+          "net_flow_egld": -2644.6682340810366,
+          "interpretation": "-2.6K (-2.7%). Mild outflow continues."
+        },
+        {
+          "entity": "Bitget",
+          "wallets_count": 1,
+          "net_flow_egld": 1407.3070230158482,
+          "interpretation": "+1.4K (+1.6%). Flat after last week's surge."
+        },
+        {
+          "entity": "Tokero",
+          "wallets_count": 1,
+          "net_flow_egld": -747.1148330817223,
+          "interpretation": "Effectively flat (-0.7K)."
+        },
+        {
+          "entity": "Bitfinex",
+          "wallets_count": 1,
+          "net_flow_egld": 0.0,
+          "interpretation": "Flat."
+        }
+      ]
+    },
+    "dormant_activations": [],
+    "analysis": "THIS WEEK'S DOMINANT MOVES:\n1) DELEGATOR CAPITULATION EVENT. The delegator base dropped 4,003 WoW to 174,484 (-2.24%). This is 9x larger than last week's -447 drop and the largest single-week drop in tracking history by an order of magnitude. The drop is concentrated in the yield-chase cohort: ninjastaking -10.5K, procryptostaking -6.8K, egldstakingprovider -3.3K (all 0-10% fee 8-9% APR providers). Combined yield-chase cohort net flow: ~-17K (vs -2.6K last week). The 5-week yield-chase migration is now FULLY UNWOUND, with the cohort in active net redemption.\n\n2) BINANCE STAKING CUSTODY STALLED 2ND CONSECUTIVE WEEK at 3,512,650 EGLD. The 3-week accumulation phase (runs #7+9+10 cumulative +402K) has now extended into a 2-week stall. Total parked since run #7: 779K EGLD ($2.33M at current price). No delegation to protocol staked module (would jump econ.staked); no drawdown to hot wallets (would re-appear in by-exchange flows). Promoted from anomaly to ENTRENCHED STRUCTURAL POSITION. Each additional week of stall increases the eventual move's decisiveness.\n\n3) COINBASE 2-WEEK NET INFLOW CONFIRMED. Per run #11's recommended 2-week confirmation rule, Coinbase entity registered a 2nd consecutive net inflow week (+43K \u2192 +8.3K). The off-exchange accumulation thesis from run #10 is decisively dead. Coinbase Routing Wallet did NOT send to Unknown Mega Whale erd18mv2z6r2 this week (last week +5,925 EGLD on 2026-06-07); the Apr 18 OTC pattern is not currently active.\n\nWHALE TIERS (top-60 apples-to-apples): mega +3.0K, large +67.1K, mid +18.2K. The Binance.com hot wallet correction (canonical erd1sdslv...3rgul addr vs invalid checksum in run #11 previous.json) explains some apparent mega-whale tier flux.\n\nEXCHANGE FLOWS: 2nd consecutive week of NET INFLOW (+41,988, +0.64%). Off-exchange-accumulation thesis fully dead. Pattern: sell-into-decline (run #11) has continued into sell-into-bounce (this run) \u2014 sellers using the +1.4% EGLD recovery as exit liquidity rather than capitulation low confirmation. DEX volume cratered -55% during the same bounce, supporting the exit-liquidity interpretation.\n\nOTC PIPELINE IN INTER-CYCLE GAP. UPbit OTC Desk -1.8K, OTC Distribution +0.9K = combined -0.9K (essentially flat). Outflow throughput collapsed from 163K (last run) to 44K this run. Per run #11's prediction of 1-2 week reload, the pipeline is in the gap between last week's distribution wave and the next loading phase. Expect loading to resume next week."
+  },
+  "staking_intelligence": {
+    "summary": {
+      "total_staked_egld": 14432677,
+      "total_delegated_egld": 11161921.826978564,
+      "staked_ratio": 0.4787456139710736,
+      "num_providers": 107,
+      "apr_min": 0,
+      "apr_max": 9.41,
+      "apr_weighted_avg": 8.062551362092531
+    },
+    "top_providers": [
+      {
+        "rank": 1,
+        "identity": "figment-networks",
+        "name": "figment-networks",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+        "locked_egld": 608478.0803221391,
+        "previous_locked_egld": 604123.9648873737,
+        "share_pct": 5.451373784498622,
+        "apr_pct": 5.6,
+        "fee_pct": 12.0,
+        "num_users": 336,
+        "num_nodes": 50,
+        "wow_change_egld": 4354.11543476535
+      },
+      {
+        "rank": 2,
+        "identity": "binance_staking",
+        "name": "binance_staking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc0llllsayxegu",
+        "locked_egld": 522298.29863864655,
+        "previous_locked_egld": 521321.03594297136,
+        "share_pct": 4.679286477139109,
+        "apr_pct": 6.27,
+        "fee_pct": 7.920000000000001,
+        "num_users": 8483,
+        "num_nodes": 50,
+        "wow_change_egld": 977.2626956751919
+      },
+      {
+        "rank": 3,
+        "identity": "stakingagency",
+        "name": "stakingagency",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqhllllsajxzat",
+        "locked_egld": 424750.57058384694,
+        "previous_locked_egld": 425875.55344740354,
+        "share_pct": 3.80535338956789,
+        "apr_pct": 7.97,
+        "fee_pct": 12.0,
+        "num_users": 9961,
+        "num_nodes": 106,
+        "wow_change_egld": -1124.9828635565937
+      },
+      {
+        "rank": 4,
+        "identity": "truststaking",
+        "name": "truststaking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzhllllsp9wvyl",
+        "locked_egld": 367875.4517547012,
+        "previous_locked_egld": 366883.0496536276,
+        "share_pct": 3.2958074555363726,
+        "apr_pct": 8.08,
+        "fee_pct": 12.0,
+        "num_users": 7166,
+        "num_nodes": 96,
+        "wow_change_egld": 992.4021010735887
+      },
+      {
+        "rank": 5,
+        "identity": "meria",
+        "name": "meria",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq8hlllls7a6h85",
+        "locked_egld": 346229.5086724315,
+        "previous_locked_egld": 346219.0005849187,
+        "share_pct": 3.1018807875503,
+        "apr_pct": 7.93,
+        "fee_pct": 12.0,
+        "num_users": 10948,
+        "num_nodes": 94,
+        "wow_change_egld": 10.508087512804195
+      },
+      {
+        "rank": 6,
+        "identity": "istariv",
+        "name": "istariv",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrhlllls062tu4",
+        "locked_egld": 277767.186398564,
+        "previous_locked_egld": 278095.64129208383,
+        "share_pct": 2.488524742461426,
+        "apr_pct": 8.2,
+        "fee_pct": 12.0,
+        "num_users": 4078,
+        "num_nodes": 76,
+        "wow_change_egld": -328.45489351981087
+      },
+      {
+        "rank": 7,
+        "identity": "thepalmtreenw",
+        "name": "thepalmtreenw",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqy8lllls62y8s5",
+        "locked_egld": 263127.45554708026,
+        "previous_locked_egld": 262636.2096154428,
+        "share_pct": 2.3573669447415098,
+        "apr_pct": 8.35,
+        "fee_pct": 12.0,
+        "num_users": 3666,
+        "num_nodes": 76,
+        "wow_change_egld": 491.2459316374734
+      },
+      {
+        "rank": 8,
+        "identity": "validblocks",
+        "name": "validblocks",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq90llllslwfcr3",
+        "locked_egld": 236136.60901229858,
+        "previous_locked_egld": 236415.8025127601,
+        "share_pct": 2.1155551227885523,
+        "apr_pct": 8.04,
+        "fee_pct": 7.000000000000001,
+        "num_users": 4509,
+        "num_nodes": 50,
+        "wow_change_egld": -279.1935004615225
+      },
+      {
+        "rank": 9,
+        "identity": "incalng",
+        "name": "incalng",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqd8llllslmf3hu",
+        "locked_egld": 227847.1386546619,
+        "previous_locked_egld": 228157.86407368345,
+        "share_pct": 2.041289503604579,
+        "apr_pct": 8.65,
+        "fee_pct": 1.0,
+        "num_users": 2777,
+        "num_nodes": 50,
+        "wow_change_egld": -310.7254190215608
+      },
+      {
+        "rank": 10,
+        "identity": "p2p_org_",
+        "name": "p2p_org_",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd",
+        "locked_egld": 215963.45398325194,
+        "previous_locked_egld": 219974.7552697782,
+        "share_pct": 1.93482320814382,
+        "apr_pct": 7.8,
+        "fee_pct": 12.0,
+        "num_users": 1242,
+        "num_nodes": 50,
+        "wow_change_egld": -4011.301286526257
+      },
+      {
+        "rank": 11,
+        "identity": "primal-block-one",
+        "name": "primal-block-one",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqx8llllsxavffq",
+        "locked_egld": 210174.07370765685,
+        "previous_locked_egld": 208250.98559006123,
+        "share_pct": 1.8829559726861942,
+        "apr_pct": 8.04,
+        "fee_pct": 10.0,
+        "num_users": 3542,
+        "num_nodes": 67,
+        "wow_change_egld": 1923.0881175956165
+      },
+      {
+        "rank": 12,
+        "identity": "orangestaking",
+        "name": "orangestaking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxhllllssz7sl7",
+        "locked_egld": 196288.76009015122,
+        "previous_locked_egld": 197225.24738914808,
+        "share_pct": 1.7585570221045428,
+        "apr_pct": 8.02,
+        "fee_pct": 12.0,
+        "num_users": 2852,
+        "num_nodes": 50,
+        "wow_change_egld": -936.4872989968571
+      },
+      {
+        "rank": 13,
+        "identity": "valuestaking",
+        "name": "valuestaking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu0llllsvrk9na",
+        "locked_egld": 196228.53878679482,
+        "previous_locked_egld": 192841.42739605732,
+        "share_pct": 1.7580174976006995,
+        "apr_pct": 8.21,
+        "fee_pct": 10.0,
+        "num_users": 1275,
+        "num_nodes": 50,
+        "wow_change_egld": 3387.1113907374965
+      },
+      {
+        "rank": 14,
+        "identity": "aurentum",
+        "name": "aurentum",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqmhllllsjg335n",
+        "locked_egld": 194282.6161015781,
+        "previous_locked_egld": 194619.646793636,
+        "share_pct": 1.7405839165796122,
+        "apr_pct": 8.23,
+        "fee_pct": 10.0,
+        "num_users": 1587,
+        "num_nodes": 50,
+        "wow_change_egld": -337.0306920578878
+      },
+      {
+        "rank": 15,
+        "identity": "core-block",
+        "name": "core-block",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpf0llllsccsy0c",
+        "locked_egld": 193658.69370317165,
+        "previous_locked_egld": 195886.97707865268,
+        "share_pct": 1.734994176675697,
+        "apr_pct": 8.24,
+        "fee_pct": 10.0,
+        "num_users": 1958,
+        "num_nodes": 50,
+        "wow_change_egld": -2228.283375481027
+      },
+      {
+        "rank": 16,
+        "identity": "procryptostaking",
+        "name": "procryptostaking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+        "locked_egld": 192911.5150021759,
+        "previous_locked_egld": 199726.22401110904,
+        "share_pct": 1.728300179776437,
+        "apr_pct": 8.07,
+        "fee_pct": 11.899999999999999,
+        "num_users": 7161,
+        "num_nodes": 50,
+        "wow_change_egld": -6814.709008933132
+      },
+      {
+        "rank": 17,
+        "identity": "mapleleafnetwork",
+        "name": "mapleleafnetwork",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpp8llllscdsdm4",
+        "locked_egld": 192525.38955166173,
+        "previous_locked_egld": 192542.9914899859,
+        "share_pct": 1.7248408700222613,
+        "apr_pct": 9.17,
+        "fee_pct": 0,
+        "num_users": 965,
+        "num_nodes": 50,
+        "wow_change_egld": -17.60193832416553
+      },
+      {
+        "rank": 18,
+        "identity": "orius",
+        "name": "orius",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp80lllls7xp8j0",
+        "locked_egld": 189603.7452567749,
+        "previous_locked_egld": 189567.06022131408,
+        "share_pct": 1.698665769173363,
+        "apr_pct": 8.48,
+        "fee_pct": 7.99,
+        "num_users": 1228,
+        "num_nodes": 50,
+        "wow_change_egld": 36.685035460832296
+      },
+      {
+        "rank": 19,
+        "identity": "bober",
+        "name": "bober",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq0hlllls4nnxck",
+        "locked_egld": 189482.67006183526,
+        "previous_locked_egld": 190044.73407153715,
+        "share_pct": 1.697581052788349,
+        "apr_pct": 8.57,
+        "fee_pct": 7.000000000000001,
+        "num_users": 1083,
+        "num_nodes": 50,
+        "wow_change_egld": -562.0640097018913
+      },
+      {
+        "rank": 20,
+        "identity": "ninjastaking",
+        "name": "ninjastaking",
+        "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+        "locked_egld": 189361.2794418579,
+        "previous_locked_egld": 199833.30428919516,
+        "share_pct": 1.6964935105007481,
+        "apr_pct": 9.03,
+        "fee_pct": 2.0,
+        "num_users": 1577,
+        "num_nodes": 50,
+        "wow_change_egld": -10472.024847337249
+      }
+    ],
+    "concentration": {
+      "top_5_share_pct": 20.333701894292293,
+      "top_10_share_pct": 31.271261416032182,
+      "hhi": 0.019423739806510593,
+      "hhi_previous": 0.019092185447459505,
+      "hhi_interpretation": "competitive"
+    },
+    "apr_distribution": {
+      "buckets": [
+        {
+          "label": "5-6%",
+          "min_apr_pct": 5,
+          "max_apr_pct": 6,
+          "provider_count": 2,
+          "total_locked_egld": 628240.3364821775
+        },
+        {
+          "label": "6-7%",
+          "min_apr_pct": 6,
+          "max_apr_pct": 7,
+          "provider_count": 3,
+          "total_locked_egld": 640902.0126362656
+        },
+        {
+          "label": "7-8%",
+          "min_apr_pct": 7,
+          "max_apr_pct": 8,
+          "provider_count": 16,
+          "total_locked_egld": 1525680.866209629
+        },
+        {
+          "label": "8-9%",
+          "min_apr_pct": 8,
+          "max_apr_pct": 9,
+          "provider_count": 77,
+          "total_locked_egld": 7715968.561734837
+        },
+        {
+          "label": "9-10%",
+          "min_apr_pct": 9,
+          "max_apr_pct": 10,
+          "provider_count": 7,
+          "total_locked_egld": 643539.4369946519
+        },
+        {
+          "label": "10%+",
+          "min_apr_pct": 10,
+          "max_apr_pct": 100,
+          "provider_count": 0,
+          "total_locked_egld": 0
+        }
+      ]
+    },
+    "apr_outliers": {
+      "top_apr": [
+        {
+          "identity": "pokerstaking",
+          "apr_pct": 9.41,
+          "fee_pct": 0,
+          "locked_egld": 7104.103174158897,
+          "name": "pokerstaking"
+        },
+        {
+          "identity": "Synexis",
+          "apr_pct": 9.32,
+          "fee_pct": 2.0,
+          "locked_egld": 103276.54826758809,
+          "name": "Synexis"
+        },
+        {
+          "identity": "pi-staking",
+          "apr_pct": 9.28,
+          "fee_pct": 0,
+          "locked_egld": 7415.538437923271,
+          "name": "pi-staking"
+        },
+        {
+          "identity": "vaporrepublic",
+          "apr_pct": 9.24,
+          "fee_pct": 2.5,
+          "locked_egld": 131961.57123250578,
+          "name": "vaporrepublic"
+        },
+        {
+          "identity": "mapleleafnetwork",
+          "apr_pct": 9.17,
+          "fee_pct": 0,
+          "locked_egld": 192525.38955166173,
+          "name": "mapleleafnetwork"
+        }
+      ],
+      "lowest_fee": [
+        {
+          "identity": "pokerstaking",
+          "apr_pct": 9.41,
+          "fee_pct": 0,
+          "locked_egld": 7104.103174158897,
+          "name": "pokerstaking"
+        },
+        {
+          "identity": "pi-staking",
+          "apr_pct": 9.28,
+          "fee_pct": 0,
+          "locked_egld": 7415.538437923271,
+          "name": "pi-staking"
+        },
+        {
+          "identity": "mapleleafnetwork",
+          "apr_pct": 9.17,
+          "fee_pct": 0,
+          "locked_egld": 192525.38955166173,
+          "name": "mapleleafnetwork"
+        },
+        {
+          "identity": "wavenodevalidat",
+          "apr_pct": 9.09,
+          "fee_pct": 0,
+          "locked_egld": 11895.00688895617,
+          "name": "wavenodevalidat"
+        },
+        {
+          "identity": "star_staking",
+          "apr_pct": 8.95,
+          "fee_pct": 0,
+          "locked_egld": 179690.95590058115,
+          "name": "star_staking"
+        }
+      ]
+    },
+    "churn": {
+      "total_delegators_current": 174484,
+      "total_delegators_previous": 178487,
+      "delegators_added": -4003,
+      "delegators_change_pct": -2.242740367645823,
+      "providers_gaining_delegators": 22,
+      "providers_losing_delegators": 41
+    },
+    "analysis": "Staking concentration remains low (HHI 0.0194, top-5 20.3%, both essentially unchanged WoW). Total delegated 11,161,922 EGLD across 107 active providers. Active delegator base 174,484 delegators (-4003, -2.24%) \u2014 the LARGEST single-week drop in tracking history by 9x.\n\nYIELD-CHASE COHORT FULLY UNWOUND. The 5-week 0%-fee 9%+ APR migration is now in active redemption: ninjastaking -10.5K (the only sustained gainer reversed sharply), procryptostaking -6.8K, egldstakingprovider -3.3K, valuestaking +3.4K (only positive). Net cohort -17K vs -2.6K last week. Combined 5-week cumulative for ninjastaking +38K (still net positive across the period) but now in active outflow. The regime is fully terminated and the cohort is in net redemption phase.\n\nAPR distribution: 77 providers (72% of the sample) in the 8-9% bucket holding 7.7M EGLD. The 9-10% bucket holds 7 providers / 644K EGLD. Empty 10%+ bucket (consistent across all 2026 runs). APR-weighted average: 8.06%.\n\nDELEGATOR CHURN ACCELERATED 9X: 22 providers gaining vs 41 losing delegators (-4,003 net). z-score is now meaningful (not degenerate) and the absolute % move at -2.24% is the largest tracked. Read: a real capitulation event \u2014 retail leaving delegation contracts during the price recovery (suggests they were waiting for the bounce to exit). Combined with -38K staked-EGLD decline, this is a concentrated retail exit, not random churn.\n\nVALIDATOR MOVEMENTS: Quiet week. No notable named-validator joiners or leavers >50K EGLD. System-contract addresses (erd1qqqq...) excluded per the run #10 rule.\n\nREWARD BEHAVIOR (new this run): function-level compound rate = 59.1% (178 reDelegateRewards vs 123 claimRewards across 5 top providers, 7d sample). Delegators are roughly 2:1 in favor of compounding rather than claiming \u2014 a healthy backdrop for the network's staked ratio. Retail (<1 EGLD/claim): 0 of 38 traced claims went to a labeled exchange \u2014 retail does NOT sell rewards directly. Institutional (50-1000 EGLD/claim): 2 events / 223 EGLD, 100% of claimed value went to an exchange. Provider operators: zero of the sampled operators sold service-fee EGLD to a labeled exchange in 30d; dominant outbound destination is treasury / unlabeled wallets. Notable: at least one operator wallet labels resolve to a known DeFi protocol team, indicating cross-protocol fee re-deployment.",
+    "reward_behavior": {
+      "providers_sampled": 5,
+      "delegator_window_days": 7,
+      "operator_window_days": 30,
+      "function_distribution": {
+        "reDelegateRewards": {
+          "count": 178,
+          "share_pct": 42.18
+        },
+        "claimRewards": {
+          "count": 123,
+          "share_pct": 29.15
+        },
+        "delegate": {
+          "count": 45,
+          "share_pct": 10.66
+        },
+        "withdraw": {
+          "count": 20,
+          "share_pct": 4.74
+        },
+        "unDelegate": {
+          "count": 20,
+          "share_pct": 4.74
+        },
+        "unStakeNodes": {
+          "count": 16,
+          "share_pct": 3.79
+        },
+        "reward": {
+          "count": 16,
+          "share_pct": 3.79
+        },
+        "unJailNodes": {
+          "count": 4,
+          "share_pct": 0.95
+        }
+      },
+      "compound_pct_at_function_level": 59.14,
+      "compound_vs_claim": {
+        "redelegate_count": 178,
+        "claim_count": 123
+      },
+      "delegator_fates_by_tier": {
+        "retail": {
+          "events": 38,
+          "total_value_egld": 8.94,
+          "fates_by_count": {
+            "held": 30,
+            "rotated_provider": 5,
+            "held_or_other": 1,
+            "defi_deposit": 2
+          },
+          "fates_by_value_egld": {
+            "held": 5.88,
+            "rotated_provider": 1.88,
+            "held_or_other": 0.75,
+            "defi_deposit": 0.43
+          }
+        },
+        "institutional": {
+          "events": 2,
+          "total_value_egld": 223.09,
+          "fates_by_count": {
+            "sold": 2
+          },
+          "fates_by_value_egld": {
+            "sold": 223.09
+          }
+        },
+        "whale": {
+          "events": 1,
+          "total_value_egld": 1426.62,
+          "fates_by_count": {
+            "held": 1
+          },
+          "fates_by_value_egld": {
+            "held": 1426.62
+          }
+        },
+        "mid_tier": {
+          "events": 11,
+          "total_value_egld": 89.42,
+          "fates_by_count": {
+            "held_or_other": 2,
+            "held": 9
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 6.31,
+            "held": 83.11
+          }
+        }
+      },
+      "provider_operators": [
+        {
+          "provider": "figment-networks",
+          "owner_address": "erd1nknqh4rw82w67gun6x3meaxw62h627kp86lfjy8mypvgkt6084ps6kr7jm",
+          "owner_label": "figment-networks operator",
+          "owner_balance_egld": 1402.1596735508724,
+          "outbound_count": 3,
+          "fates_by_count": {
+            "rotated_provider": 3
+          },
+          "fates_by_value_egld": {
+            "rotated_provider": 42.5
+          }
+        },
+        {
+          "provider": "binance_staking",
+          "owner_address": "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc",
+          "owner_label": "binance_staking operator",
+          "owner_balance_egld": 9.072435236936297,
+          "outbound_count": 1,
+          "fates_by_count": {
+            "rotated_provider": 1
+          },
+          "fates_by_value_egld": {
+            "rotated_provider": 2.5
+          }
+        },
+        {
+          "provider": "stakingagency",
+          "owner_address": "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl",
+          "owner_label": "stakingagency operator",
+          "owner_balance_egld": 0.26360496391179905,
+          "outbound_count": 3,
+          "fates_by_count": {
+            "held_or_other": 3
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 388.0
+          }
+        },
+        {
+          "provider": "truststaking",
+          "owner_address": "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm",
+          "owner_label": "XOXNO: Deployer Wallet",
+          "owner_balance_egld": 107.13140572805196,
+          "outbound_count": 2,
+          "fates_by_count": {
+            "held_or_other": 2
+          },
+          "fates_by_value_egld": {
+            "held_or_other": 1120.58
+          }
+        },
+        {
+          "provider": "meria",
+          "owner_address": "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg",
+          "owner_label": "meria operator",
+          "owner_balance_egld": 0.0,
+          "outbound_count": 0,
+          "fates_by_count": {},
+          "fates_by_value_egld": {}
+        }
+      ],
+      "key_findings": [
+        "At the function-call level, 59.1% of all reward decisions are to COMPOUND (178 reDelegateRewards vs 123 claimRewards). Single-number measure of delegator conviction.",
+        "Retail (<1 EGLD/claim): 0 of 38 claims went to a labeled exchange. Most retail-claimed value stays in the claimant's wallet.",
+        "Institutional (50-1000 EGLD/claim): 2 events totaling 223 EGLD; 100% of claimed value went to an exchange.",
+        "Provider operators selling fees to exchange (30d): 0 of 5 sampled. Dominant operator outbound destination = treasury / unlabeled wallets.",
+        "Operator labeled: figment-networks is operated by 'figment-networks operator' (erd1nknqh4rw82...) \u2014 outbound 3 txs in 30d.",
+        "Operator labeled: binance_staking is operated by 'binance_staking operator' (erd1p3423t9rj5...) \u2014 outbound 1 txs in 30d.",
+        "Operator labeled: stakingagency is operated by 'stakingagency operator' (erd1yj4jlay9rr...) \u2014 outbound 3 txs in 30d.",
+        "Operator labeled: truststaking is operated by 'XOXNO: Deployer Wallet' (erd1x45vnu7shh...) \u2014 outbound 2 txs in 30d.",
+        "Operator labeled: meria is operated by 'meria operator' (erd1fx5t2nwq4f...) \u2014 outbound 0 txs in 30d."
+      ]
+    }
+  },
+  "token_activity": {
+    "top_by_holders": [
+      {
+        "identifier": "DRX-b7f337",
+        "name": "DoctorX",
+        "holders": 2468935,
+        "previous_holders": 2468953,
+        "holders_change": -18,
+        "price_usd": 1.6613098336971557e-07,
+        "market_cap_usd": 33744.32024156236,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "WEGLD-bd4d79",
+        "name": "WrappedEGLD",
+        "holders": 132496,
+        "previous_holders": 132589,
+        "holders_change": -93,
+        "price_usd": 3.000136113968859,
+        "market_cap_usd": 1807117.639918363,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "HYPE-619661",
+        "name": "HYPE",
+        "holders": 118568,
+        "previous_holders": 118648,
+        "holders_change": -80,
+        "price_usd": 6.514556559350489e-08,
+        "market_cap_usd": 3639.7554652226854,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "MEX-455c57",
+        "name": "MEX",
+        "holders": 103503,
+        "previous_holders": 103570,
+        "holders_change": -67,
+        "price_usd": 2.7383454329375343e-07,
+        "market_cap_usd": 1105918.7792212556,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "RIDE-7d18e9",
+        "name": "holoride",
+        "holders": 97932,
+        "previous_holders": 97987,
+        "holders_change": -55,
+        "price_usd": 0.00013523968175522478,
+        "market_cap_usd": 118997.33915318186,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "QWT-46ac01",
+        "name": "QoWatt",
+        "holders": 95350,
+        "previous_holders": 95434,
+        "holders_change": -84,
+        "price_usd": 0.0002122807283136475,
+        "market_cap_usd": 34854.40120401041,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "ZPAY-247875",
+        "name": "ZoidPay",
+        "holders": 92109,
+        "previous_holders": 92196,
+        "holders_change": -87,
+        "price_usd": 0.008507503310505487,
+        "market_cap_usd": 5232135.89263359,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "BHAT-c1fde3",
+        "name": "BHNetwork",
+        "holders": 87126,
+        "previous_holders": 87202,
+        "holders_change": -76,
+        "price_usd": 0.00011525020289500232,
+        "market_cap_usd": 10702.700635310652,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "USDC-c76f1f",
+        "name": "WrappedUSDC",
+        "holders": 81786,
+        "previous_holders": 81882,
+        "holders_change": -96,
+        "price_usd": 0.9996633076676003,
+        "market_cap_usd": 8385218.686168848,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "UTK-2f80e9",
+        "name": "xMoney UTK",
+        "holders": 75883,
+        "previous_holders": 75948,
+        "holders_change": -65,
+        "price_usd": 0.01945563617736078,
+        "market_cap_usd": 4185609.085776034,
+        "volume_24h_usd": null
+      }
+    ],
+    "top_by_volume": [
+      {
+        "identifier": "WEGLD-bd4d79",
+        "name": "WrappedEGLD",
+        "transactions": 8626345,
+        "previous_transactions": 8623664,
+        "change_pct": 0.03108887359247763,
+        "price_usd": 3.000136113968859,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "USDC-c76f1f",
+        "name": "WrappedUSDC",
+        "transactions": 2145632,
+        "previous_transactions": 2143542,
+        "change_pct": 0.09750217163927742,
+        "price_usd": 0.9996633076676003,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "MEX-455c57",
+        "name": "MEX",
+        "transactions": 2029775,
+        "previous_transactions": 2029336,
+        "change_pct": 0.021632691678460342,
+        "price_usd": 2.7383454329375343e-07,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "UTK-2f80e9",
+        "name": "xMoney UTK",
+        "transactions": 858160,
+        "previous_transactions": 858042,
+        "change_pct": 0.013752240566312605,
+        "price_usd": 0.01945563617736078,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "BOBER-9eb764",
+        "name": "BOBER",
+        "transactions": 766312,
+        "previous_transactions": 764851,
+        "change_pct": 0.19101759689142067,
+        "price_usd": 4.0772029431446e-05,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "ZPAY-247875",
+        "name": "ZoidPay",
+        "transactions": 756798,
+        "previous_transactions": 756482,
+        "change_pct": 0.04177230918911488,
+        "price_usd": 0.008507503310505487,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "RIDE-7d18e9",
+        "name": "holoride",
+        "transactions": 669541,
+        "previous_transactions": 669396,
+        "change_pct": 0.021661318561807957,
+        "price_usd": 0.00013523968175522478,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "EGLDMEX-0be9e5",
+        "name": "EGLDMEXLP",
+        "transactions": 664074,
+        "previous_transactions": 664051,
+        "change_pct": 0.0034635893929833702,
+        "price_usd": null,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "CGO-5e9528",
+        "name": "CathenaGold",
+        "transactions": 523564,
+        "previous_transactions": 523179,
+        "change_pct": 0.07358858058140713,
+        "price_usd": 9.49877215840969e-07,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "AERO-458bbf",
+        "name": "Aerovek",
+        "transactions": 508618,
+        "previous_transactions": 508552,
+        "change_pct": 0.012978023879563939,
+        "price_usd": 4.6466338198794814e-05,
+        "volume_24h_usd": null
+      }
+    ],
+    "top_by_market_cap": [
+      {
+        "identifier": "EMRS-6e4067",
+        "name": "EmoryaSportsX",
+        "holders": null,
+        "previous_holders": null,
+        "price_usd": 3.3847e-05,
+        "market_cap_usd": 33846954.74677866,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "USDC-c76f1f",
+        "name": "WrappedUSDC",
+        "holders": 81786,
+        "previous_holders": 81882,
+        "price_usd": 0.9996633076676003,
+        "market_cap_usd": 8385218.686168848,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "ZPAY-247875",
+        "name": "ZoidPay",
+        "holders": 92109,
+        "previous_holders": 92196,
+        "price_usd": 0.008507503310505487,
+        "market_cap_usd": 5232135.89263359,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "UTK-2f80e9",
+        "name": "xMoney UTK",
+        "holders": 75883,
+        "previous_holders": 75948,
+        "price_usd": 0.01945563617736078,
+        "market_cap_usd": 4185609.085776034,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "SEGLD-3ad2d0",
+        "name": "StakedEGLD",
+        "holders": null,
+        "previous_holders": null,
+        "price_usd": 3.6431191357414887,
+        "market_cap_usd": 2534306.3881735513,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "HSEGLD-c13a4e",
+        "name": "HatomSEGLD",
+        "holders": null,
+        "previous_holders": null,
+        "price_usd": 3.7210749801683414,
+        "market_cap_usd": 2376650.471247251,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "FOXSY-5d5f3e",
+        "name": "Foxsy",
+        "holders": null,
+        "previous_holders": null,
+        "price_usd": 0.002142279856343752,
+        "market_cap_usd": 2047259.12857909,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "WEGLD-bd4d79",
+        "name": "WrappedEGLD",
+        "holders": 132496,
+        "previous_holders": 132589,
+        "price_usd": 3.000136113968859,
+        "market_cap_usd": 1807117.639918363,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "WTAO-4f5363",
+        "name": "WrappedTAO",
+        "holders": null,
+        "previous_holders": null,
+        "price_usd": 274.724485909889,
+        "market_cap_usd": 1584455.271812819,
+        "volume_24h_usd": null
+      },
+      {
+        "identifier": "HUSDC-d80042",
+        "name": "HatomUSDC",
+        "holders": null,
+        "previous_holders": null,
+        "price_usd": 0.028308899323075225,
+        "market_cap_usd": 1351412.7242484114,
+        "volume_24h_usd": null
+      }
+    ],
+    "newly_issued": [],
+    "xexchange": {
+      "total_pairs": 548,
+      "total_volume_24h_usd": 54634.45212423313,
+      "mex_price_usd": 2.738418102638608e-07,
+      "mex_market_cap_usd": 1105948,
+      "mex_price_change_24h_pct": null,
+      "mex_price_change_wow_pct": -0.832965591227237,
+      "top_pair": "WrappedEGLD/WrappedUSDC",
+      "top_pair_volume_24h_usd": 46488.50871679806,
+      "top_pair_dominance_pct": 85.09009774837307,
+      "top_pairs_by_volume": [
+        {
+          "name": "WrappedEGLD/WrappedUSDC",
+          "volume_24h_usd": 46488.50871679806,
+          "tvl_usd": 1405041.843105508,
+          "trades_count_24h": 514,
+          "is_other": false,
+          "share_pct": 85.09009774837307
+        },
+        {
+          "name": "ZoidPay/WrappedEGLD",
+          "volume_24h_usd": 4434.278013612702,
+          "tvl_usd": 59509.96969924193,
+          "trades_count_24h": 52,
+          "is_other": false,
+          "share_pct": 8.116267009559479
+        },
+        {
+          "name": "MEX/WrappedEGLD",
+          "volume_24h_usd": 2959.612906068999,
+          "tvl_usd": 313757.16119729093,
+          "trades_count_24h": 130,
+          "is_other": false,
+          "share_pct": 5.417118303555315
+        },
+        {
+          "name": "WrappedUSDC/MEX",
+          "volume_24h_usd": 362.71807321312974,
+          "tvl_usd": 23303.04938605993,
+          "trades_count_24h": 47,
+          "is_other": false,
+          "share_pct": 0.6638999003565481
+        },
+        {
+          "name": "Itheum/WrappedEGLD",
+          "volume_24h_usd": 233.2424418385024,
+          "tvl_usd": 57004.58898096922,
+          "trades_count_24h": 8,
+          "is_other": false,
+          "share_pct": 0.4269145800311735
+        }
+      ]
+    },
+    "analysis": "DEX volume CRATERED -55.2% to $55K (vs $122K last week) \u2014 the largest WoW DEX volume contraction in tracking history. WEGLD/USDC dominance fell 93.2% \u2192 85.1%; ZoidPay/WEGLD share rose 3.0% \u2192 8.1%. The drop is concentrated in the dominant pair (WEGLD/USDC), suggesting CEX-derived traders disengaged during the price bounce. Confirms the 'exit liquidity' read on the EGLD recovery.\n\nNEWLY-ISSUED TOKENS: scan returned 0 issuances this week (ESDT system SC issue function had no recent calls). Method validated last run; the empty result this run is signal of low activity rather than method failure.\n\nToken holder counts declined for a 12th consecutive week (-21 to -139 across top 10) \u2014 established airdrop-decay baseline. WrappedEGLD and WrappedUSDC remain the most-used real tokens.\n\nMEX price DECOUPLED from EGLD this run: EGLD +1.4% but MEX -0.83%. Typically MEX amplifies EGLD moves; the independent direction is unusual. MEX market cap $1.11M (-1.3%). With DEX volume -55%, MEX's underlying trading apparatus is contracting.\n\nTop by market cap: USDC $8.39M (Wrapped USDC), ZoidPay $5.36M (+13% from $4.73M), UTK $4.79M (+14% from $4.19M), HUSDC $1.35M (vs $1.31M), WrappedEGLD $1.78M (flat).\n\nWEGLD supply held essentially flat WoW (raw change <0.5%) \u2014 continues the post-run-#10 stabilization, no second wrap event."
+  },
+  "defi_activity": {
+    "protocols": [
+      {
+        "name": "xExchange",
+        "category": "dex",
+        "volume_24h_usd": 54634.45212423313,
+        "active_pairs": 25,
+        "transfers_24h": null,
+        "tvl_usd": 1799655.7287922034,
+        "tvl_egld": 601891.5480910379,
+        "tvl_wow_change_pct": 0.7403943675937549
+      },
+      {
+        "name": "Hatom Lending",
+        "category": "lending",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 39,
+        "tvl_usd": 3769255.0582357245,
+        "tvl_egld": 1260620.4208146236,
+        "tvl_wow_change_pct": 0.861391689761328
+      },
+      {
+        "name": "Hatom Liquid Staking",
+        "category": "liquid_staking",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 235,
+        "tvl_usd": 3721041.350428033,
+        "tvl_egld": 1244495.4349257634,
+        "tvl_wow_change_pct": -0.5683405614384842
+      },
+      {
+        "name": "XOXNO LSD",
+        "category": "liquid_staking",
+        "volume_24h_usd": null,
+        "active_pairs": null,
+        "transfers_24h": 282,
+        "tvl_usd": 1041935.6185279448,
+        "tvl_egld": 348473.45101269055,
+        "tvl_wow_change_pct": -2.496189865223405
+      }
+    ],
+    "protocol_breakdown": [
+      {
+        "protocol": "xExchange",
+        "category": "dex",
+        "addresses_tracked": 16,
+        "tvl_usd": 1799655.7287922034,
+        "tvl_egld": 601891.5480910379,
+        "tvl_wow_change_pct": 0.7403943675937549,
+        "transfers_24h": null,
+        "volume_24h_usd": 54634.45212423313,
+        "notable_events": "DEX volume -55.2% to $55K (vs $122K last week) \u2014 substantial liquidity contraction during the price bounce. WEGLD/USDC dominance 85.1% (down from 93.2%); ZoidPay/WEGLD share 8.1% (up from 3.0%). WEGLD supply WoW +0.72% (flat).",
+        "health_signal": "shrinking"
+      },
+      {
+        "protocol": "Hatom Lending",
+        "category": "lending",
+        "addresses_tracked": 13,
+        "tvl_usd": 3769255.0582357245,
+        "tvl_egld": 1260620.4208146236,
+        "tvl_wow_change_pct": 0.861391689761328,
+        "transfers_24h": 39,
+        "notable_events": "TVL $3.77M USD (+2.2%), 1261K EGLD (+0.9%). Bilateral inverse rule NOT EVALUABLE this run \u2014 price move +1.4% is below the meaningful-move threshold (rule observed only at |\u0394price|>5% historically); EGLD-TVL response +0.9% within noise band.",
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "Hatom Liquid Staking",
+        "category": "liquid_staking",
+        "addresses_tracked": 2,
+        "tvl_usd": 3721041.350428033,
+        "tvl_egld": 1244495.4349257634,
+        "tvl_wow_change_pct": -0.5683405614384842,
+        "transfers_24h": 235,
+        "notable_events": "SEGLD $2.54M + SWTAO $1.19M = $3.72M. NOTE: run #11 previous.json undercounted Hatom LSD by $1.19M (SWTAO was null due to a rate-limit miss). Apples-to-apples WoW (adding SWTAO to prev): -0.6% EGLD. Hatom LSD is essentially flat \u2014 not the contraction the uncorrected data suggested last run.",
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "Hatom USH",
+        "category": "stablecoin",
+        "addresses_tracked": 4,
+        "tvl_usd": 604088.4318544572,
+        "tvl_egld": 202036.26483426662,
+        "tvl_wow_change_pct": -2.214759244526835,
+        "transfers_24h": null,
+        "notable_events": "USH mcap $604K (-2.2% USD). 2nd consecutive week of contraction (-3.7%, then -2.2%). USH supply minted-burnt = 608,321 USH circulating. De-leveraging trend continues.",
+        "health_signal": "shrinking"
+      },
+      {
+        "protocol": "XOXNO LSD",
+        "category": "liquid_staking",
+        "addresses_tracked": 2,
+        "tvl_usd": 1041935.6185279448,
+        "tvl_egld": 348473.45101269055,
+        "tvl_wow_change_pct": -2.496189865223405,
+        "transfers_24h": 282,
+        "notable_events": "XEGLD $1.04M (-1.2% USD), 348K EGLD (-2.5% EGLD). 2nd consecutive week of mild EGLD-denominated contraction (-1.4% last run, -2.5% now). Pattern continues but milder than initially read.",
+        "health_signal": "shrinking"
+      },
+      {
+        "protocol": "XOXNO Aggregator",
+        "category": "aggregator",
+        "addresses_tracked": 1,
+        "tvl_usd": null,
+        "tvl_egld": null,
+        "tvl_wow_change_pct": null,
+        "transfers_24h": 10489,
+        "notable_events": "Throughput 10,489 daily transfers. Aggregator activity elevated throughout the decline; baseline ~21K/day.",
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "OneDex",
+        "category": "aggregator",
+        "addresses_tracked": 5,
+        "tvl_usd": null,
+        "tvl_egld": null,
+        "tvl_wow_change_pct": null,
+        "transfers_24h": 6793,
+        "notable_events": "6,793 daily transfers via swap contract. Aggregator throughput steady.",
+        "health_signal": "flat"
+      },
+      {
+        "protocol": "JEXchange",
+        "category": "dex",
+        "addresses_tracked": 4,
+        "tvl_usd": null,
+        "tvl_egld": null,
+        "tvl_wow_change_pct": null,
+        "transfers_24h": 2289,
+        "notable_events": "Fees wallet 2,289 daily transfers. Aggregator activity steady.",
+        "health_signal": "flat"
+      }
+    ],
+    "sc_deployments": [],
+    "analysis": "BILATERAL INVERSE RULE NOT EVALUABLE THIS RUN. Price move +1.4% is below the meaningful-move threshold (rule observed only at |\u0394price|\u22655% historically). Hatom Lending EGLD-denominated response +0.9% is within the noise band for a small-move week. The rule's directional behavior remains: 5 down-week observations all triggered EGLD-TVL responses in the OPPOSITE direction (with deteriorating magnitude). An up-week observation requires a meaningful bounce (>+5%) to test rule symmetry.\n\nHATOM LSD $3.72M (SEGLD $2.54M + SWTAO $1.19M). Run #11 previous.json stored Hatom LSD = $2.51M but this was SEGLD-only because SWTAO returned null on the rate-limited 0.55s-delay query. Re-fetched this run with 1.0s delays confirms SWTAO ~$1.19M. Apples-to-apples (adding back SWTAO to prev): Hatom LSD $3.69M -> $3.72M = essentially flat. The 'synchronized LSD contraction' pattern from run #11 is therefore DOWNGRADED \u2014 Hatom LSD is flat, not contracting.\n\nXOXNO LSD $1.04M / 348K EGLD (-2.5% EGLD). XOXNO LSD continues mild contraction for 2nd consecutive week (-1.4% then -2.5% EGLD). Still a watch item but no longer 'synchronized' since Hatom LSD is flat. The bearish-LSD-during-stress thesis needs 1-2 more confirmations of XOXNO LSD alone before being formalized.\n\nxExchange TVL $1.80M (+0.7% EGLD). DEX volume CRATERED -55%. Aggregators continue elevated throughput (XOXNO 10,489, OneDex 6,793) \u2014 on-chain activity rotation continues.\n\nHATOM USH stablecoin $604K (-2.2% USD). 2nd consecutive week of contraction (was -2.2% last run-correlated, now -2.2%). De-leveraging trend continues mildly.\n\nDATA-QUALITY FIX: run #11's 'SWTAO null price' was a rate-limit miss with 0.55s spacing, not a feed outage. Re-fetching at 1.0s spacing returned proper data for all 4 LSD/USH-class tokens (SEGLD, SWTAO, USH, XEGLD). Methodology updated: use \u22651.0s between /tokens/{id} queries. Run #11 Hatom LSD was undercounted by ~$1.18M as a direct consequence."
+  },
+  "anomalies": [
+    {
+      "metric": "egld_price_usd",
+      "current_value": 2.99,
+      "previous_value": 2.95,
+      "method": "z_score",
+      "average_value": 3.9042857142857144,
+      "stddev": 0.5129148395718934,
+      "z_score": -1.782529269476443,
+      "severity": "medium",
+      "description": "EGLD +1.36% WoW to $2.99, z=-1.78\u03c3 (N=7). FIRST UP-WEEK after 5 consecutive down-weeks. Run #11's predicted capitulation bounce off $2.95 materialized. BTC +2.00% / ETH +2.58% (24h) - EGLD back in line with crypto-macro (no longer decoupled to downside, though still underperforming). The bounce is mild relative to the 5-week -37% drawdown; whether this is genuine reversal or dead-cat depends on next 1-2 weeks. The on-exchange capital build (per exchange_flows) suggests sellers using the bounce as exit liquidity rather than capitulation low confirmation."
+    },
+    {
+      "metric": "mex_price_usd",
+      "current_value": 2.738418102638608e-07,
+      "previous_value": 2.761419779228928e-07,
+      "method": "z_score",
+      "average_value": 3.678825095004546e-07,
+      "stddev": 4.758006499866003e-08,
+      "z_score": -1.9764726937477333,
+      "severity": "low",
+      "description": "MEX price -0.83% to $2.738e-07 (z=-1.98\u03c3, LOW severity, N=7). MEX DECOUPLED from EGLD this week \u2014 EGLD +1.4% but MEX -0.8%. Typically MEX amplifies EGLD moves; this independent direction is unusual. MEX mcap roughly flat at $1.11M (-1.3%). With DEX volume -55% the trading apparatus is contracting."
+    },
+    {
+      "metric": "total_delegators",
+      "current_value": 174484,
+      "previous_value": 178487,
+      "method": "z_score",
+      "average_value": 178934.0,
+      "stddev": 187.64023327329656,
+      "z_score": -23.71559618303506,
+      "severity": "high",
+      "description": "Total delegators 174,484 (-4,003 WoW = -2.24%). z=-23.72\u03c3. The largest absolute drop in tracking history by 9x (last run was -447, this run -4,003). With z-score now significantly negative AND absolute % move at -2.24%, the run #9 degenerate-z-score downgrade does NOT apply \u2014 this is a real capitulation event. Combined with staked-EGLD -38K decline, this is concentrated delegation exit by retail. Confirms run #11's emerging capitulation pattern at much larger magnitude."
+    },
+    {
+      "metric": "staked_egld",
+      "current_value": 14432677,
+      "previous_value": 14471101,
+      "method": "z_score",
+      "average_value": 14522830.0,
+      "stddev": 115567.74338888859,
+      "z_score": -0.7800879151601388,
+      "severity": "low",
+      "description": "Total staked 14,432,677 EGLD (-38,424 WoW, -0.27%). z=-0.78\u03c3. Sustained protocol-level unstaking continues \u2014 2nd consecutive week of decline (-27K last run, -38K this run). Staked ratio dropped 48.08% \u2192 47.87% (-0.21pp). Mild but consistent with delegator exit."
+    },
+    {
+      "metric": "binance_staking_custody_stalled_2nd_week",
+      "current_value": 3512650,
+      "previous_value": 3512650,
+      "method": "rule_based",
+      "severity": "high",
+      "description": "Binance Staking custody UNCHANGED at 3,512,650 EGLD for 2nd consecutive week. The 3-week accumulation phase (runs #7+9+10 cumulative +402K) has now extended into a 2-week stall. Total parked since run #7: 779K EGLD ($2.33M at current price). No delegation to protocol staked module; no drawdown to hot wallets. Promoted from anomaly to ENTRENCHED STRUCTURAL POSITION. The longer this sits, the more decisive the eventual move becomes."
+    },
+    {
+      "metric": "dex_volume_24h_usd",
+      "current_value": 54634.45212423313,
+      "previous_value": 121891.8071868304,
+      "method": "z_score",
+      "average_value": 131703.36940561532,
+      "stddev": 89571.92918693434,
+      "z_score": -0.8604137253819923,
+      "severity": "medium",
+      "description": "DEX volume -55.2% to $55K (z=-0.86\u03c3, N=6). Largest WoW DEX volume contraction in tracked history. The price bounce did NOT bring liquidity \u2014 instead trading dried up. Pair composition shifted: WEGLD/USDC dominance fell 93.2% \u2192 85.1%; ZoidPay/WEGLD share rose 3.0% \u2192 8.1% (event-driven, not regime). Read: traders not engaging during the bounce \u2014 confirms the 'exit liquidity' interpretation of the price recovery."
+    },
+    {
+      "metric": "yield_chase_cohort_reversal",
+      "current_value": -17000,
+      "previous_value": -2610,
+      "method": "rule_based",
+      "severity": "high",
+      "description": "Yield-chase cohort cratered for a 2nd consecutive week and at much larger magnitude. ninjastaking -10.5K (last week's only sustained gainer reversed sharply), procryptostaking -6.8K, egldstakingprovider -3.3K, valuestaking +3.4K (only positive). Net cohort flow ~-17K (vs -2.6K last week). Combined with the -4,003 delegator drop, this is concentrated retail exit from the high-APR providers. Yield-chase regime is fully terminated; cohort now in net redemption."
+    },
+    {
+      "metric": "coinbase_2nd_week_inflow_confirmation",
+      "current_value": 8320,
+      "previous_value": 42932,
+      "method": "rule_based",
+      "severity": "medium",
+      "description": "Coinbase entity +8.3K net inflow this week (vs +43K last week). Per run #11's recommended 2-week confirmation rule, the off-exchange-accumulation thesis reversal IS confirmed. Direction: inflow continues but at much milder magnitude. Combined 2-week net: +51K inflow. The bullish parked-capital read from run #10 is decisively dead."
+    }
+  ],
+  "trend_indicators": {
+    "accelerating_exchange_outflows": [
+      {
+        "exchange": "Coinbase",
+        "trend": "inflow",
+        "cumulative_change_pct": null,
+        "weeks_in_trend": 2,
+        "interpretation": "Coinbase 2-week net inflow CONFIRMS the reversal flagged in run #11. Direction: +43K \u2192 +8.3K (mild deceleration but still inflow). Off-exchange accumulation thesis decisively dead. Coinbase Routing Wallet did NOT send to Unknown Mega Whale this week (last week sent +5,925)."
+      },
+      {
+        "exchange": "NET_EXCHANGE",
+        "trend": "inflow",
+        "cumulative_change_pct": null,
+        "weeks_in_trend": 2,
+        "interpretation": "Aggregate net exchange flow +24K inflow \u2192 +X inflow (2-week consecutive inflow streak). 2-week confirmation rule satisfied: the bullish parked-capital thesis from run #10 is fully invalidated. Sell-into-decline pattern continues into a sell-into-bounce setup."
+      },
+      {
+        "exchange": "UPbit OTC Desks",
+        "trend": "flat",
+        "cumulative_change_pct": null,
+        "weeks_in_trend": 1,
+        "interpretation": "OTC desks essentially flat this week (UPbit OTC -1.8K, OTC Distribution +0.9K, combined -0.9K). Outflow throughput 20K+24K=44K (vs 99K+64K=163K last week). Pipeline appears in the inter-cycle gap between distribution and reload. Per run #11's prediction, expect loading phase to return within 1-2 weeks."
+      }
+    ],
+    "validator_movements": {
+      "providers_joining": 2,
+      "providers_leaving": 1,
+      "net_provider_change": 1,
+      "notable_joiners": [],
+      "notable_leavers": [
+        {
+          "identity": "ledgerbyfigment",
+          "name": "ledgerbyfigment",
+          "previous_locked_egld": 170808.0867294221
+        }
+      ]
+    },
+    "token_supply_events": [
+      {
+        "identifier": "USDC-c76f1f",
+        "name": "WrappedUSDC",
+        "event": "burn",
+        "supply_previous": "8416920099624",
+        "supply_current": "8388042875889",
+        "change_pct": -0.3430853969528593,
+        "description": "USDC-c76f1f supply -0.34% (burn)."
+      }
+    ],
+    "consecutive_streaks": [
+      {
+        "metric": "egld_price",
+        "direction": "up",
+        "weeks": 1,
+        "cumulative_change_pct": 1.36,
+        "interpretation": "FIRST up-week after 5 down-weeks. EGLD $2.95 \u2192 $2.99 (+1.36%). The capitulation bounce predicted in run #11 materialized. Whether this becomes recovery or dead-cat depends on next 1-2 weeks. BTC +2%, ETH +2.6% confirm broad-crypto recovery; EGLD is participating but trailing."
+      },
+      {
+        "metric": "token_holder_count_decline",
+        "direction": "down",
+        "weeks": 12,
+        "cumulative_change_pct": null,
+        "interpretation": "12th consecutive week of small holder declines across top-10 tokens. Established airdrop-decay baseline; active >$1M-mcap token base stable."
+      },
+      {
+        "metric": "binance_staking_custody_stalled",
+        "direction": "flat",
+        "weeks": 2,
+        "cumulative_change_pct": 0,
+        "interpretation": "2nd consecutive week of stall at 3,512,650 EGLD. The 3-week accumulation phase (runs #7+9+10) extended into a 2-week stall. Total parked 779K since run #7 \u2014 promoted to entrenched structural position. The longer this sits, the more decisive the eventual move."
+      },
+      {
+        "metric": "delegator_capitulation",
+        "direction": "down",
+        "weeks": 2,
+        "cumulative_change_pct": -2.5,
+        "interpretation": "2-week capitulation streak: -447 last week, -4,003 this week. 9x acceleration. Cumulative -4,450 delegators (~-2.5%) since run #10. Combined with -65K cumulative staked-EGLD decline = concentrated retail exit from delegation."
+      },
+      {
+        "metric": "lsd_xoxno_contraction",
+        "direction": "down",
+        "weeks": 2,
+        "cumulative_change_pct": null,
+        "interpretation": "XOXNO LSD contracted in EGLD terms for 2nd consecutive week (-1.4% then -2.5%). Hatom LSD, on apples-to-apples basis (adding back the SWTAO undercount from run #11), is essentially FLAT not contracting. The 'synchronized LSD contraction' pattern from run #11 is downgraded: only XOXNO LSD confirmed; Hatom LSD pattern was a data-quality artifact."
+      },
+      {
+        "metric": "dex_volume",
+        "direction": "down",
+        "weeks": 1,
+        "cumulative_change_pct": -55.2,
+        "interpretation": "Largest WoW DEX volume drop in tracking history. ${prev['xexchange']['volume_24h_usd']/1000:.0f}K \u2192 ${totvol/1000:.0f}K. Traders not engaging during the bounce \u2014 supports the 'exit liquidity' read on the price recovery."
+      }
+    ],
+    "regime_shifts": [
+      {
+        "metric": "yield_chase_full_termination",
+        "before_value": -2610,
+        "after_value": -17000,
+        "description": "Yield-chase cohort moved from regime-end (-2.6K last run) to active net redemption (-17K this run). ninjastaking \u2014 the only sustained gainer across 5 weeks \u2014 reversed sharply to -10.5K. The 5-week migration is now FULLY UNWOUND."
+      },
+      {
+        "metric": "delegator_capitulation_event",
+        "before_value": -447,
+        "after_value": -4003,
+        "description": "Delegator drop accelerated 9x WoW (-447 \u2192 -4,003). The largest single-week drop in tracking by an order of magnitude. Combined with -38K staked-EGLD decline, this is concentrated retail exit. Regime: delegation contraction."
+      },
+      {
+        "metric": "dex_volume_collapse",
+        "before_value": 121891.8071868304,
+        "after_value": 54634.45212423313,
+        "description": "DEX volume cratered -55% to $55K \u2014 the lowest since run #6's $75K post-rally low. Traders disengaging during the bounce indicates exit liquidity rather than fresh demand."
+      }
+    ]
+  },
+  "watch_list": [
+    {
+      "item": "EGLD $2.95 capitulation bounce confirmed (+1.36% to $2.99)",
+      "reason": "First up-week after 5 down-weeks. BTC +2.0%, ETH +2.6% confirm broad recovery; EGLD trailing but in line. Whether this is genuine reversal or dead-cat depends on next 1-2 weeks. The on-exchange capital build during the bounce (per exchange flows) suggests sellers using bounce as exit liquidity rather than capitulation low confirmation.",
+      "weeks_on_list": 3
+    },
+    {
+      "item": "Binance Staking custody STALLED for 2nd consecutive week at 3.51M",
+      "reason": "3-week accumulation followed by 2-week stall. 779K parked since run #7 ($2.33M at current price) remains undeployed. Watching for the decisive move \u2014 delegation (bullish, would jump econ.staked) or distribution (bearish, would drawdown to hot wallets). Each additional week of stall makes the eventual move more decisive.",
+      "weeks_on_list": 6
+    },
+    {
+      "item": "Delegator capitulation event: -4,003 WoW (9x last week)",
+      "reason": "Largest single-week drop in tracking history by an order of magnitude. Combined with -38K staked-EGLD decline, this is concentrated retail exit from delegation. Watch next week to confirm continuation or one-shot shake-out.",
+      "weeks_on_list": 2
+    },
+    {
+      "item": "Yield-chase cohort fully unwound: net -17K",
+      "reason": "ninjastaking \u2014 last week's only sustained gainer \u2014 reversed sharply -10.5K. procryptostaking -6.8K, egldstakingprovider -3.3K. The 5-week migration regime is fully terminated and now in net redemption.",
+      "weeks_on_list": 7
+    },
+    {
+      "item": "Coinbase 2-week net inflow CONFIRMED",
+      "reason": "Per run #11's 2-week confirmation rule: +43K \u2192 +8.3K = 2 consecutive inflow weeks. Off-exchange accumulation thesis decisively dead. Coinbase Routing Wallet did NOT send to mega-whale this week (last week +5,925 to erd18mv2z6r2). Pattern: inflow continues but at milder magnitude.",
+      "weeks_on_list": 4
+    },
+    {
+      "item": "DEX volume collapsed -55% during the bounce",
+      "reason": "$122K \u2192 $55K, largest WoW drop in tracking. Traders disengaged during the price recovery. Confirms the 'exit liquidity' read \u2014 recovery happening on light, sell-side volume.",
+      "weeks_on_list": 1
+    },
+    {
+      "item": "XOXNO LSD mild contraction continues (-2.5% EGLD); Hatom LSD apples-to-apples flat",
+      "reason": "Run #11 'synchronized LSD contraction' pattern downgraded: only XOXNO LSD confirmed contracting (-1.4% then -2.5% EGLD). Hatom LSD comparison was contaminated by SWTAO mcap being null in run #11's prev (rate-limit miss). Apples-to-apples Hatom LSD is flat. Watch XOXNO LSD for 3rd week to formalize.",
+      "weeks_on_list": 2
+    },
+    {
+      "item": "Unknown Mega Whale erd18mv2z6r2 unchanged at 998,971",
+      "reason": "Last week received +5,925 from Coinbase Routing Wallet. This week: zero inbound or outbound activity. Near the 1M threshold. Watching for downstream forwarding to confirm OTC pattern.",
+      "weeks_on_list": 2
+    },
+    {
+      "item": "OTC pipeline in inter-cycle gap",
+      "reason": "UPbit OTC -1.8K, OTC Distribution +0.9K = essentially flat. Outflow throughput dropped from 163K (run #11) to 44K (this run). Per run #11 prediction, expect loading phase to return within 1-2 weeks.",
+      "weeks_on_list": 3
+    },
+    {
+      "item": "Bilateral inverse rule observation #6: now in counter-direction (up-week)",
+      "reason": "Price +1.4% (mild up-week) \u2192 Hatom Lending EGLD +0.9%. First UP-week observation. The rule's behavior under upward moves complements the 5 down-week observations. Magnitude scaling under modest up-moves is informative for future rallies.",
+      "weeks_on_list": 5
+    },
+    {
+      "item": "Token mcap rate-limit issue caused SWTAO null in run #11",
+      "reason": "Initial run-12 collection with 0.55s delays returned ALL 4 LSD/USH token mcaps as null. Re-fetch with 1.0s delays returned proper data. Diagnosis: run #11 SWTAO 'null price feed' was a rate-limit miss, NOT an outage. Hatom LSD was therefore undercounted by ~$1.18M last run. New rule: use \u22651.0s between /tokens/{id} queries.",
+      "weeks_on_list": 1
+    },
+    {
+      "item": "erd1sdslv address with bad bech32 checksum \u2014 run #11 stored an invalid address",
+      "reason": "The canonical Binance.com hot wallet (erd1sdslv...3rgul...sets) returns 222K but previous.json watch_addresses had erd1sdslv...29trp...76xc (invalid checksum, API returns HTTP 400). This caused run #11's Binance.com entity to undercount by ~222K (only 2 of 3 wallets counted). Address now removed from watch_addresses.",
+      "weeks_on_list": 1
+    }
+  ],
+  "meta_learning": {
+    "run_number": 12,
+    "endpoints_that_worked": [
+      "/economics",
+      "/stats",
+      "/accounts?sort=balance",
+      "/tokens?sort=accounts",
+      "/tokens?sort=transactions",
+      "/tokens?sort=marketCap",
+      "/providers?size=200",
+      "/identities",
+      "/mex/economics",
+      "/mex/pairs",
+      "/mex/tokens",
+      "coingecko/simple/price",
+      "/accounts/{addr} + /transactions x36",
+      "/accounts/{addr}/transfers/count x7",
+      "/tokens/{id} x14",
+      "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+    ],
+    "endpoints_that_failed": [
+      "run #11 broken bech32 address erd1sdslv...29trp...76xc (HTTP 400, excluded)"
+    ],
+    "api_quirks": [
+      "/tokens/{id} HTTP 429 rate-limit kicks in faster than the 0.5s methodology rule. Initial run-12 collection with 0.55s delays returned ALL 4 LSD/USH tokens (SEGLD, SWTAO, USH, XEGLD) as price=null marketCap=null. Re-fetch with 1.0s delays returned proper data. Diagnosis: run #11 SWTAO 'null price feed' was the same rate-limit miss, not a data-feed outage. New rule: use \u22651.0s between /tokens/{id} queries. The previous 0.5s rule from run #10b is INCORRECT for this endpoint.",
+      "run #11 watch_addresses contained an invalid bech32 address (erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp29trp6qsl2gdvvz2eqra76xc) that the API rejects with HTTP 400. The canonical Binance.com hot is erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets (verified via /accounts?search=). Both share the first ~36 chars but the bad one has incorrect checksum. This caused Binance.com entity to undercount by ~222K in run #11.",
+      "Capitulation bounce predicted at $2.95 floor materialized as +1.4% to $2.99. BTC/ETH both up confirms broad-crypto recovery (not MultiversX-specific).",
+      "DEX volume -55% during the price bounce - traders disengaged. This pattern (price up, DEX volume down) is the inverse of a normal recovery and is a new 'exit liquidity' signature to track."
+    ],
+    "data_gaps": [
+      "LSD/USH price-feed outage means USD-denominated TVLs depend on fallback. Watch for resolution.",
+      "Provider previous list keyed by name only; anonymous providers still not WoW-matchable.",
+      "Newly-issued token scan returned empty - cannot distinguish empty week from method failure without external corroboration."
+    ],
+    "key_findings": [
+      "EGLD +1.36% to $2.99 - FIRST UP-WEEK after 5 down-weeks. Run #11's capitulation bounce predicted.",
+      "Delegator base CRATERED -4,003 (-2.24%) - largest single-week drop in tracking by 9x.",
+      "Binance Staking custody STALLED 2nd consecutive week at 3.51M (5-week-old parked position).",
+      "Yield-chase cohort FULLY UNWOUND: ninjastaking reversed -10.5K, cohort net -17K.",
+      "Coinbase 2-week inflow CONFIRMED per run #11 rule: off-exchange thesis dead.",
+      "DEX volume -55% during the bounce - largest WoW drop in tracking; traders disengaged.",
+      "Exit liquidity bounce signature: price up while delegator/DEX-volume/yield-chase all collapse.",
+      "Data-quality fix: run #11 SWTAO 'outage' was a rate-limit miss; new rule \u22651.0s spacing for /tokens/{id}. Hatom LSD undercount of $1.18M corrected this run."
+    ],
+    "action_items_from_previous": 9,
+    "action_items_completed": 7,
+    "methodology_changes": [
+      "FIXED: /tokens/{id} rate-limit threshold. The 0.5s spacing from run #10b methodology is too aggressive \u2014 HTTP 429 triggers and the response silently has price=null marketCap=null fields (no error returned, just null values). Use \u22651.0s spacing. This single fix resolves the run #11 SWTAO miss and would have prevented the Hatom LSD undercounting.",
+      "NEW PATTERN: 'exit liquidity bounce' as a bearish read on price recoveries. Diagnostic: price recovers WHILE delegator base contracts AND DEX volume drops AND on-exchange capital builds. This run shows all three. The bounce is sell-side execution rather than fresh demand. Should be added as a forward-indicator question (does engagement recover next week?).",
+      "BILATERAL INVERSE RULE EVALUATION GUARDRAIL: rule only applies for meaningful price moves (|\u0394|\u22655% based on the 5 historical observations). Small moves (<3%) cannot test the rule \u2014 EGLD-denominated TVL noise dominates the signal. This run's +1.4% / +0.9% does NOT count as observation #6.",
+      "CRITICAL FIX: validate bech32 checksum when storing addresses to known-addresses.json and watch_addresses. Run #11 stored an invalid-checksum address that produced silent HTTP 400 errors, undercounting Binance.com entity by 222K. Pre-store validation recommended."
+    ],
+    "new_addresses_discovered": 1,
+    "most_valuable_insight": "The 'exit liquidity bounce' signature - EGLD +1.4% recovery happening on COLLAPSING engagement: (1) delegator base -4,003 (largest drop in tracking by 9x), (2) yield-chase cohort fully reversed -17K, (3) DEX volume -55% (largest contraction in tracking), (4) on-exchange capital build 2nd consecutive week. A genuine recovery would show participation expanding; this shows it contracting. The bounce is technical, sell-side execution, not demand-driven. Diagnostic for next week: if engagement metrics recover (DEX volume back >$80K, delegator base flat-to-positive, on-exchange capital flatlines), the bounce is real. If engagement keeps contracting while price holds, the regime is decisively bearish despite the price action.",
+    "top_recommendation": "Watch for engagement-collapse confirmation: if next week shows price flat-to-down WHILE delegator base, DEX volume, and LSD balances continue to contract, the regime is decisively bearish. If price holds OR moves up AND engagement recovers, the bounce is real. The diagnostic is engagement returning, not just price.",
+    "recommendations_for_next_run": [
+      "Verify capitulation bounce thesis: does $2.99 hold, extend, or fail back to $2.95 range? Engagement recovery (DEX volume back >$80K, delegator base flat-to-positive) confirms; engagement continues collapsing = exit liquidity confirmed.",
+      "Binance Staking custody 3rd-week stall watch: each additional week increases the decisiveness of the eventual move (delegate or distribute).",
+      "Delegator capitulation follow-up: is -4,003 a one-shot or the start of sustained outflow? Next week's number is the highest-information observation of the period.",
+      "OTC pipeline reload: per cycle pattern, expect loading phase to return next week. UPbit OTC Desk + OTC Distribution combined +10K+ would confirm.",
+      "Confirm LSD/USH rate-limit fix works: verify SEGLD/SWTAO/USH/XEGLD mcaps populated correctly with \u22651.0s spacing. If they go null again with that spacing, escalate to a real outage.",
+      "Coinbase 3rd-week inflow check: +43K -> +8.3K -> ? If a 3rd inflow week, the off-exchange-accumulation reversal becomes structural.",
+      "Yield-chase cohort net redemption follow-up: does ninjastaking continue bleeding? Does any provider in the cohort show positive flow?",
+      "XOXNO LSD 3rd-week contraction watch: Hatom LSD pattern downgraded (data-quality artifact), but XOXNO LSD continues mild contraction. 3rd consecutive week would formalize XOXNO-LSD-as-bearish-indicator (no longer 'synchronized').",
+      "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week."
+    ],
+    "dashboard_feature_suggestions": [
+      {
+        "title": "Engagement-collapse composite indicator",
+        "motivation": "Run #12's most valuable insight was the simultaneous collapse of FIVE engagement metrics (delegator base, yield-chase cohort, DEX volume, LSD balances, on-exchange capital) during a price bounce. A single 'engagement health' composite would surface this pattern across all weekly reports. The 'exit liquidity bounce' signature is hard to spot unless you look at all 5 metrics at once.",
+        "suggested_visualization": "5-spoke radar chart per week showing each engagement metric's z-score (or %WoW); historic radar overlays show pattern evolution. Lower-left collapse pattern = exit liquidity; balanced radar = healthy.",
+        "data_already_available": true,
+        "data_source": "already-collected staking_intelligence.churn + protocol_breakdown[].tvl_wow_change_pct + token_activity.xexchange.total_volume_24h_usd + whale_intelligence.exchange_flows.net_change_egld",
+        "priority": "high"
+      },
+      {
+        "title": "LSD circulating-supply timeline",
+        "motivation": "Token mcap is sensitive to API rate-limit hiccups (run #11 SWTAO miss caused $1.18M Hatom LSD undercount). A supply-based metric (circulating SEGLD/XEGLD in EGLD units, derived from minted-burnt) bypasses the price feed and is therefore more robust. A timeline of SEGLD and XEGLD circulating supply across weeks would directly track LSD adoption/contraction without dependency on mcap freshness.",
+        "suggested_visualization": "dual-line chart of SEGLD and XEGLD circulating supply over weekly snapshots.",
+        "data_already_available": true,
+        "data_source": "derived from tvl_tokens.{SEGLD,XEGLD}.minted - .burnt in collected.json snapshots",
+        "priority": "medium"
+      },
+      {
+        "title": "Bilateral inverse rule up-week / down-week asymmetry visualization",
+        "motivation": "This week added the FIRST up-week observation to the bilateral inverse rule (5 prior were all down-weeks). The rule's up/down asymmetry is now a tractable analytical question. A scatter plot of |price change %| vs Hatom Lending EGLD response % colored by direction (red=down-week, green=up-week) would make the asymmetry visible at a glance.",
+        "suggested_visualization": "scatter plot, x-axis = signed price change %, y-axis = Hatom Lending EGLD response %, distinct symbols for down/up weeks; trendline per category.",
+        "data_already_available": true,
+        "data_source": "defi_activity.protocol_breakdown[Hatom Lending].tvl_wow_change_pct + network_health.deltas.price_change_pct across all reports",
+        "priority": "medium"
+      }
+    ],
+    "dashboard_suggestions_followup": [
+      {
+        "from_run": 11,
+        "title": "Forward-indicator scorecard widget",
+        "status": "pending",
+        "note": "Even more valuable now: this run's 'exit liquidity bounce' detection depends on multiple converging indicators. A scorecard tracking each report's open predictions (capitulation bounce thesis just RESOLVED VALIDATED on the price-up side; engagement thesis is now the new question) would surface these resolutions automatically. Re-listed."
+      },
+      {
+        "from_run": 11,
+        "title": "OTC cycle phase indicator",
+        "status": "pending",
+        "note": "This week's pipeline is in the INTER-CYCLE GAP. The phase indicator would show LOADING(?)->DISTRIBUTING->GAP->[LOADING next?] - the gap state is itself useful information."
+      },
+      {
+        "from_run": 11,
+        "title": "Bilateral inverse rule magnitude trajectory",
+        "status": "pending",
+        "note": "Run #12 added the FIRST up-week observation, changing this from a 1D magnitude question to a 2D up/down asymmetry question. The visualization gains additional dimension."
+      },
+      {
+        "from_run": 10,
+        "title": "Multi-week Binance custody vs protocol-staked tracker chart",
+        "status": "pending",
+        "note": "Now 5 weeks of data: 3 weeks accumulation + 2 weeks stall. The chart is increasingly motivated as the stall persists."
+      },
+      {
+        "from_run": 10,
+        "title": "OTC pipeline phase visualization (load vs distribute)",
+        "status": "pending",
+        "note": "This week's INTER-CYCLE GAP state would benefit from explicit phase tracking. Add 'gap' as a fourth state."
+      },
+      {
+        "from_run": 9,
+        "title": "Multi-week net exchange-flow oscillation chart",
+        "status": "pending",
+        "note": "Trajectory: +169K / -56K / -71K / +25K / +33K = bearish-bullish-bullish-bearish-bearish. The bearish streak now 2 weeks confirms reversal of the bullish off-exchange-accumulation thesis."
+      },
+      {
+        "from_run": 9,
+        "title": "DEX pair-composition stacked-area over time",
+        "status": "pending",
+        "note": "DEX volume cratered -55% this week. The pair composition shift (WEGLD/USDC 93%->85%, ZoidPay 3%->8%) during a volume collapse would be visible."
+      },
+      {
+        "from_run": 8,
+        "title": "OTC pipeline graph view (Sankey/force-directed)",
+        "status": "pending",
+        "note": "Pipeline now in inter-cycle gap; visualization would show the rest state of the network."
+      },
+      {
+        "from_run": 8,
+        "title": "Yield-chase migration cumulative chart",
+        "status": "built-this-run-conceptually",
+        "note": "5-week cumulative chart implicitly drawn in the staking analysis: cohort accumulated ~+50K weeks 1-4, +3.5K week 5, -2.6K week 6, -17K week 7 (this run). Could now be made explicit as a visualization given the full lifecycle has been observed."
+      }
+    ]
+  }
+}
