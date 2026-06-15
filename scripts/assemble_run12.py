@@ -256,22 +256,46 @@ xexchange={"total_pairs":meco.get("marketPairs"),"total_volume_24h_usd":totvol,"
     "top_pair":pairs[0]["name"],"top_pair_volume_24h_usd":pairs[0]["volume_24h_usd"],
     "top_pair_dominance_pct":pairs[0]["share_pct"],"top_pairs_by_volume":pairs[:5]}
 
-# ---------- defi - LSD mcaps now correctly populated after fix ----------
+# ---------- defi - LSD mcaps with supply-fallback (defense-in-depth) ----------
 tt=D["tvl_tokens"]
 def mc(tid):
     t=tt.get(tid); return (t.get("marketCap") or 0) if isinstance(t,dict) else 0
+def supply_circ(tid, decimals=18):
+    """Circulating supply (minted - burnt) / 10^decimals. Returns 0 if data missing."""
+    t = tt.get(tid)
+    if not isinstance(t, dict): return 0
+    try:
+        m = int(t.get("minted", "0") or "0")
+        b = int(t.get("burnt", "0") or "0")
+        return (m - b) / (10**decimals)
+    except Exception:
+        return 0
+def mc_or_fallback(tid, peg_kind):
+    """Returns marketCap if API populated, else supply-based fallback.
+    peg_kind: 'egld' (multiply by EGLD price), 'usd' (1:1), 'none' (no fallback, return 0)."""
+    v = mc(tid)
+    if v > 0:
+        return v
+    circ = supply_circ(tid)
+    if peg_kind == "egld":
+        return circ * price
+    elif peg_kind == "usd":
+        return circ
+    return 0
 
-# Hatom Lending - 10 H-tokens
+# Hatom Lending - 10 H-tokens (all have working mcaps when API healthy)
 hatom_lending=sum(mc(x) for x in ["HUSDC-d80042","HEGLD-d61095","HUSDT-6f0914","HWBTC-49ca31","HWETH-b3d17e","HBUSD-ac1fca","HHTM-e03ba5","HMEX-df6df7","HUTK-4fa4b2","HWTAO-2e9136"])
-# Hatom LSD = SEGLD + SWTAO (note: prev.json run #11 UNDERCOUNTED by missing SWTAO due to rate-limit)
-segld_mcap = mc("SEGLD-3ad2d0")
-swtao_mcap = mc("SWTAO-356a25")
+# LSDs: SEGLD/XEGLD peg to EGLD, USH pegs to USD. SWTAO pegs to TAO (no fallback).
+# Run #11 SWTAO null caused $1.18M Hatom LSD undercount — defense-in-depth keeps the fallback even
+# after the rate-limit root cause is fixed, so future hiccups degrade gracefully.
+segld_mcap = mc_or_fallback("SEGLD-3ad2d0", "egld")
+swtao_mcap = mc("SWTAO-356a25")  # no fallback (TAO peg)
 hatom_lsd = segld_mcap + swtao_mcap
 # Apples-to-apples WoW: previous "Hatom LSD" was $2.51M, but that was SEGLD-only.
 # Add back the SWTAO mcap from this run ($1.19M) as a proxy for what last week actually was.
 hatom_lsd_prev_corrected = prev["defi_tvl"]["Hatom Liquid Staking"] + swtao_mcap
-hatom_ush = mc("USH-111e09")
-xoxno_lsd = mc("XEGLD-e413ed")
+hatom_ush = mc_or_fallback("USH-111e09", "usd")  # stablecoin → 1:1 USD fallback
+xoxno_lsd = mc_or_fallback("XEGLD-e413ed", "egld")  # EGLD peg → supply × price fallback
 
 wegld_egld=sum(int(b["balance"])/1e18 for b in D["wegld"].values() if isinstance(b,dict) and "balance" in b)
 xexch_tvl_egld=wegld_egld; xexch_tvl_usd=wegld_egld*price

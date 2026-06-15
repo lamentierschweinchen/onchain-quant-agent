@@ -1787,7 +1787,8 @@
           "/tokens/{id} HTTP 429 rate-limit kicks in faster than the 0.5s methodology rule. Initial run-12 collection with 0.55s delays returned ALL 4 LSD/USH tokens (SEGLD, SWTAO, USH, XEGLD) as price=null marketCap=null. Re-fetch with 1.0s delays returned proper data. Diagnosis: run #11 SWTAO 'null price feed' was the same rate-limit miss, not a data-feed outage. New rule: use \u22651.0s between /tokens/{id} queries. The previous 0.5s rule from run #10b is INCORRECT for this endpoint.",
           "run #11 watch_addresses contained an invalid bech32 address (erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp29trp6qsl2gdvvz2eqra76xc) that the API rejects with HTTP 400. The canonical Binance.com hot is erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets (verified via /accounts?search=). Both share the first ~36 chars but the bad one has incorrect checksum. This caused Binance.com entity to undercount by ~222K in run #11.",
           "Capitulation bounce predicted at $2.95 floor materialized as +1.4% to $2.99. BTC/ETH both up confirms broad-crypto recovery (not MultiversX-specific).",
-          "DEX volume -55% during the price bounce - traders disengaged. This pattern (price up, DEX volume down) is the inverse of a normal recovery and is a new 'exit liquidity' signature to track."
+          "DEX volume -55% during the price bounce - traders disengaged. This pattern (price up, DEX volume down) is the inverse of a normal recovery and is a new 'exit liquidity' signature to track.",
+          "Newly-issued token adoption signal: classifying at issuance is unreliable. Run #11 FRA/GSN/GTA all labeled spam (1-2 holders); 7d later GTA grew to 174 holders. Establish a 7d follow-up check as standard."
         ],
         "data_gaps": [
           "LSD/USH price-feed outage means USD-denominated TVLs depend on fallback. Watch for resolution.",
@@ -1820,12 +1821,18 @@
         "FIXED: /tokens/{id} rate-limit threshold. The 0.5s spacing from run #10b methodology is too aggressive \u2014 HTTP 429 triggers and the response silently has price=null marketCap=null fields (no error returned, just null values). Use \u22651.0s spacing. This single fix resolves the run #11 SWTAO miss and would have prevented the Hatom LSD undercounting.",
         "NEW PATTERN: 'exit liquidity bounce' as a bearish read on price recoveries. Diagnostic: price recovers WHILE delegator base contracts AND DEX volume drops AND on-exchange capital builds. This run shows all three. The bounce is sell-side execution rather than fresh demand. Should be added as a forward-indicator question (does engagement recover next week?).",
         "BILATERAL INVERSE RULE EVALUATION GUARDRAIL: rule only applies for meaningful price moves (|\u0394|\u22655% based on the 5 historical observations). Small moves (<3%) cannot test the rule \u2014 EGLD-denominated TVL noise dominates the signal. This run's +1.4% / +0.9% does NOT count as observation #6.",
-        "CRITICAL FIX: validate bech32 checksum when storing addresses to known-addresses.json and watch_addresses. Run #11 stored an invalid-checksum address that produced silent HTTP 400 errors, undercounting Binance.com entity by 222K. Pre-store validation recommended."
+        "CRITICAL FIX: validate bech32 checksum when storing addresses to known-addresses.json and watch_addresses. Run #11 stored an invalid-checksum address that produced silent HTTP 400 errors, undercounting Binance.com entity by 222K. Pre-store validation recommended.",
+        "REINSTATED: LSD/USH supply-fallback in assembler (defense-in-depth). Even after the rate-limit root cause is fixed (>=1.0s spacing rule), keep the supply-based fallback so future API hiccups degrade gracefully. SEGLD/XEGLD use (minted-burnt)/1e18 * EGLD price; USH uses (minted-burnt)/1e18 (1:1 USD); SWTAO has no fallback (TAO peg).",
+        "NEW PATTERN: spam-token classification needs a 7d follow-up window before final judgement. Run #11 flagged FRA/GSN/GTA as spam at issuance; 7d later GTA had grown 1->174 holders. Initial holder count (<5) is necessary but not sufficient for the spam label. Future newly_issued schema should include followup_window_days and adoption_status fields."
       ],
       "new_addresses_discovered": [
         {
           "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
           "label": "Binance.com hot wallet (canonical address; replaces run #11's invalid-checksum form)"
+        },
+        {
+          "address": "erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp",
+          "label": "Binance->OTC source funder (canonicalized run #12; moved from unknown_whales to exchange_routers)"
         }
       ],
       "action_items_completed": [
@@ -1836,8 +1843,8 @@
         "DONE: LSD contraction follow-up - run #11 pattern downgraded (data artifact); only XOXNO LSD contracting confirmed.",
         "DONE: Hatom Lending magnitude check - not evaluable (price move +1.4% below 5% threshold for meaningful rule observation).",
         "DONE: Mega Whale erd18mv2z6r2 watch - balance UNCHANGED at 998,971. No downstream forwarding.",
-        "NOT APPLICABLE: Newly-issued FRA/GSN/GTA adoption check - 0 issuances this run (system SC scan returned empty).",
-        "NOT DONE: OTC funder re-trace and known-addresses canonicalization (4th run carrying)."
+        "DONE: Run #11 spam-token adoption check (FRA/GSN/GTA) - GTA grew 1->174 holders (real adoption emerging), GSN modest 1->10, FRA dead. Method: classification at issuance is unreliable; need 7d follow-up.",
+        "DONE: OTC funder canonicalization (5-run carry) - moved erd12tq6ax5k...07ny36 from unknown_whales to exchange_routers in known-addresses.json. Category corrected to exchange_router."
       ],
       "running_baselines": {
         "egld_price_usd": [
@@ -2003,7 +2010,7 @@
       ],
       "self_assessment": {
         "most_valuable_insight": "The 'exit liquidity bounce' signature - EGLD +1.4% recovery happening on COLLAPSING engagement: (1) delegator base -4,003 (largest drop in tracking by 9x), (2) yield-chase cohort fully reversed -17K, (3) DEX volume -55% (largest contraction in tracking), (4) on-exchange capital build 2nd consecutive week. A genuine recovery would show participation expanding; this shows it contracting. The bounce is technical, sell-side execution, not demand-driven. Diagnostic for next week: if engagement metrics recover (DEX volume back >$80K, delegator base flat-to-positive, on-exchange capital flatlines), the bounce is real. If engagement keeps contracting while price holds, the regime is decisively bearish despite the price action.",
-        "actions_completed_count": 7,
+        "actions_completed_count": 9,
         "actions_attempted_count": 9,
         "what_would_2x_next_week": "Build the engagement-composite indicator widget. The 'exit liquidity bounce' diagnostic relies on 4-5 metrics moving simultaneously - it's hard to spot at a glance without visualizing them together. A single composite score (or radar chart) would automatically surface this pattern in future bounces. Second-best: validate the LSD circulating-supply timeline visualization, which would be robust to the rate-limit data artifacts that bit us this run."
       },
@@ -2016,7 +2023,8 @@
         "Coinbase 3rd-week inflow check: +43K -> +8.3K -> ? If a 3rd inflow week, the off-exchange-accumulation reversal becomes structural.",
         "Yield-chase cohort net redemption follow-up: does ninjastaking continue bleeding? Does any provider in the cohort show positive flow?",
         "XOXNO LSD 3rd-week contraction watch: Hatom LSD pattern downgraded (data-quality artifact), but XOXNO LSD continues mild contraction. 3rd consecutive week would formalize XOXNO-LSD-as-bearish-indicator (no longer 'synchronized').",
-        "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week."
+        "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week.",
+        "GTA-2329a1 mcap threshold check: now 174 holders and $266 mcap. Watch if it crosses $10K mcap to formally graduate from 'spam' to 'real token'. Also confirm price persistence (current $0.0027). GSN-514265 mcap threshold (currently null) and FRA-3d0fb7 (dead) also monitor for change."
       ]
     }
   ]

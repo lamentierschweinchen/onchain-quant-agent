@@ -1689,7 +1689,45 @@
         }
       ]
     },
-    "analysis": "DEX volume CRATERED -55.2% to $55K (vs $122K last week) \u2014 the largest WoW DEX volume contraction in tracking history. WEGLD/USDC dominance fell 93.2% \u2192 85.1%; ZoidPay/WEGLD share rose 3.0% \u2192 8.1%. The drop is concentrated in the dominant pair (WEGLD/USDC), suggesting CEX-derived traders disengaged during the price bounce. Confirms the 'exit liquidity' read on the EGLD recovery.\n\nNEWLY-ISSUED TOKENS: scan returned 0 issuances this week (ESDT system SC issue function had no recent calls). Method validated last run; the empty result this run is signal of low activity rather than method failure.\n\nToken holder counts declined for a 12th consecutive week (-21 to -139 across top 10) \u2014 established airdrop-decay baseline. WrappedEGLD and WrappedUSDC remain the most-used real tokens.\n\nMEX price DECOUPLED from EGLD this run: EGLD +1.4% but MEX -0.83%. Typically MEX amplifies EGLD moves; the independent direction is unusual. MEX market cap $1.11M (-1.3%). With DEX volume -55%, MEX's underlying trading apparatus is contracting.\n\nTop by market cap: USDC $8.39M (Wrapped USDC), ZoidPay $5.36M (+13% from $4.73M), UTK $4.79M (+14% from $4.19M), HUSDC $1.35M (vs $1.31M), WrappedEGLD $1.78M (flat).\n\nWEGLD supply held essentially flat WoW (raw change <0.5%) \u2014 continues the post-run-#10 stabilization, no second wrap event."
+    "analysis": "DEX volume CRATERED -55.2% to $55K (vs $122K last week) \u2014 the largest WoW DEX volume contraction in tracking history. WEGLD/USDC dominance fell 93.2% \u2192 85.1%; ZoidPay/WEGLD share rose 3.0% \u2192 8.1%. The drop is concentrated in the dominant pair (WEGLD/USDC), suggesting CEX-derived traders disengaged during the price bounce. Confirms the 'exit liquidity' read on the EGLD recovery.\n\nNEWLY-ISSUED TOKENS: scan returned 0 issuances this week (ESDT system SC issue function had no recent calls). Method validated last run; the empty result this run is signal of low activity rather than method failure.\n\nToken holder counts declined for a 12th consecutive week (-21 to -139 across top 10) \u2014 established airdrop-decay baseline. WrappedEGLD and WrappedUSDC remain the most-used real tokens.\n\nMEX price DECOUPLED from EGLD this run: EGLD +1.4% but MEX -0.83%. Typically MEX amplifies EGLD moves; the independent direction is unusual. MEX market cap $1.11M (-1.3%). With DEX volume -55%, MEX's underlying trading apparatus is contracting.\n\nTop by market cap: USDC $8.39M (Wrapped USDC), ZoidPay $5.36M (+13% from $4.73M), UTK $4.79M (+14% from $4.19M), HUSDC $1.35M (vs $1.31M), WrappedEGLD $1.78M (flat).\n\nWEGLD supply held essentially flat WoW (raw change <0.5%) \u2014 continues the post-run-#10 stabilization, no second wrap event.",
+    "newly_issued_followup": [
+      {
+        "identifier": "FRA-3d0fb7",
+        "name": "FRANZELA",
+        "ticker": "FRA",
+        "holders": 2,
+        "transactions": 2,
+        "timestamp": 1780360266,
+        "deployer": "",
+        "deployer_label": "Unknown",
+        "issued_at": "2026-06-XX (week of 2026-06-08)",
+        "note": "Follow-up from run #11 issuances"
+      },
+      {
+        "identifier": "GSN-514265",
+        "name": "GreenSmokeNetwork",
+        "ticker": "GSN",
+        "holders": 10,
+        "transactions": 46,
+        "timestamp": 1780347666,
+        "deployer": "",
+        "deployer_label": "Unknown",
+        "issued_at": "2026-06-XX (week of 2026-06-08)",
+        "note": "Follow-up from run #11 issuances"
+      },
+      {
+        "identifier": "GTA-2329a1",
+        "name": "GrandTheftAurum",
+        "ticker": "GTA",
+        "holders": 174,
+        "transactions": 33,
+        "timestamp": 1780299402,
+        "deployer": "",
+        "deployer_label": "Unknown",
+        "issued_at": "2026-06-XX (week of 2026-06-08)",
+        "note": "Follow-up from run #11 issuances"
+      }
+    ]
   },
   "defi_activity": {
     "protocols": [
@@ -2082,6 +2120,11 @@
       "item": "erd1sdslv address with bad bech32 checksum \u2014 run #11 stored an invalid address",
       "reason": "The canonical Binance.com hot wallet (erd1sdslv...3rgul...sets) returns 222K but previous.json watch_addresses had erd1sdslv...29trp...76xc (invalid checksum, API returns HTTP 400). This caused run #11's Binance.com entity to undercount by ~222K (only 2 of 3 wallets counted). Address now removed from watch_addresses.",
       "weeks_on_list": 1
+    },
+    {
+      "item": "Newly-issued token follow-up: GTA-2329a1 grew 1->174 holders (real adoption); GSN-514265 modest 1->10 holders; FRA dead",
+      "reason": "Last run's blanket 'spam' classification proved unreliable for GTA-2329a1 (GrandTheftAurum) which gained 173 holders in 7 days and now has a price set ($0.0027). GSN showed modest activity (46 txs). FRA stayed dead. Lesson: classify newly-issued tokens at issuance is too early; needs a 7d adoption check. Watch GTA next week for >$10K mcap threshold to graduate from spam to real.",
+      "weeks_on_list": 1
     }
   ],
   "meta_learning": {
@@ -2111,7 +2154,8 @@
       "/tokens/{id} HTTP 429 rate-limit kicks in faster than the 0.5s methodology rule. Initial run-12 collection with 0.55s delays returned ALL 4 LSD/USH tokens (SEGLD, SWTAO, USH, XEGLD) as price=null marketCap=null. Re-fetch with 1.0s delays returned proper data. Diagnosis: run #11 SWTAO 'null price feed' was the same rate-limit miss, not a data-feed outage. New rule: use \u22651.0s between /tokens/{id} queries. The previous 0.5s rule from run #10b is INCORRECT for this endpoint.",
       "run #11 watch_addresses contained an invalid bech32 address (erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp29trp6qsl2gdvvz2eqra76xc) that the API rejects with HTTP 400. The canonical Binance.com hot is erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets (verified via /accounts?search=). Both share the first ~36 chars but the bad one has incorrect checksum. This caused Binance.com entity to undercount by ~222K in run #11.",
       "Capitulation bounce predicted at $2.95 floor materialized as +1.4% to $2.99. BTC/ETH both up confirms broad-crypto recovery (not MultiversX-specific).",
-      "DEX volume -55% during the price bounce - traders disengaged. This pattern (price up, DEX volume down) is the inverse of a normal recovery and is a new 'exit liquidity' signature to track."
+      "DEX volume -55% during the price bounce - traders disengaged. This pattern (price up, DEX volume down) is the inverse of a normal recovery and is a new 'exit liquidity' signature to track.",
+      "Newly-issued token adoption signal: classifying at issuance is unreliable. Run #11 flagged FRA/GSN/GTA all as spam (1-2 holders, 0-2 txs at issuance time). 7-day follow-up: GTA-2329a1 grew to 174 holders (-> real); GSN to 10 (modest); FRA stayed at 2 (dead). New rule: don't graduate from 'spam' until 7d follow-up of holder/tx growth. Recommend permanent followup_window field in newly_issued schema."
     ],
     "data_gaps": [
       "LSD/USH price-feed outage means USD-denominated TVLs depend on fallback. Watch for resolution.",
@@ -2129,12 +2173,13 @@
       "Data-quality fix: run #11 SWTAO 'outage' was a rate-limit miss; new rule \u22651.0s spacing for /tokens/{id}. Hatom LSD undercount of $1.18M corrected this run."
     ],
     "action_items_from_previous": 9,
-    "action_items_completed": 7,
+    "action_items_completed": 8,
     "methodology_changes": [
       "FIXED: /tokens/{id} rate-limit threshold. The 0.5s spacing from run #10b methodology is too aggressive \u2014 HTTP 429 triggers and the response silently has price=null marketCap=null fields (no error returned, just null values). Use \u22651.0s spacing. This single fix resolves the run #11 SWTAO miss and would have prevented the Hatom LSD undercounting.",
       "NEW PATTERN: 'exit liquidity bounce' as a bearish read on price recoveries. Diagnostic: price recovers WHILE delegator base contracts AND DEX volume drops AND on-exchange capital builds. This run shows all three. The bounce is sell-side execution rather than fresh demand. Should be added as a forward-indicator question (does engagement recover next week?).",
       "BILATERAL INVERSE RULE EVALUATION GUARDRAIL: rule only applies for meaningful price moves (|\u0394|\u22655% based on the 5 historical observations). Small moves (<3%) cannot test the rule \u2014 EGLD-denominated TVL noise dominates the signal. This run's +1.4% / +0.9% does NOT count as observation #6.",
-      "CRITICAL FIX: validate bech32 checksum when storing addresses to known-addresses.json and watch_addresses. Run #11 stored an invalid-checksum address that produced silent HTTP 400 errors, undercounting Binance.com entity by 222K. Pre-store validation recommended."
+      "CRITICAL FIX: validate bech32 checksum when storing addresses to known-addresses.json and watch_addresses. Run #11 stored an invalid-checksum address that produced silent HTTP 400 errors, undercounting Binance.com entity by 222K. Pre-store validation recommended.",
+      "FIXED (5-run carry): OTC funder erd12tq6ax5k...07ny36 (canonical) promoted from unknown_whales to exchange_routers section in known-addresses.json. Category changed from 'whale' to 'exchange_router' to match the section convention. The OTC pipeline taxonomy is now properly cataloged: Binance.com -> exchange_routers[funder] -> exchange_routers[OTC Source Pass-through] -> OTC desks -> retail."
     ],
     "new_addresses_discovered": 1,
     "most_valuable_insight": "The 'exit liquidity bounce' signature - EGLD +1.4% recovery happening on COLLAPSING engagement: (1) delegator base -4,003 (largest drop in tracking by 9x), (2) yield-chase cohort fully reversed -17K, (3) DEX volume -55% (largest contraction in tracking), (4) on-exchange capital build 2nd consecutive week. A genuine recovery would show participation expanding; this shows it contracting. The bounce is technical, sell-side execution, not demand-driven. Diagnostic for next week: if engagement metrics recover (DEX volume back >$80K, delegator base flat-to-positive, on-exchange capital flatlines), the bounce is real. If engagement keeps contracting while price holds, the regime is decisively bearish despite the price action.",
@@ -2148,7 +2193,8 @@
       "Coinbase 3rd-week inflow check: +43K -> +8.3K -> ? If a 3rd inflow week, the off-exchange-accumulation reversal becomes structural.",
       "Yield-chase cohort net redemption follow-up: does ninjastaking continue bleeding? Does any provider in the cohort show positive flow?",
       "XOXNO LSD 3rd-week contraction watch: Hatom LSD pattern downgraded (data-quality artifact), but XOXNO LSD continues mild contraction. 3rd consecutive week would formalize XOXNO-LSD-as-bearish-indicator (no longer 'synchronized').",
-      "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week."
+      "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week.",
+      "GTA-2329a1 mcap threshold check: now 174 holders and $266 mcap. Watch if it crosses $10K mcap to formally graduate from 'spam' to 'real token'. Also confirm price persistence (current $0.0027)."
     ],
     "dashboard_feature_suggestions": [
       {
