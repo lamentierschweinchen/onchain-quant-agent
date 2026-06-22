@@ -2026,6 +2026,265 @@
         "Mega Whale erd18mv2z6r2 - any downstream forwarding from the 998K position? Approaching the 1M threshold for the 2nd week.",
         "GTA-2329a1 mcap threshold check: now 174 holders and $266 mcap. Watch if it crosses $10K mcap to formally graduate from 'spam' to 'real token'. Also confirm price persistence (current $0.0027). GSN-514265 mcap threshold (currently null) and FRA-3d0fb7 (dead) also monitor for change."
       ]
+    },
+    {
+      "date": "2026-06-22",
+      "run_number": 13,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x36",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "dataApi-sourced token prices (priceSource.type=='dataApi': SEGLD/SWTAO/USH/XEGLD) returned price=null marketCap=null on the sequential collection pass EVEN at 1.05s spacing, while H-tokens (different price source) populated fine. An isolated re-fetch at 2.5s spacing recovered all four. Run #12's '1.0s spacing fixes it' rule is INCOMPLETE for dataApi tokens - they need a populated-or-retry guard. Robust fix: prefer supply-based (minted-burnt) metrics for LSD/stablecoin TVL since supply fields never null.",
+          "Capitulation bounce failed within one week: +1.36% (run #12) then -4.68% (this run) to a new low $2.85 below the $2.95 floor. The 'exit liquidity bounce' signature (price up on collapsing engagement) correctly predicted the failure.",
+          "Delegator base z-score is in the run #9 degenerate regime: after last week's -4,003 level shift, the baseline mean keeps producing a large negative z (-2.68\u03c3) for a tiny -78 WoW move. Always cross-check the absolute % move (-0.04% = noise) before assigning severity."
+        ],
+        "data_gaps": [
+          "dataApi token price feed intermittently null under sequential load; mitigated by isolated re-fetch and supply-based fallback.",
+          "Newly-issued token scan returned empty for a 2nd week - cannot distinguish a genuinely quiet launch week from method failure without external corroboration.",
+          "Provider previous list keyed by name only; anonymous providers still not WoW-matchable."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Exit-liquidity-bounce thesis from run #12 cleanly validated: predicted the bounce would fail; price broke to a new low within one week.",
+          "Coinbase 2-week confirmation rule extended to 3 weeks - off-exchange-accumulation reversal confirmed structural.",
+          "OTC load->distribute cycle prediction worked: the inter-cycle gap resolved to a reload exactly as forecast.",
+          "Supply-based LSD reporting dissolved the phantom 'synchronized LSD contraction' narrative built on price-contaminated mcap data across runs #11-12.",
+          "Degenerate-z-score guard correctly prevented over-flagging the -78 delegator move as a -2.68\u03c3 anomaly."
+        ],
+        "what_needs_improvement": [
+          "Collector needs a dataApi populated-or-retry guard: 4 LSD/stablecoin tokens went null at 1.0s spacing and only recovered on an isolated 2.5s re-fetch.",
+          "Newly-issued token scan empty 2nd week - still no way to distinguish a quiet week from method failure.",
+          "EMRS-6e4067 surfaced at $28M headline mcap with no holder/volume traction - need a low-float flag to avoid mis-ranking thin listings."
+        ],
+        "surprising_findings": [
+          "The delegator capitulation was a single shake-out: -4,003 last week, -78 this week. The base stabilized rather than entering an accelerating exit.",
+          "On a supply basis the LSDs GREW or held flat (XEGLD +0.6%, SEGLD -0.5%) despite USD mcaps falling - the multi-run 'contraction' story was a price artifact.",
+          "USH de-leveraging (2-week burn) ended; supply flat. CDP closure pressure paused.",
+          "Reward compound rate fell for a 3rd straight week (61.9% -> 59.14% -> 55.31%), a slow bearish drift in delegator conviction.",
+          "Bridged stablecoins contracted (USDC -0.5%, USDT -1.8%) - dollar liquidity bridging out during the decline."
+        ]
+      },
+      "methodology_changes": [
+        "REPORT LSDs IN SUPPLY TERMS (minted-burnt), not mcap, as the primary signal. Mcap-based LSD reads are dominated by EGLD/TAO price and produce spurious 'contraction' signals. Supply is price-independent and the field never returns null. This run: SEGLD -0.5%, XEGLD +0.6%, both flat-to-up despite USD mcaps falling. The run #11/#12 'synchronized LSD contraction' narrative was largely a price artifact.",
+        "dataApi TOKEN RE-FETCH GUARD: priceSource=dataApi tokens (SEGLD/SWTAO/USH/XEGLD) can return null even at 1.0s spacing. Collector should detect null price after the main pass and re-fetch those specific tokens individually at >=2.5s spacing. Do NOT treat a single null pass as an outage - it recovers on isolated retry.",
+        "DEGENERATE-Z-SCORE GUARD for total_delegators reaffirmed: after a one-time level shift (last week's -4,003), the baseline mean lags and produces a large |z| for a noise-level WoW move. Cross-check absolute % change and downgrade severity when |%|<0.1%.",
+        "EXIT-LIQUIDITY-BOUNCE thesis validated as a forward indicator: a price up-week on collapsing engagement (run #12) correctly predicted a one-week failure to new lows. Promote to a reusable bearish pattern: relief rallies on contracting engagement are distribution, not reversal."
+      ],
+      "new_addresses_discovered": [],
+      "action_items_completed": [
+        "DONE: Capitulation bounce thesis - FAILED. Bounce lasted one week; price broke to a new low $2.85. Exit-liquidity read validated.",
+        "DONE: Binance Staking custody 3rd-week stall - CONFIRMED unchanged at 3.51M (6 weeks parked).",
+        "DONE: Delegator capitulation follow-up - ONE-SHOT. -78 this week (vs -4,003); base stabilized at 174,406.",
+        "DONE: OTC pipeline reload - CONFIRMED. +7K desk balance, 85K throughput; Binance->OTC Router 2 feeding 4,800 chunks.",
+        "DONE: LSD/USH rate-limit fix verification - FAILED at 1.0s (went null again); escalated to isolated 2.5s re-fetch + supply-based reporting.",
+        "DONE: Coinbase 3rd-week inflow check - CONFIRMED. 3 consecutive inflow weeks; reversal now structural.",
+        "DONE: Yield-chase cohort follow-up - MIXED net redemption (~-22K); valuestaking/star/egldstaking bleed, pi-staking +21.9K isolated entry.",
+        "DONE: XOXNO LSD 3rd-week contraction watch - NOT CONFIRMED. XEGLD supply grew +0.6%; LSD-contraction thesis dead.",
+        "DONE: Mega Whale erd18mv2z6r2 - dormant 3rd week at 998,971, no downstream forwarding.",
+        "DEFERRED: GTA/GSN/FRA newly-issued mcap-threshold check - newly-issued scan returned 0 this week; not re-queried individually."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          4.07,
+          4.67,
+          3.88,
+          3.97,
+          3.5,
+          2.95,
+          2.99,
+          2.85
+        ],
+        "dex_volume_24h_usd": [
+          74843,
+          328098,
+          74915,
+          81933.26158545031,
+          108539.14766141125,
+          121891.8071868304,
+          54634.45212423313,
+          63019.3189739559
+        ],
+        "staked_egld": [
+          14779606,
+          14454668,
+          14465903,
+          14467981,
+          14497721,
+          14471101,
+          14432677,
+          14423511
+        ],
+        "mex_price_usd": [
+          3.7888e-07,
+          4.1144487024798363e-07,
+          3.7090115412287983e-07,
+          3.7792186273497485e-07,
+          3.298877014744513e-07,
+          2.761419779228928e-07,
+          2.738418102638608e-07,
+          2.683608336861572e-07
+        ],
+        "total_delegators": [
+          179060,
+          179050,
+          179011,
+          178958,
+          178934,
+          178487,
+          174484,
+          174406
+        ],
+        "staked_ratio": [
+          0.495,
+          0.48333121059510425,
+          0.482931675993471,
+          0.48222713367788334,
+          0.4824442711735065,
+          0.48078822404993493,
+          0.4787456139710736,
+          0.47767456403018393
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444,
+          -70845.74226705544,
+          24901.97406237945,
+          41987.5425480064,
+          12194.290004270151
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933,
+          39575,
+          -26410,
+          -881,
+          7028
+        ],
+        "binance_staking_custody_egld": [
+          3110663,
+          3377559,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726
+        ],
+        "reward_compound_pct": [
+          61.9,
+          59.14,
+          55.31
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "LSD circulating-supply timeline (supply, not mcap)",
+          "motivation": "This run's most important methodological finding: mcap-based LSD reads are price-contaminated and produced a phantom 'synchronized LSD contraction' across runs #11-12. On a supply basis (SEGLD -0.5%, XEGLD +0.6%) the LSDs are flat-to-growing. A supply-based timeline would have prevented three runs of mis-narration and is robust to the dataApi null-price issue that bit this run.",
+          "suggested_visualization": "dual-line chart of SEGLD and XEGLD circulating supply (minted-burnt, in token units) across weekly snapshots, with EGLD price on a secondary axis to visually separate supply moves from price moves.",
+          "data_already_available": true,
+          "data_source": "derived from data/collected/{date}.json tvl_tokens.{SEGLD,XEGLD}.supply across snapshots",
+          "priority": "high"
+        },
+        {
+          "title": "OTC pipeline load/distribute cycle phase indicator",
+          "motivation": "The OTC pipeline has now completed multiple observable load->distribute->gap->reload cycles (run #10 load, #11 distribute, #12 gap, #13 reload). This run's reload (+7K desk balance, 85K throughput) predicts a distribution wave in 1-3 weeks. A phase indicator would make the cycle position - and the forward prediction - explicit each week.",
+          "suggested_visualization": "horizontal phase timeline (LOADING / DISTRIBUTING / GAP) across weekly snapshots, with desk balance delta and 7d throughput as the underlying series; current-phase badge.",
+          "data_already_available": true,
+          "data_source": "OTC desk balances + outbound throughput already collected per run; would need a small per-run phase label stored in previous.json",
+          "priority": "medium"
+        },
+        {
+          "title": "Forward-indicator scorecard (prediction resolution tracker)",
+          "motivation": "This run RESOLVED run #12's headline prediction (capitulation bounce -> exit liquidity, now validated by the failure to new lows) and run #11's Coinbase 2-week rule (now 3 weeks, structural). A scorecard that tracks each report's open predictions and auto-marks them validated/invalidated/pending would make the analytical track record legible and surface which theses are paying off.",
+          "suggested_visualization": "table/kanban of open predictions with status chips (pending / validated / invalidated) and the run that opened and resolved each.",
+          "data_already_available": true,
+          "data_source": "recommendations_for_next_run + action_items_completed across learnings.json runs",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 12,
+          "title": "Engagement-collapse composite indicator",
+          "status": "pending",
+          "note": "Still valuable: this run shows a mixed engagement picture (DEX volume recovered +15%, delegators stabilized, exchange inflows continued) - a composite would quantify whether engagement is net-recovering or still contracting, which is exactly the open question for whether $2.85 holds."
+        },
+        {
+          "from_run": 12,
+          "title": "LSD circulating-supply timeline",
+          "status": "re-prioritized-high",
+          "note": "PROMOTED to high priority and re-listed: this run's central methodological lesson is that supply-based LSD reporting dissolves the phantom contraction narrative. This is now the single most useful unbuilt widget."
+        },
+        {
+          "from_run": 12,
+          "title": "Bilateral inverse rule up/down asymmetry scatter",
+          "status": "pending",
+          "note": "Not testable this run (price -4.68% just below the 5% guardrail). Still pending a qualifying observation; the scatter remains a good idea once enough qualifying weeks accrue."
+        },
+        {
+          "from_run": 11,
+          "title": "Forward-indicator scorecard widget",
+          "status": "re-listed",
+          "note": "Re-listed (see this run's suggestions). The capitulation-bounce prediction just resolved VALIDATED and Coinbase 2-week->3-week resolved STRUCTURAL - the scorecard would have auto-surfaced both."
+        },
+        {
+          "from_run": 11,
+          "title": "OTC cycle phase indicator",
+          "status": "re-listed",
+          "note": "Re-listed as a concrete suggestion this run. The pipeline just transitioned GAP->LOADING, a textbook phase change the indicator would capture."
+        },
+        {
+          "from_run": 10,
+          "title": "Multi-week Binance custody vs protocol-staked tracker",
+          "status": "pending",
+          "note": "Now 6 weeks of data (3 accumulation + 3 stall). The flat-line stall against a flat protocol-staked line is increasingly the story; chart strongly motivated."
+        },
+        {
+          "from_run": 9,
+          "title": "Multi-week net exchange-flow oscillation chart",
+          "status": "pending",
+          "note": "Trajectory now +169K/-56K/-71K/+25K/+42K/+12K = 3-week inflow streak. The streak is the signal; a multi-week chart would make it obvious."
+        },
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "Pipeline reloaded this week with traceable Binance->Router->OTC Distribution edges (4,800-chunk flows). A graph view would render the active loading edges directly."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The capitulation bounce failed exactly as run #12's 'exit liquidity bounce' thesis predicted - EGLD broke to a new low ($2.85) within one week of the +1.36% relief rally, while exchange inflows continued for a 3rd week and the OTC pipeline reloaded. This is a clean validation that relief rallies on contracting engagement are distribution, not reversal. The secondary insight is methodological: reporting LSDs in supply terms (price-independent) dissolves the 'synchronized LSD contraction' narrative that prior runs built on price-contaminated mcap data - both LSDs are actually flat-to-growing on a real-token basis.",
+        "actions_completed_count": 9,
+        "actions_attempted_count": 10,
+        "what_would_2x_next_week": "Build the LSD circulating-supply timeline (supply, not mcap). This run proved the multi-run 'LSD contraction' narrative was a price artifact; a supply-based view would have prevented three runs of mis-narration and is immune to the dataApi null-price issue. Second: an OTC cycle phase indicator, since the load->distribute->gap->reload cycle is now empirically validated and forward-predictive."
+      },
+      "recommendations_for_next_run": [
+        "OTC distribution wave watch: the pipeline reloaded this week (+7K balance). Per cycle, expect a retail distribution wave (desk outflows) in 1-3 weeks. Confirm by tracing UPbit OTC / OTC Distribution outbound 1-8K chunks to routing wallets and onward to exchanges.",
+        "Binance Staking custody 4th-week stall: 6 weeks parked. Watch for the decisive move - a jump in econ.staked (delegation, bullish) or a drawdown to hot wallets (distribution, bearish).",
+        "Does $2.85 hold as a new floor, or does the downtrend extend? After the failed bounce, watch whether EGLD stabilizes or makes further lows; engagement metrics (DEX volume, delegators) are the tell for whether demand returns.",
+        "Delegator base stability follow-up: it stabilized at 174,406 after the one-shot capitulation. Confirm the level holds (a 2nd flat week) vs a resumption of outflow.",
+        "Exchange inflow 4th-week check: 3 consecutive inflow weeks logged. A 4th would deepen the structural-distribution read; a reversal to outflow would suggest the selling is exhausting.",
+        "Implement the dataApi re-fetch guard in the collector and verify supply-based LSD reporting end-to-end next run (the run #12 1.0s rule was insufficient).",
+        "pi-staking +21.9K / +10 users isolated entry: watch whether this tiny high-APR provider keeps drawing fresh delegation (a possible new yield-chase seed) or whether it was a one-off.",
+        "Stablecoin contraction follow-up: USDC -0.5% / USDT -1.8% this week. A 2nd week of stablecoin burn would confirm sustained dollar-liquidity flight from the ecosystem.",
+        "EMRS-6e4067 ($28M headline mcap, low float): verify whether this is a genuine large-cap or a thin listing; check holder/volume traction next run."
+      ]
     }
   ]
 }
