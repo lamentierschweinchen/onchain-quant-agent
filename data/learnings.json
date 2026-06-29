@@ -2285,6 +2285,269 @@
         "Stablecoin contraction follow-up: USDC -0.5% / USDT -1.8% this week. A 2nd week of stablecoin burn would confirm sustained dollar-liquidity flight from the ecosystem.",
         "EMRS-6e4067 ($28M headline mcap, low float): verify whether this is a genuine large-cap or a thin listing; check holder/volume traction next run."
       ]
+    },
+    {
+      "date": "2026-06-29",
+      "run_number": 14,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x36",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch guard active)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "dataApi re-fetch guard (added this run) WORKED for SEGLD/XEGLD/USH (populated first pass) but SWTAO-356a25 stayed null through the main pass AND 4 isolated 2.5s retries. WTAO price was also null, so the accumulator-ratio fallback (run #11) was unavailable. Conclusion: the dataApi feed can keep a SPECIFIC token null for an entire run, not just under sequential load - supply-based metrics (never null) are the robust primary signal; USD mcap for such a token must fall back to a carried-prior-price estimate and be flagged.",
+          "Large exchange hot-wallet moves are invisible in /accounts/{addr}/transactions: Binance's -158K hot-wallet drawdown produced no value-bearing standard txs (internal transfers/SC mechanisms). Always compute exchange flow from balance deltas, never from tx scans.",
+          "Whale-tier deltas can be dominated by a single wallet crossing a tier boundary: erd18mv2z6r2 crossing 1M (998,971->1,010,011) produced a +997K mega / -1.2M large swing that is a reclassification artifact, not real accumulation. Always check for boundary crossings before narrating tier-aggregate moves.",
+          "Stablecoin supply units: /tokens/{id} `supply` is decimals-adjusted; previous.json stores supply_raw (raw integer). For USDC/USDT (6 decimals) divide supply_raw by 1e6 before comparison - else WoW reads -100%."
+        ],
+        "data_gaps": [
+          "SWTAO-356a25 USD mcap is a carried-prior-price estimate this run (dataApi feed null all run, WTAO price also null). Supply is intact; USD figure is approximate.",
+          "Binance -158K hot-wallet outflow destination is untraceable via standard txs; split between self-custody and OTC is inferred, not proven.",
+          "XEGLD -29% supply collapse: the redeemer(s) and destination are not yet traced - flagged for next run.",
+          "Newly-issued token scan returned empty for a 3rd week - cannot distinguish a genuinely quiet launch week from method failure without external corroboration."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Supply-based LSD reporting (run #13 methodology) paid off in its first stress test: it surfaced the XEGLD -29% supply collapse cleanly, which an mcap-only view would have blended into the -10.5% EGLD price drop and missed.",
+          "dataApi re-fetch guard (added this run) recovered 3 of 4 LSD tokens (SEGLD/XEGLD/USH) on the first pass; only SWTAO stayed null (feed-specific outage), handled via carried-price fallback.",
+          "Degenerate-z-score guard correctly kept the +1 delegator move from being flagged; confirmed the capitulation was a one-shot as predicted.",
+          "Whale-tier boundary-crossing check caught the erd18mv2z6r2 1M crossing that would otherwise have produced a phantom +997K mega-accumulation narrative.",
+          "Reading exchange flow JOINTLY with OTC throughput prevented a single-metric misread: the -222K exchange outflow looked bullish alone but coincided with a record 195K OTC distribution."
+        ],
+        "what_needs_improvement": [
+          "SWTAO dataApi feed can stay null for an ENTIRE run (not just under load); WTAO was also null so the accumulator-ratio fallback failed. Need a more robust TAO-price source or a multi-source SWTAO price.",
+          "Binance -158K hot-wallet outflow is untraceable via standard txs; need an internal-transfer / SC-result data source to attribute large exchange moves.",
+          "XEGLD -29% redemption: could not trace the redeemer(s)/destination within this run's budget - needs a dedicated XOXNO LSD contract outflow query next run.",
+          "Newly-issued token scan empty a 3rd week - still no way to distinguish a quiet week from method failure."
+        ],
+        "surprising_findings": [
+          "XOXNO LSD (XEGLD) supply COLLAPSED -29% in one week (~94K redeemed) - the largest single-protocol LSD supply move in tracking; XOXNO-specific (SEGLD flat).",
+          "On-chain conviction DIVERGED from price: despite the -10.5% dump, protocol staked ROSE +81K (buy-the-dip), the delegator base held flat 2nd week, and the yield-chase cohort reignited hard (ninjastaking +11.6K).",
+          "Net exchange flow REVERSED to -222K outflow after 3 inflow weeks, but distribution didn't stop - it shifted to the OTC channel (record 195K throughput).",
+          "Reward compound rate ROSE to 58.54% (from 55.31%), reversing the 3-week slide - consistent with the buy-the-dip staking conviction.",
+          "EMRS-6e4067 is NOT a thin low-float listing (last run's assumption was wrong): it has 10,331 holders and 151,107 txs - genuine traction.",
+          "The price drop was a BROAD-MARKET beta move (BTC -6.4%, ETH -9.5% WoW), unlike recent weeks' EGLD-specific decoupling."
+        ]
+      },
+      "methodology_changes": [
+        "SUPPLY-BASED LSD REPORTING VALIDATED UNDER STRESS: the XEGLD -29% supply collapse this run is unambiguous on a supply basis and would have been muddied by the parallel -10.5% price drop in mcap terms. The run #13 supply-first rule proved its worth in its first real stress test - it surfaced a major redemption that mcap framing would have blended into 'price'.",
+        "dataApi RE-FETCH GUARD shipped in collect_run14.py (detect null dataApi-token price after main pass, re-fetch individually at >=2.5s, up to 4 retries). It recovered 3 of 4 tokens; SWTAO needs an additional carried-prior-price USD fallback when WTAO is also null (now in assembler).",
+        "EXCHANGE-FLOW-DURING-DUMP AMBIGUITY: a large net exchange OUTFLOW during a broad sell-off is NOT automatically bullish - cross-check the OTC pipeline throughput. This run, 195K of OTC distribution ran underneath a -222K exchange outflow, so distribution shifted channel rather than stopping. New rule: net exchange flow must be read jointly with OTC throughput, never alone.",
+        "WHALE-TIER BOUNDARY-CROSSING GUARD: before narrating tier-aggregate net changes, check whether a single wallet crossed a tier threshold (here erd18mv2z6r2 crossing 1M created a phantom +997K mega / -1.2M large swing). Net out boundary crossings first.",
+        "BILATERAL INVERSE RULE re-engaged at -10.5% price (>5% guardrail): Hatom Lending EGLD-TVL counter-moved, response ratio ~0.3 - continuing the run #11 magnitude-deterioration series (0.88/0.80/0.70/0.21/~0.3)."
+      ],
+      "new_addresses_discovered": [
+        "erd1lgdltequh76... (sender of +11,040 EGLD to Mega Whale erd18mv2z6r2 - source of its reactivation; unlabeled, flag for tracing)"
+      ],
+      "action_items_completed": [
+        "DONE: $2.85 floor check - BROKE. EGLD -10.5% to $2.55 in a broad-market dump; downtrend extended (but beta-driven, not EGLD-specific).",
+        "DONE: Binance Staking custody 4th-week stall - CONFIRMED unchanged at 3.51M (7 weeks parked).",
+        "DONE: Delegator base stability follow-up - CONFIRMED. Flat 2nd week (+1) at 174,407; capitulation was a one-shot.",
+        "DONE: Exchange inflow 4th-week check - REVERSED to -222K outflow; the 3-week inflow streak broke (but distribution shifted to OTC).",
+        "DONE: dataApi re-fetch guard - IMPLEMENTED in collect_run14.py and verified end-to-end; recovered 3 of 4 tokens (SWTAO feed-out, handled).",
+        "DONE: pi-staking isolated-entry follow-up - NOT a one-off; pi-staking +7.1K / +24 users (14->38). Yield-chase reignited broadly.",
+        "DONE: Stablecoin contraction follow-up - CONFIRMED 2nd week, accelerating (USDC -1.3%, USDT -3.7%); sustained dollar-liquidity flight.",
+        "DONE: EMRS-6e4067 traction check - it IS a genuine large-cap (10,331 holders, 151,107 txs), correcting last run's thin-float assumption.",
+        "DEFERRED/NEW: OTC distribution wave watch - the wave ARRIVED (195K throughput) AND desks reloaded +35K; rolled into next run's trace-the-throughput-onto-exchanges item."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          4.67,
+          3.88,
+          3.97,
+          3.5,
+          2.95,
+          2.99,
+          2.85,
+          2.55
+        ],
+        "dex_volume_24h_usd": [
+          328098,
+          74915,
+          81933.26158545031,
+          108539.14766141125,
+          121891.8071868304,
+          54634.45212423313,
+          63019.3189739559,
+          79694.91132774687
+        ],
+        "staked_egld": [
+          14454668,
+          14465903,
+          14467981,
+          14497721,
+          14471101,
+          14432677,
+          14423511,
+          14504618
+        ],
+        "mex_price_usd": [
+          4.1144487024798363e-07,
+          3.7090115412287983e-07,
+          3.7792186273497485e-07,
+          3.298877014744513e-07,
+          2.761419779228928e-07,
+          2.738418102638608e-07,
+          2.683608336861572e-07,
+          2.2861040788977142e-07
+        ],
+        "total_delegators": [
+          179050,
+          179011,
+          178958,
+          178934,
+          178487,
+          174484,
+          174406,
+          174407
+        ],
+        "staked_ratio": [
+          0.48333121059510425,
+          0.482931675993471,
+          0.48222713367788334,
+          0.4824442711735065,
+          0.48078822404993493,
+          0.4787456139710736,
+          0.47767456403018393,
+          0.47959097367830933
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444,
+          -70845.74226705544,
+          24901.97406237945,
+          41987.5425480064,
+          12194.290004270151,
+          -222307.23190492112
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933,
+          39575,
+          -26410,
+          -881,
+          7028,
+          35401
+        ],
+        "binance_staking_custody_egld": [
+          3110663,
+          3377559,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726
+        ],
+        "reward_compound_pct": [
+          61.9,
+          59.14,
+          55.31,
+          58.54
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "LSD circulating-supply timeline (supply, not mcap)",
+          "motivation": "This run delivered the methodology's first real payoff: XEGLD supply collapsed -29% in one week - a major redemption that an mcap-only view would have blended into the -10.5% EGLD price drop and missed entirely. A supply timeline would have made this jump unmissable and is the single highest-value unbuilt widget. Re-listed at high priority for a 3rd run.",
+          "suggested_visualization": "dual-line chart of SEGLD and XEGLD circulating supply (in token units) across weekly snapshots, with EGLD price on a secondary axis; a WoW-delta bar overlay would make step-changes like XEGLD -29% pop.",
+          "data_already_available": true,
+          "data_source": "data/collected/{date}.json tvl_tokens.{SEGLD,XEGLD}.supply + previous.json lsd_supply across snapshots",
+          "priority": "high"
+        },
+        {
+          "title": "Exchange-flow vs OTC-throughput dual-axis chart",
+          "motivation": "This run's key analytical nuance: net exchange flow reversed to -222K OUTFLOW while OTC distribution ran a record 195K throughput - so distribution did not stop, it shifted channel. Reading either series alone misleads (the outflow looks bullish in isolation). A dual-axis view makes the channel-shift legible and prevents the single-metric misread.",
+          "suggested_visualization": "weekly grouped bars: net exchange flow (signed) on the left axis, combined OTC desk throughput on the right axis, with the EGLD price line overlaid; divergence weeks (outflow + high OTC) highlighted.",
+          "data_already_available": true,
+          "data_source": "exchange_flows.net_change_egld + OTC desk outbound throughput, both already computed per run",
+          "priority": "high"
+        },
+        {
+          "title": "OTC pipeline load/distribute cycle phase indicator",
+          "motivation": "The pipeline completed another textbook cycle turn this run: run #13 reload (GAP->LOADING) was followed this run by the predicted DISTRIBUTING wave (195K throughput) arriving in week 1 - while still loading. A phase badge would have flagged this transition and the live forward prediction explicitly.",
+          "suggested_visualization": "horizontal phase timeline (LOADING / DISTRIBUTING / GAP) across weekly snapshots, with desk-balance-delta and 7d-throughput series and a current-phase badge.",
+          "data_already_available": true,
+          "data_source": "OTC desk balances + outbound throughput per run; needs a small per-run phase label in previous.json",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 13,
+          "title": "LSD circulating-supply timeline (supply, not mcap)",
+          "status": "pending",
+          "note": "NOT yet built. This run proved its value decisively (XEGLD -29% supply collapse) - re-listed at high priority for a 3rd consecutive run. Should be the next widget built."
+        },
+        {
+          "from_run": 13,
+          "title": "OTC pipeline load/distribute cycle phase indicator",
+          "status": "pending",
+          "note": "NOT yet built. Re-listed - the GAP->LOADING->DISTRIBUTING transition played out exactly as the indicator would track this run."
+        },
+        {
+          "from_run": 13,
+          "title": "Forward-indicator scorecard (prediction resolution tracker)",
+          "status": "deprioritized",
+          "note": "Still useful but lower priority than the supply timeline and the exchange-flow-vs-OTC chart, both of which tie directly to THIS run's headline findings. Deferred; replaced in this run's top-3 by the dual-axis exchange/OTC chart."
+        },
+        {
+          "from_run": 12,
+          "title": "Engagement-collapse composite indicator",
+          "status": "deprioritized",
+          "note": "The engagement question resolved benignly (delegators stabilized 2nd week, staked rose, yield-chase reignited), so a composite is less urgent than the supply and flow widgets. Deferred."
+        },
+        {
+          "from_run": 10,
+          "title": "Multi-week Binance custody vs protocol-staked tracker",
+          "status": "pending",
+          "note": "Now 7 weeks of custody data (3 accumulation + 4 stall) against a protocol-staked line that rose +81K this run from OTHER wallets - the divergence (custody flat, staked up) is exactly what this chart would surface. Still motivated."
+        },
+        {
+          "from_run": 9,
+          "title": "Multi-week net exchange-flow oscillation chart",
+          "status": "superseded",
+          "note": "Superseded by this run's exchange-flow-vs-OTC DUAL-AXIS suggestion, which adds the OTC dimension this run showed is essential to interpret exchange flow correctly."
+        },
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "The pipeline ran 195K throughput with traceable Binance->OTC Router->OTC Distribution edges this run. A graph view would render the active distribution edges directly; still a strong idea, lower priority than the timeline/dual-axis charts."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The XEGLD supply collapse (-29% in one week, ~94K XEGLD redeemed) is the standout finding and a vindication of the run #13 supply-first LSD methodology: on a supply basis it is a clear, large redemption from XOXNO's liquid-staking product, whereas an mcap-only view would have blended it into the -10.5% EGLD price drop and missed it. The week's larger story is a divergence: price fell on broad-market beta (BTC -6.4%, ETH -9.5%), but domestic on-chain conviction actually firmed - the delegator base stabilized for a 2nd week, protocol staked rose +81K, and the 0%-fee yield-chase cohort reignited (buy-the-dip staking). The dominant bearish signal is not the staking side but the OTC pipeline running a record 195K distribution throughput while reloading another 35K.",
+        "actions_completed_count": 8,
+        "actions_attempted_count": 9,
+        "what_would_2x_next_week": "Trace the XEGLD -29% supply collapse to its redeemer(s) and destination - this is the week's biggest open question and would distinguish a bullish migration to native delegation (consistent with the +81K staked rise) from a bearish exit. Second: build the LSD circulating-supply timeline (supply, not mcap), which would have made the XEGLD collapse unmissable and is now re-listed at high priority for a 3rd run; plus the exchange-flow-vs-OTC dual-axis chart, since this run showed reading exchange flow alone misleads."
+      },
+      "recommendations_for_next_run": [
+        "TRACE XEGLD -29% supply collapse: query the XOXNO LSD contract's outbound flows and the redeemer wallets; classify the freed EGLD destination (native delegation = bullish migration, exchange = bearish exit). Highest-priority follow-up.",
+        "OTC distribution wave is ACTIVE (195K throughput, +35K reload): trace UPbit OTC / OTC Distribution outbound chunks to routing wallets and onward to exchanges; confirm whether the distribution lands as exchange inflows next week.",
+        "Net exchange flow reversed to -222K outflow during the dump: watch whether it continues (latent self-custody accumulation) or reverts to inflow - and always read it jointly with OTC throughput.",
+        "Binance hot -158K: untraceable this run. Watch whether the hot-wallet balance keeps falling (sustained withdrawal) or rebuilds, and whether the OTC desks absorb proportional volume.",
+        "Binance Staking custody 5th-week stall watch: 7 weeks parked at 3.51M. The eventual move (delegate=bullish / drawdown=bearish) becomes more decisive each week.",
+        "Yield-chase sustainability: ninjastaking +11.6K, star_staking +7.7K, pi-staking +7.1K/+24 users this week. Watch whether buy-the-dip staking sustains (bullish conviction) or unwinds next week.",
+        "Stablecoin burn is a 2-week accelerating trend (USDC -1.3%, USDT -3.7%): a 3rd week confirms sustained dollar-liquidity flight; a reversal suggests the de-risking is done.",
+        "Does $2.55 hold, or does the broad market make further lows? EGLD is now trading as high-beta to BTC/ETH; track the beta and whether on-chain conviction (staking) keeps diverging from price.",
+        "Mega Whale erd18mv2z6r2 just activated (+11K, crossed 1M): watch for any large outbound from this Apr-18 OTC-deal counterparty."
+      ]
     }
   ]
 }
