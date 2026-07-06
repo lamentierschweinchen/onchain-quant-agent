@@ -1,0 +1,516 @@
+{
+  "metadata": {
+    "generated_at": "2026-07-06T08:28:01.399123+00:00",
+    "window_days": 7,
+    "operator_window_days": 30,
+    "providers_sampled": 8,
+    "claims_per_provider": 12
+  },
+  "aggregates": {
+    "window_days": 7,
+    "providers_sampled": 6,
+    "operator_window_days": 30,
+    "total_function_calls_observed": 529,
+    "overall_function_distribution": {
+      "reDelegateRewards": {
+        "count": 242,
+        "share_pct": 45.75
+      },
+      "claimRewards": {
+        "count": 159,
+        "share_pct": 30.06
+      },
+      "delegate": {
+        "count": 57,
+        "share_pct": 10.78
+      },
+      "reward": {
+        "count": 27,
+        "share_pct": 5.1
+      },
+      "withdraw": {
+        "count": 23,
+        "share_pct": 4.35
+      },
+      "unDelegate": {
+        "count": 19,
+        "share_pct": 3.59
+      },
+      "unStakeNodes": {
+        "count": 1,
+        "share_pct": 0.19
+      },
+      "correctNodesStatus": {
+        "count": 1,
+        "share_pct": 0.19
+      }
+    },
+    "compound_vs_claim_at_function_level": {
+      "redelegate_count": 242,
+      "claim_count": 159,
+      "compound_pct_of_reward_decisions": 60.35
+    },
+    "delegator_fates_by_tier": {
+      "retail": {
+        "by_count": {
+          "held": 45,
+          "held_or_other": 3,
+          "rotated_provider": 2,
+          "defi_deposit": 3
+        },
+        "by_value_egld": {
+          "held": 11.35,
+          "held_or_other": 1.21,
+          "rotated_provider": 0.24,
+          "defi_deposit": 0.66
+        },
+        "total_events": 53,
+        "total_value_egld": 13.46
+      },
+      "institutional": {
+        "by_count": {
+          "sold": 2
+        },
+        "by_value_egld": {
+          "sold": 177.94
+        },
+        "total_events": 2,
+        "total_value_egld": 177.94
+      },
+      "mid_tier": {
+        "by_count": {
+          "held": 8,
+          "sold": 1,
+          "rotated_provider": 2,
+          "held_or_other": 1
+        },
+        "by_value_egld": {
+          "held": 20.38,
+          "sold": 1.23,
+          "rotated_provider": 3.14,
+          "held_or_other": 4.88
+        },
+        "total_events": 12,
+        "total_value_egld": 29.63
+      },
+      "whale": {
+        "by_count": {
+          "held": 1,
+          "held_or_other": 1
+        },
+        "by_value_egld": {
+          "held": 2094.75,
+          "held_or_other": 1290.52
+        },
+        "total_events": 2,
+        "total_value_egld": 3385.28
+      }
+    }
+  },
+  "per_provider": [
+    {
+      "identity": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "locked_egld": 620714.2550268248,
+      "users": 349,
+      "apr_pct": 6.37,
+      "fee_pct": 12.0,
+      "owner_address": "erd1q3r6dphmmaly7wg5h0lh2dp7tvc2us46xt606qjr2glwyuggr4tquvex2h",
+      "func_counts_7d": {
+        "delegate": 12,
+        "withdraw": 5,
+        "reward": 7,
+        "reDelegateRewards": 7,
+        "claimRewards": 9,
+        "unStakeNodes": 1,
+        "correctNodesStatus": 1,
+        "unDelegate": 2
+      },
+      "claim_redelegate_ratio": 1.2857142857142858,
+      "compound_pct": 15.909090909090908,
+      "sampled_claim_fates_by_count": {
+        "held": 5,
+        "sold": 3,
+        "held_or_other": 1
+      },
+      "sampled_claim_fates_by_value_egld": {
+        "held": 2104.7,
+        "sold": 179.17,
+        "held_or_other": 0.42
+      },
+      "operator": {
+        "owner_address": "erd1q3r6dphmmaly7wg5h0lh2dp7tvc2us46xt606qjr2glwyuggr4tquvex2h",
+        "owner_label": "Unknown",
+        "owner_balance_egld": 0.887636025,
+        "outbound_count_30d": 0,
+        "fates_by_count": {},
+        "fates_by_value_egld": {}
+      }
+    },
+    {
+      "identity": "binance_staking",
+      "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc0llllsayxegu",
+      "locked_egld": 527339.4474997618,
+      "users": 8489,
+      "apr_pct": 6.83,
+      "fee_pct": 7.920000000000001,
+      "owner_address": "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc",
+      "func_counts_7d": {
+        "claimRewards": 26,
+        "delegate": 13,
+        "reDelegateRewards": 28,
+        "reward": 7,
+        "unDelegate": 5,
+        "withdraw": 6
+      },
+      "claim_redelegate_ratio": 0.9285714285714286,
+      "compound_pct": 32.94117647058823,
+      "sampled_claim_fates_by_count": {
+        "held": 11,
+        "rotated_provider": 1
+      },
+      "sampled_claim_fates_by_value_egld": {
+        "held": 3.05,
+        "rotated_provider": 0.03
+      },
+      "operator": {
+        "owner_address": "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc",
+        "owner_label": "binance_staking operator",
+        "owner_balance_egld": 9.050452696936297,
+        "outbound_count_30d": 1,
+        "fates_by_count": {
+          "rotated_provider": 1
+        },
+        "fates_by_value_egld": {
+          "rotated_provider": 2.5
+        }
+      }
+    },
+    {
+      "identity": "stakingagency",
+      "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqhllllsajxzat",
+      "locked_egld": 434235.42894457234,
+      "users": 9943,
+      "apr_pct": 7.95,
+      "fee_pct": 12.0,
+      "owner_address": "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl",
+      "func_counts_7d": {
+        "reDelegateRewards": 58,
+        "delegate": 7,
+        "unDelegate": 4,
+        "claimRewards": 28,
+        "withdraw": 2,
+        "reward": 1
+      },
+      "claim_redelegate_ratio": 0.4827586206896552,
+      "compound_pct": 58.0,
+      "sampled_claim_fates_by_count": {
+        "held": 9,
+        "rotated_provider": 1,
+        "held_or_other": 1,
+        "defi_deposit": 1
+      },
+      "sampled_claim_fates_by_value_egld": {
+        "held": 3.76,
+        "rotated_provider": 1.14,
+        "held_or_other": 4.88,
+        "defi_deposit": 0.32
+      },
+      "operator": {
+        "owner_address": "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl",
+        "owner_label": "stakingagency operator",
+        "owner_balance_egld": 0.40918387444656423,
+        "outbound_count_30d": 10,
+        "fates_by_count": {
+          "held_or_other": 10
+        },
+        "fates_by_value_egld": {
+          "held_or_other": 442.7
+        }
+      }
+    },
+    {
+      "identity": "truststaking",
+      "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzhllllsp9wvyl",
+      "locked_egld": 372331.37413462676,
+      "users": 7177,
+      "apr_pct": 8.08,
+      "fee_pct": 12.0,
+      "owner_address": "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm",
+      "func_counts_7d": {
+        "reDelegateRewards": 47,
+        "claimRewards": 36,
+        "withdraw": 2,
+        "delegate": 10,
+        "reward": 3,
+        "unDelegate": 2
+      },
+      "claim_redelegate_ratio": 0.7659574468085106,
+      "compound_pct": 47.0,
+      "sampled_claim_fates_by_count": {
+        "held": 10,
+        "held_or_other": 1,
+        "rotated_provider": 1
+      },
+      "sampled_claim_fates_by_value_egld": {
+        "held": 4.34,
+        "held_or_other": 1290.52,
+        "rotated_provider": 2.0
+      },
+      "operator": {
+        "owner_address": "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm",
+        "owner_label": "XOXNO: Deployer Wallet",
+        "owner_balance_egld": 81.24030596916812,
+        "outbound_count_30d": 4,
+        "fates_by_count": {
+          "defi_deposit": 2,
+          "held_or_other": 2
+        },
+        "fates_by_value_egld": {
+          "defi_deposit": 1330.98,
+          "held_or_other": 1300.0
+        }
+      }
+    },
+    {
+      "identity": "meria",
+      "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq8hlllls7a6h85",
+      "locked_egld": 350761.9810297916,
+      "users": 10918,
+      "apr_pct": 7.93,
+      "fee_pct": 12.0,
+      "owner_address": "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg",
+      "func_counts_7d": {
+        "reDelegateRewards": 49,
+        "claimRewards": 28,
+        "delegate": 11,
+        "withdraw": 6,
+        "reward": 2,
+        "unDelegate": 4
+      },
+      "claim_redelegate_ratio": 0.5714285714285714,
+      "compound_pct": 49.0,
+      "sampled_claim_fates_by_count": {
+        "held": 11,
+        "defi_deposit": 1
+      },
+      "sampled_claim_fates_by_value_egld": {
+        "held": 8.55,
+        "defi_deposit": 0.29
+      },
+      "operator": {
+        "owner_address": "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg",
+        "owner_label": "meria operator",
+        "owner_balance_egld": 0.02072201703975885,
+        "outbound_count_30d": 1,
+        "fates_by_count": {
+          "held_or_other": 1
+        },
+        "fates_by_value_egld": {
+          "held_or_other": 341.66
+        }
+      }
+    },
+    {
+      "identity": "istariv",
+      "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrhlllls062tu4",
+      "locked_egld": 278702.3085554501,
+      "users": 4073,
+      "apr_pct": 7.79,
+      "fee_pct": 12.0,
+      "owner_address": "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv",
+      "func_counts_7d": {
+        "claimRewards": 32,
+        "reDelegateRewards": 53,
+        "reward": 7,
+        "delegate": 4,
+        "unDelegate": 2,
+        "withdraw": 2
+      },
+      "claim_redelegate_ratio": 0.6037735849056604,
+      "compound_pct": 53.0,
+      "sampled_claim_fates_by_count": {
+        "held": 8,
+        "rotated_provider": 1,
+        "defi_deposit": 1,
+        "held_or_other": 2
+      },
+      "sampled_claim_fates_by_value_egld": {
+        "held": 2.08,
+        "rotated_provider": 0.2,
+        "defi_deposit": 0.05,
+        "held_or_other": 0.79
+      },
+      "operator": {
+        "owner_address": "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv",
+        "owner_label": "istariv operator",
+        "owner_balance_egld": 0.0,
+        "outbound_count_30d": 0,
+        "fates_by_count": {},
+        "fates_by_value_egld": {}
+      }
+    }
+  ],
+  "sample_claims": [
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1gku0clnugm2tr8tr\u2026",
+      "claim_value_egld": 0.5245,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1uskf6lu8x23mrxfm\u2026",
+      "claim_value_egld": 78.2402,
+      "fate": "sold",
+      "destination": "Crypto.com",
+      "tier": "institutional"
+    },
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1uskf6lu8x23mrxfm\u2026",
+      "claim_value_egld": 99.6995,
+      "fate": "sold",
+      "destination": "Crypto.com",
+      "tier": "institutional"
+    },
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1lu76a4ytjegt69cl\u2026",
+      "claim_value_egld": 0.6006,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1xz6pmw6hjg38s7v0\u2026",
+      "claim_value_egld": 8.8085,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1uskf6lu8x23mrxfm\u2026",
+      "claim_value_egld": 1.2349,
+      "fate": "sold",
+      "destination": "Crypto.com",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+      "claimant": "erd1s0p8hjnhhen9hfee\u2026",
+      "claim_value_egld": 2094.7545,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "whale"
+    },
+    {
+      "provider": "binance_staking",
+      "claimant": "erd1e3789de2xgqjpwhl\u2026",
+      "claim_value_egld": 0.7959,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "binance_staking",
+      "claimant": "erd196l0uvavwtc2hx5w\u2026",
+      "claim_value_egld": 0.9535,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "binance_staking",
+      "claimant": "erd1sdaq8zamzppj7wcf\u2026",
+      "claim_value_egld": 0.6871,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "stakingagency",
+      "claimant": "erd12zcte6g0uzyrrl45\u2026",
+      "claim_value_egld": 1.1365,
+      "fate": "rotated_provider",
+      "destination": "erd1qqqqqqqqqq\u2026",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "stakingagency",
+      "claimant": "erd1u8npdcen7v4xt3vw\u2026",
+      "claim_value_egld": 1.1172,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "stakingagency",
+      "claimant": "erd1uskdtdz8ef374l56\u2026",
+      "claim_value_egld": 4.8764,
+      "fate": "held_or_other",
+      "destination": "erd18x7f0qrgva\u2026",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "stakingagency",
+      "claimant": "erd1rktfqskyc5njpju5\u2026",
+      "claim_value_egld": 0.7057,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "stakingagency",
+      "claimant": "erd1v7s050zjrdvtr74h\u2026",
+      "claim_value_egld": 1.0037,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "stakingagency",
+      "claimant": "erd1c236ty4ueg8dzplv\u2026",
+      "claim_value_egld": 0.7948,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "retail"
+    },
+    {
+      "provider": "truststaking",
+      "claimant": "erd1a8kxl09m4q5h0e2p\u2026",
+      "claim_value_egld": 1.6977,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "truststaking",
+      "claimant": "erd1ym4l5lkc00a9q20v\u2026",
+      "claim_value_egld": 1290.524,
+      "fate": "held_or_other",
+      "destination": "erd1h0z46nm5zr\u2026",
+      "tier": "whale"
+    },
+    {
+      "provider": "truststaking",
+      "claimant": "erd1wxlsew29gz7v0qf9\u2026",
+      "claim_value_egld": 1.0402,
+      "fate": "held",
+      "destination": "(no follow-up)",
+      "tier": "mid_tier"
+    },
+    {
+      "provider": "truststaking",
+      "claimant": "erd14ctx0mqvpu9u3m5a\u2026",
+      "claim_value_egld": 2.0038,
+      "fate": "rotated_provider",
+      "destination": "erd1qqqqqqqqqq\u2026",
+      "tier": "mid_tier"
+    }
+  ]
+}

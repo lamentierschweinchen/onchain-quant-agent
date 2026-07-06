@@ -2548,6 +2548,267 @@
         "Does $2.55 hold, or does the broad market make further lows? EGLD is now trading as high-beta to BTC/ETH; track the beta and whether on-chain conviction (staking) keeps diverging from price.",
         "Mega Whale erd18mv2z6r2 just activated (+11K, crossed 1M): watch for any large outbound from this Apr-18 OTC-deal counterparty."
       ]
+    },
+    {
+      "date": "2026-07-06",
+      "run_number": 15,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x37",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch guard active)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "CLEAN PRICE-FEED RUN: the dataApi re-fetch guard (shipped run #14) reported 0 retries needed - all 4 dataApi-class tokens (SEGLD, SWTAO, USH, XEGLD) populated price+mcap on the first sequential pass at 1.05s spacing, including SWTAO which stayed null for the ENTIRE run #14. Confirms the null behavior is a transient feed hiccup, not a persistent per-token outage; the guard is the right mitigation and this week it was a no-op.",
+          "The custody-to-hot Binance move WAS traceable via standard /transactions this week (custody +241K in / -400K out = -159K net), UNLIKE prior weeks where Binance hot-wallet moves were internal-transfer-invisible. Lesson: staking-custody <-> hot-wallet transfers on Binance ARE standard value txs (visible), whereas hot-wallet <-> external/customer moves are not. When a custody wallet is involved, tx-scan the custody address before assuming the move is untraceable.",
+          "Newly-issued token scan FALSE-POSITIVE: the ESDT system-SC issue-function scan resolved an `issue` tx onto WrappedUSDC (USDC-c76f1f, 81,516 holders) - a long-established token, not a new mint. The name-search step can match an old ticker. Added a holder-count guard (drop matches with >1,000 holders or an identifier already in previous.json) - a genuinely new token this window has a tiny holder base.",
+          "Stablecoin supply units: /tokens/{id} `supply` is decimals-adjusted; previous.json stores supply_raw (raw integer). For USDC/USDT (6 decimals) divide supply_raw by 1e6 before comparison - else WoW reads -100%."
+        ],
+        "data_gaps": [
+          "XEGLD redeemer destination: the XOXNO LSD contract's EGLD outbound is via SC results, not value-bearing standard txs (the sender-filtered /transactions query returned 0), so the ~94K freed EGLD from last week's collapse could not be traced to a destination. The supply STABILIZATION this week (one-shot confirmed) is the substantive resolution regardless of destination.",
+          "Binance's net -236K: the custody->hot leg is traced, but where the hot-wallet EGLD went onward (net -77K off the two hot wallets) is internal-transfer-invisible - self-custody vs customer withdrawal vs OTC is inferred, not proven.",
+          "Newly-issued: 0 genuine launches after filtering the WrappedUSDC false positive - a quiet launch week, but the scan cannot fully distinguish 'quiet' from 'method missed a small deploy' without external corroboration."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "The multi-week Binance-custody watch with a PRE-COMMITTED directional reading (delegate=bullish / drawdown-to-hot=bearish) resolved cleanly this run - the custody drew down -159K to hot, and the pre-registered interpretation removed all ambiguity about how to read it.",
+          "tx-scanning the custody address directly ATTRIBUTED the -159K move (custody +241K in, -400K out) - custody<->hot transfers are standard value txs (visible), unlike the internal-transfer-invisible hot<->external moves. New reusable technique.",
+          "Decomposing exchange flow by ENTITY caught that the -218K net was ~all one Binance move; ex-Binance the complex was net-inflow. The aggregate alone would have implied broad distribution.",
+          "The holder-count guard added to the newly-issued scan correctly filtered the WrappedUSDC false positive (81K holders resolved from an issue-function tx).",
+          "The dataApi re-fetch guard was a clean no-op this run (0 retries, all 4 tokens populated first pass), confirming last run's SWTAO null was a transient feed hiccup, not a persistent outage."
+        ],
+        "what_needs_improvement": [
+          "The XEGLD redeemer destination still could not be traced (the XOXNO LSD contract moves EGLD via SC results, not value txs). The supply stabilization resolved the 'ongoing?' question, but attributing WHERE the ~94K went would need an SC-result / internal-transfer data source.",
+          "Binance's onward hot-wallet flow (net -77K off the two hot wallets after the custody unwind) is internal-transfer-invisible - the ultimate destination of the -236K is still inferred.",
+          "The newly-issued issue-scan needs the holder-count guard generalized (also guard against tokens whose issue timestamp predates the window, which is what actually happened with WrappedUSDC)."
+        ],
+        "surprising_findings": [
+          "The 7-week Binance custody standoff RESOLVED to the DISTRIBUTION side (-159K to hot), and it was TRACEABLE this time - into a +5.9% price bounce (selling strength).",
+          "Net exchange flow was a 2nd outflow week (-218K) but ~entirely Binance; strip it out and exchanges were net-INFLOW into the bounce (Crypto.com +27K, Bybit +21K).",
+          "Mega Whale erd18mv2z6r2 is an ABSORBER, not a distributor: it took +32.7K routed from Coinbase and kept accumulating (2nd week, now 1.04M) - the distribution is meeting a real, identifiable bid.",
+          "XEGLD's -29% collapse was a ONE-SHOT: supply stabilized at ~226K this week, no continuation - the alarming redemption did not become a trend.",
+          "On-chain divergence flipped sign vs last week: price BOUNCED but Binance DISTRIBUTED, whereas last week price DUMPED but staking conviction firmed. The two sides keep trading places.",
+          "EGLD badly underperformed the relief bounce (ETH +12.3% vs EGLD +5.9%) - a laggard even on the way up, confirming its high-beta-both-directions character.",
+          "Reward compound rate rose again to 60.35% (from 58.54%) - a 2nd week of recovery, mild bullish drift."
+        ]
+      },
+      "methodology_changes": [
+        "CUSTODY-VS-HOT MOVES ARE TRACEABLE (new): Binance Staking custody <-> Binance.com hot transfers show up as standard value txs (this run: +241K/-300K/-100K on the custody address), UNLIKE hot<->external moves. Rule: when a tracked custody wallet changes balance, tx-scan the custody address directly - the counterparty leg is often a visible standard transfer, letting you attribute the move instead of inferring it.",
+        "CUSTODY-WATCH RESOLUTION FRAMEWORK VALIDATED: the multi-week 'custody parked -> eventual move' watch (run #9-14) resolved cleanly this run with the pre-committed reading (delegate=bullish / drawdown-to-hot=bearish). The drawdown-to-hot outcome fired. Keeping a pre-registered directional interpretation for a long-running structural watch paid off - it removed ambiguity when the move finally came.",
+        "READ EXCHANGE FLOW BY ENTITY, NOT JUST AGGREGATE (reinforced): the -218K net was ~entirely one Binance idiosyncratic move; ex-Binance the complex was net-inflow. A headline net-flow number can invert the true breadth. Always decompose to per-entity before calling the aggregate bullish/bearish - especially when one entity's move exceeds the net.",
+        "BILATERAL INVERSE RULE - FIRST UP-WEEK TEST PASSED: with price +5.88% (>5% guardrail), Hatom Lending EGLD-TVL moved -2.86% (inverse), depositors withdrew to capture gains - the mirror of dip-DCA. The rule now has an up-side confirmation, not just down-side. Response ratio 0.49.",
+        "NEWLY-ISSUED HOLDER-COUNT GUARD: added a filter to drop issue-scan matches with >1,000 holders or an already-known identifier (the scan false-positived onto WrappedUSDC). Prevents an established token being mislabeled as a new launch."
+      ],
+      "new_addresses_discovered": [
+        "erd1...9gqq9vcc70 = Coinbase Routing Wallet (already labeled) confirmed routing +32,679 to Mega Whale erd18mv2z6r2 - the absorber's funding source this week.",
+        "Unknown Whale erd1...jqaqkhd2 (+35,278 to 276,559) - large-whale-tier accumulator, unlabeled; flag for tracing.",
+        "Unknown erd1...js577cxl (+21,865 to 50,401) - mid-tier accumulator, unlabeled; flag for tracing."
+      ],
+      "action_items_completed": [
+        "DONE: $2.55 hold check - HELD. EGLD bounced +5.88% to $2.70 (first up-week) but underperformed the broad rally (ETH +12.3%) - laggard bounce, not leadership.",
+        "DONE: Binance Staking custody 5th-week stall watch - RESOLVED. The custody UNWOUND -158,853 to hot wallets (traced: +241K in, -400K out); distribution-side resolution of the 7-week standoff.",
+        "DONE: Binance hot -158K follow-up - this week the custody->hot leg WAS traceable; Binance's tracked total fell -236K net; hot wallets net-drained onward (destination still inferred).",
+        "DONE: XEGLD -29% collapse trace - queried XOXNO LSD contract outbound/transfers; supply STABILIZED (-0.6%), confirming a ONE-SHOT redemption, not an ongoing exit. (Destination not cleanly traceable - LSD moves via SC results.)",
+        "DONE: OTC distribution wave trace - throughput ~172K (vs 195K), desks FLIPPED to DRAINING (-8.9K) after last week's +35K load; a fresh UPbit->OTC Desk 160K reload landed. Late-distribution phase.",
+        "DONE: Net exchange flow continuation - 2nd outflow week (-218K) but ~all Binance; ex-Binance net-inflow. Read jointly with OTC (desks draining, absorbed by buyers).",
+        "DONE: Yield-chase sustainability - UNWOUND (net -8.6K, egldstakingprovider -13.7K gave back) as price recovered; pi-staking the exception (+13 users, 3rd growth week).",
+        "DONE: Stablecoin 3rd-week check - USDC -2.0% (3rd burn week) but USDT decelerated to -0.3% (from -3.7%), USH de-leveraging ended (flat). Flight DECELERATED and narrowed to USDC.",
+        "DONE: Mega Whale erd18mv2z6r2 outbound watch - NO outbound; instead ACCUMULATED +32.7K from Coinbase Routing (absorber, now 1.04M)."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.88,
+          3.97,
+          3.5,
+          2.95,
+          2.99,
+          2.85,
+          2.55,
+          2.7
+        ],
+        "dex_volume_24h_usd": [
+          74915,
+          81933.26158545031,
+          108539.14766141125,
+          121891.8071868304,
+          54634.45212423313,
+          63019.3189739559,
+          79694.91132774687,
+          88354.28195205361
+        ],
+        "staked_egld": [
+          14465903,
+          14467981,
+          14497721,
+          14471101,
+          14432677,
+          14423511,
+          14504618,
+          14458763
+        ],
+        "mex_price_usd": [
+          3.7090115412287983e-07,
+          3.7792186273497485e-07,
+          3.298877014744513e-07,
+          2.761419779228928e-07,
+          2.738418102638608e-07,
+          2.683608336861572e-07,
+          2.2861040788977142e-07,
+          2.430275788949282e-07
+        ],
+        "total_delegators": [
+          179011,
+          178958,
+          178934,
+          178487,
+          174484,
+          174406,
+          174407,
+          174373
+        ],
+        "staked_ratio": [
+          0.482931675993471,
+          0.48222713367788334,
+          0.4824442711735065,
+          0.48078822404993493,
+          0.4787456139710736,
+          0.47767456403018393,
+          0.47959097367830933,
+          0.4773082253449375
+        ],
+        "exchange_net_flow_egld": [
+          168942,
+          -56426.54109919444,
+          -70845.74226705544,
+          24901.97406237945,
+          41987.5425480064,
+          12194.290004270151,
+          -222307.23190492112,
+          -218471.62159921788
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          76638,
+          144933,
+          39575,
+          -26410,
+          -881,
+          7028,
+          35401,
+          35401
+        ],
+        "binance_staking_custody_egld": [
+          3110663,
+          3377559,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3353797.4812337724
+        ],
+        "reward_compound_pct": [
+          61.9,
+          59.14,
+          55.31,
+          58.54,
+          60.35
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Binance custody-vs-hot-vs-protocol-staked unwind tracker",
+          "motivation": "THIS run's headline: the 7-week Binance Staking custody position finally unwound -159K back to hot wallets (traced). A single chart tracking custody balance, Binance hot-wallet balance, and protocol staked-EGLD across all weeks would have shown the full 3-week-accumulate / 4-week-stall / unwind arc AND made the delegate-vs-drawdown resolution visually obvious the moment it happened. The run #10 idea, now maximally motivated by the resolution.",
+          "suggested_visualization": "stacked/overlaid multi-line time series: Binance Staking custody balance, Binance.com hot-wallet total, and economics.staked - all weekly - with event annotations (accumulation / stall / unwind) and a shaded band for the parked position.",
+          "data_already_available": true,
+          "data_source": "previous.json exchange_balances (Binance Staking, Binance.com) + economics.staked_egld across snapshots",
+          "priority": "high"
+        },
+        {
+          "title": "Exchange-flow vs OTC-throughput dual-axis chart",
+          "motivation": "Re-listed and reinforced: this run the -218K net exchange OUTFLOW was almost entirely one Binance move while OTC desks drained yet still pushed ~172K throughput. Reading either series alone inverts the truth (the outflow looks like accumulation; ex-Binance it was inflow). A dual-axis view (plus a per-entity breakdown of the net) makes the channel-shift and the Binance-dominance legible.",
+          "suggested_visualization": "weekly grouped bars: net exchange flow (signed, with a Binance-vs-rest split) on the left axis, combined OTC desk 7d throughput on the right axis, EGLD price overlaid.",
+          "data_already_available": true,
+          "data_source": "exchange_flows.net_change_egld + entity_netting + OTC desk outbound throughput, all computed per run",
+          "priority": "high"
+        },
+        {
+          "title": "Distribution-absorber leaderboard",
+          "motivation": "This run's most useful nuance was WHO is absorbing the distribution: Mega Whale erd18mv2z6r2 took +32.7K routed from Coinbase Routing, its 2nd accumulation week. A recurring view of the top non-exchange wallets receiving exchange/OTC-routed inflows would quantify the standing bid under the market and distinguish 'distribution into a vacuum' (bearish) from 'distribution being accumulated' (supported).",
+          "suggested_visualization": "ranked bar list of top non-exchange wallets by WoW balance gain that was sourced from exchange/OTC/routing counterparties, with a multi-week accumulation streak badge per wallet.",
+          "data_already_available": true,
+          "data_source": "wallet_changes[] cross-referenced with large_transactions[] sender categories (exchange/router/otc) - both already in the report JSON",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "from_run": 10,
+          "title": "Multi-week Binance custody vs protocol-staked tracker",
+          "status": "pending",
+          "note": "NOT yet built, and now MAXIMALLY motivated: the custody just unwound -159K this run after 7 weeks. Promoted to this run's #1 suggestion (renamed 'custody-vs-hot-vs-staked unwind tracker') - this is the moment the chart pays off. Should be the next widget built."
+        },
+        {
+          "from_run": 14,
+          "title": "Exchange-flow vs OTC-throughput dual-axis chart",
+          "status": "pending",
+          "note": "NOT yet built. Re-listed at high priority - this run reinforced why it matters (Binance-dominated outflow + draining desks would be legible; the aggregate number alone misled)."
+        },
+        {
+          "from_run": 13,
+          "title": "LSD circulating-supply timeline (supply, not mcap)",
+          "status": "pending",
+          "note": "NOT yet built. Still valuable - this run it would have shown XEGLD STABILIZING after last week's -29% collapse (the one-shot resolution), the natural companion frame to the collapse. Slightly lower urgency now that the XEGLD event resolved; kept in the queue."
+        },
+        {
+          "from_run": 13,
+          "title": "OTC pipeline load/distribute cycle phase indicator",
+          "status": "pending",
+          "note": "NOT yet built. Re-listed - this run the phase advanced DISTRIBUTING -> DRAINING (late phase), exactly the transition the badge would show. Folded conceptually into the dual-axis chart's OTC axis."
+        },
+        {
+          "from_run": 13,
+          "title": "Forward-indicator scorecard (prediction resolution tracker)",
+          "status": "deprioritized",
+          "note": "Still useful (this run resolved 9/9 prior action items, a strong scorecard week) but lower priority than the custody tracker and dual-axis chart. Deferred."
+        },
+        {
+          "from_run": 8,
+          "title": "OTC pipeline graph view (Sankey/force-directed)",
+          "status": "pending",
+          "note": "Still a strong idea - this run had traceable Coinbase Routing -> Mega Whale and custody -> hot edges. Lower priority than the custody tracker; partially overlaps the new absorber-leaderboard suggestion."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The 7-week Binance Staking custody standoff finally resolved - and it resolved to the DISTRIBUTION side: the custody drew down -158,853 EGLD back to Binance.com hot wallets (traced, not inferred: +241K in, -400K out), into a +5.9% price bounce. This is the payoff of a multi-week structural watch with a pre-committed directional reading (delegate=bullish / drawdown-to-hot=bearish), and it fired bearish. But the week's fuller story is nuanced, not one-sided: the net exchange outflow was almost entirely this one Binance move (ex-Binance the complex was net-INFLOW), the OTC desks are now draining rather than reloading (late-distribution), and - critically - the distributed supply is being ABSORBED by an identifiable large buyer (Mega Whale erd18mv2z6r2 took +32.7K routed from Coinbase, its 2nd accumulation week). So distribution is real and ongoing, but it is meeting a bid, not dumping into a vacuum - consistent with a laggard price bounce that has some structural support under it. Meanwhile last week's two open questions both resolved benignly: the XEGLD -29% collapse was a one-shot (supply stabilized) and the delegator capitulation is fully over (flat 3rd week).",
+        "actions_completed_count": 9,
+        "actions_attempted_count": 9,
+        "what_would_2x_next_week": "Track the Binance custody unwind's SECOND leg - the -159K now sits in Binance.com hot wallets; whether it drains onward (confirmed distribution) or rebuilds (reorg) is the decisive read, and would confirm or soften this run's bearish custody resolution. Second: build the custody-vs-hot-vs-staked unwind tracker (the run #10 idea, now maximally motivated by the resolution) - it would make the full accumulate/stall/unwind arc and the delegate-vs-drawdown outcome visually unmistakable. Third: an internal-transfer/SC-result data source to finally attribute the large exchange and LSD-contract moves that standard tx scans miss."
+      },
+      "recommendations_for_next_run": [
+        "BINANCE CUSTODY 2ND LEG: the -159K unwound to Binance.com hot wallets this week. Watch whether the hot-wallet balance drains onward (confirmed distribution/sell) or rebuilds (reorg). tx-scan the custody AND hot addresses - custody legs are traceable. Highest-priority follow-up.",
+        "MEGA WHALE erd18mv2z6r2 as absorber: +32.7K from Coinbase Routing this week (2nd accumulation week, now 1.04M). Watch whether it keeps absorbing exchange/OTC-routed distribution (a large standing bid) or turns to distribute. Trace its inbound sources each week.",
+        "OTC pipeline phase: desks flipped to DRAINING (-8.9K) while still distributing ~172K, with a fresh 160K reload. Watch whether throughput COLLAPSES to a GAP (wave done) or the reload feeds another distribution leg.",
+        "Ex-Binance exchange INFLOW: Crypto.com +27K, Bybit +21K, KuCoin +9.6K went ON exchanges into the bounce. Watch whether this builds (renewed on-exchange positioning = potential sell overhang) or reverses.",
+        "Does the bounce HOLD? EGLD +5.9% but underperformed ETH (+12.3%) badly. The run #12 relief bounce failed within a week. Track whether $2.70 holds and whether EGLD's beta to ETH/BTC improves (leadership) or stays laggard.",
+        "Stablecoin flight: USDC 3rd burn week (-2.0%) but USDT decelerated (-0.3%). Watch whether USDC follows USDT and flattens (de-risking done) or keeps contracting (isolated USDC bridge-out).",
+        "Delegation-vs-direct-node rotation: delegation TVL +70K while total staked -46K. Watch whether the rotation into delegation contracts continues and whether the broad delegation growth (Synexis, stakingagency) sustains.",
+        "pi-staking (0% fee) drew a 3rd straight week (+13 users to 51). Watch whether this small-provider growth story continues or plateaus - it's the only yield-chase name still drawing."
+      ]
     }
   ]
 }
