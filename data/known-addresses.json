@@ -1,1248 +1,1290 @@
 {
-  "_metadata": {
-    "description": "MultiversX blockchain known address database - entity resolution for intelligence reports",
-    "compiled": "2026-04-02",
-    "sources": [
-      "MultiversX API (api.multiversx.com) - account assets/labels",
-      "MultiversX Explorer verified labels",
-      "Web search verification",
-      "SDK documentation (system contracts)"
-    ],
-    "total_entries": 146,
-    "last_updated": "2026-05-25",
-    "updated_by_run": 9,
-    "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
+ "_metadata": {
+  "description": "MultiversX blockchain known address database - entity resolution for intelligence reports",
+  "compiled": "2026-04-02",
+  "sources": [
+   "MultiversX API (api.multiversx.com) - account assets/labels",
+   "MultiversX Explorer verified labels",
+   "Web search verification",
+   "SDK documentation (system contracts)"
+  ],
+  "total_entries": 146,
+  "last_updated": "2026-05-25",
+  "updated_by_run": 9,
+  "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
+ },
+ "system_contracts": {
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l": {
+   "name": "System: Staking Module",
+   "category": "system",
+   "subcategory": "staking",
+   "notes": "Contains all staked EGLD on the network. Largest account by balance (~14.25M EGLD). Metachain shard."
   },
-  "system_contracts": {
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqplllst77y4l": {
-      "name": "System: Staking Module",
-      "category": "system",
-      "subcategory": "staking",
-      "notes": "Contains all staked EGLD on the network. Largest account by balance (~14.25M EGLD). Metachain shard."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls8a5w6u": {
-      "name": "System: ESDT Module",
-      "category": "system",
-      "subcategory": "esdt",
-      "notes": "ESDT system smart contract for token issuance, role management, minting, burning, and all ESDT operations."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqyllllslmq4y": {
-      "name": "System: Delegation Manager",
-      "category": "system",
-      "subcategory": "delegation",
-      "notes": "Manages creation and configuration of delegation smart contracts for staking providers."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrlllsrujgla": {
-      "name": "System: Governance",
-      "category": "system",
-      "subcategory": "governance",
-      "notes": "On-chain governance contract for protocol proposals and voting."
-    }
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls8a5w6u": {
+   "name": "System: ESDT Module",
+   "category": "system",
+   "subcategory": "esdt",
+   "notes": "ESDT system smart contract for token issuance, role management, minting, burning, and all ESDT operations."
   },
-  "exchanges": {
-    "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p": {
-      "name": "Binance Staking",
-      "category": "exchange",
-      "subcategory": "staking",
-      "notes": "Contains all staked amounts on the Binance platform. ~3.2M EGLD. Second largest account."
-    },
-    "erd1ylwuswz9zuk4acuq4aa6d0x9ys293yhlpwg6vpuwntndyej4u44q896zlz": {
-      "name": "Binance.com",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Binance exchange wallet. ~517K EGLD. Shard 2."
-    },
-    "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets": {
-      "name": "Binance.com",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Binance exchange wallet (high activity, ~708K nonce). ~408K EGLD. Shard 1."
-    },
-    "erd1v4ms58e22zjcp08suzqgm9ajmumwxcy4hfkdc23gvynnegjdflmsj6gmaq": {
-      "name": "Binance.com",
-      "category": "exchange",
-      "subcategory": "cold_wallet",
-      "notes": "Binance cold storage. ~300K EGLD. Low nonce (3). Shard 1."
-    },
-    "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49": {
-      "name": "UPbit",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Korean exchange. ~1.4M EGLD. Third largest non-system account. Shard 2."
-    },
-    "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx": {
-      "name": "Bybit",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Bybit exchange. ~404K EGLD. High activity (~82K nonce). Shard 1."
-    },
-    "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4": {
-      "name": "Crypto.com",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Crypto.com main wallet. ~182K EGLD. Shard 2."
-    },
-    "erd1qr9av6ar4ymr05xj93jzdxyezdrp6r4hz6u0scz4dtzvv7kmlldse7zktc": {
-      "name": "Crypto.com",
-      "category": "exchange",
-      "subcategory": "secondary_wallet",
-      "notes": "Crypto.com secondary wallet. ~5K EGLD."
-    },
-    "erd1ezp86jwmcp4fmmu2mfqz0438py392z5wp6kzuqsjldgd68nwt89qshfs0y": {
-      "name": "MEXC",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "MEXC Global exchange. ~84K EGLD."
-    },
-    "erd1w547kw69kpd60vlpr9pe0pn9nnqeljrcaz73znenjpgt0h3qlqqqm3szxj": {
-      "name": "Bitget",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Bitget exchange. ~79K EGLD."
-    },
-    "erd16jruked88jgtsar78ej85hjp3qsd9jkjcw4swsn7k0teqh3wgcqqgyrupq": {
-      "name": "Coinbase",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Coinbase exchange. ~67K EGLD."
-    },
-    "erd1eae23a530qymlpvfrudzsge5wgl003wl92saax74cew7j549eqqq3jklut": {
-      "name": "Coinbase Custody",
-      "category": "exchange",
-      "subcategory": "custody",
-      "notes": "Coinbase institutional custody. ~65K EGLD."
-    },
-    "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3": {
-      "name": "Coinbase",
-      "category": "exchange",
-      "subcategory": "secondary_wallet",
-      "notes": "Coinbase secondary wallet. ~16K EGLD."
-    },
-    "erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw": {
-      "name": "Gate.io",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Gate.io exchange. ~57K EGLD."
-    },
-    "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy": {
-      "name": "KuCoin",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "KuCoin exchange. ~30K EGLD."
-    },
-    "erd1a56dkgcpwwx6grmcvw9w5vpf9zeq53w3w7n6dmxcpxjry3l7uh2s3h9dtr": {
-      "name": "Bitfinex",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Bitfinex exchange. ~17K EGLD."
-    },
-    "erd1ra67nmtcuagw2y73sca7fzgh66yemtslvshfz77z9tep9qx5swvsv23lhf": {
-      "name": "Tokero",
-      "category": "exchange",
-      "subcategory": "hot_wallet",
-      "notes": "Romanian exchange. ~8K EGLD."
-    }
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqyllllslmq4y": {
+   "name": "System: Delegation Manager",
+   "category": "system",
+   "subcategory": "delegation",
+   "notes": "Manages creation and configuration of delegation smart contracts for staking providers."
   },
-  "defi_xexchange": {
-    "erd1qqqqqqqqqqqqqpgqq66xk9gfr4esuhem3jru86wg5hvp33a62jps2fy57p": {
-      "name": "xExchange: Router",
-      "category": "defi",
-      "subcategory": "dex_router",
-      "notes": "Main xExchange (formerly Maiar Exchange) router contract. Owns all pair contracts. Maps token pairs to LP addresses. Owner: erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97."
-    },
-    "erd1qqqqqqqqqqqqqpgqrc4pg2xarca9z34njcxeur622qmfjp8w2jps89fxnl": {
-      "name": "xExchange: Proxy",
-      "category": "defi",
-      "subcategory": "dex_proxy",
-      "notes": "xExchange proxy contract for locked asset operations and energy management."
-    },
-    "erd1qqqqqqqqqqqqqpgqvc7gdl0p4s97guh498wgz75k8sav6sjfjlwqh679jy": {
-      "name": "xExchange: WrappedEGLD Contract Shard 0",
-      "category": "defi",
-      "subcategory": "wegld",
-      "notes": "WEGLD wrapping contract for shard 0. ~311K EGLD locked. Owner: erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97."
-    },
-    "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3": {
-      "name": "xExchange: WrappedEGLD Contract Shard 1",
-      "category": "defi",
-      "subcategory": "wegld",
-      "notes": "WEGLD wrapping contract for shard 1. ~248K EGLD locked. Highest daily transfer activity."
-    },
-    "erd1qqqqqqqqqqqqqpgqmuk0q2saj0mgutxm4teywre6dl8wqf58xamqdrukln": {
-      "name": "xExchange: WrappedEGLD Contract Shard 2",
-      "category": "defi",
-      "subcategory": "wegld",
-      "notes": "WEGLD wrapping contract for shard 2. ~9K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqpgqyg62a3tswuzun2wzp8a83sjkc709wwjt2jpssphddm": {
-      "name": "xExchange: Distribution Contract",
-      "category": "defi",
-      "subcategory": "distribution",
-      "notes": "Locked asset distribution for xExchange rewards and MEX economics."
-    },
-    "erd1qqqqqqqqqqqqqpgqdt9aady5jp7av97m7rqxh6e5ywyqsplz2jps5mw02n": {
-      "name": "xExchange: Governance Module",
-      "category": "defi",
-      "subcategory": "governance",
-      "notes": "MEX governance contract for xExchange protocol proposals."
-    },
-    "erd1qqqqqqqqqqqqqpgqyxqwuhtj3xhftcpn2kzuq07lhdp4ng222jps650gtt": {
-      "name": "xExchange: Governance",
-      "category": "defi",
-      "subcategory": "governance",
-      "notes": "xExchange on-chain governance."
-    },
-    "erd1qqqqqqqqqqqqqpgqtce4z8zzz76xjht3hak0hseshcmj3ush2jps2exxjn": {
-      "name": "xExchange: Liquidity Pool SafePrice Views",
-      "category": "defi",
-      "subcategory": "oracle",
-      "notes": "Safe price oracle views for xExchange liquidity pools."
-    },
-    "erd1qqqqqqqqqqqqqpgqu64gygjs5ted4rupaewaszyhaxl9lv7m2jpsw47nzr": {
-      "name": "xExchange: XMEX Wrapper Contract",
-      "category": "defi",
-      "subcategory": "wrapper",
-      "notes": "Wrapping/unwrapping contract for xMEX energy tokens."
-    },
-    "erd1qqqqqqqqqqqqqpgq0a80r53sla2lx8wyfhqnz69prntkefs42jps3tdchu": {
-      "name": "xExchange: Permissions Hub",
-      "category": "defi",
-      "subcategory": "permissions",
-      "notes": "Access control and permissions management for xExchange contracts."
-    },
-    "erd1qqqqqqqqqqqqqpgqawujux7w60sjhm8xdx3n0ed8v9h7kpqu2jpsecw6ek": {
-      "name": "xExchange: AshSwap Locking SC",
-      "category": "defi",
-      "subcategory": "locking",
-      "notes": "AshSwap locking proxy integrated with xExchange energy system."
-    },
-    "erd1qqqqqqqqqqqqqpgqs0jjyjmx0cvek4p8yj923q5yreshtpa62jpsz6vt84": {
-      "name": "xExchange: Legacy Simple Lock",
-      "category": "defi",
-      "subcategory": "locking",
-      "notes": "Legacy simple lock contract for token locking."
-    },
-    "erd1qqqqqqqqqqqqqpgq50dge6rrpcra4tp9hl57jl0893a4r2r72jpsk39rjj": {
-      "name": "xExchange: Metabonding Rewards",
-      "category": "defi",
-      "subcategory": "rewards",
-      "notes": "Metabonding reward distribution for MEX stakers."
-    },
-    "erd1qqqqqqqqqqqqqpgqt7tyyswqvplpcqnhwe20xqrj7q7ap27d2jps7zczse": {
-      "name": "Metabonding: Locked Assets",
-      "category": "defi",
-      "subcategory": "locking",
-      "notes": "Locked assets for the Metabonding program."
-    },
-    "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97": {
-      "name": "xExchange: Deployer/Owner",
-      "category": "defi",
-      "subcategory": "deployer",
-      "notes": "Owner address of the xExchange router, WEGLD contracts, and major xExchange infrastructure. Key governance address."
-    }
-  },
-  "defi_hatom": {
-    "erd1qqqqqqqqqqqqqpgq35qkf34a8svu4r2zmfzuztmeltqclapv78ss5jleq3": {
-      "name": "Hatom: EGLD Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "Hatom's EGLD lending and borrowing market. ~65K EGLD locked. Largest Hatom contract by TVL."
-    },
-    "erd1qqqqqqqqqqqqqpgq4gzfcw7kmkjy8zsf04ce6dl0auhtzjx078sslvrf4e": {
-      "name": "Hatom: Liquid Staking",
-      "category": "defi",
-      "subcategory": "liquid_staking",
-      "notes": "Hatom's liquid staking protocol (sEGLD). ~44K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqpgqnjmyp62wxh5x89ttpcxvwueujeu4tqrygcwsg7pwpc": {
-      "name": "Hatom: Price Aggregator v1",
-      "category": "defi",
-      "subcategory": "oracle",
-      "notes": "Hatom's price oracle aggregator for money market price feeds."
-    },
-    "erd1qqqqqqqqqqqqqpgqnwrj9zmr5lq886u2usxv5f5qccgy8whx78ss975ms4": {
-      "name": "Hatom: Oracle",
-      "category": "defi",
-      "subcategory": "oracle",
-      "notes": "Hatom money market oracle for asset pricing."
-    },
-    "erd1qqqqqqqqqqqqqpgq2y55sf0tqsdncxcrpe67tce4hc0qagv478ssaw9vkl": {
-      "name": "Hatom: USH Minter (v2)",
-      "category": "defi",
-      "subcategory": "stablecoin",
-      "notes": "USH stablecoin minter contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqcvyhpnfqscnqwt0j5z5szwsarypha7ur78ssjjwh02": {
-      "name": "Hatom: USH Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "USH stablecoin money market on Hatom."
-    },
-    "erd1qqqqqqqqqqqqqpgqdvrqup8k9mxvhvnc7cnzkcs028u95s5378ssr9d72p": {
-      "name": "Hatom: BUSD Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "BUSD lending and borrowing market on Hatom."
-    },
-    "erd1qqqqqqqqqqqqqpgqxerzmkr80xc0qwa8vvm5ug9h8e2y7jgsqk2svevje0": {
-      "name": "Hatom: HTM Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "HTM token money market on Hatom."
-    },
-    "erd1qqqqqqqqqqqqqpgq2khda0rx207gvlqg92dq5rh0z03a8dqf78ssu0qlcc": {
-      "name": "Hatom: sEGLD Vote Delegation",
-      "category": "defi",
-      "subcategory": "governance",
-      "notes": "Delegates voting power from sEGLD holders for MultiversX governance."
-    },
-    "erd1qqqqqqqqqqqqqpgqw4dsh8j9xafw45uwr2f6a48ajvcqey8s78sstvn7xd": {
-      "name": "Hatom: Booster",
-      "category": "defi",
-      "subcategory": "rewards",
-      "notes": "Hatom rewards booster contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqxp28qpnv7rfcmk6qrgxgw5uf2fnp84ar78ssqdk6hr": {
-      "name": "Hatom: Controller",
-      "category": "defi",
-      "subcategory": "controller",
-      "notes": "Main Hatom protocol controller contract. Manages all money markets."
-    },
-    "erd1qqqqqqqqqqqqqpgqxmn4jlazsjp6gnec95423egatwcdfcjm78ss5q550k": {
-      "name": "Hatom: sEGLD Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "sEGLD (liquid staked EGLD) lending market."
-    },
-    "erd1qqqqqqqqqqqqqpgqkrgsvct7hfx7ru30mfzk3uy6pxzxn6jj78ss84aldu": {
-      "name": "Hatom: USDC Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "USDC lending and borrowing market."
-    },
-    "erd1qqqqqqqqqqqqqpgqvxn0cl35r74tlw2a8d794v795jrzfxyf78sstg8pjr": {
-      "name": "Hatom: USDT Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "USDT lending and borrowing market."
-    },
-    "erd1qqqqqqqqqqqqqpgqta0tv8d5pjzmwzshrtw62n4nww9kxtl278sssypgmrs": {
-      "name": "Hatom: UTK Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "UTK token lending and borrowing market."
-    },
-    "erd1qqqqqqqqqqqqqpgq8h8upp38fe9p4ny9ecvsett0usu2ep7978ssypgmrs": {
-      "name": "Hatom: WETH Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "Wrapped ETH lending and borrowing market."
-    },
-    "erd1qqqqqqqqqqqqqpgqg47t8v5nwzvdxgf6g5jkxleuplu8y4f678ssfcg5gy": {
-      "name": "Hatom: WBTC Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "Wrapped BTC lending market. H-token: HWBTC-49ca31. Market cap ~$1.14M (TVL proxy)."
-    },
-    "erd1qqqqqqqqqqqqqpgq2rnjnp543m5d8fac8v2ltkr5w2quh0v978ssswj939": {
-      "name": "Hatom: MEX Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "MEX token lending market. H-token: HMEX-df6df7. Market cap ~$33K (TVL proxy)."
-    },
-    "erd1qqqqqqqqqqqqqpgqhykmg59ny8tem37m0gng3ygwtphmefyz78ssfecn6q": {
-      "name": "Hatom: TAO Liquid Staking",
-      "category": "defi",
-      "subcategory": "liquid_staking",
-      "notes": "Hatom's liquid staking for TAO (Bittensor). Issues SWTAO-356a25. Market cap ~$1.08M."
-    },
-    "erd1qqqqqqqqqqqqqpgq7sspywe6e2ehy7dn5dz00ved3aa450mv78ssllmln6": {
-      "name": "Hatom: swTAO Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "Staked WTAO lending market. H-token: HSWTAO-6df80c. Market cap ~$1.02M."
-    },
-    "erd1qqqqqqqqqqqqqpgqz9pvuz22qvqxfqpk6r3rluj0u2can55c78ssgcqs00": {
-      "name": "Hatom: wTAO Money Market",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "Wrapped TAO lending market. H-token: HWTAO-2e9136. Market cap ~$203K."
-    },
-    "erd1qqqqqqqqqqqqqpgqajq8kvm8qq045s2fvj4sa7dph8kpqx9d78ssxjzjdh": {
-      "name": "Hatom: Wrapped TAO Minter",
-      "category": "defi",
-      "subcategory": "bridge_wrapper",
-      "notes": "Issues Wrapped TAO (WTAO) on MultiversX from Bittensor."
-    },
-    "erd1qqqqqqqqqqqqqpgqzwv6tfg63m8nrxlw2lpl4y8nve3lmrqv78ssqtghs5": {
-      "name": "Hatom: EGLD Isolated Lending",
-      "category": "defi",
-      "subcategory": "isolated_lending",
-      "notes": "Isolated lending market for EGLD with stricter risk parameters."
-    },
-    "erd1qqqqqqqqqqqqqpgq2202fyeklanhzmeewzlnz65ahvm5aynf78sssulpam": {
-      "name": "Hatom: wTAO Isolated Lending",
-      "category": "defi",
-      "subcategory": "isolated_lending",
-      "notes": "Isolated lending market for WTAO."
-    },
-    "erd1qqqqqqqqqqqqqpgqfalcv4c705d457x23hz5d3y5qa2f0p5u78sspe9rh6": {
-      "name": "Hatom: Booster v2",
-      "category": "defi",
-      "subcategory": "boost_rewards",
-      "notes": "Hatom Booster v2 \u2014 reward boost mechanics for stakers and lenders."
-    },
-    "erd1qqqqqqqqqqqqqpgqjcmh08y6ejad07qr2dn8mju9x2fea85578sscjkrvy": {
-      "name": "Hatom: USH Staking Module",
-      "category": "defi",
-      "subcategory": "stablecoin",
-      "notes": "USH stablecoin staking module."
-    },
-    "erd1qqqqqqqqqqqqqpgqs65chjxt09sar8yl4jc5mnqf9rqrwvf478ss5wqent": {
-      "name": "Hatom: USH Redeem Strategy",
-      "category": "defi",
-      "subcategory": "stablecoin",
-      "notes": "USH redemption strategy contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqdetfak4dc0p74jaxvaj27qugpj7wcckq78ssjjqhtj": {
-      "name": "Hatom: USH Depeg Strategy",
-      "category": "defi",
-      "subcategory": "stablecoin",
-      "notes": "USH depeg recovery strategy contract."
-    },
-    "erd1qqqqqqqqqqqqqpgq3uwr0j0dnus8uj9z9eufqsgzg0rflkcz78ss63jydh": {
-      "name": "Hatom: USDT Stable Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Facilitates USDT operations across Hatom money markets."
-    },
-    "erd1qqqqqqqqqqqqqpgqzwys0dcnds29afeh3kj8cqlr3p2708gf78sss5tvn0": {
-      "name": "Hatom: USDC Stable Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Facilitates USDC operations across Hatom money markets."
-    },
-    "erd1qqqqqqqqqqqqqpgqa06423cvtpf0uqxzy7txpt0v92qfzmga78ssz23wj7": {
-      "name": "Hatom: AshSwap Crypto Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Cross-protocol facilitator for AshSwap integration."
-    },
-    "erd1qqqqqqqqqqqqqpgq05zpndkpchz029067dg4rxeh7rlkvzvs78sslvw0aw": {
-      "name": "Hatom: Hatom Crypto Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Hatom internal asset facilitator."
-    },
-    "erd1qqqqqqqqqqqqqpgqcsglyu8pv06ncww4d9aqlqjyvsh0w70y78ssws5tqk": {
-      "name": "Hatom: xExchange Crypto Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Cross-protocol facilitator for xExchange integration."
-    },
-    "erd1qqqqqqqqqqqqqpgqfwu4uqm2ngtpwakzh0j43rcqvz0pd9qn78ssty0r6p": {
-      "name": "Hatom: Foxsy Crypto Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Cross-protocol facilitator for Foxsy integration."
-    },
-    "erd1qqqqqqqqqqqqqpgqeya0gzk74lrmrn5txn0xml9pl0nc4yu078ssax057w": {
-      "name": "Hatom: xMoney Crypto Asset Facilitator",
-      "category": "defi",
-      "subcategory": "facilitator",
-      "notes": "Cross-protocol facilitator for xMoney integration."
-    },
-    "erd1qqqqqqqqqqqqqpgqh3e67630mm7t6awvgdrh78ws9hfh85tz78sssecur8": {
-      "name": "Hatom: Price Aggregator v2",
-      "category": "defi",
-      "subcategory": "oracle",
-      "notes": "Hatom price aggregator v2 (replaces v1)."
-    },
-    "erd1qqqqqqqqqqqqqpgq6pez48walf8wuwg8fdw9aavrsuw8gffq78ssy30hfx": {
-      "name": "Hatom: TAO Lendegate Strategy",
-      "category": "defi",
-      "subcategory": "yield_strategy",
-      "notes": "TAO lendegate / unlendegate yield strategy."
-    },
-    "erd1qqqqqqqqqqqqqpgqvtpg5nxgrjmr3nfl8zknama86putgxdz78ss7dcj4g": {
-      "name": "Hatom: Lendegate Strategy",
-      "category": "defi",
-      "subcategory": "yield_strategy",
-      "notes": "Generic lendegate / unlendegate yield strategy."
-    },
-    "erd1cc2yw3reulhshp3x73q2wye0pq8f4a3xz3pt7xj79phv9wm978ssu99pvt": {
-      "name": "Hatom: Deployer Wallet",
-      "category": "defi",
-      "subcategory": "deployer",
-      "notes": "Hatom main account that owns and deploys the 59-contract Hatom suite."
-    }
-  },
-  "defi_ashswap": {
-    "erd1qqqqqqqqqqqqqpgqglgkaxm73j7mhw5u940fsmmncnayxj884fvs54lnr6": {
-      "name": "AshSwap: Aggregator v1.2",
-      "category": "defi",
-      "subcategory": "dex_aggregator",
-      "notes": "AshSwap DEX aggregator v1.2. Routes trades across xExchange, AshSwap DEX, OneDEX, JEXchange for optimal pricing."
-    },
-    "erd1qqqqqqqqqqqqqpgqjm9xl2s2v5r6lvranfaa84pkmqcz43e04fvs7h8ljn": {
-      "name": "AshSwap: Aggregator v1",
-      "category": "defi",
-      "subcategory": "dex_aggregator",
-      "notes": "AshSwap DEX aggregator v1 (legacy)."
-    },
-    "erd1qqqqqqqqqqqqqpgqe0k2j45f3w9krhx2gl0j8fpg2ksepaea4fvssap9nd": {
-      "name": "AshSwap: Farm Router",
-      "category": "defi",
-      "subcategory": "farming",
-      "notes": "AshSwap farm routing contract for yield farming."
-    },
-    "erd1qqqqqqqqqqqqqpgqfy0nya7qsw2effcfjep6rr7vhv8uaz7a4fvssqy2gl": {
-      "name": "AshSwap: Reward Pool",
-      "category": "defi",
-      "subcategory": "rewards",
-      "notes": "AshSwap reward distribution pool."
-    },
-    "erd1qqqqqqqqqqqqqpgqvdkft2eq9zh7cu9tkxartshu764tqe7s4fvsaw99xj": {
-      "name": "AshSwap: DAO",
-      "category": "defi",
-      "subcategory": "governance",
-      "notes": "AshSwap DAO governance contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqzsmhsv625er2w6w7rel7kmustn3u838f4fvs36jdmc": {
-      "name": "AshSwap: DAO Bribe",
-      "category": "defi",
-      "subcategory": "governance",
-      "notes": "AshSwap vote incentive/bribe contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqlsxsn5qltctvunrhruxhu8yf8k5u96pu2gesw5fzhf": {
-      "name": "AshSwap: AshPerp Trading",
-      "category": "defi",
-      "subcategory": "perpetuals",
-      "notes": "AshSwap perpetual futures trading contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqd95u3dw0r480fapr9rustpvpz5s2nrq72geszjcfhq": {
-      "name": "AshSwap: AshPerp Vault",
-      "category": "defi",
-      "subcategory": "perpetuals",
-      "notes": "Vault backing AshSwap perpetual positions."
-    },
-    "erd1qqqqqqqqqqqqqpgq5l05l0ts4lphdktx33apl0ss9rzf4r244fvsva6j53": {
-      "name": "AshSwap: BUSD/WEGLD V2 Pool",
-      "category": "defi",
-      "subcategory": "liquidity_pool",
-      "notes": "AshSwap stable swap pool for BUSD/WEGLD."
-    }
-  },
-  "defi_onedex": {
-    "erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc": {
-      "name": "OneDex: Swap",
-      "category": "defi",
-      "subcategory": "dex",
-      "notes": "OneDex AMM swap contract."
-    },
-    "erd1qqqqqqqqqqqqqpgq5774jcntdqkzv62tlvvhfn2y7eevpty6mvlszk3dla": {
-      "name": "OneDex: Farms",
-      "category": "defi",
-      "subcategory": "farming",
-      "notes": "OneDex yield farming contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqedhnrfsxc2anl0t6ej6sfakpjqn8w4h7g34skzc9f0": {
-      "name": "OneDex: DCA",
-      "category": "defi",
-      "subcategory": "dca",
-      "notes": "OneDex dollar-cost averaging contract. ~429 EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqtksqmgskqaaprv6ef5y6wlx0ts8s88un0w5sfss92f": {
-      "name": "OneDex: StreamSwap",
-      "category": "defi",
-      "subcategory": "streaming",
-      "notes": "OneDex token streaming/vesting swap contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqxjj6tyrnrdegga4j66s20wql5e9ksq0hmvlscg8r3m": {
-      "name": "OneDex: Launchpad",
-      "category": "defi",
-      "subcategory": "launchpad",
-      "notes": "OneDex token launchpad."
-    }
-  },
-  "defi_jexchange": {
-    "erd1qqqqqqqqqqqqqpgqqvs2jvf64wzcz2836er0j98l3ytshpcr5sns997aga": {
-      "name": "JEXchange: Swap Aggregator",
-      "category": "defi",
-      "subcategory": "dex_aggregator",
-      "notes": "JEXchange swap aggregator contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqdh6jeeyamfhq66u7rmkyc48q037kk8n26avs400gg8": {
-      "name": "JEXchange: Stable Swap Module",
-      "category": "defi",
-      "subcategory": "stable_swap",
-      "notes": "JEXchange stable swap module for pegged asset pairs."
-    },
-    "erd1rn79sxfs2ytqg60jy7mmu8gs37562ze7stm0tplrwglk7nnjm5uqzzmnc4": {
-      "name": "JEXchange: Burn Wallet",
-      "category": "defi",
-      "subcategory": "burn",
-      "notes": "JEX token burn wallet."
-    },
-    "erd1272et87h3sa7hlg5keuswh50guz2ngmd6lhmjxkwwu0ah6gdds5qhka964": {
-      "name": "JEXchange: Fees Wallet",
-      "category": "defi",
-      "subcategory": "fees",
-      "notes": "JEXchange protocol fee collection wallet."
-    }
-  },
-  "defi_xoxno": {
-    "erd1qqqqqqqqqqqqqpgq5rf2sppxk2xu4m0pkmugw2es4gak3rgjah0sxvajva": {
-      "name": "XOXNO: Swap Aggregator",
-      "category": "defi",
-      "subcategory": "aggregator",
-      "notes": "XOXNO swap aggregator \u2014 routes trades across xExchange, AshSwap, OneDex, and other DEXs. >115K transfers per week, the highest-throughput aggregator on MultiversX. Operational EGLD only (~7); routing volume is the metric."
-    },
-    "erd1qqqqqqqqqqqqqpgq6uzdzy54wnesfnlaycxwymrn9texlnmyah0ssrfvk6": {
-      "name": "XOXNO: EGLD Liquid Staking",
-      "category": "defi",
-      "subcategory": "liquid_staking",
-      "notes": "XOXNO liquid staking protocol \u2014 issues XEGLD-e413ed (StakedEGLD). ~358K EGLD staked through this contract (XEGLD supply 318,778 * 1.13 EGLD/XEGLD ratio = ~358K)."
-    },
-    "erd1qqqqqqqqqqqqqpgqdnpmeseu3j5t7grds9dfj8ttt70pev66ah0sydkq9x": {
-      "name": "XOXNO: Governance Proxy xEGLD",
-      "category": "defi",
-      "subcategory": "governance",
-      "notes": "XOXNO's governance vote-escrow contract for xEGLD holders."
-    },
-    "erd1qqqqqqqqqqqqqpgqc0jp2q280xaccqszxwsh5cyl2hv35g79ah0sk4zu5n": {
-      "name": "XOXNO: LSD Composability",
-      "category": "defi",
-      "subcategory": "liquid_staking",
-      "notes": "XOXNO LSD composability layer \u2014 wraps XEGLD usage across DeFi protocols."
-    },
-    "erd1qqqqqqqqqqqqqpgq47v57jzpwrpc89dhmd6d3g9ds94t9sm445qs4k7cgj": {
-      "name": "XOXNO: xLend EGLD Liquidity Layer",
-      "category": "defi",
-      "subcategory": "lending",
-      "notes": "XOXNO xLend protocol EGLD liquidity layer. NFT-backed lending."
-    },
-    "erd1qqqqqqqqqqqqqpgq6wegs2xkypfpync8mn2sa5cmpqjlvrhwz5nqgepyg8": {
-      "name": "XOXNO: Marketplace",
-      "category": "defi",
-      "subcategory": "nft_marketplace",
-      "notes": "XOXNO NFT marketplace aggregator. Largest NFT marketplace on MultiversX."
-    },
-    "erd1qqqqqqqqqqqqqpgq47y8hnct68v6asjv6gxem6h9rumn9frzah0skhxxt6": {
-      "name": "XOXNO: Peer to Peer",
-      "category": "defi",
-      "subcategory": "p2p_trading",
-      "notes": "XOXNO P2P trading contract for direct token swaps."
-    },
-    "erd1qqqqqqqqqqqqqpgq03yjtslvm63d3whhunycqgyg923866c7ah0s9vht8j": {
-      "name": "XOXNO: Ticketing Template",
-      "category": "defi",
-      "subcategory": "ticketing",
-      "notes": "XOXNO event-ticketing template contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqm3w0cr4qnnp5uqqj9s377fde93l82sjuah0suxn6c3": {
-      "name": "XOXNO: Inscriptions",
-      "category": "defi",
-      "subcategory": "inscriptions",
-      "notes": "XOXNO inscriptions contract (BTC-style ordinals on MultiversX)."
-    },
-    "erd1qqqqqqqqqqqqqpgql2gmsgmgfhhmkzawhdvfv9d2j2ddf70aah0syj4psk": {
-      "name": "XOXNO: On-Chain Prices Query",
-      "category": "defi",
-      "subcategory": "oracle",
-      "notes": "XOXNO on-chain price query contract used by the aggregator."
-    },
-    "erd1qqqqqqqqqqqqqpgqscgww6dn8029mm0gyflu3ksep78decapah0s46nj67": {
-      "name": "XOXNO: Fiat Relayer",
-      "category": "defi",
-      "subcategory": "fiat_onramp",
-      "notes": "XOXNO fiat on-ramp relayer contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqrswahk5sxkpwjl0gj6cx2up0cgx2usg7ah0sxnujs6": {
-      "name": "XOXNO: AG Multisig",
-      "category": "defi",
-      "subcategory": "multisig",
-      "notes": "XOXNO aggregator multisig admin."
-    },
-    "erd1qqqqqqqqqqqqqpgq277y4a5fqluldp5k7q0gayk87djyq3meah0sh7n378": {
-      "name": "XOXNO: Foundation Multisig",
-      "category": "defi",
-      "subcategory": "multisig",
-      "notes": "XOXNO Foundation multisig (treasury)."
-    },
-    "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm": {
-      "name": "XOXNO: Deployer Wallet",
-      "category": "defi",
-      "subcategory": "deployer",
-      "notes": "XOXNO main account that owns and deploys the XOXNO contract suite. | Run 11: VERIFIED operates `truststaking` provider (366K locked, 7171 users \u2014 4th largest by locked). 30d operator outbound 341 EGLD: 205 EGLD to held_or_other + 135 EGLD to defi_deposit (likely XOXNO LSD or related contract). XOXNO has both a flagship LSD AND control of a top delegation provider \u2014 significant strategic position.",
-      "also_operates": "truststaking delegation provider (discovered run #11)"
-    }
-  },
-  "defi_other": {
-    "erd1qqqqqqqqqqqqqpgqx6833qjac6uqztgsa8jhlztexucke0hrdfys6wd7qt": {
-      "name": "JewelSwap: Liquid Staking",
-      "category": "defi",
-      "subcategory": "liquid_staking",
-      "notes": "JewelSwap liquid staking protocol. ~715 EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqhpauarfmx75nf4pwxh2fuy520ym03p8e8jcqt466up": {
-      "name": "JewelSwap: NFT Lending Protocol",
-      "category": "defi",
-      "subcategory": "nft_lending",
-      "notes": "JewelSwap NFT-collateralized lending."
-    },
-    "erd1qqqqqqqqqqqqqpgqwqxfv48h9ssns5cc69yudvph297veqeeznyqr4l930": {
-      "name": "Proteo: Elite eGLD Farm",
-      "category": "defi",
-      "subcategory": "farming",
-      "notes": "Proteo DeFi elite EGLD farming contract. ~1.2K EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqfpxvzz7s3ws2at75g8lz92r4z5r24gl4u7zsz63spm": {
-      "name": "QuantumX: AshSwap Aggregator",
-      "category": "defi",
-      "subcategory": "aggregator",
-      "notes": "QuantumX integration with AshSwap aggregator."
-    }
-  },
-  "bridge": {
-    "erd1qqqqqqqqqqqqqpgqxexs26vrvhwh2m4he62d6y3jzmv3qkujyfkq8yh4z2": {
-      "name": "xBridge v2: Ethereum Multisig",
-      "category": "bridge",
-      "subcategory": "ethereum",
-      "notes": "Deprecated v2 Ethereum bridge multisig contract. ~150 EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqhxkc48lt5uv2hejj4wtjqvugfm4wgv6gyfkqw0uuxl": {
-      "name": "xBridge v2: Ethereum Safe",
-      "category": "bridge",
-      "subcategory": "ethereum",
-      "notes": "Deprecated v2 Ethereum bridge safe deposit contract. Users deposit ESDT to initiate transfers to Ethereum."
-    },
-    "erd1qqqqqqqqqqqqqpgqsevgnqk0vu424sg866nh8k2v2hdekrwdyfkqh2mdwr": {
-      "name": "xBridge v2: Ethereum MultiTransfer",
-      "category": "bridge",
-      "subcategory": "ethereum",
-      "notes": "Deprecated v2 Ethereum bridge multi-transfer contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqhs7qdry2fmeau35mzgk89yjfwls3dy59e3yqk48rtc": {
-      "name": "xBridge: Ethereum SC Calls Executor",
-      "category": "bridge",
-      "subcategory": "ethereum",
-      "notes": "Bridge contract for executing Ethereum smart contract calls from MultiversX."
-    },
-    "erd1qqqqqqqqqqqqqpgq6pg5e8twgk6vvnzxzmvfyrphrfs3e3c3yfkqe6kx0x": {
-      "name": "xBridge v2: BSC Multisig",
-      "category": "bridge",
-      "subcategory": "bsc",
-      "notes": "Deprecated v2 Binance Smart Chain bridge multisig. ~150 EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgq2tf9zm9xxv96gz50p8jq5jesudhz45dvyfkqyefrss": {
-      "name": "xBridge v2: BSC Safe",
-      "category": "bridge",
-      "subcategory": "bsc",
-      "notes": "Deprecated v2 BSC bridge safe deposit contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqlsxrfn89u25r7hx4fjaes4qmvqkfhzuwe3yqlafwga": {
-      "name": "xBridge: BSC SC Calls Executor",
-      "category": "bridge",
-      "subcategory": "bsc",
-      "notes": "Bridge contract for BSC smart contract call execution."
-    },
-    "erd1qqqqqqqqqqqqqpgq6r9tallamtyyrya42vy0nsvxudtxpeh9c6cqtm84s9": {
-      "name": "xBridge v2: Polygon Multisig",
-      "category": "bridge",
-      "subcategory": "polygon",
-      "notes": "Deprecated v2 Polygon bridge multisig. ~100 EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqna0yrqqlef9vg5z2gw7nd59fqe6j8ug8c6cqgsu99p": {
-      "name": "xBridge v2: Polygon Safe",
-      "category": "bridge",
-      "subcategory": "polygon",
-      "notes": "Deprecated v2 Polygon bridge safe deposit contract."
-    },
-    "erd1qqqqqqqqqqqqqpgqlzry84nqra87p42uqz5p686y2j088r5je3yqnt84qs": {
-      "name": "xBridge: Gas Price Aggregator",
-      "category": "bridge",
-      "subcategory": "utility",
-      "notes": "Bridge gas price aggregation for cross-chain fee estimation."
-    },
-    "erd1klacqphr2zp0z37gut2gt946las5hk6ls2wmt6uw0mn87jt7zlvqd8haxl": {
-      "name": "Ofero: BNB-MVX Bridge",
-      "category": "bridge",
-      "subcategory": "bsc",
-      "notes": "Ofero Network's BNB to MultiversX bridge."
-    }
-  },
-  "team_and_foundation": {
-    "erd1vup7q384decm8l8mu4ehz75c5mfs089nd32fteru95tm8d0a8dqs8g0yst": {
-      "name": "MultiversX Foundation",
-      "category": "team",
-      "subcategory": "foundation",
-      "notes": "MultiversX Foundation wallet. ~36K EGLD."
-    },
-    "erd195fe57d7fm5h33585sc7wl8trqhrmy85z3dg6f6mqd0724ymljxq3zjemc": {
-      "name": "MultiversX Foundation",
-      "category": "team",
-      "subcategory": "foundation",
-      "notes": "Secondary MultiversX Foundation wallet. ~5K EGLD."
-    },
-    "erd16rp9ur5crj6lcjyttr0ftft8vspmcgq3kk00wmzkv6p7lnqg3v8quhqhh5": {
-      "name": "MultiversX Foundation: Protocol Treasury",
-      "category": "team",
-      "subcategory": "treasury",
-      "notes": "MultiversX Foundation protocol treasury."
-    },
-    "erd1qqqqqqqqqqqqqpgqa9unh4m4j3nyg3l7cvlw8wshumx58m6089pspt29xm": {
-      "name": "Ecosystem Growth Fund for Builders",
-      "category": "team",
-      "subcategory": "ecosystem_fund",
-      "notes": "DAO-governed fund for builders. Growth credits tied to KPIs (active users, TVL, tx volume). ~161K EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg": {
-      "name": "Growth Dividend Fund for Users",
-      "category": "team",
-      "subcategory": "ecosystem_fund",
-      "notes": "Fund to maximize usage and velocity of capital within the network. ~161K EGLD."
-    },
-    "erd1qqqqqqqqqqqqqpgqx7zlk72j6st0hnag9x3drydfadsjc86c27rs8yfq5r": {
-      "name": "PeerMe: MultiversX Foundation Council",
-      "category": "team",
-      "subcategory": "governance",
-      "notes": "MultiversX Foundation Council DAO on PeerMe."
-    }
-  },
-  "staking_providers": {
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j": {
-      "name": "Staking: Figment",
-      "category": "validator",
-      "subcategory": "institutional",
-      "notes": "Figment Networks. 50 nodes. 12% fee. ~584K EGLD locked (largest provider)."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc0llllsayxegu": {
-      "name": "Staking: Binance Staking",
-      "category": "validator",
-      "subcategory": "exchange",
-      "notes": "Binance staking provider. 50 nodes. 7.92% fee. ~432K EGLD locked. ~8.5K delegators."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqhllllsajxzat": {
-      "name": "Staking: Staking Agency",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Staking Agency. 106 nodes. 12% fee. ~420K EGLD locked. ~10K delegators."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzhllllsp9wvyl": {
-      "name": "Staking: Trust Staking",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Trust Staking. 96 nodes. 12% fee. ~375K EGLD locked. ~7.2K delegators."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq8hlllls7a6h85": {
-      "name": "Staking: Meria",
-      "category": "validator",
-      "subcategory": "institutional",
-      "notes": "Meria (French crypto provider). 94 nodes. 12% fee. ~340K EGLD locked. ~11K delegators."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrhlllls062tu4": {
-      "name": "Staking: iVerse Vision",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "iVerse Vision (formerly istariv). 137 nodes. 12% fee. ~284K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqy8lllls62y8s5": {
-      "name": "Staking: The Palm Tree Network",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "The Palm Tree Network. 76 nodes. 12% fee. ~270K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqd8llllslmf3hu": {
-      "name": "Staking: Incal",
-      "category": "validator",
-      "subcategory": "community",
-      "notes": "Incal. 50 nodes. 1% fee (lowest major provider). ~221K EGLD locked. Cap: 230K."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxhllllssz7sl7": {
-      "name": "Staking: Orange Staking",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Orange Staking. 50 nodes. 12% fee. ~220K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd": {
-      "name": "Staking: P2P Validator",
-      "category": "validator",
-      "subcategory": "institutional",
-      "notes": "P2P Validator. 50 nodes. 12% fee. ~217K EGLD locked. Cap: 260K."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq90llllslwfcr3": {
-      "name": "Staking: Valid Blocks",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Valid Blocks. 50 nodes. 7% fee. ~212K EGLD locked. Cap: 350K."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqmhllllsjg335n": {
-      "name": "Staking: Aurentum GmbH",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "German staking provider. 50 nodes. 10% fee. ~204K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpp8llllscdsdm4": {
-      "name": "Staking: Maple Leaf Network",
-      "category": "validator",
-      "subcategory": "community",
-      "notes": "Maple Leaf Network. 50 nodes. 0% fee. ~192K EGLD locked. Cap: 192.5K."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqx8llllsxavffq": {
-      "name": "Staking: Primal Block One",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Primal Block One. 67 nodes. 10% fee. ~191K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp80lllls7xp8j0": {
-      "name": "Staking: Orius International",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Offshore staking provider. 50 nodes. 7.99% fee. ~191K EGLD locked."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53": {
-      "name": "Staking: ProCrypto Distributed Staking",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Global distributed infrastructure. 50 nodes. 9.9% fee."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqppllllls9ftvxy": {
-      "name": "Staking: Ledger by Figment",
-      "category": "validator",
-      "subcategory": "institutional",
-      "notes": "Ledger staking powered by Figment. 50 nodes."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqfhllllscrt56r": {
-      "name": "Staking: Alchemist Stake",
-      "category": "validator",
-      "subcategory": "professional",
-      "notes": "Enterprise-level PoS infrastructure."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq9hllllsz2je7q": {
-      "name": "Staking: PartnerStaking",
-      "category": "validator",
-      "subcategory": "community",
-      "notes": "PartnerStaking with mobile app."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqg8llllsqra25h": {
-      "name": "Staking: XOXNO",
-      "category": "validator",
-      "subcategory": "protocol",
-      "notes": "XOXNO NFT marketplace staking provider."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqklllllsd99rr4": {
-      "name": "Staking: Animoca Brands NAAS",
-      "category": "validator",
-      "subcategory": "institutional",
-      "notes": "Animoca Brands Node-as-a-Service."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu8lllls8clacj": {
-      "name": "Staking: Cointelegraph Decentralization Guardians",
-      "category": "validator",
-      "subcategory": "media",
-      "notes": "Cointelegraph media organization staking node."
-    },
-    "erd1qqqqqqqqqqqqqpgqxwakt2g7u9atsnr03gqcgmhcv38pt7mkd94q6shuwt": {
-      "name": "Staking: MultiversX Community Delegation",
-      "category": "validator",
-      "subcategory": "community",
-      "notes": "Official MultiversX community delegation contract. ~123K EGLD."
-    },
-    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq20llllsh0uuxv": {
-      "name": "Staking: Stake Capital Group",
-      "category": "validator",
-      "subcategory": "institutional",
-      "notes": "Stake Capital Group institutional validator."
-    }
-  },
-  "launchpad": {
-    "erd1qqqqqqqqqqqqqpgqsnjkkezhxfuep9fggkgrta5s6yr4huuq4klqp9wfv0": {
-      "name": "xLaunchpad: Itheum",
-      "category": "other",
-      "subcategory": "launchpad",
-      "notes": "Itheum token launch via xLaunchpad. ~1K EGLD remaining."
-    },
-    "erd1qqqqqqqqqqqqqpgq5sm9ces3tpuuthrah5tnjhxmwgz308pkdrnqtqhj0q": {
-      "name": "xLaunchpad: AI Nexus",
-      "category": "other",
-      "subcategory": "launchpad",
-      "notes": "AI Nexus token launch via xLaunchpad."
-    },
-    "erd1qqqqqqqqqqqqqpgqh664xhyxeqhmzxzhn75aa2yfy33hd58fhneql8e9ee": {
-      "name": "xLaunchpad: Cantina Royale",
-      "category": "other",
-      "subcategory": "launchpad",
-      "notes": "Cantina Royale gaming token launch."
-    },
-    "erd1qqqqqqqqqqqqqpgqynuef6g70kxjcamj3x5pdueqhr0ccw2ey6eqw8cs7w": {
-      "name": "xLaunchpad: Pell Network",
-      "category": "other",
-      "subcategory": "launchpad",
-      "notes": "Pell Network token launch."
-    },
-    "erd1qqqqqqqqqqqqqpgquzv7wtmt3jgydnd8dg0dmfypupqp8prddpssh36x27": {
-      "name": "xLaunchpad: AshSwap",
-      "category": "other",
-      "subcategory": "launchpad",
-      "notes": "AshSwap (ASH) token launch via xLaunchpad."
-    },
-    "erd1qqqqqqqqqqqqqpgqksuhk8dal6wyqje72csqma5j6ncguwj4zvdqc6xzwj": {
-      "name": "xLaunchpad: Hatom",
-      "category": "other",
-      "subcategory": "launchpad",
-      "notes": "Hatom (HTM) token launch via xLaunchpad."
-    }
-  },
-  "unlabeled_whales": {
-    "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj": {
-      "name": "Unknown Whale A (reactivated)",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Originally cold storage (nonce 4 for 4+ weeks). Reactivated Apr 17-18 2026 \u2014 sent ~514K EGLD to Coinbase in four tranches, received ~154K EGLD back. Net: -352K EGLD to Coinbase. Current balance ~143K EGLD. Nonce advanced to 8. Partial exit \u2014 still holds significant position. Watch for continued liquidation."
-    },
-    "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul": {
-      "name": "Unknown Whale B (liquidated to Coinbase)",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Previously received ~512K EGLD from Coinbase over multiple weeks ending Apr 10 2026. Fully liquidated back to Coinbase on Apr 14-17 2026 \u2014 balance went from 512K to ~27 EGLD. Complete OTC cycle: accumulated from Coinbase, held ~1 week, returned to Coinbase. Consistent with bilateral institutional OTC deal where Coinbase intermediated both legs."
-    },
-    "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd": {
-      "name": "Unknown Whale",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~346K EGLD. Shard 0. Nonce 0 (cold storage)."
-    },
-    "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
-      "name": "Unknown Whale",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~253K EGLD. Shard 1."
-    },
-    "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy": {
-      "name": "Unknown Whale",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~206K EGLD. Shard 0."
-    },
-    "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2": {
-      "name": "Unknown Whale",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~193K EGLD. Shard 0."
-    },
-    "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw": {
-      "name": "Unknown Mega Whale (received from Coinbase)",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Received 798,649 EGLD from Coinbase via routing wallet (erd1lgdlteq) on Apr 18 2026 in three tranches (70K + 566K + 161K). Balance jumped from 192,900 to 991,555 EGLD (+414%). Nonce 21 = minimal prior activity. Now 4th-largest non-system account on MultiversX. Identity unknown \u2014 could be institutional OTC buyer, fund custodian, or large holder. HIGH PRIORITY to watch for outflows. Added 2026-04-20."
-    },
-    "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j": {
-      "name": "Unknown Whale",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~165K EGLD. Shard 0."
-    },
-    "erd15ku2r2j6smlwumftumlpw0mfpqxy32wyt4ewxzyhs3ugsjee8stq2xh84e": {
-      "name": "Unknown Whale",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~153K EGLD."
-    },
-    "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0": {
-      "name": "Unknown Whale I (active)",
-      "category": "other",
-      "subcategory": "whale",
-      "notes": "Active account (nonce 8,122). Grew from 127,844 to 146,011 EGLD in week of Apr 1-7 (+18,167 EGLD, +14.2%). Funding source unknown. Not an exchange or known DeFi contract. Added to watch list 2026-04-07."
-    },
-    "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5": {
-      "name": "UPbit OTC Desk",
-      "category": "other",
-      "subcategory": "otc",
-      "notes": "Confirmed UPbit OTC distribution desk. Cycle 1 (Apr 2-13 2026): accumulated ~170K EGLD, distributed in 1-2K increments over 3 weeks. Cycle 2 started Apr 17 2026 with 220K EGLD injection from UPbit. Coordinated partner: erd1z7fnqf4 (distributes to same recipients). Distributes to Bybit-feeding addresses and retail recipients. Nonce ~4,800+. Active account."
-    },
-    "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3": {
-      "name": "Coinbase (secondary)",
-      "category": "exchange",
-      "subcategory": "secondary_wallet",
-      "notes": "Coinbase secondary wallet. Appeared in top-50 accounts as of 2026-04-07 with ~17,489 EGLD. Nonce 29,343 = highly active. Confirmed exchange label from API assets."
-    },
-    "erd1lgdltequh7627rtlacmcp6p5vec7zmu2rxhu7pjwvcja8f4a9gqq9vcc70": {
-      "name": "Coinbase Routing Wallet",
-      "category": "exchange",
-      "subcategory": "routing",
-      "notes": "Routing wallet used by Coinbase on Apr 18 2026. Received 798,649 EGLD from erd116jr (Coinbase) in three tranches and immediately forwarded entire amount to erd18mv2z6r2 (Unknown Mega Whale). Nonce 80 = medium-use routing wallet. Near-zero balance before and after the Apr 18 routing event. Not pure cold storage \u2014 actively used for large routing operations."
-    },
-    "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r": {
-      "name": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
-      "category": "other",
-      "subcategory": "otc",
-      "notes": "High-nonce active wallet (nonce 5,041). Confirmed coordinated OTC partner with erd1v6x9 (UPbit OTC Desk): both wallets send to the same recipient addresses (erd1ghfrqvvyf7, erd1wyj8uf, erd1tr5lahv) in the same 1,000-2,000 EGLD range. Balance stable at ~63K EGLD. Likely same institutional actor or tightly coordinated trading network. Discovered 2026-04-13."
-    }
-  },
-  "exchange_routers": {
-    "erd16nws00klkag9g25nv3v4cuf2elsa83f5pa0jsqn0zt5jq3qufd9q4w8cfm": {
-      "name": "Binance\u2192OTC Router 1",
-      "category": "exchange_router",
-      "subcategory": "otc_intermediary",
-      "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC infrastructure. Nonce 169. Receives 8K EGLD chunks, forwards within minutes. Discovered run #6 (2026-05-04). ~40K EGLD routed in week 1."
-    },
-    "erd1k4r6kyjq7gevgg75pkvjevkyr2q62puet4lrfpuheytx9qacnzfqgmjx5z": {
-      "name": "Binance\u2192OTC Router 2",
-      "category": "exchange_router",
-      "subcategory": "otc_intermediary",
-      "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and OTC Distribution Wallet. Nonce 180. ~24K EGLD routed in week 1. Discovered run #6."
-    },
-    "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0": {
-      "name": "Binance\u2192OTC Router 3",
-      "category": "exchange_router",
-      "subcategory": "otc_intermediary",
-      "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC Desk. Nonce 147. 5,999 EGLD chunks. ~18K EGLD routed in week 1. Discovered run #6."
-    },
-    "erd1g8ll9qrhmevdhjmtk8q02klu8a6q8z7xk0aqml7vncvpxdjwrdgq5ve8we": {
-      "name": "OTC\u2192Bybit Router (UPbit-side, nonce 150)",
-      "category": "exchange_router",
-      "notes": "Receives 2K chunks from UPbit OTC Desk, forwards to Bybit within minutes. Near-zero balance.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1n5wcuda4vnh9umg8trwxqlzg4rglmcl3sjpvf7zdfw3ky2k3j95shk7wlm": {
-      "name": "OTC\u2192Binance Router 1 (nonce 28)",
-      "category": "exchange_router",
-      "notes": "Aggregates 1-2K chunks from UPbit OTC + OTC Distribution, forwards 5-7K to Binance.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1cwkw3qlv4m30dp2gnxed5azy4224ennwfnldvs8rf5jekr6ca4ls4kkuwf": {
-      "name": "OTC\u2192Binance Router 2 (nonce 3924)",
-      "category": "exchange_router",
-      "notes": "High-nonce well-established router. UPbit OTC + OTC Dist \u2192 Binance.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1dmmh5xxfwafcacef2z0d6mduxz7yemg3p9dqdwpefeu5jvexelcs254wu7": {
-      "name": "OTC\u2192Bybit Router 2 (nonce 405)",
-      "category": "exchange_router",
-      "notes": "OTC Distribution \u2192 Bybit, 1-2K chunks.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1fs0c43welvqv6njhe7k3g26rysc2zaav23hydedq65phyca8dz9s44hwc2": {
-      "name": "OTC\u2192Bybit Router 3 (nonce 53)",
-      "category": "exchange_router",
-      "notes": "OTC Distribution \u2192 Bybit, varied sizes.",
-      "first_seen": "2026-05-11"
-    },
-    "erd17cfk3d984xr6eef7smc5a7z480rn3klgu7pt2va7u37ehr7slmtqv6r2pe": {
-      "name": "OTC\u2192Bybit Router 4 (nonce 16)",
-      "category": "exchange_router",
-      "notes": "Newer router. OTC Distribution \u2192 Bybit, 1.8-2K chunks.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1fdkq6mdyg7vt5wzs6039cf00xfmxmlg2kg8xkxkdzv8hw976rk2swhnc35": {
-      "name": "OTC\u2192Binance Router 3 (nonce 663)",
-      "category": "exchange_router",
-      "notes": "Aggregates UPbit OTC + OTC Dist chunks, forwards 6K to Binance.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1ljlcx0wflzwvppyq8vfngs4ryaefvl9ruj7n75q467znw4k9c5dsht33kp": {
-      "name": "Bidirectional Router (Binance\u2194Bybit, nonce 573)",
-      "category": "exchange_router",
-      "notes": "Receives from BOTH UPbit OTC and Binance, forwards to Bybit. First bidirectional pattern.",
-      "first_seen": "2026-05-11"
-    },
-    "erd14n5vtgezssp7742g97djcuz5nss6wy9q2ecps2l77ha75q2t394swhz2yj": {
-      "name": "Cross-Exchange Settlement Router 1 (nonce 355)",
-      "category": "exchange_router",
-      "notes": "Receives from KuCoin + Binance, forwards to Bybit. Clearest CEX-CEX settlement node.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1rffkz8zwp3pvnm02c6aexef5f53d64rjs8nj7qm5t0e8q5lnvutsuhnl73": {
-      "name": "Bybit\u2192KuCoin Reverse Router (nonce 380)",
-      "category": "exchange_router",
-      "notes": "First documented reverse-direction CEX-CEX flow: Bybit \u2192 erd1rffkz8 \u2192 KuCoin.",
-      "first_seen": "2026-05-11"
-    },
-    "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu": {
-      "name": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
-      "category": "exchange_router",
-      "subcategory": "otc_source_router",
-      "notes": "Receives 2K-EGLD chunks from Unknown Whale erd17l22, forwards in 1.2K chunks to erd1ecyftln pass-through. Nonce 2543, ~7.5K EGLD balance. First documented OTC SOURCE upstream layer \u2014 discovered run #8 (2026-05-18).",
-      "first_seen": "2026-05-18"
-    },
-    "erd1ecyftln6n8ej5mxu0ejzxayfmtxfmzc08sp55qr8aj74yst4ejus4em6ce": {
-      "name": "OTC Source Pass-through (erd17l22 chain, nonce 50)",
-      "category": "exchange_router",
-      "subcategory": "otc_source_router",
-      "notes": "Receives from erd1nhtq4 router, forwards 7\u00d7~1.7K to OTC Distribution Wallet + 1\u00d7 to UPbit OTC Desk. Nonce 50, 0 EGLD balance. Run #8 completes the upstream-of-OTC-desks pipeline taxonomy.",
-      "first_seen": "2026-05-18"
-    },
-    "erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp": {
-      "name": "Binance \u2192 OTC Source Funder (canonical, verified pass-through)",
-      "category": "exchange_router",
-      "subcategory": "otc_source_funder",
-      "notes": "Run #9 first observed (2026-05-25): sent 1,083 + 919 EGLD to erd17l22 OTC source. Run #10 (2026-06-01) VERIFIED: 14d inbound 100% from Binance.com hot (erd1sdsl), 7d throughput 6,970 EGLD all forwarded to erd17l22, balance 0, nonce 1505 = pure pass-through. Completes the OTC pipeline taxonomy: Binance.com \u2192 this \u2192 erd17l22 \u2192 chain routers \u2192 OTC desks \u2192 retail. Run #11: address typo discovered (run #10 used erd12tq6ax5k...wgxz8...07ny36 with wrong checksum); canonical form has ...wmuvdv...07ny36 suffix. Promoted from unknown_whales to exchange_routers in run #12 per multi-run carrying recommendation.",
-      "first_seen": "2026-05-25",
-      "verified_binance_origin": "2026-06-01",
-      "canonicalized": "2026-06-15"
-    }
-  },
-  "unknown_whales": {
-    "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
-      "name": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
-      "category": "whale",
-      "subcategory": "otc_source",
-      "notes": "Run #7 +58K accumulation, Run #8 -26K distributed in 13 chunks of 2K EGLD to routing wallet erd1nhtq4 (nonce 2543), terminating at OTC Distribution Wallet + UPbit OTC Desk. Now confirmed as OTC SOURCE wallet upstream of the desk layer. Investigate funding source.",
-      "first_seen": "2026-04-02",
-      "balance_egld_2026_05_18": 292122,
-      "notes_run9": "Dormant run #9 (only +2K inbound from erd12tq6ax5k; -6K outbound at the May 18 boundary). Distribution cycle appears complete. Funder candidate identified."
-    }
-  },
-  "staking_provider_operators": {
-    "_description": "Top staking provider operator (ownerAddress) wallets. Discovered run #11 via scripts/delegator_behavior.py. These are the wallets that control delegation contract upgrades and extract service-fee revenue.",
-    "_added_run": 11,
-    "erd1nknqh4rw82w67gun6x3meaxw62h627kp86lfjy8mypvgkt6084ps6kr7jm": {
-      "name": "figment-networks operator",
-      "category": "staking_operator",
-      "operates": "figment-networks (604K locked, 333 users)",
-      "first_seen": "2026-06-08"
-    },
-    "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc": {
-      "name": "binance_staking operator",
-      "category": "staking_operator",
-      "operates": "binance_staking (521K locked, 8482 users)",
-      "first_seen": "2026-06-08"
-    },
-    "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl": {
-      "name": "stakingagency operator",
-      "category": "staking_operator",
-      "operates": "stakingagency (425K locked, 9970 users)",
-      "outbound_30d_egld": 463,
-      "first_seen": "2026-06-08"
-    },
-    "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg": {
-      "name": "meria operator",
-      "category": "staking_operator",
-      "operates": "meria (346K locked, 10953 users)",
-      "outbound_30d_egld": 346,
-      "first_seen": "2026-06-08"
-    },
-    "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv": {
-      "name": "istariv operator",
-      "category": "staking_operator",
-      "operates": "istariv (278K locked, 4076 users)",
-      "outbound_30d_egld": 786,
-      "first_seen": "2026-06-08"
-    },
-    "erd1kz2kumr0clug4ht2ek0l4l9drvq3rne9lmkwrjf3qv2luyuuaj2szjwv0f": {
-      "name": "thepalmtreenw operator",
-      "category": "staking_operator",
-      "operates": "thepalmtreenw (262K locked, 3667 users)",
-      "outbound_30d_egld": 550,
-      "first_seen": "2026-06-08"
-    },
-    "erd1mdpdlqyulvf05n87ze8a75fwvg4anz2y4jh8vcd2a67edmarqjlqxfyzzq": {
-      "name": "validblocks operator",
-      "category": "staking_operator",
-      "operates": "validblocks (236K locked, 4505 users)",
-      "outbound_30d_egld": 0,
-      "first_seen": "2026-06-08"
-    }
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrlllsrujgla": {
+   "name": "System: Governance",
+   "category": "system",
+   "subcategory": "governance",
+   "notes": "On-chain governance contract for protocol proposals and voting."
   }
+ },
+ "exchanges": {
+  "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p": {
+   "name": "Binance Staking",
+   "category": "exchange",
+   "subcategory": "staking",
+   "notes": "Contains all staked amounts on the Binance platform. ~3.2M EGLD. Second largest account."
+  },
+  "erd1ylwuswz9zuk4acuq4aa6d0x9ys293yhlpwg6vpuwntndyej4u44q896zlz": {
+   "name": "Binance.com",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Binance exchange wallet. ~517K EGLD. Shard 2."
+  },
+  "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets": {
+   "name": "Binance.com",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Binance exchange wallet (high activity, ~708K nonce). ~408K EGLD. Shard 1."
+  },
+  "erd1v4ms58e22zjcp08suzqgm9ajmumwxcy4hfkdc23gvynnegjdflmsj6gmaq": {
+   "name": "Binance.com",
+   "category": "exchange",
+   "subcategory": "cold_wallet",
+   "notes": "Binance cold storage. ~300K EGLD. Low nonce (3). Shard 1."
+  },
+  "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49": {
+   "name": "UPbit",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Korean exchange. ~1.4M EGLD. Third largest non-system account. Shard 2."
+  },
+  "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx": {
+   "name": "Bybit",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Bybit exchange. ~404K EGLD. High activity (~82K nonce). Shard 1."
+  },
+  "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4": {
+   "name": "Crypto.com",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Crypto.com main wallet. ~182K EGLD. Shard 2."
+  },
+  "erd1qr9av6ar4ymr05xj93jzdxyezdrp6r4hz6u0scz4dtzvv7kmlldse7zktc": {
+   "name": "Crypto.com",
+   "category": "exchange",
+   "subcategory": "secondary_wallet",
+   "notes": "Crypto.com secondary wallet. ~5K EGLD."
+  },
+  "erd1ezp86jwmcp4fmmu2mfqz0438py392z5wp6kzuqsjldgd68nwt89qshfs0y": {
+   "name": "MEXC",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "MEXC Global exchange. ~84K EGLD."
+  },
+  "erd1w547kw69kpd60vlpr9pe0pn9nnqeljrcaz73znenjpgt0h3qlqqqm3szxj": {
+   "name": "Bitget",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Bitget exchange. ~79K EGLD."
+  },
+  "erd16jruked88jgtsar78ej85hjp3qsd9jkjcw4swsn7k0teqh3wgcqqgyrupq": {
+   "name": "Coinbase",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Coinbase exchange. ~67K EGLD."
+  },
+  "erd1eae23a530qymlpvfrudzsge5wgl003wl92saax74cew7j549eqqq3jklut": {
+   "name": "Coinbase Custody",
+   "category": "exchange",
+   "subcategory": "custody",
+   "notes": "Coinbase institutional custody. ~65K EGLD."
+  },
+  "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3": {
+   "name": "Coinbase",
+   "category": "exchange",
+   "subcategory": "secondary_wallet",
+   "notes": "Coinbase secondary wallet. ~16K EGLD."
+  },
+  "erd1p4vy5n9mlkdys7xczegj398xtyvw2nawz00nnfh4yr7fpjh297cqtsu7lw": {
+   "name": "Gate.io",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Gate.io exchange. ~57K EGLD."
+  },
+  "erd1ty4pvmjtl3mnsjvnsxgcpedd08fsn83f05tu0v5j23wnfce9p86snlkdyy": {
+   "name": "KuCoin",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "KuCoin exchange. ~30K EGLD."
+  },
+  "erd1a56dkgcpwwx6grmcvw9w5vpf9zeq53w3w7n6dmxcpxjry3l7uh2s3h9dtr": {
+   "name": "Bitfinex",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Bitfinex exchange. ~17K EGLD."
+  },
+  "erd1ra67nmtcuagw2y73sca7fzgh66yemtslvshfz77z9tep9qx5swvsv23lhf": {
+   "name": "Tokero",
+   "category": "exchange",
+   "subcategory": "hot_wallet",
+   "notes": "Romanian exchange. ~8K EGLD."
+  }
+ },
+ "defi_xexchange": {
+  "erd1qqqqqqqqqqqqqpgqq66xk9gfr4esuhem3jru86wg5hvp33a62jps2fy57p": {
+   "name": "xExchange: Router",
+   "category": "defi",
+   "subcategory": "dex_router",
+   "notes": "Main xExchange (formerly Maiar Exchange) router contract. Owns all pair contracts. Maps token pairs to LP addresses. Owner: erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97."
+  },
+  "erd1qqqqqqqqqqqqqpgqrc4pg2xarca9z34njcxeur622qmfjp8w2jps89fxnl": {
+   "name": "xExchange: Proxy",
+   "category": "defi",
+   "subcategory": "dex_proxy",
+   "notes": "xExchange proxy contract for locked asset operations and energy management."
+  },
+  "erd1qqqqqqqqqqqqqpgqvc7gdl0p4s97guh498wgz75k8sav6sjfjlwqh679jy": {
+   "name": "xExchange: WrappedEGLD Contract Shard 0",
+   "category": "defi",
+   "subcategory": "wegld",
+   "notes": "WEGLD wrapping contract for shard 0. ~311K EGLD locked. Owner: erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97."
+  },
+  "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3": {
+   "name": "xExchange: WrappedEGLD Contract Shard 1",
+   "category": "defi",
+   "subcategory": "wegld",
+   "notes": "WEGLD wrapping contract for shard 1. ~248K EGLD locked. Highest daily transfer activity."
+  },
+  "erd1qqqqqqqqqqqqqpgqmuk0q2saj0mgutxm4teywre6dl8wqf58xamqdrukln": {
+   "name": "xExchange: WrappedEGLD Contract Shard 2",
+   "category": "defi",
+   "subcategory": "wegld",
+   "notes": "WEGLD wrapping contract for shard 2. ~9K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqpgqyg62a3tswuzun2wzp8a83sjkc709wwjt2jpssphddm": {
+   "name": "xExchange: Distribution Contract",
+   "category": "defi",
+   "subcategory": "distribution",
+   "notes": "Locked asset distribution for xExchange rewards and MEX economics."
+  },
+  "erd1qqqqqqqqqqqqqpgqdt9aady5jp7av97m7rqxh6e5ywyqsplz2jps5mw02n": {
+   "name": "xExchange: Governance Module",
+   "category": "defi",
+   "subcategory": "governance",
+   "notes": "MEX governance contract for xExchange protocol proposals."
+  },
+  "erd1qqqqqqqqqqqqqpgqyxqwuhtj3xhftcpn2kzuq07lhdp4ng222jps650gtt": {
+   "name": "xExchange: Governance",
+   "category": "defi",
+   "subcategory": "governance",
+   "notes": "xExchange on-chain governance."
+  },
+  "erd1qqqqqqqqqqqqqpgqtce4z8zzz76xjht3hak0hseshcmj3ush2jps2exxjn": {
+   "name": "xExchange: Liquidity Pool SafePrice Views",
+   "category": "defi",
+   "subcategory": "oracle",
+   "notes": "Safe price oracle views for xExchange liquidity pools."
+  },
+  "erd1qqqqqqqqqqqqqpgqu64gygjs5ted4rupaewaszyhaxl9lv7m2jpsw47nzr": {
+   "name": "xExchange: XMEX Wrapper Contract",
+   "category": "defi",
+   "subcategory": "wrapper",
+   "notes": "Wrapping/unwrapping contract for xMEX energy tokens."
+  },
+  "erd1qqqqqqqqqqqqqpgq0a80r53sla2lx8wyfhqnz69prntkefs42jps3tdchu": {
+   "name": "xExchange: Permissions Hub",
+   "category": "defi",
+   "subcategory": "permissions",
+   "notes": "Access control and permissions management for xExchange contracts."
+  },
+  "erd1qqqqqqqqqqqqqpgqawujux7w60sjhm8xdx3n0ed8v9h7kpqu2jpsecw6ek": {
+   "name": "xExchange: AshSwap Locking SC",
+   "category": "defi",
+   "subcategory": "locking",
+   "notes": "AshSwap locking proxy integrated with xExchange energy system."
+  },
+  "erd1qqqqqqqqqqqqqpgqs0jjyjmx0cvek4p8yj923q5yreshtpa62jpsz6vt84": {
+   "name": "xExchange: Legacy Simple Lock",
+   "category": "defi",
+   "subcategory": "locking",
+   "notes": "Legacy simple lock contract for token locking."
+  },
+  "erd1qqqqqqqqqqqqqpgq50dge6rrpcra4tp9hl57jl0893a4r2r72jpsk39rjj": {
+   "name": "xExchange: Metabonding Rewards",
+   "category": "defi",
+   "subcategory": "rewards",
+   "notes": "Metabonding reward distribution for MEX stakers."
+  },
+  "erd1qqqqqqqqqqqqqpgqt7tyyswqvplpcqnhwe20xqrj7q7ap27d2jps7zczse": {
+   "name": "Metabonding: Locked Assets",
+   "category": "defi",
+   "subcategory": "locking",
+   "notes": "Locked assets for the Metabonding program."
+  },
+  "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97": {
+   "name": "xExchange: Deployer/Owner",
+   "category": "defi",
+   "subcategory": "deployer",
+   "notes": "Owner address of the xExchange router, WEGLD contracts, and major xExchange infrastructure. Key governance address."
+  }
+ },
+ "defi_hatom": {
+  "erd1qqqqqqqqqqqqqpgq35qkf34a8svu4r2zmfzuztmeltqclapv78ss5jleq3": {
+   "name": "Hatom: EGLD Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "Hatom's EGLD lending and borrowing market. ~65K EGLD locked. Largest Hatom contract by TVL."
+  },
+  "erd1qqqqqqqqqqqqqpgq4gzfcw7kmkjy8zsf04ce6dl0auhtzjx078sslvrf4e": {
+   "name": "Hatom: Liquid Staking",
+   "category": "defi",
+   "subcategory": "liquid_staking",
+   "notes": "Hatom's liquid staking protocol (sEGLD). ~44K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqpgqnjmyp62wxh5x89ttpcxvwueujeu4tqrygcwsg7pwpc": {
+   "name": "Hatom: Price Aggregator v1",
+   "category": "defi",
+   "subcategory": "oracle",
+   "notes": "Hatom's price oracle aggregator for money market price feeds."
+  },
+  "erd1qqqqqqqqqqqqqpgqnwrj9zmr5lq886u2usxv5f5qccgy8whx78ss975ms4": {
+   "name": "Hatom: Oracle",
+   "category": "defi",
+   "subcategory": "oracle",
+   "notes": "Hatom money market oracle for asset pricing."
+  },
+  "erd1qqqqqqqqqqqqqpgq2y55sf0tqsdncxcrpe67tce4hc0qagv478ssaw9vkl": {
+   "name": "Hatom: USH Minter (v2)",
+   "category": "defi",
+   "subcategory": "stablecoin",
+   "notes": "USH stablecoin minter contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqcvyhpnfqscnqwt0j5z5szwsarypha7ur78ssjjwh02": {
+   "name": "Hatom: USH Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "USH stablecoin money market on Hatom."
+  },
+  "erd1qqqqqqqqqqqqqpgqdvrqup8k9mxvhvnc7cnzkcs028u95s5378ssr9d72p": {
+   "name": "Hatom: BUSD Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "BUSD lending and borrowing market on Hatom."
+  },
+  "erd1qqqqqqqqqqqqqpgqxerzmkr80xc0qwa8vvm5ug9h8e2y7jgsqk2svevje0": {
+   "name": "Hatom: HTM Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "HTM token money market on Hatom."
+  },
+  "erd1qqqqqqqqqqqqqpgq2khda0rx207gvlqg92dq5rh0z03a8dqf78ssu0qlcc": {
+   "name": "Hatom: sEGLD Vote Delegation",
+   "category": "defi",
+   "subcategory": "governance",
+   "notes": "Delegates voting power from sEGLD holders for MultiversX governance."
+  },
+  "erd1qqqqqqqqqqqqqpgqw4dsh8j9xafw45uwr2f6a48ajvcqey8s78sstvn7xd": {
+   "name": "Hatom: Booster",
+   "category": "defi",
+   "subcategory": "rewards",
+   "notes": "Hatom rewards booster contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqxp28qpnv7rfcmk6qrgxgw5uf2fnp84ar78ssqdk6hr": {
+   "name": "Hatom: Controller",
+   "category": "defi",
+   "subcategory": "controller",
+   "notes": "Main Hatom protocol controller contract. Manages all money markets."
+  },
+  "erd1qqqqqqqqqqqqqpgqxmn4jlazsjp6gnec95423egatwcdfcjm78ss5q550k": {
+   "name": "Hatom: sEGLD Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "sEGLD (liquid staked EGLD) lending market."
+  },
+  "erd1qqqqqqqqqqqqqpgqkrgsvct7hfx7ru30mfzk3uy6pxzxn6jj78ss84aldu": {
+   "name": "Hatom: USDC Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "USDC lending and borrowing market."
+  },
+  "erd1qqqqqqqqqqqqqpgqvxn0cl35r74tlw2a8d794v795jrzfxyf78sstg8pjr": {
+   "name": "Hatom: USDT Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "USDT lending and borrowing market."
+  },
+  "erd1qqqqqqqqqqqqqpgqta0tv8d5pjzmwzshrtw62n4nww9kxtl278sssypgmrs": {
+   "name": "Hatom: UTK Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "UTK token lending and borrowing market."
+  },
+  "erd1qqqqqqqqqqqqqpgq8h8upp38fe9p4ny9ecvsett0usu2ep7978ssypgmrs": {
+   "name": "Hatom: WETH Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "Wrapped ETH lending and borrowing market."
+  },
+  "erd1qqqqqqqqqqqqqpgqg47t8v5nwzvdxgf6g5jkxleuplu8y4f678ssfcg5gy": {
+   "name": "Hatom: WBTC Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "Wrapped BTC lending market. H-token: HWBTC-49ca31. Market cap ~$1.14M (TVL proxy)."
+  },
+  "erd1qqqqqqqqqqqqqpgq2rnjnp543m5d8fac8v2ltkr5w2quh0v978ssswj939": {
+   "name": "Hatom: MEX Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "MEX token lending market. H-token: HMEX-df6df7. Market cap ~$33K (TVL proxy)."
+  },
+  "erd1qqqqqqqqqqqqqpgqhykmg59ny8tem37m0gng3ygwtphmefyz78ssfecn6q": {
+   "name": "Hatom: TAO Liquid Staking",
+   "category": "defi",
+   "subcategory": "liquid_staking",
+   "notes": "Hatom's liquid staking for TAO (Bittensor). Issues SWTAO-356a25. Market cap ~$1.08M."
+  },
+  "erd1qqqqqqqqqqqqqpgq7sspywe6e2ehy7dn5dz00ved3aa450mv78ssllmln6": {
+   "name": "Hatom: swTAO Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "Staked WTAO lending market. H-token: HSWTAO-6df80c. Market cap ~$1.02M."
+  },
+  "erd1qqqqqqqqqqqqqpgqz9pvuz22qvqxfqpk6r3rluj0u2can55c78ssgcqs00": {
+   "name": "Hatom: wTAO Money Market",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "Wrapped TAO lending market. H-token: HWTAO-2e9136. Market cap ~$203K."
+  },
+  "erd1qqqqqqqqqqqqqpgqajq8kvm8qq045s2fvj4sa7dph8kpqx9d78ssxjzjdh": {
+   "name": "Hatom: Wrapped TAO Minter",
+   "category": "defi",
+   "subcategory": "bridge_wrapper",
+   "notes": "Issues Wrapped TAO (WTAO) on MultiversX from Bittensor."
+  },
+  "erd1qqqqqqqqqqqqqpgqzwv6tfg63m8nrxlw2lpl4y8nve3lmrqv78ssqtghs5": {
+   "name": "Hatom: EGLD Isolated Lending",
+   "category": "defi",
+   "subcategory": "isolated_lending",
+   "notes": "Isolated lending market for EGLD with stricter risk parameters."
+  },
+  "erd1qqqqqqqqqqqqqpgq2202fyeklanhzmeewzlnz65ahvm5aynf78sssulpam": {
+   "name": "Hatom: wTAO Isolated Lending",
+   "category": "defi",
+   "subcategory": "isolated_lending",
+   "notes": "Isolated lending market for WTAO."
+  },
+  "erd1qqqqqqqqqqqqqpgqfalcv4c705d457x23hz5d3y5qa2f0p5u78sspe9rh6": {
+   "name": "Hatom: Booster v2",
+   "category": "defi",
+   "subcategory": "boost_rewards",
+   "notes": "Hatom Booster v2 \u2014 reward boost mechanics for stakers and lenders."
+  },
+  "erd1qqqqqqqqqqqqqpgqjcmh08y6ejad07qr2dn8mju9x2fea85578sscjkrvy": {
+   "name": "Hatom: USH Staking Module",
+   "category": "defi",
+   "subcategory": "stablecoin",
+   "notes": "USH stablecoin staking module."
+  },
+  "erd1qqqqqqqqqqqqqpgqs65chjxt09sar8yl4jc5mnqf9rqrwvf478ss5wqent": {
+   "name": "Hatom: USH Redeem Strategy",
+   "category": "defi",
+   "subcategory": "stablecoin",
+   "notes": "USH redemption strategy contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqdetfak4dc0p74jaxvaj27qugpj7wcckq78ssjjqhtj": {
+   "name": "Hatom: USH Depeg Strategy",
+   "category": "defi",
+   "subcategory": "stablecoin",
+   "notes": "USH depeg recovery strategy contract."
+  },
+  "erd1qqqqqqqqqqqqqpgq3uwr0j0dnus8uj9z9eufqsgzg0rflkcz78ss63jydh": {
+   "name": "Hatom: USDT Stable Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Facilitates USDT operations across Hatom money markets."
+  },
+  "erd1qqqqqqqqqqqqqpgqzwys0dcnds29afeh3kj8cqlr3p2708gf78sss5tvn0": {
+   "name": "Hatom: USDC Stable Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Facilitates USDC operations across Hatom money markets."
+  },
+  "erd1qqqqqqqqqqqqqpgqa06423cvtpf0uqxzy7txpt0v92qfzmga78ssz23wj7": {
+   "name": "Hatom: AshSwap Crypto Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Cross-protocol facilitator for AshSwap integration."
+  },
+  "erd1qqqqqqqqqqqqqpgq05zpndkpchz029067dg4rxeh7rlkvzvs78sslvw0aw": {
+   "name": "Hatom: Hatom Crypto Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Hatom internal asset facilitator."
+  },
+  "erd1qqqqqqqqqqqqqpgqcsglyu8pv06ncww4d9aqlqjyvsh0w70y78ssws5tqk": {
+   "name": "Hatom: xExchange Crypto Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Cross-protocol facilitator for xExchange integration."
+  },
+  "erd1qqqqqqqqqqqqqpgqfwu4uqm2ngtpwakzh0j43rcqvz0pd9qn78ssty0r6p": {
+   "name": "Hatom: Foxsy Crypto Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Cross-protocol facilitator for Foxsy integration."
+  },
+  "erd1qqqqqqqqqqqqqpgqeya0gzk74lrmrn5txn0xml9pl0nc4yu078ssax057w": {
+   "name": "Hatom: xMoney Crypto Asset Facilitator",
+   "category": "defi",
+   "subcategory": "facilitator",
+   "notes": "Cross-protocol facilitator for xMoney integration."
+  },
+  "erd1qqqqqqqqqqqqqpgqh3e67630mm7t6awvgdrh78ws9hfh85tz78sssecur8": {
+   "name": "Hatom: Price Aggregator v2",
+   "category": "defi",
+   "subcategory": "oracle",
+   "notes": "Hatom price aggregator v2 (replaces v1)."
+  },
+  "erd1qqqqqqqqqqqqqpgq6pez48walf8wuwg8fdw9aavrsuw8gffq78ssy30hfx": {
+   "name": "Hatom: TAO Lendegate Strategy",
+   "category": "defi",
+   "subcategory": "yield_strategy",
+   "notes": "TAO lendegate / unlendegate yield strategy."
+  },
+  "erd1qqqqqqqqqqqqqpgqvtpg5nxgrjmr3nfl8zknama86putgxdz78ss7dcj4g": {
+   "name": "Hatom: Lendegate Strategy",
+   "category": "defi",
+   "subcategory": "yield_strategy",
+   "notes": "Generic lendegate / unlendegate yield strategy."
+  },
+  "erd1cc2yw3reulhshp3x73q2wye0pq8f4a3xz3pt7xj79phv9wm978ssu99pvt": {
+   "name": "Hatom: Deployer Wallet",
+   "category": "defi",
+   "subcategory": "deployer",
+   "notes": "Hatom main account that owns and deploys the 59-contract Hatom suite."
+  }
+ },
+ "defi_ashswap": {
+  "erd1qqqqqqqqqqqqqpgqglgkaxm73j7mhw5u940fsmmncnayxj884fvs54lnr6": {
+   "name": "AshSwap: Aggregator v1.2",
+   "category": "defi",
+   "subcategory": "dex_aggregator",
+   "notes": "AshSwap DEX aggregator v1.2. Routes trades across xExchange, AshSwap DEX, OneDEX, JEXchange for optimal pricing."
+  },
+  "erd1qqqqqqqqqqqqqpgqjm9xl2s2v5r6lvranfaa84pkmqcz43e04fvs7h8ljn": {
+   "name": "AshSwap: Aggregator v1",
+   "category": "defi",
+   "subcategory": "dex_aggregator",
+   "notes": "AshSwap DEX aggregator v1 (legacy)."
+  },
+  "erd1qqqqqqqqqqqqqpgqe0k2j45f3w9krhx2gl0j8fpg2ksepaea4fvssap9nd": {
+   "name": "AshSwap: Farm Router",
+   "category": "defi",
+   "subcategory": "farming",
+   "notes": "AshSwap farm routing contract for yield farming."
+  },
+  "erd1qqqqqqqqqqqqqpgqfy0nya7qsw2effcfjep6rr7vhv8uaz7a4fvssqy2gl": {
+   "name": "AshSwap: Reward Pool",
+   "category": "defi",
+   "subcategory": "rewards",
+   "notes": "AshSwap reward distribution pool."
+  },
+  "erd1qqqqqqqqqqqqqpgqvdkft2eq9zh7cu9tkxartshu764tqe7s4fvsaw99xj": {
+   "name": "AshSwap: DAO",
+   "category": "defi",
+   "subcategory": "governance",
+   "notes": "AshSwap DAO governance contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqzsmhsv625er2w6w7rel7kmustn3u838f4fvs36jdmc": {
+   "name": "AshSwap: DAO Bribe",
+   "category": "defi",
+   "subcategory": "governance",
+   "notes": "AshSwap vote incentive/bribe contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqlsxsn5qltctvunrhruxhu8yf8k5u96pu2gesw5fzhf": {
+   "name": "AshSwap: AshPerp Trading",
+   "category": "defi",
+   "subcategory": "perpetuals",
+   "notes": "AshSwap perpetual futures trading contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqd95u3dw0r480fapr9rustpvpz5s2nrq72geszjcfhq": {
+   "name": "AshSwap: AshPerp Vault",
+   "category": "defi",
+   "subcategory": "perpetuals",
+   "notes": "Vault backing AshSwap perpetual positions."
+  },
+  "erd1qqqqqqqqqqqqqpgq5l05l0ts4lphdktx33apl0ss9rzf4r244fvsva6j53": {
+   "name": "AshSwap: BUSD/WEGLD V2 Pool",
+   "category": "defi",
+   "subcategory": "liquidity_pool",
+   "notes": "AshSwap stable swap pool for BUSD/WEGLD."
+  }
+ },
+ "defi_onedex": {
+  "erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc": {
+   "name": "OneDex: Swap",
+   "category": "defi",
+   "subcategory": "dex",
+   "notes": "OneDex AMM swap contract."
+  },
+  "erd1qqqqqqqqqqqqqpgq5774jcntdqkzv62tlvvhfn2y7eevpty6mvlszk3dla": {
+   "name": "OneDex: Farms",
+   "category": "defi",
+   "subcategory": "farming",
+   "notes": "OneDex yield farming contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqedhnrfsxc2anl0t6ej6sfakpjqn8w4h7g34skzc9f0": {
+   "name": "OneDex: DCA",
+   "category": "defi",
+   "subcategory": "dca",
+   "notes": "OneDex dollar-cost averaging contract. ~429 EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqtksqmgskqaaprv6ef5y6wlx0ts8s88un0w5sfss92f": {
+   "name": "OneDex: StreamSwap",
+   "category": "defi",
+   "subcategory": "streaming",
+   "notes": "OneDex token streaming/vesting swap contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqxjj6tyrnrdegga4j66s20wql5e9ksq0hmvlscg8r3m": {
+   "name": "OneDex: Launchpad",
+   "category": "defi",
+   "subcategory": "launchpad",
+   "notes": "OneDex token launchpad."
+  }
+ },
+ "defi_jexchange": {
+  "erd1qqqqqqqqqqqqqpgqqvs2jvf64wzcz2836er0j98l3ytshpcr5sns997aga": {
+   "name": "JEXchange: Swap Aggregator",
+   "category": "defi",
+   "subcategory": "dex_aggregator",
+   "notes": "JEXchange swap aggregator contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqdh6jeeyamfhq66u7rmkyc48q037kk8n26avs400gg8": {
+   "name": "JEXchange: Stable Swap Module",
+   "category": "defi",
+   "subcategory": "stable_swap",
+   "notes": "JEXchange stable swap module for pegged asset pairs."
+  },
+  "erd1rn79sxfs2ytqg60jy7mmu8gs37562ze7stm0tplrwglk7nnjm5uqzzmnc4": {
+   "name": "JEXchange: Burn Wallet",
+   "category": "defi",
+   "subcategory": "burn",
+   "notes": "JEX token burn wallet."
+  },
+  "erd1272et87h3sa7hlg5keuswh50guz2ngmd6lhmjxkwwu0ah6gdds5qhka964": {
+   "name": "JEXchange: Fees Wallet",
+   "category": "defi",
+   "subcategory": "fees",
+   "notes": "JEXchange protocol fee collection wallet."
+  }
+ },
+ "defi_xoxno": {
+  "erd1qqqqqqqqqqqqqpgq5rf2sppxk2xu4m0pkmugw2es4gak3rgjah0sxvajva": {
+   "name": "XOXNO: Swap Aggregator",
+   "category": "defi",
+   "subcategory": "aggregator",
+   "notes": "XOXNO swap aggregator \u2014 routes trades across xExchange, AshSwap, OneDex, and other DEXs. >115K transfers per week, the highest-throughput aggregator on MultiversX. Operational EGLD only (~7); routing volume is the metric."
+  },
+  "erd1qqqqqqqqqqqqqpgq6uzdzy54wnesfnlaycxwymrn9texlnmyah0ssrfvk6": {
+   "name": "XOXNO: EGLD Liquid Staking",
+   "category": "defi",
+   "subcategory": "liquid_staking",
+   "notes": "XOXNO liquid staking protocol \u2014 issues XEGLD-e413ed (StakedEGLD). ~358K EGLD staked through this contract (XEGLD supply 318,778 * 1.13 EGLD/XEGLD ratio = ~358K)."
+  },
+  "erd1qqqqqqqqqqqqqpgqdnpmeseu3j5t7grds9dfj8ttt70pev66ah0sydkq9x": {
+   "name": "XOXNO: Governance Proxy xEGLD",
+   "category": "defi",
+   "subcategory": "governance",
+   "notes": "XOXNO's governance vote-escrow contract for xEGLD holders."
+  },
+  "erd1qqqqqqqqqqqqqpgqc0jp2q280xaccqszxwsh5cyl2hv35g79ah0sk4zu5n": {
+   "name": "XOXNO: LSD Composability",
+   "category": "defi",
+   "subcategory": "liquid_staking",
+   "notes": "XOXNO LSD composability layer \u2014 wraps XEGLD usage across DeFi protocols."
+  },
+  "erd1qqqqqqqqqqqqqpgq47v57jzpwrpc89dhmd6d3g9ds94t9sm445qs4k7cgj": {
+   "name": "XOXNO: xLend EGLD Liquidity Layer",
+   "category": "defi",
+   "subcategory": "lending",
+   "notes": "XOXNO xLend protocol EGLD liquidity layer. NFT-backed lending."
+  },
+  "erd1qqqqqqqqqqqqqpgq6wegs2xkypfpync8mn2sa5cmpqjlvrhwz5nqgepyg8": {
+   "name": "XOXNO: Marketplace",
+   "category": "defi",
+   "subcategory": "nft_marketplace",
+   "notes": "XOXNO NFT marketplace aggregator. Largest NFT marketplace on MultiversX."
+  },
+  "erd1qqqqqqqqqqqqqpgq47y8hnct68v6asjv6gxem6h9rumn9frzah0skhxxt6": {
+   "name": "XOXNO: Peer to Peer",
+   "category": "defi",
+   "subcategory": "p2p_trading",
+   "notes": "XOXNO P2P trading contract for direct token swaps."
+  },
+  "erd1qqqqqqqqqqqqqpgq03yjtslvm63d3whhunycqgyg923866c7ah0s9vht8j": {
+   "name": "XOXNO: Ticketing Template",
+   "category": "defi",
+   "subcategory": "ticketing",
+   "notes": "XOXNO event-ticketing template contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqm3w0cr4qnnp5uqqj9s377fde93l82sjuah0suxn6c3": {
+   "name": "XOXNO: Inscriptions",
+   "category": "defi",
+   "subcategory": "inscriptions",
+   "notes": "XOXNO inscriptions contract (BTC-style ordinals on MultiversX)."
+  },
+  "erd1qqqqqqqqqqqqqpgql2gmsgmgfhhmkzawhdvfv9d2j2ddf70aah0syj4psk": {
+   "name": "XOXNO: On-Chain Prices Query",
+   "category": "defi",
+   "subcategory": "oracle",
+   "notes": "XOXNO on-chain price query contract used by the aggregator."
+  },
+  "erd1qqqqqqqqqqqqqpgqscgww6dn8029mm0gyflu3ksep78decapah0s46nj67": {
+   "name": "XOXNO: Fiat Relayer",
+   "category": "defi",
+   "subcategory": "fiat_onramp",
+   "notes": "XOXNO fiat on-ramp relayer contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqrswahk5sxkpwjl0gj6cx2up0cgx2usg7ah0sxnujs6": {
+   "name": "XOXNO: AG Multisig",
+   "category": "defi",
+   "subcategory": "multisig",
+   "notes": "XOXNO aggregator multisig admin."
+  },
+  "erd1qqqqqqqqqqqqqpgq277y4a5fqluldp5k7q0gayk87djyq3meah0sh7n378": {
+   "name": "XOXNO: Foundation Multisig",
+   "category": "defi",
+   "subcategory": "multisig",
+   "notes": "XOXNO Foundation multisig (treasury)."
+  },
+  "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm": {
+   "name": "XOXNO: Deployer Wallet",
+   "category": "defi",
+   "subcategory": "deployer",
+   "notes": "XOXNO main account that owns and deploys the XOXNO contract suite. | Run 11: VERIFIED operates `truststaking` provider (366K locked, 7171 users \u2014 4th largest by locked). 30d operator outbound 341 EGLD: 205 EGLD to held_or_other + 135 EGLD to defi_deposit (likely XOXNO LSD or related contract). XOXNO has both a flagship LSD AND control of a top delegation provider \u2014 significant strategic position.",
+   "also_operates": "truststaking delegation provider (discovered run #11)"
+  }
+ },
+ "defi_other": {
+  "erd1qqqqqqqqqqqqqpgqx6833qjac6uqztgsa8jhlztexucke0hrdfys6wd7qt": {
+   "name": "JewelSwap: Liquid Staking",
+   "category": "defi",
+   "subcategory": "liquid_staking",
+   "notes": "JewelSwap liquid staking protocol. ~715 EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqhpauarfmx75nf4pwxh2fuy520ym03p8e8jcqt466up": {
+   "name": "JewelSwap: NFT Lending Protocol",
+   "category": "defi",
+   "subcategory": "nft_lending",
+   "notes": "JewelSwap NFT-collateralized lending."
+  },
+  "erd1qqqqqqqqqqqqqpgqwqxfv48h9ssns5cc69yudvph297veqeeznyqr4l930": {
+   "name": "Proteo: Elite eGLD Farm",
+   "category": "defi",
+   "subcategory": "farming",
+   "notes": "Proteo DeFi elite EGLD farming contract. ~1.2K EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqfpxvzz7s3ws2at75g8lz92r4z5r24gl4u7zsz63spm": {
+   "name": "QuantumX: AshSwap Aggregator",
+   "category": "defi",
+   "subcategory": "aggregator",
+   "notes": "QuantumX integration with AshSwap aggregator."
+  }
+ },
+ "bridge": {
+  "erd1qqqqqqqqqqqqqpgqxexs26vrvhwh2m4he62d6y3jzmv3qkujyfkq8yh4z2": {
+   "name": "xBridge v2: Ethereum Multisig",
+   "category": "bridge",
+   "subcategory": "ethereum",
+   "notes": "Deprecated v2 Ethereum bridge multisig contract. ~150 EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqhxkc48lt5uv2hejj4wtjqvugfm4wgv6gyfkqw0uuxl": {
+   "name": "xBridge v2: Ethereum Safe",
+   "category": "bridge",
+   "subcategory": "ethereum",
+   "notes": "Deprecated v2 Ethereum bridge safe deposit contract. Users deposit ESDT to initiate transfers to Ethereum."
+  },
+  "erd1qqqqqqqqqqqqqpgqsevgnqk0vu424sg866nh8k2v2hdekrwdyfkqh2mdwr": {
+   "name": "xBridge v2: Ethereum MultiTransfer",
+   "category": "bridge",
+   "subcategory": "ethereum",
+   "notes": "Deprecated v2 Ethereum bridge multi-transfer contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqhs7qdry2fmeau35mzgk89yjfwls3dy59e3yqk48rtc": {
+   "name": "xBridge: Ethereum SC Calls Executor",
+   "category": "bridge",
+   "subcategory": "ethereum",
+   "notes": "Bridge contract for executing Ethereum smart contract calls from MultiversX."
+  },
+  "erd1qqqqqqqqqqqqqpgq6pg5e8twgk6vvnzxzmvfyrphrfs3e3c3yfkqe6kx0x": {
+   "name": "xBridge v2: BSC Multisig",
+   "category": "bridge",
+   "subcategory": "bsc",
+   "notes": "Deprecated v2 Binance Smart Chain bridge multisig. ~150 EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgq2tf9zm9xxv96gz50p8jq5jesudhz45dvyfkqyefrss": {
+   "name": "xBridge v2: BSC Safe",
+   "category": "bridge",
+   "subcategory": "bsc",
+   "notes": "Deprecated v2 BSC bridge safe deposit contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqlsxrfn89u25r7hx4fjaes4qmvqkfhzuwe3yqlafwga": {
+   "name": "xBridge: BSC SC Calls Executor",
+   "category": "bridge",
+   "subcategory": "bsc",
+   "notes": "Bridge contract for BSC smart contract call execution."
+  },
+  "erd1qqqqqqqqqqqqqpgq6r9tallamtyyrya42vy0nsvxudtxpeh9c6cqtm84s9": {
+   "name": "xBridge v2: Polygon Multisig",
+   "category": "bridge",
+   "subcategory": "polygon",
+   "notes": "Deprecated v2 Polygon bridge multisig. ~100 EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqna0yrqqlef9vg5z2gw7nd59fqe6j8ug8c6cqgsu99p": {
+   "name": "xBridge v2: Polygon Safe",
+   "category": "bridge",
+   "subcategory": "polygon",
+   "notes": "Deprecated v2 Polygon bridge safe deposit contract."
+  },
+  "erd1qqqqqqqqqqqqqpgqlzry84nqra87p42uqz5p686y2j088r5je3yqnt84qs": {
+   "name": "xBridge: Gas Price Aggregator",
+   "category": "bridge",
+   "subcategory": "utility",
+   "notes": "Bridge gas price aggregation for cross-chain fee estimation."
+  },
+  "erd1klacqphr2zp0z37gut2gt946las5hk6ls2wmt6uw0mn87jt7zlvqd8haxl": {
+   "name": "Ofero: BNB-MVX Bridge",
+   "category": "bridge",
+   "subcategory": "bsc",
+   "notes": "Ofero Network's BNB to MultiversX bridge."
+  }
+ },
+ "team_and_foundation": {
+  "erd1vup7q384decm8l8mu4ehz75c5mfs089nd32fteru95tm8d0a8dqs8g0yst": {
+   "name": "MultiversX Foundation",
+   "category": "team",
+   "subcategory": "foundation",
+   "notes": "MultiversX Foundation wallet. ~36K EGLD."
+  },
+  "erd195fe57d7fm5h33585sc7wl8trqhrmy85z3dg6f6mqd0724ymljxq3zjemc": {
+   "name": "MultiversX Foundation",
+   "category": "team",
+   "subcategory": "foundation",
+   "notes": "Secondary MultiversX Foundation wallet. ~5K EGLD."
+  },
+  "erd16rp9ur5crj6lcjyttr0ftft8vspmcgq3kk00wmzkv6p7lnqg3v8quhqhh5": {
+   "name": "MultiversX Foundation: Protocol Treasury",
+   "category": "team",
+   "subcategory": "treasury",
+   "notes": "MultiversX Foundation protocol treasury."
+  },
+  "erd1qqqqqqqqqqqqqpgqa9unh4m4j3nyg3l7cvlw8wshumx58m6089pspt29xm": {
+   "name": "Ecosystem Growth Fund for Builders",
+   "category": "team",
+   "subcategory": "ecosystem_fund",
+   "notes": "DAO-governed fund for builders. Growth credits tied to KPIs (active users, TVL, tx volume). ~161K EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg": {
+   "name": "Growth Dividend Fund for Users",
+   "category": "team",
+   "subcategory": "ecosystem_fund",
+   "notes": "Fund to maximize usage and velocity of capital within the network. ~161K EGLD."
+  },
+  "erd1qqqqqqqqqqqqqpgqx7zlk72j6st0hnag9x3drydfadsjc86c27rs8yfq5r": {
+   "name": "PeerMe: MultiversX Foundation Council",
+   "category": "team",
+   "subcategory": "governance",
+   "notes": "MultiversX Foundation Council DAO on PeerMe."
+  }
+ },
+ "staking_providers": {
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j": {
+   "name": "Staking: Figment",
+   "category": "validator",
+   "subcategory": "institutional",
+   "notes": "Figment Networks. 50 nodes. 12% fee. ~584K EGLD locked (largest provider)."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc0llllsayxegu": {
+   "name": "Staking: Binance Staking",
+   "category": "validator",
+   "subcategory": "exchange",
+   "notes": "Binance staking provider. 50 nodes. 7.92% fee. ~432K EGLD locked. ~8.5K delegators."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqhllllsajxzat": {
+   "name": "Staking: Staking Agency",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Staking Agency. 106 nodes. 12% fee. ~420K EGLD locked. ~10K delegators."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzhllllsp9wvyl": {
+   "name": "Staking: Trust Staking",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Trust Staking. 96 nodes. 12% fee. ~375K EGLD locked. ~7.2K delegators."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq8hlllls7a6h85": {
+   "name": "Staking: Meria",
+   "category": "validator",
+   "subcategory": "institutional",
+   "notes": "Meria (French crypto provider). 94 nodes. 12% fee. ~340K EGLD locked. ~11K delegators."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrhlllls062tu4": {
+   "name": "Staking: iVerse Vision",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "iVerse Vision (formerly istariv). 137 nodes. 12% fee. ~284K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqy8lllls62y8s5": {
+   "name": "Staking: The Palm Tree Network",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "The Palm Tree Network. 76 nodes. 12% fee. ~270K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqd8llllslmf3hu": {
+   "name": "Staking: Incal",
+   "category": "validator",
+   "subcategory": "community",
+   "notes": "Incal. 50 nodes. 1% fee (lowest major provider). ~221K EGLD locked. Cap: 230K."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxhllllssz7sl7": {
+   "name": "Staking: Orange Staking",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Orange Staking. 50 nodes. 12% fee. ~220K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd": {
+   "name": "Staking: P2P Validator",
+   "category": "validator",
+   "subcategory": "institutional",
+   "notes": "P2P Validator. 50 nodes. 12% fee. ~217K EGLD locked. Cap: 260K."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq90llllslwfcr3": {
+   "name": "Staking: Valid Blocks",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Valid Blocks. 50 nodes. 7% fee. ~212K EGLD locked. Cap: 350K."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqmhllllsjg335n": {
+   "name": "Staking: Aurentum GmbH",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "German staking provider. 50 nodes. 10% fee. ~204K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpp8llllscdsdm4": {
+   "name": "Staking: Maple Leaf Network",
+   "category": "validator",
+   "subcategory": "community",
+   "notes": "Maple Leaf Network. 50 nodes. 0% fee. ~192K EGLD locked. Cap: 192.5K."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqx8llllsxavffq": {
+   "name": "Staking: Primal Block One",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Primal Block One. 67 nodes. 10% fee. ~191K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp80lllls7xp8j0": {
+   "name": "Staking: Orius International",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Offshore staking provider. 50 nodes. 7.99% fee. ~191K EGLD locked."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53": {
+   "name": "Staking: ProCrypto Distributed Staking",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Global distributed infrastructure. 50 nodes. 9.9% fee."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqppllllls9ftvxy": {
+   "name": "Staking: Ledger by Figment",
+   "category": "validator",
+   "subcategory": "institutional",
+   "notes": "Ledger staking powered by Figment. 50 nodes."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqfhllllscrt56r": {
+   "name": "Staking: Alchemist Stake",
+   "category": "validator",
+   "subcategory": "professional",
+   "notes": "Enterprise-level PoS infrastructure."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq9hllllsz2je7q": {
+   "name": "Staking: PartnerStaking",
+   "category": "validator",
+   "subcategory": "community",
+   "notes": "PartnerStaking with mobile app."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqg8llllsqra25h": {
+   "name": "Staking: XOXNO",
+   "category": "validator",
+   "subcategory": "protocol",
+   "notes": "XOXNO NFT marketplace staking provider."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqklllllsd99rr4": {
+   "name": "Staking: Animoca Brands NAAS",
+   "category": "validator",
+   "subcategory": "institutional",
+   "notes": "Animoca Brands Node-as-a-Service."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu8lllls8clacj": {
+   "name": "Staking: Cointelegraph Decentralization Guardians",
+   "category": "validator",
+   "subcategory": "media",
+   "notes": "Cointelegraph media organization staking node."
+  },
+  "erd1qqqqqqqqqqqqqpgqxwakt2g7u9atsnr03gqcgmhcv38pt7mkd94q6shuwt": {
+   "name": "Staking: MultiversX Community Delegation",
+   "category": "validator",
+   "subcategory": "community",
+   "notes": "Official MultiversX community delegation contract. ~123K EGLD."
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq20llllsh0uuxv": {
+   "name": "Staking: Stake Capital Group",
+   "category": "validator",
+   "subcategory": "institutional",
+   "notes": "Stake Capital Group institutional validator."
+  }
+ },
+ "launchpad": {
+  "erd1qqqqqqqqqqqqqpgqsnjkkezhxfuep9fggkgrta5s6yr4huuq4klqp9wfv0": {
+   "name": "xLaunchpad: Itheum",
+   "category": "other",
+   "subcategory": "launchpad",
+   "notes": "Itheum token launch via xLaunchpad. ~1K EGLD remaining."
+  },
+  "erd1qqqqqqqqqqqqqpgq5sm9ces3tpuuthrah5tnjhxmwgz308pkdrnqtqhj0q": {
+   "name": "xLaunchpad: AI Nexus",
+   "category": "other",
+   "subcategory": "launchpad",
+   "notes": "AI Nexus token launch via xLaunchpad."
+  },
+  "erd1qqqqqqqqqqqqqpgqh664xhyxeqhmzxzhn75aa2yfy33hd58fhneql8e9ee": {
+   "name": "xLaunchpad: Cantina Royale",
+   "category": "other",
+   "subcategory": "launchpad",
+   "notes": "Cantina Royale gaming token launch."
+  },
+  "erd1qqqqqqqqqqqqqpgqynuef6g70kxjcamj3x5pdueqhr0ccw2ey6eqw8cs7w": {
+   "name": "xLaunchpad: Pell Network",
+   "category": "other",
+   "subcategory": "launchpad",
+   "notes": "Pell Network token launch."
+  },
+  "erd1qqqqqqqqqqqqqpgquzv7wtmt3jgydnd8dg0dmfypupqp8prddpssh36x27": {
+   "name": "xLaunchpad: AshSwap",
+   "category": "other",
+   "subcategory": "launchpad",
+   "notes": "AshSwap (ASH) token launch via xLaunchpad."
+  },
+  "erd1qqqqqqqqqqqqqpgqksuhk8dal6wyqje72csqma5j6ncguwj4zvdqc6xzwj": {
+   "name": "xLaunchpad: Hatom",
+   "category": "other",
+   "subcategory": "launchpad",
+   "notes": "Hatom (HTM) token launch via xLaunchpad."
+  }
+ },
+ "unlabeled_whales": {
+  "erd1kn38sz6gv42l0cle6eydcm3sffnwesd0vs5k008q6pcy3p950cqqe88tuj": {
+   "name": "Unknown Whale A (reactivated)",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Originally cold storage (nonce 4 for 4+ weeks). Reactivated Apr 17-18 2026 \u2014 sent ~514K EGLD to Coinbase in four tranches, received ~154K EGLD back. Net: -352K EGLD to Coinbase. Current balance ~143K EGLD. Nonce advanced to 8. Partial exit \u2014 still holds significant position. Watch for continued liquidation."
+  },
+  "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul": {
+   "name": "Unknown Whale B (liquidated to Coinbase)",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Previously received ~512K EGLD from Coinbase over multiple weeks ending Apr 10 2026. Fully liquidated back to Coinbase on Apr 14-17 2026 \u2014 balance went from 512K to ~27 EGLD. Complete OTC cycle: accumulated from Coinbase, held ~1 week, returned to Coinbase. Consistent with bilateral institutional OTC deal where Coinbase intermediated both legs."
+  },
+  "erd1a2t7xu4ch9za4z6s9zj89j7vxzgx27va6slgzq58saw0526ynqqqqp0mgd": {
+   "name": "Unknown Whale",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Unlabeled account. ~346K EGLD. Shard 0. Nonce 0 (cold storage)."
+  },
+  "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
+   "name": "Unknown Whale",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Unlabeled account. ~253K EGLD. Shard 1."
+  },
+  "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy": {
+   "name": "Unknown Whale",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Unlabeled account. ~206K EGLD. Shard 0."
+  },
+  "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2": {
+   "name": "Unknown Whale",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Unlabeled account. ~193K EGLD. Shard 0."
+  },
+  "erd18mv2z6r2ksn4rfmm52tmhkc6x5tz6achmynvxftq4ay927029qqqmqpzfw": {
+   "name": "Unknown Mega Whale (received from Coinbase)",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Received 798,649 EGLD from Coinbase via routing wallet (erd1lgdlteq) on Apr 18 2026 in three tranches (70K + 566K + 161K). Balance jumped from 192,900 to 991,555 EGLD (+414%). Nonce 21 = minimal prior activity. Now 4th-largest non-system account on MultiversX. Identity unknown \u2014 could be institutional OTC buyer, fund custodian, or large holder. HIGH PRIORITY to watch for outflows. Added 2026-04-20."
+  },
+  "erd102hmf79en4ll8g7m2jzwduug2l7mteeyh90dwqjf9pcjgtvl9vqqjnf08j": {
+   "name": "Unknown Whale",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Unlabeled account. ~165K EGLD. Shard 0."
+  },
+  "erd15ku2r2j6smlwumftumlpw0mfpqxy32wyt4ewxzyhs3ugsjee8stq2xh84e": {
+   "name": "Unknown Whale",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Unlabeled account. ~153K EGLD."
+  },
+  "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0": {
+   "name": "Unknown Whale I (active)",
+   "category": "other",
+   "subcategory": "whale",
+   "notes": "Active account (nonce 8,122). Grew from 127,844 to 146,011 EGLD in week of Apr 1-7 (+18,167 EGLD, +14.2%). Funding source unknown. Not an exchange or known DeFi contract. Added to watch list 2026-04-07."
+  },
+  "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5": {
+   "name": "UPbit OTC Desk",
+   "category": "other",
+   "subcategory": "otc",
+   "notes": "Confirmed UPbit OTC distribution desk. Cycle 1 (Apr 2-13 2026): accumulated ~170K EGLD, distributed in 1-2K increments over 3 weeks. Cycle 2 started Apr 17 2026 with 220K EGLD injection from UPbit. Coordinated partner: erd1z7fnqf4 (distributes to same recipients). Distributes to Bybit-feeding addresses and retail recipients. Nonce ~4,800+. Active account."
+  },
+  "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3": {
+   "name": "Coinbase (secondary)",
+   "category": "exchange",
+   "subcategory": "secondary_wallet",
+   "notes": "Coinbase secondary wallet. Appeared in top-50 accounts as of 2026-04-07 with ~17,489 EGLD. Nonce 29,343 = highly active. Confirmed exchange label from API assets."
+  },
+  "erd1lgdltequh7627rtlacmcp6p5vec7zmu2rxhu7pjwvcja8f4a9gqq9vcc70": {
+   "name": "Coinbase Routing Wallet",
+   "category": "exchange",
+   "subcategory": "routing",
+   "notes": "Routing wallet used by Coinbase on Apr 18 2026. Received 798,649 EGLD from erd116jr (Coinbase) in three tranches and immediately forwarded entire amount to erd18mv2z6r2 (Unknown Mega Whale). Nonce 80 = medium-use routing wallet. Near-zero balance before and after the Apr 18 routing event. Not pure cold storage \u2014 actively used for large routing operations."
+  },
+  "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r": {
+   "name": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+   "category": "other",
+   "subcategory": "otc",
+   "notes": "High-nonce active wallet (nonce 5,041). Confirmed coordinated OTC partner with erd1v6x9 (UPbit OTC Desk): both wallets send to the same recipient addresses (erd1ghfrqvvyf7, erd1wyj8uf, erd1tr5lahv) in the same 1,000-2,000 EGLD range. Balance stable at ~63K EGLD. Likely same institutional actor or tightly coordinated trading network. Discovered 2026-04-13."
+  }
+ },
+ "exchange_routers": {
+  "erd16nws00klkag9g25nv3v4cuf2elsa83f5pa0jsqn0zt5jq3qufd9q4w8cfm": {
+   "name": "Binance\u2192OTC Router 1",
+   "category": "exchange_router",
+   "subcategory": "otc_intermediary",
+   "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC infrastructure. Nonce 169. Receives 8K EGLD chunks, forwards within minutes. Discovered run #6 (2026-05-04). ~40K EGLD routed in week 1."
+  },
+  "erd1k4r6kyjq7gevgg75pkvjevkyr2q62puet4lrfpuheytx9qacnzfqgmjx5z": {
+   "name": "Binance\u2192OTC Router 2",
+   "category": "exchange_router",
+   "subcategory": "otc_intermediary",
+   "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and OTC Distribution Wallet. Nonce 180. ~24K EGLD routed in week 1. Discovered run #6."
+  },
+  "erd1de38dg9njnmv3aq8fylg5654urj87ju00z2jp92l3k93tzy9glwsxkava0": {
+   "name": "Binance\u2192OTC Router 3",
+   "category": "exchange_router",
+   "subcategory": "otc_intermediary",
+   "notes": "Routing wallet between Binance.com 2 (erd1sdsl) and UPbit OTC Desk. Nonce 147. 5,999 EGLD chunks. ~18K EGLD routed in week 1. Discovered run #6."
+  },
+  "erd1g8ll9qrhmevdhjmtk8q02klu8a6q8z7xk0aqml7vncvpxdjwrdgq5ve8we": {
+   "name": "OTC\u2192Bybit Router (UPbit-side, nonce 150)",
+   "category": "exchange_router",
+   "notes": "Receives 2K chunks from UPbit OTC Desk, forwards to Bybit within minutes. Near-zero balance.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1n5wcuda4vnh9umg8trwxqlzg4rglmcl3sjpvf7zdfw3ky2k3j95shk7wlm": {
+   "name": "OTC\u2192Binance Router 1 (nonce 28)",
+   "category": "exchange_router",
+   "notes": "Aggregates 1-2K chunks from UPbit OTC + OTC Distribution, forwards 5-7K to Binance.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1cwkw3qlv4m30dp2gnxed5azy4224ennwfnldvs8rf5jekr6ca4ls4kkuwf": {
+   "name": "OTC\u2192Binance Router 2 (nonce 3924)",
+   "category": "exchange_router",
+   "notes": "High-nonce well-established router. UPbit OTC + OTC Dist \u2192 Binance.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1dmmh5xxfwafcacef2z0d6mduxz7yemg3p9dqdwpefeu5jvexelcs254wu7": {
+   "name": "OTC\u2192Bybit Router 2 (nonce 405)",
+   "category": "exchange_router",
+   "notes": "OTC Distribution \u2192 Bybit, 1-2K chunks.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1fs0c43welvqv6njhe7k3g26rysc2zaav23hydedq65phyca8dz9s44hwc2": {
+   "name": "OTC\u2192Bybit Router 3 (nonce 53)",
+   "category": "exchange_router",
+   "notes": "OTC Distribution \u2192 Bybit, varied sizes.",
+   "first_seen": "2026-05-11"
+  },
+  "erd17cfk3d984xr6eef7smc5a7z480rn3klgu7pt2va7u37ehr7slmtqv6r2pe": {
+   "name": "OTC\u2192Bybit Router 4 (nonce 16)",
+   "category": "exchange_router",
+   "notes": "Newer router. OTC Distribution \u2192 Bybit, 1.8-2K chunks.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1fdkq6mdyg7vt5wzs6039cf00xfmxmlg2kg8xkxkdzv8hw976rk2swhnc35": {
+   "name": "OTC\u2192Binance Router 3 (nonce 663)",
+   "category": "exchange_router",
+   "notes": "Aggregates UPbit OTC + OTC Dist chunks, forwards 6K to Binance.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1ljlcx0wflzwvppyq8vfngs4ryaefvl9ruj7n75q467znw4k9c5dsht33kp": {
+   "name": "Bidirectional Router (Binance\u2194Bybit, nonce 573)",
+   "category": "exchange_router",
+   "notes": "Receives from BOTH UPbit OTC and Binance, forwards to Bybit. First bidirectional pattern.",
+   "first_seen": "2026-05-11"
+  },
+  "erd14n5vtgezssp7742g97djcuz5nss6wy9q2ecps2l77ha75q2t394swhz2yj": {
+   "name": "Cross-Exchange Settlement Router 1 (nonce 355)",
+   "category": "exchange_router",
+   "notes": "Receives from KuCoin + Binance, forwards to Bybit. Clearest CEX-CEX settlement node.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1rffkz8zwp3pvnm02c6aexef5f53d64rjs8nj7qm5t0e8q5lnvutsuhnl73": {
+   "name": "Bybit\u2192KuCoin Reverse Router (nonce 380)",
+   "category": "exchange_router",
+   "notes": "First documented reverse-direction CEX-CEX flow: Bybit \u2192 erd1rffkz8 \u2192 KuCoin.",
+   "first_seen": "2026-05-11"
+  },
+  "erd1nhtq4mj3jzlz35l6szpkp0cagss803l6crwq8zjjpuykfsxwj0dsg2c2gu": {
+   "name": "OTC Source-Chain Router (erd17l22 distribution, nonce 2543)",
+   "category": "exchange_router",
+   "subcategory": "otc_source_router",
+   "notes": "Receives 2K-EGLD chunks from Unknown Whale erd17l22, forwards in 1.2K chunks to erd1ecyftln pass-through. Nonce 2543, ~7.5K EGLD balance. First documented OTC SOURCE upstream layer \u2014 discovered run #8 (2026-05-18).",
+   "first_seen": "2026-05-18"
+  },
+  "erd1ecyftln6n8ej5mxu0ejzxayfmtxfmzc08sp55qr8aj74yst4ejus4em6ce": {
+   "name": "OTC Source Pass-through (erd17l22 chain, nonce 50)",
+   "category": "exchange_router",
+   "subcategory": "otc_source_router",
+   "notes": "Receives from erd1nhtq4 router, forwards 7\u00d7~1.7K to OTC Distribution Wallet + 1\u00d7 to UPbit OTC Desk. Nonce 50, 0 EGLD balance. Run #8 completes the upstream-of-OTC-desks pipeline taxonomy.",
+   "first_seen": "2026-05-18"
+  },
+  "erd12tq6ax5k49dkp4lwmuvdv8sa9df5mqjnrv2mmjnxkv4m5ns562vsmtaujp": {
+   "name": "Binance \u2192 OTC Source Funder (canonical, verified pass-through)",
+   "category": "exchange_router",
+   "subcategory": "otc_source_funder",
+   "notes": "Run #9 first observed (2026-05-25): sent 1,083 + 919 EGLD to erd17l22 OTC source. Run #10 (2026-06-01) VERIFIED: 14d inbound 100% from Binance.com hot (erd1sdsl), 7d throughput 6,970 EGLD all forwarded to erd17l22, balance 0, nonce 1505 = pure pass-through. Completes the OTC pipeline taxonomy: Binance.com \u2192 this \u2192 erd17l22 \u2192 chain routers \u2192 OTC desks \u2192 retail. Run #11: address typo discovered (run #10 used erd12tq6ax5k...wgxz8...07ny36 with wrong checksum); canonical form has ...wmuvdv...07ny36 suffix. Promoted from unknown_whales to exchange_routers in run #12 per multi-run carrying recommendation.",
+   "first_seen": "2026-05-25",
+   "verified_binance_origin": "2026-06-01",
+   "canonicalized": "2026-06-15"
+  },
+  "erd1w7nlmeapqp2qv5vkzw23mlmp46ckkg96rk4e8e435v0pku57e8cqdqvd36": {
+   "name": "OTC->Bybit Router 4 (nonce 904)",
+   "category": "exchange_router",
+   "notes": "run #17: received 213,607 from OTC desks (110 txs, largest single desk destination), forwarded 50,739+ to Bybit. Zero balance pass-through."
+  },
+  "erd1e9luc4ynhpsya80rplukemy6cy6k08229pa3tp6h9484x0pll5usatwm5a": {
+   "name": "OTC->Bybit Router 5 (nonce 302)",
+   "category": "exchange_router",
+   "notes": "run #17: received 100,425 from OTC desks (53 txs), forwarded 46,203+ to Bybit. Zero balance pass-through."
+  },
+  "erd1g6fntjtzv4s2mx3txffamtxymgn22g2d3pkn2yjg77aj27svaszq2r5nyc": {
+   "name": "OTC->Bybit Router 6 (nonce 507)",
+   "category": "exchange_router",
+   "notes": "run #17: received 74,252 from OTC desks (38 txs), forwarded 49,220+ to Bybit. Zero balance pass-through."
+  },
+  "erd1ckh3v9fveeh4tn22rpeheuu3tkt9qfp9gfj8ln3ewc8jfupdmtaswd2r0d": {
+   "name": "OTC->Binance Router 3 (nonce 827)",
+   "category": "exchange_router",
+   "notes": "run #17: received 72,871 from OTC desks (90 txs), forwarded 23,895+ to Binance.com. Zero balance pass-through."
+  },
+  "erd1ddqnajzw7qk6s0l9r0gwejq0jtqya6fl40aqhg2u8jmgxrej3n6qt8fy3a": {
+   "name": "OTC->Binance Router 4 (nonce 61)",
+   "category": "exchange_router",
+   "notes": "run #17: received 54,468 from OTC desks (34 txs), forwarded 54,468 to Binance.com. Zero balance pass-through."
+  },
+  "erd1ytpenkzjucgq7mxu4l6u8v72vfxxlux2237925glajhs4dj3u8asue9arn": {
+   "name": "OTC desk feeder (nonce 147)",
+   "category": "exchange_router",
+   "notes": "run #17: largest unlabeled INBOUND source to the desks (199,927 combined) and also sent 42,264 to UPbit. Upstream leg of the loading pipeline."
+  }
+ },
+ "unknown_whales": {
+  "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh": {
+   "name": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+   "category": "whale",
+   "subcategory": "otc_source",
+   "notes": "Run #7 +58K accumulation, Run #8 -26K distributed in 13 chunks of 2K EGLD to routing wallet erd1nhtq4 (nonce 2543), terminating at OTC Distribution Wallet + UPbit OTC Desk. Now confirmed as OTC SOURCE wallet upstream of the desk layer. Investigate funding source.",
+   "first_seen": "2026-04-02",
+   "balance_egld_2026_05_18": 292122,
+   "notes_run9": "Dormant run #9 (only +2K inbound from erd12tq6ax5k; -6K outbound at the May 18 boundary). Distribution cycle appears complete. Funder candidate identified."
+  }
+ },
+ "staking_provider_operators": {
+  "_description": "Top staking provider operator (ownerAddress) wallets. Discovered run #11 via scripts/delegator_behavior.py. These are the wallets that control delegation contract upgrades and extract service-fee revenue.",
+  "_added_run": 11,
+  "erd1nknqh4rw82w67gun6x3meaxw62h627kp86lfjy8mypvgkt6084ps6kr7jm": {
+   "name": "figment-networks operator",
+   "category": "staking_operator",
+   "operates": "figment-networks (604K locked, 333 users)",
+   "first_seen": "2026-06-08"
+  },
+  "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc": {
+   "name": "binance_staking operator",
+   "category": "staking_operator",
+   "operates": "binance_staking (521K locked, 8482 users)",
+   "first_seen": "2026-06-08"
+  },
+  "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl": {
+   "name": "stakingagency operator",
+   "category": "staking_operator",
+   "operates": "stakingagency (425K locked, 9970 users)",
+   "outbound_30d_egld": 463,
+   "first_seen": "2026-06-08"
+  },
+  "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg": {
+   "name": "meria operator",
+   "category": "staking_operator",
+   "operates": "meria (346K locked, 10953 users)",
+   "outbound_30d_egld": 346,
+   "first_seen": "2026-06-08"
+  },
+  "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv": {
+   "name": "istariv operator",
+   "category": "staking_operator",
+   "operates": "istariv (278K locked, 4076 users)",
+   "outbound_30d_egld": 786,
+   "first_seen": "2026-06-08"
+  },
+  "erd1kz2kumr0clug4ht2ek0l4l9drvq3rne9lmkwrjf3qv2luyuuaj2szjwv0f": {
+   "name": "thepalmtreenw operator",
+   "category": "staking_operator",
+   "operates": "thepalmtreenw (262K locked, 3667 users)",
+   "outbound_30d_egld": 550,
+   "first_seen": "2026-06-08"
+  },
+  "erd1mdpdlqyulvf05n87ze8a75fwvg4anz2y4jh8vcd2a67edmarqjlqxfyzzq": {
+   "name": "validblocks operator",
+   "category": "staking_operator",
+   "operates": "validblocks (236K locked, 4505 users)",
+   "outbound_30d_egld": 0,
+   "first_seen": "2026-06-08"
+  }
+ },
+ "other": {
+  "erd1z4xerdjq6aa2rusvk9wlx5x7qjevnnmsclnm56wnuaaa8u9upyqq2e306k": {
+   "name": "Coinbase Custody 2 (migration destination)",
+   "category": "exchange",
+   "notes": "run #17: received the full 65,090 from Coinbase Custody, which went to zero. Fresh nonce-0 wallet still holding the amount - an internal custody migration, NOT an outflow. Treat as Coinbase for entity netting."
+  },
+  "erd18pwhucm0rd89lc8ut2f3rwcqk2s3s8456y9y4p2rgw6n960w4qqqlxxqpv": {
+   "name": "Whale migration destination (nonce 0)",
+   "category": "whale",
+   "notes": "run #17: received the full 165,006 from whale erd102hmf79en4, which went to zero. Fresh nonce-0 wallet - a wallet migration, not a sale. Distinct from the erd15ku2r2j6 KuCoin exit."
+  }
+ }
 }

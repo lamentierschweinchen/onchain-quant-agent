@@ -3068,6 +3068,245 @@
         "PARTICIPATION BREADTH: delegator base flat 4th week despite +16% - no new retail. Watch whether a sustained rally finally pulls new delegators in (healthy broadening) or the base stays flat (rally on existing-holder leverage only).",
         "STABLECOIN vs USH divergence: bridged USDC/USDT choppy-to-contracting while native USH mints. Watch whether bridged dollars stabilize/inflow as the rally holds (dollars returning) or keep bleeding (capital only rotating internally into leverage)."
       ]
+    },
+    {
+      "date": "2026-07-20",
+      "run_number": 17,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x37",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch guard active)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "CRITICAL - OTC THROUGHPUT HAS BEEN UNDERCOUNTED ~4x IN EVERY PRIOR RUN. The collector fetches desk outbound txs with size=50 and no pagination. On a high-activity desk that window covers only ~2.5 of the 7 days, so the reported 'throughput' was a truncated tail, not a 7d total. Verified by re-querying with full pagination: this week's true figure is 1,328,037 EGLD net of inter-desk transfers (vs 213,181 from the capped sample), and re-running the run #16 window the same way gives 1,100,791 (vs the ~323K reported at the time). The entire historical throughput series (85K/145K/163K/172K/195K/323K) is a lower bound on a shifting window and is NOT a comparable time series. Fix: paginate until the after= boundary, and subtract desk<->desk transfers (157,500 this week) which double-count.",
+          "DESK GROSS THROUGHPUT DOUBLE-COUNTS INTER-DESK TRANSFERS: UPbit OTC sent 315,000 to the OTC Distribution Wallet this week (and 255,500 in the run #16 window). Netting these out is required or the two desks inflate each other's numbers.",
+          "CLEAN PRICE-FEED RUN (3rd consecutive): the dataApi re-fetch guard reported 0 retries - all 4 dataApi-class tokens (SEGLD, SWTAO, USH, XEGLD) populated price+mcap on the first sequential pass at 1.05s spacing. Three clean runs confirm the run #15 read that the null behavior is a transient feed hiccup, not a per-token outage.",
+          "A ZERO-BALANCE nonce-0 RECIPIENT IS A MIGRATION, NOT A FLOW. Two apparent large 'exits' this week were wallet migrations: Coinbase Custody 65,090 -> fresh nonce-0 erd1z4xerdjq6aa2 (still holds it), and whale erd102hmf79en4 165,006 -> fresh nonce-0 erd18pwhucm0rd89 (still holds it). Both would have been misread as distribution from balance deltas alone. Rule: when a tracked wallet empties, resolve the single outbound receiver and check its nonce and balance before classifying - nonce 0 + holds the exact amount = migration."
+        ],
+        "data_gaps": [
+          "Desk-destination router tracing is itself capped at size=50 per router, so the ~166K attributed to Bybit and the amounts attributed to Binance.com are LOWER BOUNDS. The direction (routers forward to exchanges) is certain; the exact split across venues is not.",
+          "The KuCoin depositor erd15ku2r2j6 shows a 0-value inbound leg in the 7d window, so where its 145,443 EGLD originally came from is not established - only that it left in full to KuCoin. Worth tracing its inbound history next run to see whether it was an OTC recipient.",
+          "Whether the KuCoin +142,773 was sold into the order book or subsequently withdrawn/OTC-settled cannot be determined from balances alone until next week's snapshot."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "The run #14 read-flow-jointly-with-OTC rule was decisive this week: the -196K net exchange OUTFLOW during a +16% rip looks like accumulation in isolation, but the OTC desks staged a RECORD +238K reload with record ~323K throughput - so the real signal is a distribution wave loading into strength, not self-custody accumulation.",
+          "Checking the DESTINATION of a CEX outflow caught that UPbit's -131K was OTC-routing (fed its own OTC Desk 460K), not customer withdrawal - a per-transfer refinement of the entity-decompose rule.",
+          "Netting out the binance_staking DELEGATION provider (-149K) revealed that delegation actually GREW +120K ex-Binance; the raw -28K NET would have misread as broad delegation shrinkage.",
+          "Supply-based LSD/stablecoin metrics again cut through price noise: USH +6.5% mint and XEGLD +4.5% growth are clear leverage/engagement signals that mcap (contaminated by the +16% price move) would have blurred.",
+          "The dataApi re-fetch guard was a clean no-op for the 2nd straight run (0 retries), confirming the null behavior is transient."
+        ],
+        "what_needs_improvement": [
+          "Bybit's -221K (the largest exchange move) could not be traced - internal-transfer-invisible. Distinguishing self-custody accumulation from OTC-routing on such moves needs an internal-transfer/SC-result data source, still the recurring gap.",
+          "The ~+108K external inflow onto Binance hot (beyond the custody's 200K) is unattributed - who deposited into Binance during the rip (sellers positioning?) is inferred.",
+          "z-score UNDER-flagged the EGLD regime change (z=-0.09 for a +15.9% EGLD-specific move) because two up-weeks pulled the baseline mean up. A relative-strength / de-trended anomaly measure would catch EGLD-vs-majors decoupling that the absolute z-score misses."
+        ],
+        "surprising_findings": [
+          "EGLD DECOUPLED TO THE UPSIDE (+15.9% while BTC/ETH flat) - the FIRST EGLD-specific up-move of the tracked cycle, inverting months of high-beta-laggard behavior. A potential regime break from laggard to leader.",
+          "The OTC pipeline staged its BIGGEST reload in tracking (+238K desk balance, record ~323K throughput) INTO the price strength - distribution deliberately loading against the rally.",
+          "Binance is de-staking on TWO fronts simultaneously: custody -43K (2nd leg) AND the binance_staking delegation provider -149K (~-192K total out of staked positions), while taking net +115K onto hot wallets.",
+          "DeFi leverage is RETURNING: USH minted +6.5% (borrowers re-opening CDPs) - the largest USH move since the run #11 de-leveraging burn, now in the bullish direction; and XEGLD re-accumulated +4.5% after its -29% collapse.",
+          "The identifiable absorber (Mega Whale erd18mv2z6r2) STEPPED BACK to flat just as the OTC reload staged - last week it soaked up distribution, this week the loaded supply has no visible large buyer.",
+          "The rally pulled NO new delegators (base flat 4th week at 174,349 despite +16%) - it is existing holders re-levering and adding stake, not broadening participation.",
+          "Bilateral inverse rule got its 2nd, larger up-week confirmation: price +15.9%, Hatom Lending EGLD-TVL -11.5%, ratio 0.72 (vs 0.49 last up-week)."
+        ]
+      },
+      "methodology_changes": [
+        "PAGINATE DESK/ROUTER TX QUERIES - the single most important fix from this run. size=50 covers only ~2.5 days on a busy desk, so every prior throughput figure was a severe undercount (run #16: 323K reported vs 1,100,791 actual). Always page until the after= boundary and net out desk<->desk transfers. Historical throughput values must be treated as lower bounds on inconsistent windows, not a comparable series.",
+        "RESOLVE THE RECEIVER BEFORE CALLING AN EMPTIED WALLET A SALE (new): a wallet going to zero looks like distribution but may be a migration. Check the single large outbound receiver's nonce and balance - nonce 0 holding the exact amount = internal migration (Coinbase Custody 65,090; whale erd102hmf79en4 165,006 this week). Both would otherwise have been logged as outflows. This is the wallet-level analogue of the run #15 entity-decomposition rule.",
+        "APPLY THE BOUNDARY-CROSSING GUARD BEFORE NARRATING TIER AGGREGATES (reinforced, run #14 rule): this week the raw tier deltas are almost pure artifact - both OTC desks fell large->mid (-255,736 by reclassification) while KuCoin rose mid->large (+142,773), on top of one genuine sale and one migration. Netting these out leaves no organic tier rotation. The guard prevented a false wealth-distribution narrative.",
+        "HONOR THE |dPrice| >= 5% GUARDRAIL ON THE BILATERAL INVERSE RULE (discipline reinforced): at +0.96% the rule is untestable and this run records it as a NON-observation. The temptation on a small-move week is to log a confirmation from noise; the guardrail exists precisely to prevent inflating the evidence base.",
+        "A DISTRIBUTION WAVE'S DESTINATION IS THE SIGNAL, NOT ITS SIZE (extends the run #16 read-outflow-by-destination rule): this week's 1.33M throughput terminated at exchange deposit addresses via zero-balance routers, which makes it distribution-to-venue rather than distribution-to-holders. Tracing two hops past the desk changes the interpretation completely and should be standard on any large desk drawdown."
+      ],
+      "new_addresses_discovered": [
+        "binance_staking (delegation provider identity, already in /providers) confirmed as a DISTINCT Binance staking leg from the Binance Staking custody wallet (erd1rf4hv70) - it shed -149K locked this week. Both are Binance de-staking; net the provider out of delegation-TVL WoW like the erd1qqqq system aggregators."
+      ],
+      "action_items_completed": [
+        "DONE: OTC pipeline phase watch - did NOT collapse to a gap. Instead the desks staged a RECORD reload (+238K combined balance, biggest in tracking) with record ~323K throughput, fed by UPbit -> OTC Desk 460K. A fresh distribution wave is loading into the strength.",
+        "DONE: Does the bounce hold - YES and extended hard. EGLD ripped +15.9% to $3.13 (2nd up-week), $2.70 held. And it OUTPERFORMED: BTC/ETH flat, so EGLD decoupled to the upside - the laggard->leader flip the watch asked about.",
+        "DONE: Binance custody 2nd leg - the custody continued its drawdown -43K (now -202K over 2 weeks). Traced (custody +157K in / -200K out). Separately the binance_staking delegation provider shed -149K. Every Binance leg distributive; hot wallets took net +115K inflow.",
+        "DONE: Mega Whale erd18mv2z6r2 absorber watch - it STEPPED BACK to flat (1.04M, no net flow) after 2 accumulation weeks; the Coinbase Routing -> mega whale pipe went quiet. The identifiable bid disappeared just as OTC reloaded.",
+        "DONE: Ex-Binance exchange inflow watch - mixed. Gate.io +26K, Crypto.com +15K, Coinbase +10K IN; but Bybit -221K, UPbit -131K (OTC-routed) OUT. No clean 'renewed on-exchange positioning' signal; the two big outflows dominate.",
+        "DONE: Stablecoin flight - USDC decelerated (4th burn week, -0.66% vs -2.0%) while USDT re-accelerated (-1.87% vs -0.3%). Choppy, not a clean directional flight. USH (native) MINTED +6.5% (leverage returning) - opposite direction.",
+        "DONE: Delegation-vs-direct-node rotation - REVERSED this week: total staked +80K (direct-node up) while delegation -28K NET (but ex-binance_staking +120K broad). Rotation direction flipped as Binance de-staked its provider.",
+        "DONE: pi-staking watch - PLATEAUED. +82 EGLD, +0 users (held at 51). The 3-week small-provider growth story stalled; growth moved to the broad mid-tier names (smartchainconnection, pokerstaking)."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.5,
+          2.95,
+          2.99,
+          2.85,
+          2.55,
+          2.7,
+          3.13,
+          3.16
+        ],
+        "dex_volume_24h_usd": [
+          108539.14766141125,
+          121891.8071868304,
+          54634.45212423313,
+          63019.3189739559,
+          79694.91132774687,
+          88354.28195205361,
+          160792.26882311978,
+          193678.59840165742
+        ],
+        "staked_egld": [
+          14497721,
+          14471101,
+          14432677,
+          14423511,
+          14504618,
+          14458763,
+          14538955,
+          14619977
+        ],
+        "mex_price_usd": [
+          3.298877014744513e-07,
+          2.761419779228928e-07,
+          2.738418102638608e-07,
+          2.683608336861572e-07,
+          2.2861040788977142e-07,
+          2.430275788949282e-07,
+          2.694326542414106e-07,
+          2.7007416757074616e-07
+        ],
+        "total_delegators": [
+          178934,
+          178487,
+          174484,
+          174406,
+          174407,
+          174373,
+          174349,
+          174335
+        ],
+        "staked_ratio": [
+          0.4824442711735065,
+          0.48078822404993493,
+          0.4787456139710736,
+          0.47767456403018393,
+          0.47959097367830933,
+          0.4773082253449375,
+          0.4791867069985865,
+          0.48108470358505084
+        ],
+        "exchange_net_flow_egld": [
+          -70845.74226705544,
+          24901.97406237945,
+          41987.5425480064,
+          12194.290004270151,
+          -222307.23190492112,
+          -218471.62159921788,
+          -195706.30567509495,
+          193747.1765770316
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          39575,
+          -26410,
+          -881,
+          7028,
+          35401,
+          35401,
+          237717,
+          1328037
+        ],
+        "binance_staking_custody_egld": [
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3353797.4812337724,
+          3310679.6331837727,
+          3207100.622133773
+        ],
+        "reward_compound_pct": [
+          61.9,
+          59.14,
+          55.31,
+          58.54,
+          60.35,
+          61.59,
+          60.19
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "OTC desk balance + true throughput cycle chart",
+          "motivation": "This run's headline is a complete load-then-distribute cycle: desks went 98K -> 335K -> 80K across three weeks while throughput ran 1.10M then 1.33M. No single-week view can show a cycle, and the run #16 suggestion for this chart is now MORE valuable because the throughput inputs were just corrected ~4x. A multi-week dual-axis view of desk BALANCE (load vs drain phases) against TRUE paginated throughput and EGLD price would have made this week's resolution legible at a glance and is the natural home for the pre-committed reload/exhaustion test.",
+          "suggested_visualization": "dual-axis weekly chart: combined desk balance (area, left axis) + true 7d throughput (bars, right axis) + EGLD price (line overlay), with load/drain phase shading.",
+          "data_already_available": false,
+          "data_source": "desk balances are per-run in previous.json watch_addresses; TRUE throughput requires the paginated re-query (only runs #16 and #17 currently have it) - backfill needed before the chart is meaningful",
+          "priority": "high"
+        },
+        {
+          "title": "OTC distribution Sankey: desk -> router -> venue",
+          "motivation": "The decisive finding this week was not the SIZE of the distribution but its DESTINATION - tracing two hops past the desks showed 1.33M flowing through five zero-balance routers onto Bybit, Binance.com and back to UPbit. That multi-hop structure is currently conveyed as a paragraph of addresses and amounts, which badly undersells it; it is inherently a flow graph. A Sankey would also make it immediately obvious when a wave terminates at exchanges (distribution) versus dispersing to many small unlabeled wallets (genuine retail sale).",
+          "suggested_visualization": "Sankey / flow diagram with three columns (OTC desks -> routing wallets -> destination venues), edge width by EGLD volume, unlabeled routers rendered distinctly from known exchanges.",
+          "data_already_available": true,
+          "data_source": "the paginated desk outbound tx set plus one-hop router queries - both collected this run; would need persisting as a structured edge list in the report JSON",
+          "priority": "high"
+        },
+        {
+          "title": "Participation breadth vs price recovery overlay",
+          "motivation": "The delegator base has now been flat for five consecutive weeks spanning a +24% price recovery - a finding that only exists in the gap between two series and is invisible in any single-week panel. Showing delegator count against price on one timeline would turn a repeated weekly sentence into an obvious structural picture, and would immediately reveal if breadth ever does start following price.",
+          "suggested_visualization": "dual-axis line chart: total delegators (left) vs EGLD price (right) over all tracked runs, with recovery periods shaded.",
+          "data_already_available": true,
+          "data_source": "running_baselines.total_delegators and running_baselines.egld_price_usd, both stored every run",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "OTC desk balance + throughput cycle chart",
+          "status": "pending",
+          "note": "Still not built, and this run raised its priority: the throughput inputs were just corrected ~4x, so the chart now also needs a paginated backfill of runs #13-#15 before it would show a truthful series."
+        },
+        {
+          "title": "EGLD relative-strength (beta) tracker",
+          "status": "pending",
+          "note": "Not built, and this week proved the need - the leadership thesis it was meant to track failed within one week, which a multi-week EGLD-vs-BTC/ETH view would have made visually obvious rather than requiring a narrative correction."
+        },
+        {
+          "title": "DeFi leverage/engagement composite panel",
+          "status": "deprioritized",
+          "note": "Deferred behind the two OTC visualizations. The cluster it was designed to show (USH mint, XEGLD supply, compound rate) went neutral this week, so it would currently display a flat, low-information panel; revisit when the leverage signals move again."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "Run #16 framed the tension as real demand versus staged supply and registered two explicit tests. Both resolved this week, and both resolved bearishly. The staged supply was DELIVERED: the OTC desks drained -255,736 (-76%, the largest drawdown in tracking) on 1.33M EGLD of true throughput, and for the first time the destinations were traced two hops - through zero-balance routers onto Bybit, Binance.com and back to UPbit. It went to exchanges, not to holders. Meanwhile the demand side failed its test: EGLD gained only +0.96% while BTC (+1.95%) and ETH (+4.36%) both outpaced it, so the celebrated EGLD-specific decoupling was a one-week event rather than a laggard-to-leader regime change; USH leverage-minting stopped the same week price stopped rising; the reward compound rate slipped; and the delegator base stayed flat for a fifth consecutive week across the entire +24% recovery. The honest read is that a 1.33M-EGLD distribution wave was enough to cap the recovery, and it was absorbed by a bid roughly one twenty-fifth its size (the Mega Whale's +50,621 via Coinbase Routing). Two genuine caveats keep this from being outright bearish: the market absorbed 1.33M EGLD without breaking down, and the bridged-stablecoin bleed finally stopped. But the methodological finding may matter more than the market one - discovering that the 50-tx cap had been undercounting OTC throughput roughly fourfold in every prior run means the pipeline was systematically understating the scale of distribution it was built to detect, and the historical series has to be rebuilt before any trend claim about it can be trusted.",
+        "actions_completed_count": 8,
+        "actions_attempted_count": 8,
+        "what_would_2x_next_week": "Resolve the demand-vs-distribution tension this week framed: does the RECORD OTC reload (~335K loaded) get pushed out and does price ABSORB it (regime change confirmed) or FADE under it (distribution into a bounce, like run #12)? Track the OTC desk balance drawdown + throughput next week as the primary tell. Second: build the OTC desk balance+throughput cycle chart AND the EGLD-vs-majors relative-strength tracker (this run's two top dashboard suggestions) - both would have flagged this week's setup (record load; EGLD-specific decoupling) at a glance that the single-week view buries. Third: an internal-transfer/SC-result data source to attribute Bybit's -221K and Binance's +108K external hot inflow, the two biggest untraced moves this week."
+      },
+      "recommendations_for_next_run": [
+        "REBUILD THE OTC THROUGHPUT SERIES WITH PAGINATION. This run discovered the size=50 cap undercounted throughput ~4x in every prior run (run #16: 323K reported vs 1,100,791 actual). Re-query the desk windows for runs #13-#15 with full pagination so the series becomes comparable, and fix collect_run18.py to paginate and net out desk<->desk transfers by default. Until this is done, no trend claim about OTC throughput is defensible.",
+        "DO THE DESKS RELOAD? Desks drained -255,736 to ~80K but UPbit sent a fresh 364,000 out to them in the same window. Pre-committed reading: rebuilding toward 300K+ = second distribution wave staged (bearish continuation); holding near 80K with low throughput = wave finished, supply exhausted (constructive). Highest-priority follow-up.",
+        "KUCOIN +142,773 RESOLUTION: the whale erd15ku2r2j6 emptied its full 145,443 balance onto KuCoin and went to zero. If KuCoin's balance bleeds back down the coins were withdrawn or OTC-settled (neutral); if it stays elevated the position was sold into the book (bearish). Also trace the wallet's INBOUND history to establish whether it was itself an OTC recipient.",
+        "IS EGLD A LAGGARD AGAIN ON THE DOWNSIDE TOO? The leadership thesis failed on the upside this week. The confirming test is a macro DOWN week: if EGLD falls harder than BTC/ETH, the full high-beta-laggard regime is re-confirmed and the +24% recovery should be classified as a bear-market rally. Track EGLD vs BTC/ETH WoW explicitly either way.",
+        "BINANCE CUSTODY 4TH LEG? Three consecutive drawdown legs (-305,549 cumulative from the 3.51M peak) make this a programme. Watch whether the custody continues toward zero (full unwind of the runs #9-#11 accumulation) and whether the binance_staking provider stays stable or resumes shedding.",
+        "DOES DEFI LEVERAGE RESUME OR UNWIND? USH went flat (+0.14%) after +6.49% - borrowers stopped adding but did not close. If price breaks higher and USH resumes minting, the leverage was conviction; if price rolls over and USH burns >1%, it was a chase and the run #11 de-leveraging rule re-activates. XEGLD (+2.69%, 2nd week) is the cleaner ongoing inflow to track.",
+        "PARTICIPATION BREADTH, WEEK 6: the delegator base has been flat for five weeks across the entire recovery. Watch whether a sustained hold above $3 finally pulls new delegators in. If it stays flat a sixth week, treat 'recoveries on this chain do not broaden participation' as an established structural finding rather than a running observation.",
+        "MEGA WHALE ABSORPTION SCALE: erd18mv2z6r2 resumed at +50,621 via Coinbase Routing, but that is ~1/25th of the distributed volume. Watch whether the clip size grows (a real bid building) or stays ~50K (a floor only). Also check whether the Coinbase Routing pipe is itself fed from the OTC desks - if so, the 'absorber' and the distribution are the same flow."
+      ]
     }
   ]
 }
