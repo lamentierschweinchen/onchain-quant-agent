@@ -3560,6 +3560,275 @@
         "BACKFILL THE OTC SERIES ONE WINDOW FURTHER IF CHEAP. Runs #13-#18 are now comparable. Run #12's window (Jun 8-15) may still be queryable with the same paginated method; if it is, it would establish whether the escalation began before run #13 or started there. Do not spend more than ~200 API calls on it - the series is already usable.",
         "WATCH pi-staking, THE ONLY PERSISTENT GROWTH STORY. Six consecutive weeks of gains (+11,330 and +35 users this week) through both the rally and the reversal makes it the most persistent provider in tracking. Identify what is driving it (fee, APR, an integration, an aggregator routing default) - a provider growing against the tape is the closest thing to a genuine adoption signal the staking layer has produced this quarter."
       ]
+    },
+    {
+      "date": "2026-08-03",
+      "run_number": 19,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x38",
+          "paginated desk in/outbound",
+          "OTC throughput backfill run #12 window (paginated)",
+          "Binance custody reload funder trace (30d, paginated)",
+          "identifiable-bid instrument (absorber + Coinbase routing pipes)",
+          "withdrawal-breadth scan (paginated exchange outbound)",
+          "pi-staking provider inbound scan",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch guard active)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "THE INBOUND LEG OF THE OTC DESKS HAD NEVER BEEN RESOLVED TWO HOPS OUT, AND IT INVERTS THE READING. Desk inflows had always come from UPbit directly, so the collector treated inbound as a single-hop question. This week Bybit and Gate.io fed the desks through zero-balance feeder wallets, and only resolving those feeders showed that ~80% of gross throughput round-trips to the venue that supplied it. Rule: apply the run #17 two-hop destination rule symmetrically to both legs, every week.",
+          "A ZERO-VALUE TRANSACTION IS NOT AN EMPTY TRANSACTION. The Binance custody funder erd1r3w62vq showed only one inbound transfer of 0.0001 EGLD in 30 days, which run #18 read as 'origin unresolved'. Its OUTBOUND list contained two zero-value txs whose `function` fields were unDelegate and withdraw against the binance_staking delegation contract - the EGLD arrived as a smart-contract result, invisible as a value transfer. Always read the `function`/`action` field on zero-value transactions before concluding a wallet's funding is untraceable.",
+          "/providers again returned 187 entries of which 107 have locked>0. The locked>0 filter remains load-bearing for every churn and concentration metric; the unfiltered numUsers sum is ~201K against the correct 174K.",
+          "CLEAN PRICE-FEED RUN (5th consecutive): the dataApi re-fetch guard reported 0 retries for all four dataApi-class tokens (SEGLD, SWTAO, USH, XEGLD).",
+          "The run #12 OTC window (Jun 8-15) IS still queryable with the paginated method and returns 44,335 EGLD net, extending the comparable gross series one window to the left. It confirms the escalation began at run #13 rather than earlier."
+        ],
+        "data_gaps": [
+          "Circularity has only been measured for this week. Runs #13-#18 report gross throughput with unknown round-trip content, so the escalation series cannot be restated in net terms without re-tracing each window's routers and feeders (roughly 30-60 extra queries per window).",
+          "Two entries in known-addresses.json remain invalid-checksum and are flagged rather than guessed: Hatom UTK Money Market and OneDex Launchpad. Neither is queried by the collector, so no figure is affected.",
+          "The recurring counterparty labelled 'Unknown Whale I (active)' both feeds and receives from the OTC desks (net +10,171) and is unidentified. It is the largest non-exchange participant in the hub.",
+          "Why the Mega Whale absorber stopped remains unknowable on-chain; only that the Coinbase Routing wallet feeding it has held 77 EGLD for two weeks."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "Applying the run #17 two-hop destination rule to the INBOUND leg as well was the highest-yield change of the run. It cost about 25 extra queries and revealed that 80% of gross desk throughput round-trips to the venue that fed it - which redefines the pipeline's headline metric and retroactively qualifies the runs #13-#18 series.",
+          "Reading the function/action field on ZERO-VALUE transactions resolved a question run #18 had recorded as unresolvable. The Binance custody funder appeared to have no funding history because its EGLD arrived as a smart-contract result; its zero-value outbound txs carried function=unDelegate and function=withdraw, which identified the source exactly and falsified last week's bullish conclusion.",
+          "The three demand instruments requested by run #18 were all built and all paid off immediately: the DEX turnover ratio turned 'depth held, trading left' into a measurement (4.06% -> 2.14%), the identifiable-bid composite recorded a clean second week of zero, and withdrawal breadth exposed that 84% of >1,000 EGLD exchange withdrawals go straight into the OTC pipeline rather than to self-custody.",
+          "The pre-commitment discipline again did its job. Four registered tests resolved (UPbit reload, custody origin, USH acceleration, depositor capacity), and two of them resolved AGAINST the prior run's conclusion - which is only visible because the branches were written down in advance.",
+          "Answering an open 'why' question with provider parameters rather than a narrative: pi-staking's seven-week growth streak is fully explained by 9.10% APR at a 0% fee on a small base, and the cohort check (APR>=8.8% +37,090 vs 20%-fee procryptostaking -5,998) generalises it to fee arbitrage rather than adoption."
+        ],
+        "what_needs_improvement": [
+          "Three consecutive runs have had a headline conclusion overturned by measuring one level deeper (run #17 pagination, run #18 baseline units, run #19 circularity and the custody origin). The pattern is that a flow AGGREGATE gets reported as a fact before its constituent legs are resolved. Single-week structural conclusions drawn from aggregates should be marked provisional in the report itself.",
+          "The corrected net-one-way figure exists for exactly one week, so there is no series. Until the run #17 peak window is re-netted, the model cannot say whether the five-week escalation was distribution or churn - which is a live gap in the most-cited chart the pipeline produces.",
+          "The withdrawal-breadth instrument has no prior-week comparison and will not become useful for two more runs. Instruments should be backfilled at introduction where the raw snapshots allow it (data/collected has every week since run #10).",
+          "'Unknown Whale I (active)' is the largest non-exchange participant in the OTC hub, both feeding and receiving, and remains unidentified after appearing in multiple runs. It should have been traced this run rather than deferred."
+        ],
+        "surprising_findings": [
+          "The OTC pipeline is a CIRCULAR cross-exchange settlement hub, not a one-way distribution channel. Bybit fed 132,074 EGLD into the desks through three feeders and took 160,410 back out through five routers in the same week; Gate.io did the same at smaller scale. Netting round-trips reduces a 301,498 headline to 61,435 of genuine one-way movement.",
+          "Run #18's single most bullish finding was wrong. The +150,000 Binance custody 'reload' was the delegation unwind completing - an unDelegate on July 9 and a withdraw on July 22, with the transfer to custody minutes later. Binance never stopped de-staking.",
+          "Every traced desk destination above 2,000 EGLD terminated at an exchange or at one recurring whale intermediary. There was ZERO retail dispersion in a week with 301,498 EGLD of gross pipeline activity.",
+          "The reward compound rate jumped to 62.25%, the highest in tracking, reversing two weeks of slippage during a down week - and of 73 retail claims traced, NONE went to a labelled exchange. The smallest delegators are the most steadfast cohort on the chain.",
+          "XOXNO's LSD held flat through a -5% price week. XEGLD has redeemed on every prior drawdown in tracking (-29.2% in run #14, -2.70% last week); the redeem-on-weakness pattern broke.",
+          "84% of the EGLD leaving exchanges in >1,000 EGLD transfers went into the OTC pipeline rather than to self-custody addresses. The naive withdrawal-breadth metric would have read as retail accumulation."
+        ]
+      },
+      "methodology_changes": [
+        "RESOLVE BOTH LEGS OF THE OTC HUB TWO HOPS OUT, AND REPORT GROSS AND NET SEPARATELY (new). Run #17 established two-hop resolution for desk OUTflows. This run applies the mirror to INflows and finds that ~80% of gross throughput round-trips to the venue that supplied it. Gross throughput measures pipeline activity; net one-way movement measures distribution. They differ by 5x this week. scripts/trace_otc_hub_run19.py performs the resolution and persists it into the collected snapshot as `otc_hub_trace`.",
+        "READ THE function/action FIELD ON ZERO-VALUE TRANSACTIONS BEFORE DECLARING AN ORIGIN UNTRACEABLE (new). The Binance custody funder appeared to have no funding history because its EGLD arrived as a smart-contract result. Its zero-value outbound txs carried function=unDelegate and function=withdraw, which identified the source precisely. This is the delegation-layer analogue of the run #15 custody tx-scan rule.",
+        "A CORRECTION-PRONE PATTERN IS NOW EXPLICIT: three consecutive runs have had a headline conclusion overturned by measuring one level deeper (run #17 pagination, run #18 baseline units, run #19 circularity plus the custody origin). Treat any single-week structural conclusion drawn from a flow aggregate as provisional until the constituent legs have been resolved.",
+        "WITHDRAWAL BREADTH MUST BE REPORTED EX-PIPELINE (new). The raw count of addresses receiving >1,000 EGLD from exchanges is dominated by the OTC desks and their routers - 84% of volume this week. Only the pipeline-excluded figure is a retail-accumulation proxy.",
+        "DEX DEPTH RATIO ADDED AS A STANDING METRIC (implements run #18 recommendation #4b). Daily volume divided by pool TVL from /mex/pairs turns 'depth held while trading left' from an inference into a measurement, and it is independent of both price and the flow plumbing."
+      ],
+      "new_addresses_discovered": [
+        "erd1r3w62vq... IDENTIFIED (was unknown in run #18): a Binance DE-STAKING WITHDRAWAL wallet. Its 30-day history is unDelegate + withdraw on the binance_staking delegation contract followed by a 150,000 transfer to the Binance Staking custody wallet. Added to known-addresses as exchange/binance_destaking.",
+        "Three OTC desk FEEDER wallets (inbound leg, new pattern): zero-balance pass-throughs carrying Bybit and Gate.io funds INTO the desks. Previously the desks were only ever fed by UPbit directly, so the inbound routing layer had never been observed.",
+        "Multiple OTC desk->venue routers re-confirmed and newly labelled where unnamed, terminating at Bybit, Binance.com and Gate.io.",
+        "'Unknown Whale I (active)' is now confirmed as a two-way participant in the OTC hub (both feeds and receives) and is the largest non-exchange counterparty in it. Still unidentified; added to watch_addresses for a 30-60d inbound trace.",
+        "STILL FLAGGED, not fixed: two invalid-checksum entries in known-addresses.json (Hatom UTK Money Market, OneDex Launchpad). Neither is queried by the collector."
+      ],
+      "action_items_completed": [
+        "DONE: TRACE THE BINANCE CUSTODY RELOAD ORIGIN. Resolved, and it falsifies run #18's reading. The funder's complete 30-day history is unDelegate (Jul 9) + withdraw (Jul 22) on the binance_staking DELEGATION contract, then the 150,000 to custody. The reload was the run #16 provider unwind (-148,941) completing after unbonding, not external accumulation. The de-staking programme is intact; custody was flat all week.",
+        "DONE: DID THE DEMAND SIDE COME BACK? No. Price fell a further 5.28%, the identifiable bid recorded a second consecutive zero week (Mega Whale unchanged to the decimal, Coinbase Routing still at 77 EGLD), and the DEX turnover ratio halved again. The pre-committed test resolves toward the bid-problem branch, with one correction: its premise that there was 'no traceable distribution' was wrong - netting the pipeline shows ~61K of genuine one-way distribution with UPbit as the source.",
+        "DONE: DO THE OTC DESKS STAY DEAD? No - UPbit resumed with a fresh 67,000 tranche after one week of nothing, and the desk balance rose to 65,053. Gross throughput was flat at 301,498. The exhaustion call from run #18 lasted exactly one week, though at ~1/20th of the run #17 peak in net terms.",
+        "DONE: INSTRUMENT DEMAND PROPERLY - all three sub-items built. (a) identifiable-bid composite (Coinbase Routing balance + Mega Whale delta) now a standing metric, reading zero for a second week; (b) per-pair TVL/volume depth ratio from mex/pairs added to token_activity.xexchange, showing turnover 4.06% -> 2.14% on flat depth; (c) withdrawal breadth measured, and immediately showed that 84% of >1,000 EGLD exchange outflows go into the OTC pipeline, so only the ex-pipeline figure (20 addresses, 56,896 EGLD) is a retail proxy.",
+        "DONE: DOES THE USH DE-LEVERAGING ACCELERATE? Neither branch - it continued at almost exactly the prior pace (-2.93% after -2.60%, cumulative -5.45%). An orderly unwind that retires the run #16 leverage chase without a forced-closure signature, so no capitulation tell.",
+        "DONE: CONFIRM OR FALSIFY THE DEPOSITOR-CAPACITY RECOVERY. The bilateral inverse ratio came in at 0.58 on a -5.28% price week - neither the >0.8 'structurally restored' branch nor the 0.2-0.4 'reverted' branch. Read: capacity is healthy and mid-range, run #11's decay hypothesis stays falsified, and run #18's 0.98 was a spike rather than a new level.",
+        "DONE: BACKFILL THE OTC SERIES ONE WINDOW FURTHER. The run #12 window (Jun 8-15) is still queryable and returns 44,335 EGLD net of desk-to-desk, extending the gross series one window left and confirming the escalation began at run #13 rather than earlier.",
+        "DONE: WATCH pi-staking. Explained: 9.10% APR at 0% service fee on a 63,922 EGLD base - second-highest APR, joint-lowest fee, small enough to absorb inflows without diluting. Not an integration or adoption story. The cohort check generalises it: APR>=8.8% providers took +37,090 while 20%-fee procryptostaking and 12%-fee syndicatex shed."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.99,
+          2.85,
+          2.55,
+          2.7,
+          3.13,
+          3.16,
+          2.84,
+          2.69
+        ],
+        "dex_volume_24h_usd": [
+          54634.45212423313,
+          63019.3189739559,
+          79694.91132774687,
+          88354.28195205361,
+          160792.26882311978,
+          193678.59840165742,
+          75362.7807729906,
+          38628.36089504676
+        ],
+        "staked_egld": [
+          14432677,
+          14423511,
+          14504618,
+          14458763,
+          14538955,
+          14619977,
+          14493315,
+          14470102
+        ],
+        "mex_price_usd": [
+          2.738418102638608e-07,
+          2.683608336861572e-07,
+          2.2861040788977142e-07,
+          2.430275788949282e-07,
+          2.694326542414106e-07,
+          2.7007416757074616e-07,
+          2.4872942896941377e-07,
+          2.4397414242709315e-07
+        ],
+        "total_delegators": [
+          174484,
+          174406,
+          174407,
+          174373,
+          174349,
+          174335,
+          174341,
+          174325
+        ],
+        "staked_ratio": [
+          0.4787456139710736,
+          0.47767456403018393,
+          0.47959097367830933,
+          0.4773082253449375,
+          0.4791867069985865,
+          0.48108470358505084,
+          0.4761527653318647,
+          0.4746278437166162
+        ],
+        "exchange_net_flow_egld": [
+          41987.5425480064,
+          12194.290004270151,
+          -222307.23190492112,
+          -218471.62159921788,
+          -195706.30567509495,
+          193747.1765770316,
+          166977.62919204682,
+          -20386.061375999823
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          44335,
+          66128,
+          186124,
+          506053,
+          1100791,
+          1284688,
+          313173,
+          301498
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435
+        ],
+        "dex_turnover_ratio_pct": [
+          4.061,
+          2.141
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0,
+          0
+        ],
+        "binance_staking_custody_egld": [
+          3512650.2283337726,
+          3512650.2283337726,
+          3512650.2283337726,
+          3353797.4812337724,
+          3310679.6331837727,
+          3207100.622133773,
+          3357100.6221337724,
+          3357100.6221337724
+        ],
+        "reward_compound_pct": [
+          59.14,
+          55.31,
+          58.54,
+          60.35,
+          61.59,
+          60.19,
+          58.81,
+          62.25
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "OTC hub flow map: gross vs net one-way, with venue-level netting",
+          "motivation": "This run's central finding is that 80% of the OTC pipeline's headline throughput is round-trip churn between Bybit, Gate.io and the desks, leaving only ~61K of genuine one-way movement with UPbit as the sole net source. Conveying it required a full section of prose plus five inline numbers, and the crucial point - that the same venue appears on BOTH sides - is exactly the sort of thing a reader cannot hold in their head from a table. It also retroactively qualifies the runs #13-#18 series that the dashboard already shows, so the corrected framing needs to be visible wherever that series appears.",
+          "suggested_visualization": "Sankey or chord diagram of venue -> feeder -> desk -> router -> venue for the week, with round-trip edges rendered in a muted colour and net one-way edges highlighted; a headline pair of numbers (gross / net one-way) above it.",
+          "data_already_available": true,
+          "data_source": "data/collected/{date}.json `otc_hub_trace` (new this run) contains per-address amounts, resolved terminals, and venue-level netting; would need promoting into the report JSON as a first-class object",
+          "priority": "high"
+        },
+        {
+          "title": "Demand instrument panel: turnover ratio, identifiable bid, withdrawal breadth",
+          "motivation": "Three demand-side instruments went live this run (DEX turnover ratio, identifiable-bid composite, ex-pipeline withdrawal breadth) and they are the model's answer to run #18's finding that it was instrumented almost entirely on the supply side. Right now they are scattered across the token, whale and anomaly sections, and two of them are single points with no history. Giving them one panel with a shared time axis would make the demand story readable at a glance and would immediately show the weeks where supply and demand disagree.",
+          "suggested_visualization": "three stacked sparklines on a shared week axis - turnover ratio (%), identifiable-bid absorption (EGLD, currently a flat zero line for 2 weeks), ex-pipeline withdrawal breadth (address count and EGLD) - each with the current value as a large numeral and a state chip.",
+          "data_already_available": false,
+          "data_source": "turnover ratio is in token_activity.xexchange this run; the bid composite and breadth exist only in anomaly descriptions and need first-class report fields plus a running_baselines array before a history can be drawn",
+          "priority": "high"
+        },
+        {
+          "title": "Conclusion-revision log",
+          "motivation": "Three consecutive runs have had a headline conclusion overturned by measuring one level deeper: run #17's pagination fix, run #18's baseline-units fix, and this run's circularity finding plus the falsified custody reversal. That self-correction is the pipeline's most credible feature, but a reader of any single report sees only the current conclusion and has no way to know it replaced an earlier one. A visible log of revised conclusions - what was claimed, in which run, what overturned it - would make the model's error-correction auditable and would stop stale narratives being carried forward by readers.",
+          "suggested_visualization": "reverse-chronological list of revisions, each showing the original claim with a strikethrough, the correcting run, the measurement that forced the change, and a chip for the direction of the revision (more bullish / more bearish / neutral).",
+          "data_already_available": false,
+          "data_source": "the information is in meta_learning.methodology_changes and anomaly descriptions across runs but is unstructured; would need a `revisions` array in the report schema",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Supply-vs-demand channel dashboard (the 'what is switched on' panel)",
+          "status": "pending",
+          "note": "Not built, and this run strengthens the case rather than weakening it: the supply channel that the panel would have shown as OFF last week was in fact ON but circular. The panel should therefore show net one-way rather than gross for the OTC row - a design change that only became apparent because of this run's finding."
+        },
+        {
+          "title": "Corrected OTC throughput series with method-provenance markers",
+          "status": "pending",
+          "note": "Still the highest-value unbuilt item, and now needs a second provenance dimension: not just paginated-vs-truncated (runs <#13 unusable) but gross-vs-net-one-way (only run #19 is netted). Building it with gross figures alone would now propagate a known overstatement."
+        },
+        {
+          "title": "Pre-committed test scoreboard",
+          "status": "pending",
+          "note": "Carried. This run resolved four pre-registered tests (UPbit reload, custody origin, USH acceleration, depositor capacity) and registered five more, so the queue it would track is now large enough to justify the schema work."
+        },
+        {
+          "title": "EGLD relative-strength (beta) tracker",
+          "status": "deprioritized",
+          "note": "Deprioritised for a second time. This week EGLD moved in line with ETH, so the decoupling that motivated the tracker looks like a run #18 one-off rather than a regime. Revisit only if a second decoupling week occurs."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The week's two most important findings are both corrections of run #18's conclusions, and both came from resolving one level deeper than the previous run managed. First, the OTC pipeline did not switch off - it went circular. Gross desk throughput was 301,498 EGLD, essentially unchanged week over week, but resolving the INBOUND leg two hops out (never necessary before, because UPbit had always been the sole feeder) shows Bybit pushing 132,074 into the desks and taking 160,410 back, with Gate.io doing the same at smaller scale. Netting round-trips leaves 61,435 of genuine one-way movement, 80% of the gross being churn, and UPbit the only net source. Second, Binance never stopped de-staking: the +150,000 custody reload that run #18 called the strongest bullish structural counter-signal came from a wallet whose complete 30-day history is an unDelegate and a withdraw on the binance_staking delegation contract - the run #16 provider unwind completing after its unbonding period. Both errors share a mechanism: a flow aggregate was read as a fact when it was a hypothesis. Meanwhile the demand-side instrumentation requested last run went live and immediately paid: the DEX turnover ratio halved a second time (4.06% to 2.14% of pool TVL traded daily) on flat depth, and the identifiable-bid composite recorded a second consecutive week of exactly zero - the Mega Whale absorber unchanged to the decimal and the Coinbase Routing pipe still holding 77 EGLD. Price fell 5.28%, but this time alongside BTC -3.22% and ETH -5.56%, so the chain-specific claim from last week does not extend to this one on price evidence alone; it now rests on the demand instruments, which is exactly where the model wanted it.",
+        "actions_completed_count": 8,
+        "actions_attempted_count": 8,
+        "what_would_2x_next_week": "Rebuild the OTC throughput history in NET one-way terms. The single most-cited artefact this pipeline produces is the throughput series, and this run proved that its unit measures pipeline activity rather than distribution - 80% of this week's gross was round-trip churn between Bybit, Gate.io and the desks. Re-netting the run #17 peak window (about 60 queries) would answer whether the 1.28M record was real distribution or the same churn at scale, and that single answer changes the interpretation of the last six weeks. Second: fold the two-hop both-legs resolution into the collector so gross and net are produced together every week rather than by a side script. Third: backfill the three new demand instruments from the stored snapshots (data/collected has every week since run #10) so they have history instead of a single point.",
+        "pre_committed_test_for_next_run": "OTC: net one-way distribution rising back above ~150K with a further UPbit tranche above ~200K = wave #2 genuinely staging and run #18's exhaustion call is dead; net staying near 60K on high gross = the desks are cross-exchange settlement infrastructure and gross throughput should be dropped from the supply indicators entirely. BID: a third consecutive week of zero absorption by the Mega Whale absorber with the Coinbase Routing wallet still dry promotes 'the chain's large-bid infrastructure is dormant' from observation to structural finding; a Coinbase Routing refill is the earliest observable reversal."
+      },
+      "recommendations_for_next_run": [
+        "RE-NET THE RUN #17 PEAK WINDOW. The 1,284,688 gross figure is the largest distribution reading in tracking and it is now known to be un-netted for circularity. Re-trace that window's routers and feeders (~60 queries) and report how much was genuinely one-way. If a large share was Bybit-Gate.io churn, the whole run #17 'record distribution wave' narrative needs restating - and the model needs to know that before it uses the series again.",
+        "PROMOTE THE TWO-HOP BOTH-LEGS NETTING INTO THE COLLECTOR. scripts/trace_otc_hub_run19.py currently runs as a post-pass and writes `otc_hub_trace` into the snapshot. Fold it into collect_run20.py so gross and net one-way throughput are produced together every week, and add net_one_way to running_baselines as a NEW array (do not append to the gross one - run #18's units lesson).",
+        "DOES THE UPbit RELOAD ESCALATE? UPbit sent 67,000 into the desks after a week of nothing, against 364,000 at the run #17 peak. Pre-committed reading: a tranche above ~200,000 with net one-way distribution above 150K = wave #2 staging and the run #18 exhaustion call is dead; another ~60K week = the desks are running settlement traffic rather than distribution. Watch UPbit's own balance (1,201,562) as the leading edge.",
+        "DOES THE IDENTIFIABLE BID COME BACK, AND DOES 3 WEEKS MAKE IT STRUCTURAL? The Mega Whale absorber and the Coinbase Routing pipe have both been at exactly zero for two weeks. Pre-registered promotion criterion: a third consecutive week of zero absorption promotes 'the chain's large-bid infrastructure is dormant' from observation to structural finding, on the run #18 precedent for participation inertia. A Coinbase Routing refill is the earliest observable reversal.",
+        "TRACK THE DEX TURNOVER RATIO AS A FIRST-CLASS SERIES. It halved twice in two weeks (4.06% -> 2.14%) on flat pool depth and is now the model's cleanest demand-side measurement. Add it to running_baselines, and watch for either a recovery above ~4% (bid returning) or a third halving, which would put xExchange into a regime where ordinary sell flow moves price disproportionately.",
+        "IDENTIFY 'Unknown Whale I (active)' (erd1vd76pwhl4d...). It both feeds and receives from the OTC desks and is the largest non-exchange participant in the hub, with a balance that grew to 155,386 this week. Trace its inbound over 30-60 days and its historical relationship to the desks - it may be the operator's own inventory wallet, which would further reduce the genuine-distribution figure.",
+        "WATCH FOR A FEE RESPONSE IN THE DELEGATION MARKET. With participation inert, fee arbitrage is the only force moving stake: the APR>=8.8% cohort took +37K while 20%-fee procryptostaking and 12%-fee syndicatex shed. If a high-fee incumbent cuts its fee, that is the first genuine competitive repricing in nineteen runs and would be a real adoption-layer event rather than a rotation.",
+        "DOES USH STABILISE OR TAKE A THIRD WEEK? Cumulative -5.5% over two weeks has retired the run #16 leverage chase. A third burn week would mean borrowers are cutting BASE positions, not just the chase - historically that has preceded local lows. Stabilisation would mark the de-leveraging complete. Track alongside Hatom Lending's EGLD TVL, which has now risen through two consecutive down weeks."
+      ]
     }
   ]
 }

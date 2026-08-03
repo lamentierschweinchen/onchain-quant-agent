@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-05-25",
+    "last_updated": "2026-08-03",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1212,6 +1212,46 @@
       "name": "OTC desk feeder (nonce 147)",
       "category": "exchange_router",
       "notes": "run #17: largest unlabeled INBOUND source to the desks (199,927 combined) and also sent 42,264 to UPbit. Upstream leg of the loading pipeline."
+    },
+    "erd1rzkykujulgwya6g90nqztfvlawtj2fkasqperq9njzzszw2eumys4ymqsq": {
+      "name": "Bybit->OTC Desk Feeder (run #19)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through that carried 51,275 EGLD from Bybit into the UPbit OTC desk complex in the 2026-07-27..2026-08-03 window. Inbound leg of the circular desk hub.",
+      "first_seen": "2026-08-03",
+      "discovered_run": 19
+    },
+    "erd1wfxz2v8ah4e9y8q066mywgg5vckxlyd0xpeertt6js2k92apjexsld6lrv": {
+      "name": "Binance.com->OTC Desk Feeder (run #19)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through that carried 41,070 EGLD from Binance.com into the UPbit OTC desk complex in the 2026-07-27..2026-08-03 window. Inbound leg of the circular desk hub.",
+      "first_seen": "2026-08-03",
+      "discovered_run": 19
+    },
+    "erd18vmgdhqzze45ldtmtknnwuqpmt88gyvdkgt3s68rgryleleykclq83ncj5": {
+      "name": "Bybit->OTC Desk Feeder (run #19)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through that carried 34,173 EGLD from Bybit into the UPbit OTC desk complex in the 2026-07-27..2026-08-03 window. Inbound leg of the circular desk hub.",
+      "first_seen": "2026-08-03",
+      "discovered_run": 19
+    },
+    "erd1ryx2av4ylc7zd9uj3880v3qwtc80shgc3svqs0wyu92s0ad20v6qst8pr6": {
+      "name": "OTC Desk->Bybit Router (run #19)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through that forwarded 24,912 EGLD from the OTC desks to Bybit in the 2026-07-27..2026-08-03 window.",
+      "first_seen": "2026-08-03",
+      "discovered_run": 19
+    },
+    "erd1r3w62vqmsux5e38p6vnueatmfcs8nr5lmg3s97x6rafqpgxfae0sxv9z0v": {
+      "name": "Binance: de-staking withdrawal wallet",
+      "category": "exchange",
+      "subcategory": "binance_destaking",
+      "notes": "Calls unDelegate/withdraw on the binance_staking delegation contract and forwards the proceeds to the Binance Staking custody wallet. Sent the +150,000 custody 'reload' on 2026-07-22, which run #18 had read as external accumulation.",
+      "first_seen": "2026-08-03",
+      "discovered_run": 19
     }
   },
   "unknown_whales": {
