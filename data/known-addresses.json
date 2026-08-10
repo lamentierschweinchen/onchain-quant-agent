@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-08-03",
+    "last_updated": "2026-08-10",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1252,6 +1252,62 @@
       "notes": "Calls unDelegate/withdraw on the binance_staking delegation contract and forwards the proceeds to the Binance Staking custody wallet. Sent the +150,000 custody 'reload' on 2026-07-22, which run #18 had read as external accumulation.",
       "first_seen": "2026-08-03",
       "discovered_run": 19
+    },
+    "erd10qcjunqdmgn58pgzndwg35tgms9ud40ey2f384df6fqrupuyh60sxz5ya4": {
+      "name": "Binance.com->OTC Desk Feeder (run #20)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through that carried 60,851 EGLD from Binance.com into the UPbit OTC desk complex in the 2026-08-03..2026-08-10 window. Inbound leg of the circular desk hub.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
+    },
+    "erd15jwxwcpedflwm9c42suya2hzulmc222purazcsszq4u8c0ql8rnsx6vmll": {
+      "name": "Bybit->OTC Desk Feeder (run #20)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through that carried 29,841 EGLD from Bybit into the UPbit OTC desk complex in the 2026-08-03..2026-08-10 window. Inbound leg of the circular desk hub.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
+    },
+    "erd1h39er99patvu9xdc6vvuyg87c37zerf2wyj2ehhyyvwpacxuryjs63sdc3": {
+      "name": "Bybit->OTC Desk Feeder (run #20)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through that carried 23,125 EGLD from Bybit into the UPbit OTC desk complex in the 2026-08-03..2026-08-10 window. Inbound leg of the circular desk hub.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
+    },
+    "erd1wyj8ufhuvrayd8wvd97ftswzr0u48z0e2vn237c2cpmjpsxn58ps9dz3ds": {
+      "name": "OTC Desk->Binance.com Router (run #20)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through that forwarded 59,281 EGLD from the OTC desks to Binance.com in the 2026-08-03..2026-08-10 window.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
+    },
+    "erd1m537u00lszywe79sufmv39j2s3ftgy3xlpegrlqhv4v5mu8nks0svvx40g": {
+      "name": "OTC Desk->Bybit Router (run #20)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through that forwarded 44,546 EGLD from the OTC desks to Bybit in the 2026-08-03..2026-08-10 window.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
+    },
+    "erd1an6dv5hg36pscczvt999cd7ax3pjknutd6zxhddqk946z0djrq8sh2lud7": {
+      "name": "OTC Desk->Bybit Router (run #20)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through that forwarded 29,841 EGLD from the OTC desks to Bybit in the 2026-08-03..2026-08-10 window.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
+    },
+    "erd14xwc8p6t5syvdywml8au8rz93ftfx30tpk0dj3et9ulqgsn2u6pspcc2nt": {
+      "name": "OTC Desk->Binance.com Router (run #20)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through that forwarded 23,336 EGLD from the OTC desks to Binance.com in the 2026-08-03..2026-08-10 window.",
+      "first_seen": "2026-08-10",
+      "discovered_run": 20
     }
   },
   "unknown_whales": {

@@ -3829,6 +3829,294 @@
         "WATCH FOR A FEE RESPONSE IN THE DELEGATION MARKET. With participation inert, fee arbitrage is the only force moving stake: the APR>=8.8% cohort took +37K while 20%-fee procryptostaking and 12%-fee syndicatex shed. If a high-fee incumbent cuts its fee, that is the first genuine competitive repricing in nineteen runs and would be a real adoption-layer event rather than a rotation.",
         "DOES USH STABILISE OR TAKE A THIRD WEEK? Cumulative -5.5% over two weeks has retired the run #16 leverage chase. A third burn week would mean borrowers are cutting BASE positions, not just the chase - historically that has preceded local lows. Stabilisation would mark the de-leveraging complete. Track alongside Hatom Lending's EGLD TVL, which has now risen through two consecutive down weeks."
       ]
+    },
+    {
+      "date": "2026-08-10",
+      "run_number": 20,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x38",
+          "paginated desk in/outbound (7d)",
+          "run #17 peak-window re-net (carried forward)",
+          "two-hop both-legs hub netting, 7d window (folded into collector)",
+          "Unknown Whale I 60d bidirectional trace",
+          "identifiable-bid instrument (absorber + Coinbase routing pipes)",
+          "withdrawal-breadth scan (paginated exchange outbound, interim window)",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch guard active)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "PAGINATED WINDOWS ARE REPRODUCIBLE WEEKS LATER. The run #17 peak window (Jul 13-20) re-queried on Aug 10 returned the same 1,284,688 gross figure reported at the time, and its routers and feeders were all still resolvable at a 60-day remove. This makes retrospective re-netting of any historical window a standing capability rather than a one-off, provided the window is inside the API's transaction retention.",
+          "CIRCULARITY IS APPROXIMATELY CONSTANT ACROSS WINDOWS. Measured at 68% (run #17 peak), 80% (run #19) and 69% (run #20). This was not knowable from one measurement and it materially changes how the historical gross series should be treated - as a valid shape with wrong units rather than as unusable.",
+          "/providers returned 187 entries of which 107 have locked>0, unchanged. The locked>0 filter remains load-bearing for every churn and concentration metric.",
+          "CLEAN PRICE-FEED RUN (6th consecutive): the dataApi re-fetch guard reported 0 retries for all four dataApi-class tokens (SEGLD, SWTAO, USH, XEGLD).",
+          "The ESDT system-SC issue scan returned ZERO issuances in the window - not a truncation or a filter artifact, the raw scan itself was empty. Fourth consecutive week of effectively zero new-token formation.",
+          "The whale_i 60-day bidirectional trace hit the collector's 12-page cap (600 txs each way) rather than the time boundary, so the traced window is ~25 days, not 60. Any address running >20 txs/day needs max_pages raised or the window narrowed deliberately."
+        ],
+        "data_gaps": [
+          "The net one-way series has three anchors (run #17 peak, run #19, run #20) but runs #13-#16 and #18 are still gross-only. Given that circularity is now measured as roughly constant, interpolating them is defensible but has not been done - the honest statement is that the shape is trusted and the levels for those weeks are not.",
+          "'Unknown Whale I' is profiled but not identified. The behavioural evidence (nonce 10,169, 20,794 lifetime txs, 15-75 txs/day, ~80-110 counterparties, both sides of the hub every week) points at an OTC operator inventory wallet, but the counterparty set was not fully enumerated because the 60d trace hit the page cap. Until it is, its net take from the desks is counted as distribution, which may overstate the genuine one-way figure by roughly 12,800 EGLD this week.",
+          "The direct-node unwind (~215K over three weeks) is measured only as a residual - total staked minus delegation TVL. No trace of which node operators are unstaking or where the EGLD lands has been attempted. This is the largest unexplained flow currently tracked.",
+          "The XEGLD redemption has no destination trace. Whether ~5,250 XEGLD went to native delegation, a competing LSD, or an exchange is the difference between a constructive and a bearish reading, and the model cannot currently say which.",
+          "Two entries in known-addresses.json remain invalid-checksum and are flagged rather than guessed: Hatom UTK Money Market and OneDex Launchpad. Neither is queried by the collector, so no figure is affected."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "PRE-COMMITTED TESTS CARRIED THE ENTIRE RUN. Run #19 registered four tests with explicit numeric thresholds and three fired in the pre-specified direction: the UPbit tranche cleared 200,000 (came in at 319,000), net one-way cleared 150,000 (came in at 188,658), and the identifiable bid reactivated through precisely the Coinbase Routing pipe that run #19 named as 'the earliest observable reversal'. This is the first run in four with ZERO corrections of a prior headline - not because the model got luckier, but because the questions were specified before the data arrived.",
+          "RE-NETTING A HISTORICAL WINDOW WORKED AND WAS CHEAPER THAN FEARED. The run #17 peak window re-queried three weeks later returned identical gross figures with every router and feeder still resolvable. 1,284,688 gross was 68% circular, leaving 409,680 one-way. Retrospective re-netting is now a standing capability, not a one-off.",
+          "THE SECOND-ORDER RESULT BEAT THE FIRST. Measuring circularity in a third window showed it is roughly CONSTANT (68% / 80% / 69%), which rescues the runs #13-#18 gross series as a valid SHAPE with wrong units rather than discarding it. Run #19 had assumed the worst case; measuring one more window produced a materially less destructive - and more useful - answer.",
+          "SUPPRESSING A RULE RATHER THAN COMPUTING IT. The bilateral inverse rule requires |price change| >= 5% and price moved -0.37%, which would have produced a nonsense ratio of 3.50. The report states explicitly that the rule is not evaluable and does not advance the confirmation count. Prior runs computed the ratio whenever both legs existed.",
+          "A BEHAVIOURAL PROFILE ANSWERED AN IDENTITY QUESTION WELL ENOUGH TO ACT ON. 'Unknown Whale I' could not be named, but nonce 10,169, 20,794 lifetime txs, 15-75 txs/day and ~80-110 counterparties on both sides of the hub is sufficient to classify it as operator inventory rather than an end buyer - and to state the exact test that would confirm it and the exact figure that would change (188,658 -> ~175,818)."
+        ],
+        "what_needs_improvement": [
+          "The whale_i 60-day trace terminated on the collector's 12-page cap at 600 txs, covering ~25 days of a requested 60, and the script did not flag that it had hit the page limit rather than the time boundary. That silent truncation is the same class of bug as the run #17 pagination miss, one layer down. The collector should log page-cap terminations.",
+          "TWO FLOWS OF FIRST-ORDER SIZE ARE NARRATED AS 'UNEXPLAINED'. The direct-node unwind (~25.6K this week, ~215K over three weeks) is measured only as a residual between total staked and delegation TVL, and the XEGLD redemption (~5,250 tokens on a flat price week) has no destination trace. Both are cheap to resolve and neither was attempted this run because query budget went to the OTC re-netting.",
+          "The net one-way series has three anchors but they are not contiguous - the run #17 peak sits three weeks before run #19 with nothing measured between. Storing it as a flat array would have created a false time axis, so it is stored as a keyed window map instead, but the series is still not chartable as a weekly line.",
+          "MEX has outperformed EGLD for three consecutive weeks and the model has now given the same stale-pricing explanation twice without checking it. That is the shape of an assumption hardening into a fact."
+        ],
+        "surprising_findings": [
+          "A FLAT PRICE WEEK CONTAINED A TRIPLING OF NET DISTRIBUTION. EGLD moved -0.37% while the OTC hub pushed 188,658 EGLD of genuine one-way movement, up from 61,435. The market cleared a real supply wave without breaking, and paid for it in relative underperformance (~2pp behind BTC and ETH) rather than absolute decline.",
+          "THE RUN #17 'RECORD 1.28M DISTRIBUTION WAVE' WAS A 410K WAVE. Real in direction, roughly a third the size in magnitude. This week's 188,658 is 46% of that corrected peak, not 15% of the headline one - which makes the current wave much more significant relative to history than the uncorrected figures implied.",
+          "THE FIRST COMPETITIVE FEE CUT IN TWENTY RUNS - and it has not worked. egldstakingprovider cut 24% -> 15% on a 127,531 EGLD book, lifting APR to 7.82%, and still shed -8,168 EGLD and -7 delegators in the same week. The model predicted the cut would come; whether delegators respond to it is now the open question, and a null result would materially weaken the yield-arbitrage mechanism this model has leaned on for four runs.",
+          "XOXNO'S LSD REDEEMED WITHOUT A PRICE DRIVER FOR THE FIRST TIME. Every prior XEGLD redemption in tracking coincided with a drawdown (-29.2% at -10.5% price, -2.70% at -12%). This week price was flat and ~5,250 XEGLD redeemed anyway, while Hatom's SEGLD was flat to three decimal places - so it is XOXNO-specific, not liquid-staking-wide.",
+          "ZERO new tokens were issued for a fourth consecutive week - the raw ESDT system-SC scan came back empty, not merely below the quality bar. For a chain whose thesis rests on application-layer growth, this is a more durable problem than any of the flow dynamics the report spends its length on.",
+          "Retail delegators remain the most steadfast cohort measured: of 72 claims traced, NONE went to a labelled exchange, for the tenth consecutive run. The only selling cohort was institutional, at 2 events and 162 EGLD."
+        ]
+      },
+      "methodology_changes": [
+        "HISTORICAL WINDOWS CAN BE RE-NETTED RETROSPECTIVELY (new). The run #17 peak window re-queried three weeks later returned identical gross figures with all routers and feeders still resolvable. Retrospective re-netting is therefore a standing capability, not a one-off - any window inside API retention can be restated in net one-way terms for ~60 queries.",
+        "TREAT THE GROSS OTC SERIES AS A VALID SHAPE WITH WRONG UNITS, NOT AS UNUSABLE (new, and it softens run #19's conclusion). Circularity measured at 68% / 80% / 69% across three windows is roughly constant, so relative dynamics in the runs #13-#18 gross series are intact and only the levels overstate distribution, by roughly 3-5x. Run #19's fear that the record-wave narrative needed discarding was an overcorrection.",
+        "THE BILATERAL INVERSE RULE MUST BE SUPPRESSED, NOT COMPUTED, WHEN |price change| < 5% (enforced this run). A 1.30% TVL move against a -0.37% price move produces a mechanical ratio of 3.50 that is pure small-denominator artifact. Prior runs computed and reported the ratio whenever both legs existed; from this run the report states explicitly that the rule is not evaluable and the confirmation count does not advance.",
+        "PRE-COMMITTED TESTS ARE NOW THE MODEL'S PRIMARY OUTPUT DISCIPLINE. Four registered tests resolved this run (UPbit escalation, bid dormancy promotion, USH third week, fee response) and three fired in the pre-specified direction. Three consecutive runs before this one had a headline overturned by measuring deeper; this run had none, because the questions were specified before the data arrived rather than after.",
+        "RAISE max_pages FOR HIGH-FREQUENCY ADDRESSES (new). The whale_i 60-day trace hit the 12-page cap at 600 txs and covered ~25 days instead of 60. Any address above ~20 txs/day needs the cap raised or the window narrowed deliberately, and the collector should log when a paginated query terminates on the page cap rather than the time boundary."
+      ],
+      "new_addresses_discovered": [
+        "The Coinbase Routing wallet's FUNDER is resolved: a Coinbase customer-facing hot wallet already labelled in known-addresses (60,702 lifetime txs, 17,097 EGLD balance). The full bid pipe is therefore Coinbase hot -> Coinbase Routing -> Mega Whale absorber, all three legs now named. This closes a chain that had been half-anonymous since run #15.",
+        "'Unknown Whale I' PROFILED but not named: nonce 10,169, 20,794 lifetime transactions, 15-75 txs/day, 79 distinct outbound and 108 distinct inbound counterparties, 2 tokens and 8 NFTs, balance 166,603 (+11,217). Present on both sides of the OTC hub in all three measured windows. Classified provisionally as OTC operator inventory / market-making, NOT an end buyer. Explicit confirmation test recorded in watch_addresses.",
+        "Additional OTC desk feeder and router wallets labelled from this week's hub trace, terminating at UPbit, Binance.com, Bybit and Gate.io. The venue shape is now identical across three measured windows: UPbit sole net source, Binance/Bybit the largest receivers.",
+        "STILL FLAGGED, not fixed: two invalid-checksum entries in known-addresses.json (Hatom UTK Money Market, OneDex Launchpad). Neither is queried by the collector, so no figure is affected."
+      ],
+      "action_items_completed": [
+        "DONE (run #19 rec #1, the top item): RE-NET THE RUN #17 PEAK WINDOW. 1,284,688 gross was 68% circular, leaving 409,680 genuinely one-way, with the same venue shape as this week (UPbit sole net source -214,000; Bybit +219,602, Binance.com +128,283 receiving). Consequence is narrower than run #19 feared: restate the magnitude, keep the direction. And the second-order finding - circularity roughly constant across three windows - rescues the whole gross series as a shape.",
+        "DONE (rec #2): PROMOTE THE TWO-HOP BOTH-LEGS NETTING INTO THE COLLECTOR. scripts/collect_run20.py now performs the hub trace inline and writes otc_hub_trace into the snapshot; gross and net one-way are produced together every week. net_one_way is stored as its OWN baseline array plus a keyed window map for the non-contiguous re-netted peak, never appended to the gross array.",
+        "DONE (rec #3): DOES THE UPbit RELOAD ESCALATE? YES, decisively. 319,000 against the 200,000 pre-committed threshold and 4.8x last week's 67,000, with net one-way at 188,658 against the 150,000 threshold. Both branches of the pre-committed test pointed the same way: wave #2 is genuinely staging and run #18's exhaustion call is dead. UPbit's own balance stayed flat at 1,202,942 while feeding, so it is being replenished from an unobserved source - flagged for next run.",
+        "DONE (rec #4): DOES THE IDENTIFIABLE BID COME BACK? YES, and through exactly the pre-registered pipe. A Coinbase hot wallet sent 5,764 EGLD to the Coinbase Routing wallet (dry at 77.13 for two weeks), which forwarded 5,748 to the Mega Whale absorber - its first movement in three weeks. The three-week structural promotion is CANCELLED, not triggered. Size caveat recorded: 3% of the week's net distribution, ~18% of the run #15 tranche.",
+        "DONE (rec #5): TRACK THE DEX TURNOVER RATIO AS A FIRST-CLASS SERIES. Added to running_baselines as its own array (4.061 / 2.141 / 2.235). Neither run #19 branch fired - no recovery above ~4%, no third halving. Stabilisation at a low level: removes a tail risk, provides no demand evidence.",
+        "PARTIAL (rec #6): IDENTIFY 'Unknown Whale I'. Profiled thoroughly but not named - the 60d trace hit the collector's page cap at 600 txs (~25 days). Behavioural evidence supports OTC operator inventory rather than end buyer, and the confirmation test plus the exact figure it would change (188,658 -> ~175,818) are recorded. Carried forward with a specific method fix (raise max_pages).",
+        "DONE (rec #7): WATCH FOR A FEE RESPONSE IN THE DELEGATION MARKET. It happened - egldstakingprovider cut 24% -> 15%, the first competitive repricing in twenty runs, exactly the event run #19 predicted the fee-arbitrage mechanism would force. Recorded as a regime shift. It has not worked yet (-8,168 EGLD, -7 delegators the same week); the 2-3 week follow-through is now a pre-committed test.",
+        "DONE (rec #8): DOES USH STABILISE OR TAKE A THIRD WEEK? Stabilised, at -0.32% after -2.93% and -2.60% - run #19's stabilisation branch, inside the noise band. Borrowers retired the run #16 leverage chase and stopped without touching base positions. No capitulation tell. Hatom Lending's EGLD TVL grew a third week alongside it, and notably without a dip to buy."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.85,
+          2.55,
+          2.7,
+          3.13,
+          3.16,
+          2.84,
+          2.69,
+          2.68
+        ],
+        "dex_volume_24h_usd": [
+          63019.3189739559,
+          79694.91132774687,
+          88354.28195205361,
+          160792.26882311978,
+          193678.59840165742,
+          75362.7807729906,
+          38628.36089504676,
+          40594.726618154826
+        ],
+        "staked_egld": [
+          14423511,
+          14504618,
+          14458763,
+          14538955,
+          14619977,
+          14493315,
+          14470102,
+          14468060
+        ],
+        "mex_price_usd": [
+          2.683608336861572e-07,
+          2.2861040788977142e-07,
+          2.430275788949282e-07,
+          2.694326542414106e-07,
+          2.7007416757074616e-07,
+          2.4872942896941377e-07,
+          2.4397414242709315e-07,
+          2.472038964013605e-07
+        ],
+        "total_delegators": [
+          174406,
+          174407,
+          174373,
+          174349,
+          174335,
+          174341,
+          174325,
+          174330
+        ],
+        "staked_ratio": [
+          0.47767456403018393,
+          0.47959097367830933,
+          0.4773082253449375,
+          0.4791867069985865,
+          0.48108470358505084,
+          0.4761527653318647,
+          0.4746278437166162,
+          0.4737995781734133
+        ],
+        "exchange_net_flow_egld": [
+          12194.290004270151,
+          -222307.23190492112,
+          -218471.62159921788,
+          -195706.30567509495,
+          193747.1765770316,
+          166977.62919204682,
+          -20386.061375999823,
+          22659.113199120387
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          66128,
+          186124,
+          506053,
+          1100791,
+          1284688,
+          313173,
+          301498,
+          604086
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658
+        },
+        "dex_turnover_ratio_pct": [
+          4.061,
+          2.141,
+          2.235
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0,
+          0,
+          5747.7
+        ],
+        "binance_staking_custody_egld": [
+          3512650.2283337726,
+          3512650.2283337726,
+          3353797.4812337724,
+          3310679.6331837727,
+          3207100.622133773,
+          3357100.6221337724,
+          3357100.6221337724,
+          3357100.6221337724
+        ],
+        "reward_compound_pct": [
+          55.31,
+          58.54,
+          60.35,
+          61.59,
+          60.19,
+          58.81,
+          62.25,
+          59.54
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "OTC net one-way series with measurement-provenance markers",
+          "motivation": "This run produced the second and third anchored points of the net one-way series (re-netted run #17 peak at 409,680, run #20 at 188,658, alongside run #19's 61,435) and simultaneously established that the surrounding gross series is a valid shape with 3-5x wrong units. The dashboard currently shows one throughput number per week with no indication of which measurement regime produced it - truncated (runs <#13), paginated-gross (#13-#18, #20), or paginated-and-netted (#17-peak, #19, #20). A reader cannot tell that the 1.28M bar and this week's 604K bar are not the same kind of number, and that the honest comparison is 410K vs 189K.",
+          "suggested_visualization": "a single time series with two overlaid lines - gross (muted) and net one-way (emphasised) - where net is drawn solid at measured weeks and dashed/hollow at inferred ones, with a small provenance chip per bar (truncated / gross / netted) and a legend that states the ~3-5x relationship explicitly.",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.otc_pipeline now carries gross_series_egld_7d, net_one_way_series_egld_7d and peak_window_renetted as first-class fields in this report",
+          "priority": "high"
+        },
+        {
+          "title": "Pre-committed test scoreboard",
+          "motivation": "This is the run that makes the case. Four tests were registered in run #19 with explicit numeric thresholds, and three fired in the pre-specified direction - the UPbit escalation past 200,000, the bid-dormancy promotion cancelled by the exact pipe named as the reversal signal, and the fee cut that the yield-arbitrage mechanism was predicted to force. A reader of this single report sees eight assertive findings with no way to know that most of them were falsifiable predictions made a week earlier rather than post-hoc narration. The scoreboard is the difference between a newsletter and a model.",
+          "suggested_visualization": "a table of open and resolved tests - registered-in run, the claim, the numeric threshold, the outcome, and a chip for resolved-as-predicted / resolved-against / unresolved - with open tests pinned to the top so the next run's questions are visible before its answers.",
+          "data_already_available": false,
+          "data_source": "the tests exist as prose inside watch_list.reason and recommendations_for_next_run across runs; making this real needs a structured `pre_committed_tests` array in the schema with threshold, branch and resolution fields",
+          "priority": "high"
+        },
+        {
+          "title": "Unexplained-flow tracker",
+          "motivation": "Two flows this week are of comparable size to the ones the report narrates in detail and are labelled 'unexplained': the direct-node unwind (~25,569 this week, ~215K over three weeks, measured only as a residual between total staked and delegation TVL) and the XEGLD redemption of ~5,250 tokens on a flat price week. Both have been carried as prose caveats rather than tracked quantities, which means their age and cumulative size are invisible. A reader should be able to see at a glance what the model is measuring but cannot explain, and for how long.",
+          "suggested_visualization": "a compact card list - flow name, cumulative size, weeks unexplained, the specific query that would resolve it - sorted by cumulative size, so the largest blind spot is always the first thing shown.",
+          "data_already_available": false,
+          "data_source": "currently only in meta_learning.data_gaps as free text; would need an `unexplained_flows` array carrying magnitude, first_observed_run and resolution_query",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "OTC hub flow map: gross vs net one-way, with venue-level netting",
+          "status": "pending",
+          "note": "Not built, and the data case is now stronger: this report carries venue_netting, peak_window_renetted and a net series as first-class fields, so a Sankey or chord view needs no derivation from the collected snapshot. Two windows now show the same venue shape (UPbit sole source, Binance/Bybit receiving), which is exactly the recurring structure a diagram would make instantly legible."
+        },
+        {
+          "title": "Demand instrument panel: turnover ratio, identifiable bid, withdrawal breadth",
+          "status": "pending",
+          "note": "Not built, but the blocker named last run is now half-cleared - the bid composite and withdrawal breadth are first-class fields in whale_intelligence.demand_instruments this run, and the bid series has its first non-zero point (0, 0, 5,748). Turnover has three points and just recorded its first non-decline. The panel would now show a genuine inflection rather than three flat lines."
+        },
+        {
+          "title": "Corrected OTC throughput series with method-provenance markers",
+          "status": "pending",
+          "note": "Superseded and re-scoped by this run's suggestion #1. The blocker was that building it with gross figures alone would propagate a known overstatement; measuring constant circularity across three windows resolves that - gross can now be shown alongside net with an explicit stated relationship rather than being withheld."
+        },
+        {
+          "title": "Pre-committed test scoreboard",
+          "status": "pending",
+          "note": "Re-submitted as this run's suggestion #2 and promoted to high priority. Four tests resolved this run with three firing as predicted, which is the strongest single argument for the feature that has occurred in twenty runs."
+        },
+        {
+          "title": "Conclusion-revision log",
+          "status": "deprioritized",
+          "note": "Deprioritised, and this run is why. The premise was three consecutive runs with overturned headlines; this run had zero corrections because the questions were pre-registered instead of derived after the fact. The pre-committed test scoreboard is the constructive version of the same idea and subsumes it - a revision log records failures after they happen, a test scoreboard prevents them."
+        },
+        {
+          "title": "EGLD relative-strength (beta) tracker",
+          "status": "deprioritized",
+          "note": "Deprioritised a third time. EGLD underperformed by ~2pp this week, which is ordinary and fully explained by the measured distribution wave, so there is still no decoupling regime to track."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "For the first time in four runs the headline findings are resolutions rather than corrections, and that is the result worth recording. Run #19 wrote down four pre-registered tests with explicit numeric thresholds; three fired in the specified direction and the fourth resolved on its stated third branch. Wave #2 of the OTC distribution is staging: UPbit pushed 319,000 EGLD into the desks against a 200,000 threshold, and net one-way distribution tripled from 61,435 to 188,658 against a 150,000 threshold. The identifiable bid reactivated through exactly the pipe named as the earliest reversal signal - a Coinbase hot wallet refilled the Coinbase Routing wallet with 5,764 EGLD, which forwarded 5,748 to the Mega Whale absorber, cancelling the pre-registered promotion of bid-dormancy to a structural finding. A high-fee delegation incumbent cut its service fee for the first time in twenty runs, which was the exact event run #19 predicted the fee-arbitrage mechanism would eventually force. And re-netting the run #17 peak (1,284,688 gross = 409,680 one-way, 68% circular) closed the top recommendation and produced a better answer than expected: circularity is roughly constant across every window measured, so the old gross series has the right shape and the wrong units rather than being unusable. The synthesis of the week is a single sentence: distribution restarted and tripled, the bid restarted at roughly a tenth of that size, and price finished flat - the market cleared a genuine supply wave without breaking, and paid for it by giving up the ~2pp of beta that BTC and ETH delivered.",
+        "actions_completed_count": 7,
+        "actions_attempted_count": 8,
+        "what_would_2x_next_week": "Close the two unexplained structural flows. The model is now well-instrumented on the OTC pipeline and adequately instrumented on demand, and both behaved predictably this week - which is why the weakest sentences in this report are the two that say 'the model cannot explain this'. The direct-node unwind is ~215K over three weeks and is measured only as a residual between total staked and delegation TVL; nobody has looked at which node operators are unstaking or where the EGLD lands. The XEGLD redemption is ~5,250 tokens on a FLAT price week, the first time XOXNO redemption has decoupled from a drawdown, and its destination is untraced - the difference between migration to native delegation (constructive, and delegation grew by the right order of magnitude in the same week) and exit to an exchange (bearish). Both are cheap. Second: raise the collector's page cap and log page-cap terminations, so a truncated trace announces itself rather than silently under-reporting - this is the same failure class as the run #17 pagination miss. Third: backfill net one-way for runs #16 and #18, the two windows whose interpretation has driven the most narrative, now that retrospective re-netting is proven to work three weeks out.",
+        "pre_committed_test_for_next_run": "OTC: net one-way above ~300K with a UPbit tranche above ~350K = wave #2 matches or exceeds the re-netted run #17 peak of 409,680 and the supply overhang becomes the dominant fact on the chain; net back below ~100K = this was a two-week burst rather than a wave. BID: a tranche in the 30-50K range = the bid is genuinely back and the demand deficit is closing; another sub-10K week or a return to zero = this was a maintenance transfer and the dormancy finding should be revived. FEE CUT: stake returning to egldstakingprovider within 2-3 weeks = MultiversX delegators respond to price signals and other high-fee incumbents should follow; stake continuing to leave despite the better deal = delegator inertia dominates fee economics, which would materially weaken the yield-arbitrage mechanism. XEGLD: destinations in native delegation contracts = migration and constructive; destinations at exchanges = exit and bearish; a single large recipient = idiosyncratic and dismissable."
+      },
+      "recommendations_for_next_run": [
+        "DOES WAVE #2 ESCALATE TO PEAK SCALE? This week's net one-way was 188,658, about 46% of the re-netted run #17 peak of 409,680, on a UPbit tranche of 319,000. PRE-COMMITTED: net above ~300K with a tranche above ~350K = wave #2 matches or exceeds the peak and the supply overhang is the dominant fact on the chain; net back below ~100K = this was a two-week burst rather than a wave. Watch UPbit's own balance (1,202,942) as the leading edge - it has stayed flat for two weeks while feeding the desks, so it is being replenished from a source the model has not observed. Finding that source is worth ~20 queries.",
+        "TRACE THE DIRECT-NODE UNWIND. Three consecutive weeks of delegation growing while total staked falls implies ~215K cumulative out of direct-node stake, and it is measured only as a residual. Identify which node operators are unstaking (queryable via the staking contract) and whether the receiving delegation contracts are concentrated or broad. One operator = idiosyncratic; broad = an economics story about the base/top-up APR split, which would be a genuine protocol-level finding.",
+        "TRACE THE XEGLD REDEMPTION DESTINATION. ~5,250 XEGLD redeemed on a -0.37% price week - the first XOXNO redemption in tracking without a drawdown driver, while SEGLD was flat to three decimals. Query the XOXNO LSD contract's outbound flows. PRE-COMMITTED: destinations landing in native delegation contracts = migration, constructive, and it would also help explain the direct-node/delegation split; destinations landing at exchanges = exit, bearish; a single large recipient = idiosyncratic and dismissable.",
+        "DID THE FEE CUT WORK? egldstakingprovider cut 24% -> 15% and still shed -8,168 EGLD and -7 delegators in the same week. PRE-COMMITTED 2-3 week test: stake returning = MultiversX delegators respond to price signals, and other high-fee incumbents (procryptostaking at 20%) should follow within a month; stake continuing to leave despite the better deal = delegator inertia dominates fee economics, which would materially weaken the yield-arbitrage mechanism this model has leaned on for four runs.",
+        "DOES THE BID SCALE UP OR WAS IT MAINTENANCE? The absorber took 5,748 EGLD, roughly 18% of the run #15 tranche and 11% of run #17's, or 3% of the week's net distribution. PRE-COMMITTED: a tranche in the 30-50K range = the bid is genuinely back and the demand deficit is closing; another sub-10K week or a return to zero = this was a maintenance transfer and the dormancy finding should be revived. A second consecutive absorption week of ANY size is more informative than this one's magnitude.",
+        "FINISH IDENTIFYING 'Unknown Whale I'. Raise the collector's page cap (it terminated on pages, not time, at 600 txs covering ~25 days of a requested 60) and enumerate its full counterparty set. The test is specific: if >60% of its counterparties by value are the hub's own feeders and routers, classify it as OTC operator inventory and NET IT OUT of the one-way distribution figure, which would cut this week's 188,658 to roughly 175,818. If its counterparties are broad and external, it is a genuine large buyer and belongs in the demand instruments instead - which would be the single most consequential reclassification available to the model.",
+        "BACKFILL THE NET ONE-WAY SERIES FOR RUNS #13-#16 AND #18. Retrospective re-netting is now proven to work three weeks out, and circularity is roughly constant across the three measured windows, so the remaining five windows can be anchored properly for ~60 queries each. Prioritise run #16 (1,100,791 gross, the second-largest reading) and run #18 (313,173, the 'collapse' week whose interpretation drove two runs of narrative). Do not interpolate them from the constant-circularity assumption without measuring at least one more.",
+        "CHECK MEX PAIR DEPTH DIRECTLY. MEX has outperformed EGLD for three consecutive weeks (+1.32% vs -0.37% this week). Run #19 attributed it to stale pricing in illiquid pairs and this run repeated that attribution, but three weeks strains the explanation. Query the MEX pairs' actual TVL and trade counts rather than assuming - if the pricing is real, MEX outperforming its own chain's native token through a distribution wave is a finding, not noise."
+      ]
     }
   ]
 }
