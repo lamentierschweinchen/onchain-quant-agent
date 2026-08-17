@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-08-10",
+    "last_updated": "2026-08-17",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1079,6 +1079,14 @@
       "category": "other",
       "subcategory": "otc",
       "notes": "High-nonce active wallet (nonce 5,041). Confirmed coordinated OTC partner with erd1v6x9 (UPbit OTC Desk): both wallets send to the same recipient addresses (erd1ghfrqvvyf7, erd1wyj8uf, erd1tr5lahv) in the same 1,000-2,000 EGLD range. Balance stable at ~63K EGLD. Likely same institutional actor or tightly coordinated trading network. Discovered 2026-04-13."
+    },
+    "erd1daqlaezxx22rzyxnqx5ddkykm5ajelt0hetjnstm7rxqg78xqusqazv9ms": {
+      "name": "Delegation unwinder erd1daqlaezxx22rzy (229,865 EGLD)",
+      "category": "whale",
+      "subcategory": "delegation_unwind",
+      "notes": "Nonce 55, balance ~2,254 EGLD. unDelegated 149,585 from p2p_org_ on 2026-08-15 and 80,279 from erd1qqqq...pvhlllls6yl73z on 2026-08-14, both as zero-value txs with the amount in the data field; both confirmed unbonding via /accounts/{addr}/delegation. Historically received ~110 EGLD/day reward drips from erd1l23apusdq4j6jc and forwarded 12,100-15,000 EGLD chunks to erd1g4dlmma7zmt7ye (nonce 7, zero balance). This single wallet explains 97% of run #21's delegation TVL decline and the entire staked-minus-delegated residual flip.",
+      "first_seen": "2026-08-17",
+      "discovered_run": 21
     }
   },
   "exchange_routers": {
