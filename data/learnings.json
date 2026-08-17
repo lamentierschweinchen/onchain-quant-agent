@@ -4368,7 +4368,10 @@
           "suggested_visualization": "the weekly net series as light bars with wave episodes drawn as brackets spanning their weeks, each bracket labelled with its feed-to-drain net and the % overstatement of the summed weekly figures inside it; a chip per wave for feeding / draining / dormant.",
           "data_already_available": true,
           "data_source": "whale_intelligence.otc_pipeline now carries wave_window_netting (window, gross, circular, net_one_way, sum_of_weekly_nets, overstatement) plus the five-anchor net series and per-venue netting",
-          "priority": "high"
+          "priority": "high",
+          "status": "built",
+          "built_in_run": 21,
+          "build_note": "BUILT as dashboard/src/components/OtcPipeline.tsx. Reviewed with a second model first; its cuts applied - no per-bracket overstatement label (stated once in the caption instead) and no feeding/draining/dormant chips (redundant with the bracket). Renders gross behind net one-way for runs #12-#21 with the wave bracket over #20-#21. Also surfaces the venue-netting table and the four headline tiles, none of which had ever been rendered - otc_pipeline was absent from the dashboard's types entirely."
         },
         {
           "title": "Delegation unbonding queue",
@@ -4376,7 +4379,10 @@
           "suggested_visualization": "a small queue table - amount, source provider, days remaining, and (once resolved) destination class - with a stacked bar of EGLD becoming liquid per upcoming week, so the reader sees the overhang before it lands.",
           "data_already_available": false,
           "data_source": "/accounts/{addr}/delegation userUndelegatedList per wallet behind large provider moves; would need an `unbonding_queue` array in staking_intelligence carrying amount, provider, seconds_remaining, wallet",
-          "priority": "high"
+          "priority": "high",
+          "status": "built",
+          "built_in_run": 21,
+          "build_note": "BUILT as dashboard/src/components/UnbondingCard.tsx, deliberately NOT as the proposed queue table plus stacked bar - with one observation a table of one row and a bar of one segment is a chart cosplaying as a system. The card is one number, one countdown to the date the EGLD becomes liquid, and 'destination unresolved - next week's biggest unknown'. It graduates into the table when the collector records the unbonding pool weekly, which is a collector change rather than a dashboard one."
         },
         {
           "title": "Pre-committed test scoreboard (third submission)",
@@ -4384,24 +4390,38 @@
           "suggested_visualization": "a table of open and resolved tests - registered-in run, claim, numeric threshold, outcome chip (fired-as-predicted / fired-against / withdrawn / open) - with open tests pinned to the top and a small counter of headlines withdrawn per run next to it.",
           "data_already_available": false,
           "data_source": "still prose inside watch_list.reason and recommendations_for_next_run; needs a structured pre_committed_tests array with threshold, branches and resolution, plus a withdrawn_claims array",
-          "priority": "high"
+          "priority": "high",
+          "status": "built",
+          "built_in_run": 21,
+          "build_note": "BUILT as dashboard/src/components/Scoreboard.tsx, reading a new top-level pre_committed_tests array (7 resolved from run #20, 6 open for run #22). The blocker named in three consecutive runs was the proposed prose backfill of runs <=#19; dropping it made the feature a one-hour job. The 'headlines withdrawn per run' counter was cut - with two runs of data it reads as noise or self-flagellation."
+        },
+        {
+          "title": "Errata overlay on superseded reports",
+          "motivation": "Not one of this run's three proposals - identified in review as the gap all three missed, and the most dangerous one. Run #21 withdrew three published claims (the direct-node unwind asserted across runs #18-#20, run #20's competitive fee cut, and the twice-repeated MEX stale-pricing explanation), but the archive is immutable: a reader opening run #19 saw the withdrawn narrative asserted with full confidence. The forward-looking scoreboard does not fix the backward direction.",
+          "suggested_visualization": "a banner on any report whose claims were later withdrawn (claim struck through, withdrawn-by run, reason, replacement, and a jump to the correcting report), plus the mirror on the correcting run showing its own withdrawals.",
+          "data_already_available": true,
+          "data_source": "new meta_learning.withdrawn_claims array, aggregated across all reports into public/errata.json by generate-manifest.ts",
+          "priority": "high",
+          "status": "built",
+          "built_in_run": 21,
+          "build_note": "BUILT as ErrataBanner + useErrata + the errata aggregation in generate-manifest.ts. Verified in both directions on the deployed site: run #20 shows a SUPERSEDED banner with three withdrawn claims, run #21 shows CORRECTIONS with the same three; reports predating the fields degrade to no banner."
         }
       ],
       "dashboard_suggestions_followup": [
         {
           "title": "OTC net one-way series with measurement-provenance markers",
-          "status": "pending",
-          "note": "Not built, and this run changes its specification: the series now has five measured anchors (run #16 and #18 backfilled) but ALSO a demonstrated frame problem, so provenance markers must distinguish weekly-netted from wave-netted, not just gross from net. Superseded in scope by this run's suggestion #1."
+          "status": "built",
+          "note": "BUILT this run as the OtcPipeline panel - the series is drawn with gross behind net and a wave bracket, and weekly nets are labelled upper bounds rather than carrying a provenance chip per bar."
         },
         {
           "title": "Pre-committed test scoreboard",
-          "status": "pending",
-          "note": "Re-submitted a third time, still high priority. Four tests resolved this run and two prior headlines were withdrawn, which is the strongest case yet: the scoreboard is what separates 'the model predicted this' from 'the model corrected itself', and this report contains both."
+          "status": "built",
+          "note": "BUILT this run, forward-only. Pending for three runs because the proposal bundled a prose backfill of 21 runs; dropping the backfill removed the blocker entirely."
         },
         {
           "title": "Unexplained-flow tracker",
           "status": "deprioritized",
-          "note": "Deprioritised because the run #20 entries it was designed to hold have both been resolved this run - the direct-node unwind was an artifact and the XEGLD redemption is traced and benign. The constructive successor is the unbonding-queue view (this run's suggestion #2), which tracks a KNOWN forward flow rather than a residual nobody can explain."
+          "note": "Deprioritised because the run #20 entries it was designed to hold have both been resolved this run - the direct-node unwind was an artifact and the XEGLD redemption is traced and benign. The constructive successor is the unbonding-queue view (this run's suggestion #2), which tracks a KNOWN forward flow rather than a residual nobody can explain. Superseded in practice by the unbonding card, which tracks a KNOWN forward flow with a settlement date instead of a residual nobody can explain."
         },
         {
           "title": "OTC hub flow map: gross vs net one-way, with venue-level netting",
@@ -4415,8 +4435,8 @@
         },
         {
           "title": "Conclusion-revision log",
-          "status": "pending",
-          "note": "REVIVED after being deprioritised in run #20. The premise then was that pre-registration had eliminated corrections; this run withdrew two headline claims from run #20 (the competitive fee cut) and from runs #18-#20 (the direct-node unwind), plus an explanation repeated twice (MEX stale pricing). A revision log is the honest counterpart to the test scoreboard and the two should ship together."
+          "status": "built",
+          "note": "BUILT this run as the errata overlay, having been revived from deprioritised earlier in the same run - three headline withdrawals is what made the case. It is the backward-looking counterpart to the scoreboard and they shipped together, as the review recommended."
         },
         {
           "title": "EGLD relative-strength (beta) tracker",
@@ -4429,9 +4449,11 @@
         "actions_completed_count": 8,
         "actions_attempted_count": 8,
         "what_would_2x_next_week": "Resolve the 229,865 EGLD unbond, which lands inside the next window and is larger than this week's entire OTC one-way figure - its destination (delegation contract, exchange, or the wallet itself) is the single most consequential unknown the model currently has, and the query is trivial. Second, re-net the July episode (runs #16-#18) feed-to-drain rather than weekly: run #16's gross_in exceeded its gross_out, which is the same straddling signature that produced a 55% overstatement in wave #2, so the five-anchor series may still be too high. Third, start recording the unbonding pool prospectively for wallets behind provider moves above ~20K EGLD - 10-20 queries a run, and it would have prevented three runs of a wrong direct-node narrative. Fourth, stop repeating explanations: three claims were withdrawn this run and the MEX one had been checkable from the stored snapshot for two weeks.",
-        "pre_committed_test_for_next_run": "UNBOND: the 229,865 EGLD arriving at a delegation contract = provider rotation, neutral; at an exchange or OTC feeder = a distribution event larger than this week's entire OTC one-way and the dominant fact of the run; staying in the wallet = idiosyncratic. OTC FEED: a fresh UPbit tranche above ~150,000 within two weeks = the July-August pattern is a standing programme; nothing above ~50,000 for two consecutive weeks = between cycles. 100%-FEE PROVIDERS: books halving again with flat user counts = retail inertia is absolute; fee reversed = an operational move; nodes deregistered = the first genuine validator exit in tracking. USDT: another >5% contraction = the bridge is draining and the ~450K remaining becomes a first-order concern; flat or positive = the -15.4% was one desk. TURNOVER: a third rise above ~3.5% with the feed still off = the demand side is genuinely repairing; below 2.5% = the bounce tracked the supply pause. MEX: a fifth week >= EGLD = a genuine relative-value signal needing a mechanism."
+        "pre_committed_test_for_next_run": "UNBOND: the 229,865 EGLD arriving at a delegation contract = provider rotation, neutral; at an exchange or OTC feeder = a distribution event larger than this week's entire OTC one-way and the dominant fact of the run; staying in the wallet = idiosyncratic. OTC FEED: a fresh UPbit tranche above ~150,000 within two weeks = the July-August pattern is a standing programme; nothing above ~50,000 for two consecutive weeks = between cycles. 100%-FEE PROVIDERS: books halving again with flat user counts = retail inertia is absolute; fee reversed = an operational move; nodes deregistered = the first genuine validator exit in tracking. USDT: another >5% contraction = the bridge is draining and the ~450K remaining becomes a first-order concern; flat or positive = the -15.4% was one desk. TURNOVER: a third rise above ~3.5% with the feed still off = the demand side is genuinely repairing; below 2.5% = the bounce tracked the supply pause. MEX: a fifth week >= EGLD = a genuine relative-value signal needing a mechanism.",
+        "dashboard_work_this_run": "Engaged a second model on the three logged suggestions before building, and its review changed the output in four ways: the unbonding queue was cut to a single card (one observation cannot populate a table and a stacked bar), the scoreboard shipped forward-only after three runs of being blocked by a proposed prose backfill, the per-bracket overstatement labels and status chips were dropped from the OTC panel, and a fourth feature nobody had proposed - the errata overlay for superseded archived reports - was identified as the most dangerous gap and built. Building the OTC panel also surfaced that otc_pipeline and demand_instruments, first-class report fields since run #19, had never been in the dashboard's TypeScript types and were rendered nowhere: the analytical spine of the last three runs existed only inside prose analysis blocks."
       },
       "recommendations_for_next_run": [
+        "MAINTAIN THE SCOREBOARD AND ERRATA FIELDS - they are now load-bearing for the dashboard. (a) Resolve each of the 6 open pre_committed_tests with outcome / measured_value / resolution, and register run #22's own tests as open BEFORE seeing next week's data. (b) Add meta_learning.withdrawn_claims for anything this run withdraws, with asserted_in_runs, so the errata overlay warns on the superseded report. Both are forward-only; never backfill runs <= #19. The validator now enforces the field shapes, so a malformed entry fails the gate rather than silently emptying a panel.",
         "WHERE DOES THE 229,865 EGLD UNBOND GO? One wallet unDelegated 149,585 from p2p_org_ and 80,279 from a second provider; unbonding completes in 6.1 and 7.1 days, i.e. inside the next reporting window. PRE-COMMITTED: arriving at another delegation contract = provider rotation, neutral; arriving at an exchange or an OTC feeder = a distribution event larger than this entire week's OTC one-way figure and the dominant fact of the run; staying in the wallet = idiosyncratic. Method: /accounts/{addr}/delegation to confirm completion, then the wallet's outbound within 72h. This is the single highest-value query of next run.",
         "RE-NET THE JULY EPISODE FEED-TO-DRAIN. This run proved weekly netting overstates one-way movement by 55% and the run #16 window shows the signature of a straddling wave (gross_in 1,305,005 > gross_out 1,100,791). Re-net runs #16-#18 as ONE window (Jul 6-27) and compare against the sum of the three weekly nets. PRE-COMMITTED: if the combined figure is materially below the ~834K the three weekly nets sum to, the July peak must be restated a second time and the five-anchor series relabelled as upper bounds; if it is close, weekly netting is adequate outside the specific Aug 3-17 pattern and the new rule applies only to waves that straddle a boundary.",
         "DO THE 100%-FEE PROVIDERS DEREGISTER? egldstakingprovider and procryptostaking hold 251,266 EGLD and 8,177 delegators earning zero. PRE-COMMITTED 2-3 week test: books halving again with flat user counts = retail inertia is absolute and the delegation market's price mechanism only reaches large holders; fee reversed = an operational move and run #20's reading was early rather than wrong; nodes deregistered = the first genuine validator exit in tracking, and the delegators' stake becomes a forced-migration flow worth tracing. Also worth ~4 queries: check whether the two owner wallets share a counterparty, since two unrelated operators making the same move in the same week is unexplained.",
@@ -4439,7 +4461,8 @@
         "IS THE USDT DRAIN ONE DESK OR THE BRIDGE? USDT supply fell -15.42% (100,287 tokens) to 549,884, the largest stablecoin contraction in tracking, and the model did not trace it. Query the USDT-f8c08c largest holders and the bridge contract's flows. PRE-COMMITTED: one holder accounting for most of the redemption = idiosyncratic, note and move on; broad = the on-chain dollar base is contracting at a rate that makes ~450K remaining a first-order concern for DEX depth.",
         "WHY IS MEX LEADING EGLD? Four consecutive weeks, and the illiquidity explanation is now falsified (MEX/WEGLD is the #2 deepest pool at $291,459 on 125 trades/24h). Check the plausible mechanisms directly: MEX total supply WoW (buyback or burn), farm emission changes, and whether the MEX/WEGLD pool's TVL is growing in EGLD terms. A DEX token outperforming its chain's native asset through a distribution episode is either a genuine rotation signal or a mechanical artifact of emissions, and the model currently cannot say which.",
         "CORRECT THE DEMAND-SIDE READING FOR THE RECLASSIFIED WHALE. 'Unknown Whale I' is now classified as OTC operator inventory (62.5% two-way with hub infrastructure), so its hub take must not be counted as demand in any window. Apply this retroactively to the run #17 peak (+42,206) and run #20 (+2,858) figures when they are next cited, and identify its largest external counterparty (erd1qkazru7aw5) to close the classification.",
-        "BUILD THE UNBONDING-POOL SERIES. The residual correction this run rests on a single point-in-time /accounts/{addr}/delegation read. Start recording, each week, the unbonding total for the wallets behind every provider move above ~20K EGLD, so the staked-minus-delegated residual can be decomposed prospectively instead of being re-explained after it flips. Roughly 10-20 queries per run and it would have prevented three runs of a wrong narrative."
+        "BUILD THE UNBONDING-POOL SERIES. The residual correction this run rests on a single point-in-time /accounts/{addr}/delegation read. Start recording, each week, the unbonding total for the wallets behind every provider move above ~20K EGLD, so the staked-minus-delegated residual can be decomposed prospectively instead of being re-explained after it flips. Roughly 10-20 queries per run and it would have prevented three runs of a wrong narrative.",
+        "RECORD THE UNBONDING POOL WEEKLY so the unbonding card graduates into the queue view it was cut down from. For every provider move above ~20K EGLD, query /accounts/{addr}/delegation on the wallets behind it and store amount / provider / seconds_remaining. 10-20 queries a run, it would have prevented three runs of the direct-node narrative, and it is the only forward-looking series the report has."
       ]
     }
   ]

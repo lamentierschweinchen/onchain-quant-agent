@@ -821,6 +821,25 @@ Runs #19 and #20 both attributed MEX outperforming EGLD to "stale pricing in ill
 The XOXNO LSD contract settles redemptions via smart-contract results, so `/accounts/{addr}/transactions?sender=` returns **zero** value transactions no matter the window. The working method is to enumerate the *callers* by function (`unDelegate`, `unDelegatePending`, `withdraw`, `withdrawPending`) and follow each caller's own outbound flows. Run #21: 8 wallets, onward flows of 80-600 EGLD each, 531 EGLD into native delegation contracts and ZERO to any labelled exchange - retail rotation, not an exit. The same technique resolved the delegation unwind.
 
 
+### THE SCOREBOARD AND ERRATA ARE NOW REPORT FIELDS - MAINTAIN THEM EVERY RUN (run #21, 2026-08-17)
+
+Two schema additions turn the model's self-correction from prose into structure. Both are **forward-only** and must be populated by every future run, or the dashboard panels silently degrade to their null states.
+
+**1. `pre_committed_tests` (top-level array).** Every falsifiable claim registered with a numeric threshold. Each run must:
+- RESOLVE the prior run's open tests: set `status: "resolved"`, `resolved_in_run`, `measured_value`, `resolution`, and an `outcome` of `as_predicted` / `against` / `inconclusive` / `withdrawn`.
+- REGISTER this run's tests as `status: "open"` with `threshold` and `branches` (condition -> reading) filled in BEFORE the next run's data exists.
+
+`inconclusive` is a real and useful outcome - run #21's wave-escalation test resolved that way, and the attempt to force it into a branch is what exposed the weekly-netting error. `withdrawn` means the test's premise died rather than the test resolving (both the fee-cut and direct-node tests ended there).
+
+**Never reconstruct tests from older prose.** Runs <= #19 have no structured tests and must stay that way; a falsifiability ledger built on retrofitted data entry is worthless.
+
+**2. `meta_learning.withdrawn_claims` (array).** Claims published in EARLIER runs that this run withdraws: `claim`, `asserted_in_runs`, `withdrawn_in_run`, `reason`, optional `replacement`. `dashboard/scripts/generate-manifest.ts` aggregates these across all reports into `public/errata.json`, which the dashboard uses to (a) warn on a superseded archived report and (b) show the correcting run its own withdrawals.
+
+**Why this matters**: the archive is immutable. Before run #21 a reader opening run #19 saw the direct-node-unwind narrative asserted with full confidence, with nothing indicating it had been withdrawn. For a report whose distinguishing virtue is self-correction, an archive that silently re-asserts corrected claims is the one bug that undermines the project.
+
+**Dashboard panels added run #21** (all read from report fields, no hardcoded data): `OtcPipeline` (gross vs net one-way per week with a bracket over the runs belonging to one wave - the bars inside the bracket sum to more than the bracket's own number, which IS the finding), `UnbondingCard` (one number, one countdown, one open question - the only forward-looking quantity tracked), `ErrataBanner`, `Scoreboard`. Validator invariants were extended in the same commit for `pre_committed_tests[]`, `meta_learning.withdrawn_claims[]`, `otc_pipeline.wave_window_netting` and `staking_intelligence.unbonding_in_flight`.
+
+
 ## Evolution Log
 
 | Run | Date | Changes |
