@@ -13,12 +13,15 @@ import { UnbondingCard } from '../components/UnbondingCard'
 import { Scoreboard } from '../components/Scoreboard'
 import { ErrataBanner } from '../components/ErrataBanner'
 import { useErrata, supersededClaims, ownWithdrawals } from '../hooks/useErrata'
+import { useScoreboard } from '../hooks/useScoreboard'
 
 export function HomePage() {
   const { manifest, selectedDate, setSelectedDate, report, loading, error, retry } = useReports()
   // Errata is an overlay across ALL reports, so it loads independently of the
   // selected week and must never block rendering.
   const errata = useErrata()
+  // The prediction ledger spans runs, so it loads independently of the cursor.
+  const scoreboard = useScoreboard()
 
   if (loading) {
     return (
@@ -149,12 +152,13 @@ export function HomePage() {
 
         <SectionHeader
           title="Model Scoreboard"
-          subtitle="Pre-committed tests · what fired, what was withdrawn, what is still open"
+          subtitle="Calls made in advance · what landed, what missed, what is still open"
         >
           <section id="scoreboard">
             <Scoreboard
               tests={report.pre_committed_tests}
               runNumber={report.metadata.run_number}
+              ledger={scoreboard}
             />
           </section>
         </SectionHeader>

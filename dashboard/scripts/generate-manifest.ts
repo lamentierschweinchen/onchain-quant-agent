@@ -68,6 +68,97 @@ for (const file of files) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Scoreboard ledger (added run #21)
+//
+// Prediction accuracy only means something as a SERIES, so the per-run records
+// are aggregated here rather than being re-derived from whichever week happens
+// to be selected. Every test carries the run that registered it and the run that
+// resolved it, so open tests stay visible across weeks until they resolve.
+// ---------------------------------------------------------------------------
+type TestRecord = Record<string, any> & {
+  id: string
+  registered_in_run: number
+  status: string
+  outcome?: string | null
+  resolved_in_run?: number | null
+}
+const allTests: TestRecord[] = []
+const runRecords: Record<string, any>[] = []
+
+for (const file of files) {
+  let report: Record<string, any>
+  try {
+    report = JSON.parse(fs.readFileSync(path.resolve(searchDir, file), 'utf8'))
+  } catch {
+    continue
+  }
+  const tests = report?.pre_committed_tests
+  if (!Array.isArray(tests) || tests.length === 0) continue
+
+  const run = report?.metadata?.run_number ?? null
+  const date = file.replace('.json', '')
+  const resolvedHere = tests.filter(
+    (t: TestRecord) => t.status === 'resolved' && t.resolved_in_run === run,
+  )
+  const count = (outcome: string) =>
+    resolvedHere.filter((t: TestRecord) => t.outcome === outcome).length
+
+  const asPredicted = count('as_predicted')
+  runRecords.push({
+    run,
+    date,
+    registered: tests.filter((t: TestRecord) => t.registered_in_run === run).length,
+    resolved: resolvedHere.length,
+    as_predicted: asPredicted,
+    against: count('against'),
+    inconclusive: count('inconclusive'),
+    withdrawn: count('withdrawn'),
+    hit_rate_pct: resolvedHere.length
+      ? (100 * asPredicted) / resolvedHere.length
+      : null,
+    open_after: tests.filter((t: TestRecord) => t.status === 'open').length,
+  })
+
+  for (const t of tests) {
+    allTests.push({ ...t, seen_in_run: run, seen_in_date: date })
+  }
+}
+
+// Latest state per test id — a test registered open in one run and resolved in
+// the next appears in both reports; the resolved copy wins.
+const byId = new Map<string, TestRecord>()
+for (const t of allTests) {
+  const prev = byId.get(t.id)
+  if (!prev || (prev.status === 'open' && t.status === 'resolved')) byId.set(t.id, t)
+}
+const ledger = Array.from(byId.values())
+const totalResolved = ledger.filter(t => t.status === 'resolved').length
+const totalAsPredicted = ledger.filter(t => t.outcome === 'as_predicted').length
+
+const scoreboard = {
+  generated_from: files.length,
+  totals: {
+    tests: ledger.length,
+    resolved: totalResolved,
+    open: ledger.filter(t => t.status === 'open').length,
+    as_predicted: totalAsPredicted,
+    against: ledger.filter(t => t.outcome === 'against').length,
+    inconclusive: ledger.filter(t => t.outcome === 'inconclusive').length,
+    withdrawn: ledger.filter(t => t.outcome === 'withdrawn').length,
+    hit_rate_pct: totalResolved ? (100 * totalAsPredicted) / totalResolved : null,
+  },
+  runs: runRecords.sort((a, b) => (a.run ?? 0) - (b.run ?? 0)),
+  tests: ledger.sort(
+    (a, b) => (b.registered_in_run ?? 0) - (a.registered_in_run ?? 0),
+  ),
+}
+
+fs.writeFileSync(
+  path.resolve(publicDir, 'scoreboard.json'),
+  JSON.stringify(scoreboard, null, 2),
+)
+
 const errata = {
   generated_from: files.length,
   claims: withdrawals.map(c => ({
@@ -96,3 +187,8 @@ if (sourceExists) {
 
 console.log(`Generated manifest with ${files.length} report(s): ${files.join(', ')} (source: ${sourceExists ? reportsDir : publicReportsDir})`)
 console.log(`Generated errata.json with ${errata.claims.length} withdrawn claim(s)`)
+console.log(
+  `Generated scoreboard.json: ${scoreboard.totals.tests} test(s) across ${scoreboard.runs.length} run(s) — ` +
+    `${scoreboard.totals.resolved} resolved, ${scoreboard.totals.as_predicted} as predicted, ` +
+    `${scoreboard.totals.open} open`,
+)

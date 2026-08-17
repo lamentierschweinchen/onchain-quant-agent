@@ -12,6 +12,7 @@ import {
   formatEgldBare,
   formatZScore,
 } from '../lib/formatters'
+import { humanizeKey, glossFor } from '../lib/labels'
 
 const SEVERITY_ORDER: Record<AnomalySeverity, number> = {
   critical: 0,
@@ -24,6 +25,17 @@ const METHOD_LABELS: Record<string, string> = {
   z_score: 'Z-SCORE',
   percent_threshold: '% THRESHOLD',
   rule_based: 'RULE',
+}
+
+// Plain-English gloss for the detection method, shown on hover — the badge is a
+// statement about HOW confident the flag is, which is not obvious from 3 letters.
+const METHOD_TOOLTIPS: Record<string, string> = {
+  z_score:
+    'Flagged statistically: this week sits far from the running average of the last several weeks',
+  percent_threshold:
+    'Flagged on size alone: too few weeks of history for a statistical test, so a percentage move triggers it',
+  rule_based:
+    'Flagged by a named rule the model wrote in an earlier run, not by statistics',
 }
 
 interface Props {
@@ -59,7 +71,10 @@ function CardSection({
 function MethodBadge({ method }: { method: string | null | undefined }) {
   if (!method) return null
   return (
-    <span className="text-[9.5px] font-mono font-semibold tracking-widest text-text-muted bg-bg-elevated border border-border px-1.5 py-[1px] rounded">
+    <span
+      className="text-[9.5px] font-mono font-semibold tracking-widest text-text-muted bg-bg-elevated border border-border px-1.5 py-[1px] rounded cursor-help"
+      title={METHOD_TOOLTIPS[method] ?? method}
+    >
       {METHOD_LABELS[method] ?? method.toUpperCase()}
     </span>
   )
@@ -88,10 +103,20 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                   className="bg-bg-elevated rounded border border-border p-3 space-y-2"
                 >
                   {/* header */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-text-primary text-[12.5px]">
-                      {anomaly.metric}
-                    </span>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <span
+                        className="font-medium text-text-primary text-[12.5px]"
+                        title={anomaly.metric}
+                      >
+                        {humanizeKey(anomaly.metric)}
+                      </span>
+                      {glossFor(anomaly.metric) && (
+                        <span className="block text-[10.5px] text-text-muted mt-0.5 leading-snug">
+                          {glossFor(anomaly.metric)}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       <MethodBadge method={anomaly.method} />
                       <SeverityBadge severity={anomaly.severity} />
@@ -169,8 +194,11 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <span className="font-medium text-text-primary text-[12.5px]">
-                              {t.exchange}
+                            <span
+                              className="font-medium text-text-primary text-[12.5px]"
+                              title={t.exchange}
+                            >
+                              {humanizeKey(t.exchange)}
                             </span>
                             {t.cumulative_change_pct != null && (
                               <span
@@ -355,8 +383,11 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <span className="font-medium text-text-primary text-[12.5px]">
-                              {s.metric}
+                            <span
+                              className="font-medium text-text-primary text-[12.5px]"
+                              title={s.metric}
+                            >
+                              {humanizeKey(s.metric)}
                             </span>
                             {s.cumulative_change_pct != null && (
                               <span
@@ -394,8 +425,11 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                       className="p-2.5 bg-accent-cyan/5 border border-accent-cyan/30 rounded"
                     >
                       <div className="flex items-center justify-between gap-2 flex-wrap">
-                        <span className="font-medium text-text-primary text-[12.5px]">
-                          {r.metric}
+                        <span
+                          className="font-medium text-text-primary text-[12.5px]"
+                          title={r.metric}
+                        >
+                          {humanizeKey(r.metric)}
                         </span>
                         <span className="font-mono text-[11px] text-accent-cyan tabular">
                           {r.before_value != null ? fmtVal(r.before_value) : '—'}{' '}

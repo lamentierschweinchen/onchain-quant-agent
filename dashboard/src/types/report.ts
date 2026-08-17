@@ -710,6 +710,39 @@ export interface PreCommittedTest {
   measured_value?: string | null
 }
 
+/** One run's prediction record — the traced factor. */
+export interface ScoreboardRunRecord {
+  run: number | null
+  date: string
+  registered: number
+  resolved: number
+  as_predicted: number
+  against: number
+  inconclusive: number
+  withdrawn: number
+  hit_rate_pct: number | null
+  open_after: number
+}
+
+export interface ScoreboardTotals {
+  tests: number
+  resolved: number
+  open: number
+  as_predicted: number
+  against: number
+  inconclusive: number
+  withdrawn: number
+  hit_rate_pct: number | null
+}
+
+/** Cross-run ledger, aggregated at build time from every report. */
+export interface ScoreboardLedger {
+  generated_from: number
+  totals: ScoreboardTotals
+  runs: ScoreboardRunRecord[]
+  tests: (PreCommittedTest & { seen_in_run?: number; seen_in_date?: string })[]
+}
+
 // ---------------------------------------------------------------------------
 // Errata overlay — aggregated across all reports by generate-manifest.ts
 // ---------------------------------------------------------------------------
