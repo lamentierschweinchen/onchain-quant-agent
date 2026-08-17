@@ -66,6 +66,16 @@ DASHBOARD_INVARIANTS = [
     ("trend_indicators.regime_shifts[]", ["metric", "after_value", "description"]),
     ("anomalies[]", ["metric", "current_value", "severity", "description"]),
     ("watch_list[]", ["item", "reason", "weeks_on_list"]),
+    # run #21: the scoreboard + errata overlay. The dashboard groups on `status`,
+    # colours on `outcome`, and prints `registered_in_run` / `threshold` unconditionally.
+    ("pre_committed_tests[]", ["id", "registered_in_run", "claim", "threshold", "status"]),
+    ("meta_learning.withdrawn_claims[]",
+     ["claim", "asserted_in_runs", "withdrawn_in_run", "reason"]),
+    ("whale_intelligence.otc_pipeline.wave_window_netting",
+     ["window", "net_one_way_egld", "sum_of_weekly_nets_egld",
+      "weekly_frame_overstatement_pct", "net_by_venue"]),
+    ("staking_intelligence.unbonding_in_flight",
+     ["wallet", "total_egld", "legs", "raw_residual_egld", "corrected_direct_node_egld"]),
 ]
 
 # Enum constraints the dashboard relies on (TS string-literal unions).
@@ -89,6 +99,9 @@ ENUM_INVARIANTS = [
      {"critical", "high", "medium", "low"}),
     ("anomalies[].method",
      {"z_score", "percent_threshold", "rule_based", None}),
+    ("pre_committed_tests[].status", {"open", "resolved"}),
+    ("pre_committed_tests[].outcome",
+     {"as_predicted", "against", "inconclusive", "withdrawn", None}),
 ]
 
 

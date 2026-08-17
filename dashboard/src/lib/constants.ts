@@ -87,19 +87,23 @@ export const HEALTH_COLORS = {
 export const SECTION_IDS = [
   'executive-summary',
   'network-health',
+  'otc-pipeline',
   'whale-intelligence',
   'staking-intelligence',
   'token-defi',
   'anomalies-watchlist',
+  'scoreboard',
   'meta-learning',
 ] as const
 
 export const SECTION_LABELS: Record<string, string> = {
   'executive-summary': 'Summary',
   'network-health': 'Network',
+  'otc-pipeline': 'OTC',
   'whale-intelligence': 'Whales',
   'staking-intelligence': 'Staking',
   'token-defi': 'Tokens & DeFi',
   'anomalies-watchlist': 'Alerts & Trends',
+  scoreboard: 'Scoreboard',
   'meta-learning': 'Meta',
 }

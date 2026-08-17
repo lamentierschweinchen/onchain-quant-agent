@@ -1,35 +1,119 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
   "title": "MultiversX Weekly Intelligence Report",
-  "description": "Structured output from the weekly on-chain analysis agent. Consumed by the dashboard. Schema is additive: every change is backward-compatible — older fields stay, newer fields are optional.",
+  "description": "Structured output from the weekly on-chain analysis agent. Consumed by the dashboard. Schema is additive: every change is backward-compatible \u2014 older fields stay, newer fields are optional.",
   "type": "object",
-  "required": ["metadata", "executive_summary", "network_health", "whale_intelligence", "staking_intelligence", "token_activity", "defi_activity", "anomalies", "watch_list", "meta_learning"],
+  "required": [
+    "metadata",
+    "executive_summary",
+    "network_health",
+    "whale_intelligence",
+    "staking_intelligence",
+    "token_activity",
+    "defi_activity",
+    "anomalies",
+    "watch_list",
+    "meta_learning"
+  ],
   "properties": {
     "metadata": {
       "type": "object",
-      "required": ["report_date", "period_start", "period_end", "generated_at", "egld_price_usd", "data_sources_ok", "data_sources_failed"],
+      "required": [
+        "report_date",
+        "period_start",
+        "period_end",
+        "generated_at",
+        "egld_price_usd",
+        "data_sources_ok",
+        "data_sources_failed"
+      ],
       "properties": {
-        "report_date": { "type": "string", "format": "date" },
-        "period_start": { "type": "string", "format": "date-time" },
-        "period_end": { "type": "string", "format": "date-time" },
-        "generated_at": { "type": "string", "format": "date-time" },
-        "egld_price_usd": { "type": "number" },
-        "btc_price_usd": { "type": ["number", "null"] },
-        "eth_price_usd": { "type": ["number", "null"] },
-        "run_number": { "type": ["integer", "null"] },
-        "data_sources_ok": { "type": "array", "items": { "type": "string" } },
-        "data_sources_failed": { "type": "array", "items": { "type": "string" } }
+        "report_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "egld_price_usd": {
+          "type": "number"
+        },
+        "btc_price_usd": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "eth_price_usd": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "run_number": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "data_sources_ok": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_sources_failed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "executive_summary": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["finding", "severity", "category"],
+        "required": [
+          "finding",
+          "severity",
+          "category"
+        ],
         "properties": {
-          "finding": { "type": "string" },
-          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
-          "category": { "type": "string", "enum": ["whale", "staking", "token", "defi", "network", "anomaly", "trend"] }
+          "finding": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low",
+              "info"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "whale",
+              "staking",
+              "token",
+              "defi",
+              "network",
+              "anomaly",
+              "trend"
+            ]
+          }
         }
       },
       "minItems": 3,
@@ -37,70 +121,209 @@
     },
     "network_health": {
       "type": "object",
-      "required": ["economics", "activity", "deltas"],
+      "required": [
+        "economics",
+        "activity",
+        "deltas"
+      ],
       "properties": {
         "economics": {
           "type": "object",
           "properties": {
-            "egld_price_usd": { "type": "number" },
-            "market_cap_usd": { "type": "number" },
-            "total_supply": { "type": "number" },
-            "circulating_supply": { "type": "number" },
-            "staked_egld": { "type": "number" },
-            "staked_ratio": { "type": "number" },
-            "staking_apr": { "type": "number" },
-            "base_apr": { "type": ["number", "null"] },
-            "topup_apr": { "type": ["number", "null"] },
-            "token_market_cap_usd": { "type": "number" }
+            "egld_price_usd": {
+              "type": "number"
+            },
+            "market_cap_usd": {
+              "type": "number"
+            },
+            "total_supply": {
+              "type": "number"
+            },
+            "circulating_supply": {
+              "type": "number"
+            },
+            "staked_egld": {
+              "type": "number"
+            },
+            "staked_ratio": {
+              "type": "number"
+            },
+            "staking_apr": {
+              "type": "number"
+            },
+            "base_apr": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "topup_apr": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "token_market_cap_usd": {
+              "type": "number"
+            }
           }
         },
         "activity": {
           "type": "object",
           "properties": {
-            "total_accounts": { "type": "integer" },
-            "total_transactions": { "type": "integer" },
-            "epoch": { "type": "integer" },
-            "blocks": { "type": "integer" },
-            "shards": { "type": "integer" },
-            "transactions_7d": { "type": ["integer", "null"] },
-            "avg_daily_transactions": { "type": ["integer", "null"] }
+            "total_accounts": {
+              "type": "integer"
+            },
+            "total_transactions": {
+              "type": "integer"
+            },
+            "epoch": {
+              "type": "integer"
+            },
+            "blocks": {
+              "type": "integer"
+            },
+            "shards": {
+              "type": "integer"
+            },
+            "transactions_7d": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "avg_daily_transactions": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
           }
         },
         "deltas": {
           "type": "object",
           "properties": {
-            "price_change_pct": { "type": ["number", "null"] },
-            "market_cap_change_pct": { "type": ["number", "null"] },
-            "staked_ratio_change_pp": { "type": ["number", "null"] },
-            "apr_change_pp": { "type": ["number", "null"] },
-            "accounts_added": { "type": ["integer", "null"] },
-            "transactions_added": { "type": ["integer", "null"] },
-            "supply_added": { "type": ["number", "null"] },
-            "staked_egld_added": { "type": ["number", "null"] },
-            "epoch_advanced": { "type": ["integer", "null"] }
+            "price_change_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "market_cap_change_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "staked_ratio_change_pp": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "apr_change_pp": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "accounts_added": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "transactions_added": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "supply_added": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "staked_egld_added": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "epoch_advanced": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
           }
         },
-        "analysis": { "type": "string" }
+        "analysis": {
+          "type": "string"
+        }
       }
     },
     "whale_intelligence": {
       "type": "object",
-      "required": ["large_transactions", "wallet_changes", "exchange_flows", "analysis"],
+      "required": [
+        "large_transactions",
+        "wallet_changes",
+        "exchange_flows",
+        "analysis"
+      ],
       "properties": {
         "large_transactions": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "hash": { "type": "string" },
-              "timestamp": { "type": "string", "format": "date-time" },
-              "sender": { "type": "string" },
-              "sender_label": { "type": ["string", "null"] },
-              "receiver": { "type": "string" },
-              "receiver_label": { "type": ["string", "null"] },
-              "value_egld": { "type": "number" },
-              "value_usd": { "type": "number" },
-              "flow_type": { "type": "string", "enum": ["exchange_inflow", "exchange_outflow", "exchange_to_exchange", "defi_deposit", "defi_withdrawal", "whale_to_whale", "staking", "unstaking", "bridge", "unknown"] }
+              "hash": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "sender": {
+                "type": "string"
+              },
+              "sender_label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "receiver": {
+                "type": "string"
+              },
+              "receiver_label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "value_egld": {
+                "type": "number"
+              },
+              "value_usd": {
+                "type": "number"
+              },
+              "flow_type": {
+                "type": "string",
+                "enum": [
+                  "exchange_inflow",
+                  "exchange_outflow",
+                  "exchange_to_exchange",
+                  "defi_deposit",
+                  "defi_withdrawal",
+                  "whale_to_whale",
+                  "staking",
+                  "unstaking",
+                  "bridge",
+                  "unknown"
+                ]
+              }
             }
           }
         },
@@ -109,14 +332,55 @@
           "items": {
             "type": "object",
             "properties": {
-              "address": { "type": "string" },
-              "label": { "type": ["string", "null"] },
-              "category": { "type": ["string", "null"] },
-              "tier": { "type": ["string", "null"], "enum": ["mega_whale", "large_whale", "mid_whale", null], "description": "Whale tier: mega_whale (>1M EGLD), large_whale (100K-1M), mid_whale (10K-100K)" },
-              "balance_current_egld": { "type": "number" },
-              "balance_previous_egld": { "type": ["number", "null"] },
-              "change_egld": { "type": ["number", "null"] },
-              "change_pct": { "type": ["number", "null"] }
+              "address": {
+                "type": "string"
+              },
+              "label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "category": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "tier": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "mega_whale",
+                  "large_whale",
+                  "mid_whale",
+                  null
+                ],
+                "description": "Whale tier: mega_whale (>1M EGLD), large_whale (100K-1M), mid_whale (10K-100K)"
+              },
+              "balance_current_egld": {
+                "type": "number"
+              },
+              "balance_previous_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "change_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "change_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -127,37 +391,115 @@
             "mega_whales": {
               "type": "object",
               "properties": {
-                "threshold_egld": { "type": "number" },
-                "count_current": { "type": "integer" },
-                "count_previous": { "type": ["integer", "null"] },
-                "total_balance_egld": { "type": "number" },
-                "previous_total_balance_egld": { "type": ["number", "null"] },
-                "net_change_egld": { "type": ["number", "null"] },
-                "net_change_pct": { "type": ["number", "null"] }
+                "threshold_egld": {
+                  "type": "number"
+                },
+                "count_current": {
+                  "type": "integer"
+                },
+                "count_previous": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "total_balance_egld": {
+                  "type": "number"
+                },
+                "previous_total_balance_egld": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_change_egld": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_change_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               }
             },
             "large_whales": {
               "type": "object",
               "properties": {
-                "threshold_egld": { "type": "number" },
-                "count_current": { "type": "integer" },
-                "count_previous": { "type": ["integer", "null"] },
-                "total_balance_egld": { "type": "number" },
-                "previous_total_balance_egld": { "type": ["number", "null"] },
-                "net_change_egld": { "type": ["number", "null"] },
-                "net_change_pct": { "type": ["number", "null"] }
+                "threshold_egld": {
+                  "type": "number"
+                },
+                "count_current": {
+                  "type": "integer"
+                },
+                "count_previous": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "total_balance_egld": {
+                  "type": "number"
+                },
+                "previous_total_balance_egld": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_change_egld": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_change_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               }
             },
             "mid_whales": {
               "type": "object",
               "properties": {
-                "threshold_egld": { "type": "number" },
-                "count_current": { "type": "integer" },
-                "count_previous": { "type": ["integer", "null"] },
-                "total_balance_egld": { "type": "number" },
-                "previous_total_balance_egld": { "type": ["number", "null"] },
-                "net_change_egld": { "type": ["number", "null"] },
-                "net_change_pct": { "type": ["number", "null"] }
+                "threshold_egld": {
+                  "type": "number"
+                },
+                "count_current": {
+                  "type": "integer"
+                },
+                "count_previous": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "total_balance_egld": {
+                  "type": "number"
+                },
+                "previous_total_balance_egld": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_change_egld": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_change_pct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
               }
             }
           }
@@ -165,20 +507,62 @@
         "exchange_flows": {
           "type": "object",
           "properties": {
-            "total_exchange_egld_current": { "type": ["number", "null"] },
-            "total_exchange_egld_previous": { "type": ["number", "null"] },
-            "net_change_egld": { "type": ["number", "null"] },
-            "net_change_pct": { "type": ["number", "null"] },
-            "direction": { "type": ["string", "null"] },
-            "signal": { "type": ["string", "null"] },
+            "total_exchange_egld_current": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "total_exchange_egld_previous": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "net_change_egld": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "net_change_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "direction": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "signal": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
             "by_exchange": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "exchange": { "type": "string" },
-                  "change_egld": { "type": ["number", "null"] },
-                  "pct": { "type": ["number", "null"] }
+                  "exchange": {
+                    "type": "string"
+                  },
+                  "change_egld": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
                 }
               }
             },
@@ -188,10 +572,21 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "entity": { "type": "string" },
-                  "net_flow_egld": { "type": "number" },
-                  "wallets_count": { "type": "integer" },
-                  "interpretation": { "type": ["string", "null"] }
+                  "entity": {
+                    "type": "string"
+                  },
+                  "net_flow_egld": {
+                    "type": "number"
+                  },
+                  "wallets_count": {
+                    "type": "integer"
+                  },
+                  "interpretation": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
                 }
               }
             }
@@ -202,32 +597,81 @@
           "items": {
             "type": "object",
             "properties": {
-              "address": { "type": "string" },
-              "label": { "type": ["string", "null"] },
-              "balance_egld": { "type": "number" },
-              "last_active_before": { "type": "string", "format": "date" },
-              "dormant_days": { "type": ["integer", "null"] },
-              "action": { "type": "string" }
+              "address": {
+                "type": "string"
+              },
+              "label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "balance_egld": {
+                "type": "number"
+              },
+              "last_active_before": {
+                "type": "string",
+                "format": "date"
+              },
+              "dormant_days": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "action": {
+                "type": "string"
+              }
             }
           }
         },
-        "analysis": { "type": "string" }
+        "analysis": {
+          "type": "string"
+        }
       }
     },
     "staking_intelligence": {
       "type": "object",
-      "required": ["analysis"],
+      "required": [
+        "analysis"
+      ],
       "properties": {
         "summary": {
           "type": "object",
           "properties": {
-            "total_staked_egld": { "type": "number" },
-            "total_delegated_egld": { "type": ["number", "null"] },
-            "staked_ratio": { "type": "number" },
-            "num_providers": { "type": "integer" },
-            "apr_min": { "type": ["number", "null"] },
-            "apr_max": { "type": ["number", "null"] },
-            "apr_weighted_avg": { "type": ["number", "null"] }
+            "total_staked_egld": {
+              "type": "number"
+            },
+            "total_delegated_egld": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "staked_ratio": {
+              "type": "number"
+            },
+            "num_providers": {
+              "type": "integer"
+            },
+            "apr_min": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "apr_max": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "apr_weighted_avg": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
           }
         },
         "top_providers": {
@@ -235,29 +679,87 @@
           "items": {
             "type": "object",
             "properties": {
-              "rank": { "type": "integer" },
-              "identity": { "type": "string" },
-              "name": { "type": ["string", "null"] },
-              "provider_address": { "type": ["string", "null"] },
-              "locked_egld": { "type": "number" },
-              "previous_locked_egld": { "type": ["number", "null"] },
-              "share_pct": { "type": "number" },
-              "apr_pct": { "type": "number" },
-              "fee_pct": { "type": "number" },
-              "num_users": { "type": "integer" },
-              "num_nodes": { "type": ["integer", "null"] },
-              "wow_change_egld": { "type": ["number", "null"] }
+              "rank": {
+                "type": "integer"
+              },
+              "identity": {
+                "type": "string"
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "provider_address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "locked_egld": {
+                "type": "number"
+              },
+              "previous_locked_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "share_pct": {
+                "type": "number"
+              },
+              "apr_pct": {
+                "type": "number"
+              },
+              "fee_pct": {
+                "type": "number"
+              },
+              "num_users": {
+                "type": "integer"
+              },
+              "num_nodes": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "wow_change_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             }
           }
         },
         "concentration": {
           "type": "object",
           "properties": {
-            "top_5_share_pct": { "type": "number" },
-            "top_10_share_pct": { "type": "number" },
-            "hhi": { "type": ["number", "null"] },
-            "hhi_previous": { "type": ["number", "null"] },
-            "hhi_interpretation": { "type": ["string", "null"] }
+            "top_5_share_pct": {
+              "type": "number"
+            },
+            "top_10_share_pct": {
+              "type": "number"
+            },
+            "hhi": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "hhi_previous": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "hhi_interpretation": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
           }
         },
         "apr_distribution": {
@@ -269,11 +771,22 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "label": { "type": "string", "description": "Bucket label e.g. '6-7%'" },
-                  "min_apr_pct": { "type": "number" },
-                  "max_apr_pct": { "type": "number" },
-                  "provider_count": { "type": "integer" },
-                  "total_locked_egld": { "type": "number" }
+                  "label": {
+                    "type": "string",
+                    "description": "Bucket label e.g. '6-7%'"
+                  },
+                  "min_apr_pct": {
+                    "type": "number"
+                  },
+                  "max_apr_pct": {
+                    "type": "number"
+                  },
+                  "provider_count": {
+                    "type": "integer"
+                  },
+                  "total_locked_egld": {
+                    "type": "number"
+                  }
                 }
               }
             }
@@ -281,18 +794,31 @@
         },
         "apr_outliers": {
           "type": "object",
-          "description": "Top APR providers and lowest-fee providers — the asymmetric value zone for delegators",
+          "description": "Top APR providers and lowest-fee providers \u2014 the asymmetric value zone for delegators",
           "properties": {
             "top_apr": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "identity": { "type": "string" },
-                  "name": { "type": ["string", "null"] },
-                  "apr_pct": { "type": "number" },
-                  "fee_pct": { "type": "number" },
-                  "locked_egld": { "type": "number" }
+                  "identity": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "apr_pct": {
+                    "type": "number"
+                  },
+                  "fee_pct": {
+                    "type": "number"
+                  },
+                  "locked_egld": {
+                    "type": "number"
+                  }
                 }
               }
             },
@@ -301,11 +827,24 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "identity": { "type": "string" },
-                  "name": { "type": ["string", "null"] },
-                  "apr_pct": { "type": "number" },
-                  "fee_pct": { "type": "number" },
-                  "locked_egld": { "type": "number" }
+                  "identity": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "apr_pct": {
+                    "type": "number"
+                  },
+                  "fee_pct": {
+                    "type": "number"
+                  },
+                  "locked_egld": {
+                    "type": "number"
+                  }
                 }
               }
             }
@@ -315,41 +854,82 @@
           "type": "object",
           "description": "Total delegator-count delta WoW across all tracked providers. Captures whether the staking base is widening or contracting.",
           "properties": {
-            "total_delegators_current": { "type": "integer" },
-            "total_delegators_previous": { "type": ["integer", "null"] },
-            "delegators_added": { "type": ["integer", "null"] },
-            "delegators_change_pct": { "type": ["number", "null"] },
-            "providers_gaining_delegators": { "type": ["integer", "null"] },
-            "providers_losing_delegators": { "type": ["integer", "null"] }
+            "total_delegators_current": {
+              "type": "integer"
+            },
+            "total_delegators_previous": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "delegators_added": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "delegators_change_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "providers_gaining_delegators": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "providers_losing_delegators": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
           }
         },
         "reward_behavior": {
           "type": "object",
           "description": "What delegators do with claimed rewards, and what providers do with service-fee earnings. Sampled across top providers via scripts/delegator_behavior.py.",
           "properties": {
-            "providers_sampled": { "type": "integer" },
-            "delegator_window_days": { "type": "integer" },
-            "operator_window_days": { "type": "integer" },
+            "providers_sampled": {
+              "type": "integer"
+            },
+            "delegator_window_days": {
+              "type": "integer"
+            },
+            "operator_window_days": {
+              "type": "integer"
+            },
             "function_distribution": {
               "type": "object",
               "description": "Counts and shares of inbound function calls to sampled providers.",
               "additionalProperties": {
                 "type": "object",
                 "properties": {
-                  "count": { "type": "integer" },
-                  "share_pct": { "type": "number" }
+                  "count": {
+                    "type": "integer"
+                  },
+                  "share_pct": {
+                    "type": "number"
+                  }
                 }
               }
             },
             "compound_pct_at_function_level": {
               "type": "number",
-              "description": "redelegate_count / (redelegate_count + claim_count). Single-number measure of delegator conviction — high = compounding-dominant."
+              "description": "redelegate_count / (redelegate_count + claim_count). Single-number measure of delegator conviction \u2014 high = compounding-dominant."
             },
             "compound_vs_claim": {
               "type": "object",
               "properties": {
-                "redelegate_count": { "type": "integer" },
-                "claim_count": { "type": "integer" }
+                "redelegate_count": {
+                  "type": "integer"
+                },
+                "claim_count": {
+                  "type": "integer"
+                }
               }
             },
             "delegator_fates_by_tier": {
@@ -358,15 +938,23 @@
               "additionalProperties": {
                 "type": "object",
                 "properties": {
-                  "events": { "type": "integer" },
-                  "total_value_egld": { "type": "number" },
+                  "events": {
+                    "type": "integer"
+                  },
+                  "total_value_egld": {
+                    "type": "number"
+                  },
                   "fates_by_count": {
                     "type": "object",
-                    "additionalProperties": { "type": "integer" }
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
                   },
                   "fates_by_value_egld": {
                     "type": "object",
-                    "additionalProperties": { "type": "number" }
+                    "additionalProperties": {
+                      "type": "number"
+                    }
                   }
                 }
               }
@@ -377,35 +965,67 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "provider": { "type": "string" },
-                  "owner_address": { "type": ["string", "null"] },
-                  "owner_label": { "type": ["string", "null"] },
-                  "owner_balance_egld": { "type": ["number", "null"] },
-                  "outbound_count": { "type": ["integer", "null"] },
+                  "provider": {
+                    "type": "string"
+                  },
+                  "owner_address": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "owner_label": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "owner_balance_egld": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "outbound_count": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
                   "fates_by_count": {
                     "type": "object",
-                    "additionalProperties": { "type": "integer" }
+                    "additionalProperties": {
+                      "type": "integer"
+                    }
                   },
                   "fates_by_value_egld": {
                     "type": "object",
-                    "additionalProperties": { "type": "number" }
+                    "additionalProperties": {
+                      "type": "number"
+                    }
                   }
                 }
               }
             },
             "key_findings": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "Short bullets summarizing the most actionable observations from this run's sample."
             }
           }
         },
-        "analysis": { "type": "string" }
+        "analysis": {
+          "type": "string"
+        }
       }
     },
     "token_activity": {
       "type": "object",
-      "required": ["analysis"],
+      "required": [
+        "analysis"
+      ],
       "properties": {
         "top_by_holders": {
           "type": "array",
@@ -413,14 +1033,45 @@
           "items": {
             "type": "object",
             "properties": {
-              "identifier": { "type": "string" },
-              "name": { "type": "string" },
-              "holders": { "type": "integer" },
-              "previous_holders": { "type": ["integer", "null"] },
-              "holders_change": { "type": ["integer", "null"] },
-              "price_usd": { "type": ["number", "null"] },
-              "market_cap_usd": { "type": ["number", "null"] },
-              "volume_24h_usd": { "type": ["number", "null"] }
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "holders": {
+                "type": "integer"
+              },
+              "previous_holders": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "holders_change": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "price_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "market_cap_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "volume_24h_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -430,13 +1081,42 @@
           "items": {
             "type": "object",
             "properties": {
-              "identifier": { "type": "string" },
-              "name": { "type": "string" },
-              "transactions": { "type": ["integer", "null"] },
-              "previous_transactions": { "type": ["integer", "null"] },
-              "change_pct": { "type": ["number", "null"] },
-              "price_usd": { "type": ["number", "null"] },
-              "volume_24h_usd": { "type": ["number", "null"] }
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "transactions": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "previous_transactions": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "change_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "price_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "volume_24h_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -446,9 +1126,15 @@
           "items": {
             "type": "object",
             "properties": {
-              "identifier": { "type": "string" },
-              "name": { "type": "string" },
-              "total_transactions": { "type": "integer" }
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "total_transactions": {
+                "type": "integer"
+              }
             }
           }
         },
@@ -457,13 +1143,42 @@
           "items": {
             "type": "object",
             "properties": {
-              "identifier": { "type": "string" },
-              "name": { "type": "string" },
-              "holders": { "type": ["integer", "null"] },
-              "previous_holders": { "type": ["integer", "null"] },
-              "price_usd": { "type": ["number", "null"] },
-              "market_cap_usd": { "type": ["number", "null"] },
-              "volume_24h_usd": { "type": ["number", "null"] }
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "holders": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "previous_holders": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "price_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "market_cap_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "volume_24h_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -473,87 +1188,296 @@
           "items": {
             "type": "object",
             "properties": {
-              "identifier": { "type": "string" },
-              "name": { "type": "string" },
-              "deployer": { "type": ["string", "null"] },
-              "deployer_label": { "type": ["string", "null"] },
-              "issued_at": { "type": ["string", "null"], "format": "date-time" },
-              "holders": { "type": ["integer", "null"] },
-              "transactions": { "type": ["integer", "null"] },
-              "supply": { "type": ["number", "null"] },
-              "decimals": { "type": ["integer", "null"] }
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "deployer": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "deployer_label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "issued_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "holders": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "transactions": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "supply": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "decimals": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
             }
           }
         },
         "xexchange": {
           "type": "object",
           "properties": {
-            "total_pairs": { "type": "integer" },
-            "total_volume_24h_usd": { "type": ["number", "null"] },
-            "mex_price_usd": { "type": "number" },
-            "mex_market_cap_usd": { "type": "number" },
-            "mex_price_change_24h_pct": { "type": ["number", "null"] },
-            "mex_price_change_wow_pct": { "type": ["number", "null"] },
-            "top_pair": { "type": ["string", "null"] },
-            "top_pair_volume_24h_usd": { "type": ["number", "null"] },
-            "top_pair_dominance_pct": { "type": ["number", "null"] },
+            "total_pairs": {
+              "type": "integer"
+            },
+            "total_volume_24h_usd": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "mex_price_usd": {
+              "type": "number"
+            },
+            "mex_market_cap_usd": {
+              "type": "number"
+            },
+            "mex_price_change_24h_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "mex_price_change_wow_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "top_pair": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "top_pair_volume_24h_usd": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "top_pair_dominance_pct": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
             "top_pairs_by_volume": {
               "type": "array",
               "description": "All pairs with >=1% of 24h DEX volume, plus a single 'Other pairs' bucket aggregating the long tail. Designed for donut-chart visualization.",
               "items": {
                 "type": "object",
                 "properties": {
-                  "name": { "type": "string" },
-                  "volume_24h_usd": { "type": "number" },
-                  "share_pct": { "type": "number" },
-                  "tvl_usd": { "type": ["number", "null"] },
-                  "trades_count_24h": { "type": ["integer", "null"] },
-                  "is_other": { "type": "boolean", "description": "true for the aggregated 'Other pairs' bucket" }
+                  "name": {
+                    "type": "string"
+                  },
+                  "volume_24h_usd": {
+                    "type": "number"
+                  },
+                  "share_pct": {
+                    "type": "number"
+                  },
+                  "tvl_usd": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "trades_count_24h": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "is_other": {
+                    "type": "boolean",
+                    "description": "true for the aggregated 'Other pairs' bucket"
+                  }
                 }
               }
             }
           }
         },
-        "analysis": { "type": "string" }
+        "analysis": {
+          "type": "string"
+        }
       }
     },
     "defi_activity": {
       "type": "object",
-      "required": ["analysis"],
+      "required": [
+        "analysis"
+      ],
       "properties": {
         "protocols": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "name": { "type": "string" },
-              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "stablecoin", "nft_marketplace", "bridge", "perpetuals", "aggregator", "other"] },
-              "volume_24h_usd": { "type": ["number", "null"] },
-              "active_pairs": { "type": ["integer", "null"] },
-              "transfers_24h": { "type": ["integer", "null"] },
-              "tvl_egld": { "type": ["number", "null"] },
-              "tvl_usd": { "type": ["number", "null"] },
-              "tvl_wow_change_pct": { "type": ["number", "null"] }
+              "name": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "dex",
+                  "lending",
+                  "liquid_staking",
+                  "stablecoin",
+                  "nft_marketplace",
+                  "bridge",
+                  "perpetuals",
+                  "aggregator",
+                  "other"
+                ]
+              },
+              "volume_24h_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "active_pairs": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "transfers_24h": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "tvl_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "tvl_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "tvl_wow_change_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             }
           }
         },
         "protocol_breakdown": {
           "type": "array",
-          "description": "Per-protocol detailed analytics beyond the legacy `protocols` list — supports xExchange, Hatom, AshSwap, OneDex, XOXNO, JEXchange, etc.",
+          "description": "Per-protocol detailed analytics beyond the legacy `protocols` list \u2014 supports xExchange, Hatom, AshSwap, OneDex, XOXNO, JEXchange, etc.",
           "items": {
             "type": "object",
             "properties": {
-              "protocol": { "type": "string" },
-              "category": { "type": "string", "enum": ["dex", "lending", "liquid_staking", "stablecoin", "nft_marketplace", "bridge", "perpetuals", "aggregator", "other"] },
-              "addresses_tracked": { "type": "integer" },
-              "tvl_egld": { "type": ["number", "null"] },
-              "tvl_usd": { "type": ["number", "null"] },
-              "tvl_wow_change_pct": { "type": ["number", "null"] },
-              "tvl_wow_change_egld": { "type": ["number", "null"] },
-              "transfers_24h": { "type": ["integer", "null"] },
-              "unique_users_7d": { "type": ["integer", "null"] },
-              "notable_events": { "type": ["string", "null"] },
-              "health_signal": { "type": ["string", "null"], "enum": ["growing", "flat", "shrinking", "spiking", "draining", null] }
+              "protocol": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "dex",
+                  "lending",
+                  "liquid_staking",
+                  "stablecoin",
+                  "nft_marketplace",
+                  "bridge",
+                  "perpetuals",
+                  "aggregator",
+                  "other"
+                ]
+              },
+              "addresses_tracked": {
+                "type": "integer"
+              },
+              "tvl_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "tvl_usd": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "tvl_wow_change_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "tvl_wow_change_egld": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "transfers_24h": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "unique_users_7d": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "notable_events": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "health_signal": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "growing",
+                  "flat",
+                  "shrinking",
+                  "spiking",
+                  "draining",
+                  null
+                ]
+              }
             }
           }
         },
@@ -562,50 +1486,139 @@
           "items": {
             "type": "object",
             "properties": {
-              "address": { "type": "string" },
-              "deployer": { "type": "string" },
-              "deployer_label": { "type": ["string", "null"] },
-              "timestamp": { "type": "string", "format": "date-time" },
-              "interaction_count": { "type": "integer" }
+              "address": {
+                "type": "string"
+              },
+              "deployer": {
+                "type": "string"
+              },
+              "deployer_label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "interaction_count": {
+                "type": "integer"
+              }
             }
           }
         },
-        "analysis": { "type": "string" }
+        "analysis": {
+          "type": "string"
+        }
       }
     },
     "anomalies": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["metric", "current_value", "description", "severity"],
+        "required": [
+          "metric",
+          "current_value",
+          "description",
+          "severity"
+        ],
         "properties": {
-          "metric": { "type": "string" },
-          "current_value": { "type": "number" },
-          "previous_value": { "type": ["number", "null"] },
-          "average_value": { "type": ["number", "null"] },
-          "stddev": { "type": ["number", "null"] },
-          "z_score": { "type": ["number", "null"] },
-          "change_pct": { "type": ["number", "null"] },
-          "method": { "type": ["string", "null"], "enum": ["z_score", "percent_threshold", "rule_based", null], "description": "How the anomaly was flagged. percent_threshold is the graceful-degradation path when fewer than 4 data points exist." },
-          "description": { "type": "string" },
-          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] }
+          "metric": {
+            "type": "string"
+          },
+          "current_value": {
+            "type": "number"
+          },
+          "previous_value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "average_value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "stddev": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "z_score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "change_pct": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "method": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "z_score",
+              "percent_threshold",
+              "rule_based",
+              null
+            ],
+            "description": "How the anomaly was flagged. percent_threshold is the graceful-degradation path when fewer than 4 data points exist."
+          },
+          "description": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          }
         }
       }
     },
     "trend_indicators": {
       "type": "object",
-      "description": "Forward-looking signals: things that are accelerating, decelerating, or changing direction. Distinct from anomalies (which are point-in-time deviations) — these are multi-week trajectory reads.",
+      "description": "Forward-looking signals: things that are accelerating, decelerating, or changing direction. Distinct from anomalies (which are point-in-time deviations) \u2014 these are multi-week trajectory reads.",
       "properties": {
         "accelerating_exchange_outflows": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "exchange": { "type": "string" },
-              "trend": { "type": "string", "description": "e.g. '3 consecutive weeks of decline'" },
-              "cumulative_change_pct": { "type": ["number", "null"] },
-              "weeks_in_trend": { "type": "integer" },
-              "interpretation": { "type": ["string", "null"] }
+              "exchange": {
+                "type": "string"
+              },
+              "trend": {
+                "type": "string",
+                "description": "e.g. '3 consecutive weeks of decline'"
+              },
+              "cumulative_change_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "weeks_in_trend": {
+                "type": "integer"
+              },
+              "interpretation": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -613,17 +1626,41 @@
           "type": "object",
           "description": "Net validator participation changes",
           "properties": {
-            "providers_joining": { "type": ["integer", "null"] },
-            "providers_leaving": { "type": ["integer", "null"] },
-            "net_provider_change": { "type": ["integer", "null"] },
+            "providers_joining": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "providers_leaving": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "net_provider_change": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "notable_joiners": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "identity": { "type": "string" },
-                  "name": { "type": ["string", "null"] },
-                  "locked_egld": { "type": "number" }
+                  "identity": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "locked_egld": {
+                    "type": "number"
+                  }
                 }
               }
             },
@@ -632,9 +1669,18 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "identity": { "type": "string" },
-                  "name": { "type": ["string", "null"] },
-                  "previous_locked_egld": { "type": "number" }
+                  "identity": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "previous_locked_egld": {
+                    "type": "number"
+                  }
                 }
               }
             }
@@ -646,13 +1692,44 @@
           "items": {
             "type": "object",
             "properties": {
-              "identifier": { "type": "string" },
-              "name": { "type": "string" },
-              "event": { "type": "string", "enum": ["mint", "burn", "unlock", "lock", "issuance", "supply_change"] },
-              "magnitude_pct": { "type": ["number", "null"] },
-              "current_supply": { "type": ["number", "null"] },
-              "previous_supply": { "type": ["number", "null"] },
-              "description": { "type": "string" }
+              "identifier": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "event": {
+                "type": "string",
+                "enum": [
+                  "mint",
+                  "burn",
+                  "unlock",
+                  "lock",
+                  "issuance",
+                  "supply_change"
+                ]
+              },
+              "magnitude_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "current_supply": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "previous_supply": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         },
@@ -662,11 +1739,32 @@
           "items": {
             "type": "object",
             "properties": {
-              "metric": { "type": "string" },
-              "direction": { "type": "string", "enum": ["up", "down", "flat"] },
-              "weeks": { "type": "integer" },
-              "cumulative_change_pct": { "type": ["number", "null"] },
-              "interpretation": { "type": ["string", "null"] }
+              "metric": {
+                "type": "string"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "up",
+                  "down",
+                  "flat"
+                ]
+              },
+              "weeks": {
+                "type": "integer"
+              },
+              "cumulative_change_pct": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "interpretation": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -676,10 +1774,21 @@
           "items": {
             "type": "object",
             "properties": {
-              "metric": { "type": "string" },
-              "before_value": { "type": ["number", "null"] },
-              "after_value": { "type": "number" },
-              "description": { "type": "string" }
+              "metric": {
+                "type": "string"
+              },
+              "before_value": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "after_value": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
             }
           }
         }
@@ -689,30 +1798,219 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["item", "reason"],
+        "required": [
+          "item",
+          "reason"
+        ],
         "properties": {
-          "item": { "type": "string" },
-          "reason": { "type": "string" },
-          "weeks_on_list": { "type": "integer", "default": 1 }
+          "item": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "weeks_on_list": {
+            "type": "integer",
+            "default": 1
+          }
         }
       }
     },
     "meta_learning": {
       "type": "object",
-      "required": ["run_number"],
+      "required": [
+        "run_number"
+      ],
       "properties": {
-        "run_number": { "type": "integer" },
-        "endpoints_that_worked": { "type": "array", "items": { "type": "string" } },
-        "endpoints_that_failed": { "type": "array", "items": { "type": "string" } },
-        "api_quirks": { "type": "array", "items": { "type": "string" } },
-        "key_findings": { "type": "array", "items": { "type": "string" } },
-        "action_items_from_previous": { "type": ["integer", "null"] },
-        "action_items_completed": { "type": ["integer", "null"] },
-        "methodology_changes": { "type": "array", "items": { "type": "string" } },
-        "new_addresses_discovered": { "type": ["integer", "null"] },
-        "most_valuable_insight": { "type": ["string", "null"] },
-        "top_recommendation": { "type": ["string", "null"] },
-        "recommendations_for_next_run": { "type": "array", "items": { "type": "string" } }
+        "run_number": {
+          "type": "integer"
+        },
+        "endpoints_that_worked": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "endpoints_that_failed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "api_quirks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "key_findings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "action_items_from_previous": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "action_items_completed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "methodology_changes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "new_addresses_discovered": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "most_valuable_insight": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "top_recommendation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "recommendations_for_next_run": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "withdrawn_claims": {
+          "type": "array",
+          "description": "Claims published in earlier runs that THIS run withdraws. Aggregated into the dashboard's errata overlay so a superseded archived report carries a warning.",
+          "items": {
+            "type": "object",
+            "required": [
+              "claim",
+              "asserted_in_runs",
+              "withdrawn_in_run",
+              "reason"
+            ],
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "asserted_in_runs": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "withdrawn_in_run": {
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "replacement": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "pre_committed_tests": {
+      "type": "array",
+      "description": "Falsifiable tests registered in a prior run with explicit numeric thresholds, plus the tests this run registers for the next one. Forward-only from run #21 - never backfilled from prose.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "registered_in_run",
+          "claim",
+          "threshold",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "registered_in_run": {
+            "type": "integer"
+          },
+          "claim": {
+            "type": "string"
+          },
+          "threshold": {
+            "type": "string"
+          },
+          "branches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "condition",
+                "reading"
+              ],
+              "properties": {
+                "condition": {
+                  "type": "string"
+                },
+                "reading": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "resolved"
+            ]
+          },
+          "outcome": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "as_predicted",
+              "against",
+              "inconclusive",
+              "withdrawn",
+              null
+            ]
+          },
+          "resolved_in_run": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "resolution": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "measured_value": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
       }
     }
   }

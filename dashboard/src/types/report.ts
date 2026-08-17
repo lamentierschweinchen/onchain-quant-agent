@@ -199,12 +199,98 @@ export interface DormantActivation {
   action: string
 }
 
+// ---------------------------------------------------------------------------
+// OTC pipeline (first-class since run #19; wave-window netting since run #21)
+// ---------------------------------------------------------------------------
+
+export interface VenueNetting {
+  venue: string
+  desk_to_venue_egld: number
+  venue_to_desk_egld: number
+  net_egld: number
+}
+
+/** A historical window re-measured after the fact (gross -> net one-way). */
+export interface NettedWindow {
+  window: string
+  gross_egld: number
+  circular_egld: number
+  net_one_way_egld: number
+  circular_share_pct: number
+  net_by_venue?: Record<string, number>
+}
+
+/**
+ * Run #21: circularity crosses week boundaries, so a wave that spans two
+ * reporting weeks must be netted feed-to-drain. Summing the weekly nets
+ * overstates one-way distribution — the weekly figures are upper bounds.
+ */
+export interface WaveWindowNetting {
+  window: string
+  gross_outbound_egld: number
+  gross_inbound_egld: number
+  circular_egld: number
+  circular_share_pct: number
+  net_one_way_egld: number
+  sum_of_weekly_nets_egld: number
+  weekly_frame_overstatement_egld: number
+  weekly_frame_overstatement_pct: number
+  net_by_venue: Record<string, number>
+  outbound_by_venue?: Record<string, number>
+  inbound_by_venue?: Record<string, number>
+  note?: string
+}
+
+export interface OtcPipeline {
+  gross_outbound_egld_7d: number
+  gross_inbound_egld_7d: number
+  circular_egld_7d?: number
+  net_one_way_egld_7d?: number
+  circular_share_pct?: number | null
+  desk_balance_egld?: number
+  previous_desk_balance_egld?: number
+  upbit_reload_egld?: number
+  venue_netting?: VenueNetting[]
+  /** Keyed by run label, e.g. { run19: 301498, run20: 604086 } */
+  gross_series_egld_7d?: Record<string, number>
+  net_one_way_series_egld_7d?: Record<string, number>
+  circularity_series_pct?: Record<string, number>
+  peak_window_renetted?: NettedWindow
+  backfilled_windows?: NettedWindow[]
+  wave_window_netting?: WaveWindowNetting
+  series_note?: string
+}
+
+export interface WithdrawalBreadth {
+  distinct_recipients_raw: number
+  total_egld_raw: number
+  distinct_recipients_ex_pipeline: number
+  total_egld_ex_pipeline: number
+  pipeline_share_pct: number | null
+}
+
+export interface DemandInstruments {
+  identifiable_bid_absorbed_egld_7d: number
+  mega_whale_balance_egld?: number
+  mega_whale_change_egld?: number
+  coinbase_routing_balance_egld?: number
+  coinbase_routing_inflow_egld?: number
+  weeks_at_zero?: number
+  weeks_at_zero_in_last_four?: number
+  bid_to_distribution_ratio_pct?: number | null
+  dex_turnover_ratio_pct?: number | null
+  previous_dex_turnover_ratio_pct?: number | null
+  withdrawal_breadth?: WithdrawalBreadth
+}
+
 export interface WhaleIntelligence {
   large_transactions: LargeTransaction[]
   wallet_changes: WalletChange[]
   whale_tiers?: WhaleTiers
   exchange_flows: ExchangeFlows
   dormant_activations?: DormantActivation[]
+  otc_pipeline?: OtcPipeline
+  demand_instruments?: DemandInstruments
   analysis: string
 }
 
@@ -308,6 +394,41 @@ export interface RewardBehavior {
   key_findings?: string[]
 }
 
+export interface FeeEvent {
+  provider: string
+  fee_from_pct: number
+  fee_to_pct: number
+  apr_from_pct?: number | null
+  apr_to_pct?: number | null
+  locked_egld: number
+  locked_wow_egld?: number | null
+  users?: number | null
+  users_wow?: number | null
+  num_nodes?: number | null
+}
+
+export interface UnbondingLeg {
+  provider: string
+  amount: number
+  days_to_unbond: number
+  date: string
+}
+
+/**
+ * Run #21: the staked-minus-delegated residual also contains delegation
+ * unbonding in flight. This block is what makes it decomposable — and it is the
+ * only forward-looking quantity in the report: the EGLD becomes liquid on a
+ * known date.
+ */
+export interface UnbondingInFlight {
+  wallet: string
+  total_egld: number
+  legs: UnbondingLeg[]
+  share_of_delegation_decline_pct?: number | null
+  raw_residual_egld: number
+  corrected_direct_node_egld: number
+}
+
 export interface StakingIntelligence {
   summary?: StakingSummary
   top_providers: StakingProvider[]
@@ -316,6 +437,8 @@ export interface StakingIntelligence {
   apr_outliers?: AprOutliers
   churn?: StakingChurn
   reward_behavior?: RewardBehavior
+  fee_events?: FeeEvent[]
+  unbonding_in_flight?: UnbondingInFlight
   analysis: string
 }
 
@@ -558,6 +681,56 @@ export interface MetaLearning {
 }
 
 // ---------------------------------------------------------------------------
+// Pre-committed tests (run #21+) — the model's epistemic ledger.
+// Forward-only: never backfilled from prose.
+// ---------------------------------------------------------------------------
+
+export type TestStatus = 'open' | 'resolved'
+export type TestOutcome =
+  | 'as_predicted'
+  | 'against'
+  | 'inconclusive'
+  | 'withdrawn'
+
+export interface TestBranch {
+  condition: string
+  reading: string
+}
+
+export interface PreCommittedTest {
+  id: string
+  registered_in_run: number
+  claim: string
+  threshold: string
+  branches?: TestBranch[]
+  status: TestStatus
+  outcome?: TestOutcome | null
+  resolved_in_run?: number | null
+  resolution?: string | null
+  measured_value?: string | null
+}
+
+// ---------------------------------------------------------------------------
+// Errata overlay — aggregated across all reports by generate-manifest.ts
+// ---------------------------------------------------------------------------
+
+export interface WithdrawnClaim {
+  claim: string
+  asserted_in_runs: number[]
+  withdrawn_in_run: number
+  reason: string
+  replacement?: string | null
+  /** Added by the manifest generator */
+  asserted_in_dates?: string[]
+  withdrawn_in_date?: string | null
+}
+
+export interface Errata {
+  generated_from: number
+  claims: WithdrawnClaim[]
+}
+
+// ---------------------------------------------------------------------------
 // Manifest
 // ---------------------------------------------------------------------------
 
@@ -581,5 +754,6 @@ export interface WeeklyReport {
   anomalies: Anomaly[]
   trend_indicators?: TrendIndicators
   watch_list: WatchItem[]
+  pre_committed_tests?: PreCommittedTest[]
   meta_learning?: MetaLearning
 }

@@ -1,0 +1,50 @@
+{
+  "generated_from": 21,
+  "claims": [
+    {
+      "claim": "The direct-node unwind: ~215,000 EGLD left direct-node staking over three weeks, 'the largest unexplained structural flow tracked'.",
+      "asserted_in_runs": [
+        18,
+        19,
+        20
+      ],
+      "withdrawn_in_run": 21,
+      "reason": "The residual it was measured from (economics.staked minus summed provider locked) also contains delegation unbonding in flight. One wallet's 229,865 EGLD unDelegate pair explains run #21's entire +282,713 residual flip; corrected, direct-node stake grew +52,848. The prior three weeks' readings are equally consistent with earlier unbondings completing.",
+      "replacement": "Decompose the residual with /accounts/{addr}/delegation before attributing it to node operators. The protocol Staking SC returns HTTP 400 on all transaction queries.",
+      "asserted_in_dates": [
+        "2026-07-27",
+        "2026-08-03",
+        "2026-08-10"
+      ],
+      "withdrawn_in_date": "2026-08-17"
+    },
+    {
+      "claim": "The first competitive fee repricing in twenty runs: egldstakingprovider cut its service fee 24% -> 15%.",
+      "asserted_in_runs": [
+        20
+      ],
+      "withdrawn_in_run": 21,
+      "reason": "One week later the same provider set its fee to 100% (delegator APR 0), and procryptostaking - the incumbent named as the one that had NOT cut - did the same. Different owner wallets, 50 nodes each still running, both still bleeding stake. A wind-down or a squeeze, not competition.",
+      "replacement": "A single parameter move by an incumbent under pressure is ambiguous. Wait two weeks, or for stake to actually return, before assigning intent.",
+      "asserted_in_dates": [
+        "2026-08-10"
+      ],
+      "withdrawn_in_date": "2026-08-17"
+    },
+    {
+      "claim": "MEX's outperformance versus EGLD is stale pricing in illiquid pairs.",
+      "asserted_in_runs": [
+        19,
+        20
+      ],
+      "withdrawn_in_run": 21,
+      "reason": "Never checked before being repeated. Measured, MEX/WEGLD holds $291,459 of pool TVL - 15.9% of all xExchange depth and the #2 deepest pool on the venue - on 125 trades in 24h. Thin in volume but properly priced.",
+      "replacement": "Four consecutive weeks of MEX >= EGLD is real price action with no mechanism identified yet.",
+      "asserted_in_dates": [
+        "2026-08-03",
+        "2026-08-10"
+      ],
+      "withdrawn_in_date": "2026-08-17"
+    }
+  ]
+}
