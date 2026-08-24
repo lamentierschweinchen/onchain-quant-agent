@@ -4474,6 +4474,357 @@
         "BUILD THE UNBONDING-POOL SERIES. The residual correction this run rests on a single point-in-time /accounts/{addr}/delegation read. Start recording, each week, the unbonding total for the wallets behind every provider move above ~20K EGLD, so the staked-minus-delegated residual can be decomposed prospectively instead of being re-explained after it flips. Roughly 10-20 queries per run and it would have prevented three runs of a wrong narrative.",
         "RECORD THE UNBONDING POOL WEEKLY so the unbonding card graduates into the queue view it was cut down from. For every provider move above ~20K EGLD, query /accounts/{addr}/delegation on the wallets behind it and store amount / provider / seconds_remaining. 10-20 queries a run, it would have prevented three runs of the direct-node narrative, and it is the only forward-looking series the report has."
       ]
+    },
+    {
+      "date": "2026-08-24",
+      "run_number": 22,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x39",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "July episode re-netted feed-to-drain as one window (rec #3)",
+          "wave #2 extended window netting (rec #5)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond destination trace (rec #2 - highest value)",
+          "unbonding-pool series: /accounts/{addr}/delegation for provider movers (rec #9/#10)",
+          "100%-fee provider deregistration + owner counterparty check (rec #4)",
+          "stablecoin largest-holder scan (rec #6)",
+          "Unknown Whale I largest external counterparty trace (rec #8)",
+          "identifiable-bid instrument (absorber + Coinbase routing pipes)",
+          "withdrawal-breadth scan (paginated exchange outbound, 7d)",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch guard active)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [],
+        "api_quirks_discovered": [
+          "previous.json stores staking providers keyed by IDENTITY (or the address when there is no identity), NOT by contract address. Joining the live /providers list on `provider` (the address) silently produces a near-total mismatch - the first pass this run reported 79 providers as having moved more than 20K EGLD and found zero unDelegate callers. The correct key is `identity or provider`.",
+          "A provider that calls unStakeNodes does NOT disappear from /providers. It stays listed with numNodes unchanged (p2p_org_ still shows 50), stake and topUp and locked all zero, apr 0, and numUsers unchanged at 1,244. Any 'providers leaving' count built on set membership will miss it entirely; the detectable signature is locked going to zero with numNodes > 0.",
+          "unStakeNodes appears as a normal function on the provider contract's INBOUND transaction list, alongside delegate / unDelegate / claimRewards. It is the operator-side counterpart to the delegator-side unDelegate and is the only visible marker of a deregistration.",
+          "/accounts/{addr}/delegation reports a completed unbonding as userUnBondable > 0 with a userUndelegatedList entry at seconds = 0. The EGLD is claimable but has NOT left the contract, and it appears in neither the wallet balance nor the provider's locked figure - it sits in the staking module and therefore inside economics.staked.",
+          "SWTAO-356a25 returned price and marketCap null from /tokens/SWTAO-356a25 through the main pass AND all four isolated 2.5s retries - but the /tokens?sort=marketCap LIST endpoint returned a live price ($305.80) and marketCap for the SAME token in the SAME run. The two endpoints disagree about whether a price exists. This supersedes the run #14 prior-price carry-forward as the first-choice fallback: cross-check the list endpoints before deriving an estimate, because a measured value beats a derived one.",
+          "The delegator_behavior collector requests 8 providers but reports providers_sampled 7 in its aggregates when one has no usable inbound window; the metadata block still says 8. Read the aggregates figure, not the metadata one.",
+          "/tokens/{id}/accounts returns balances in the token's own decimals as raw strings - USDT and USDC are 6-decimal, so divide by 1e6, not 1e18.",
+          "The page-cap guard fired once, on a Binance hot wallet in the withdrawal-breadth scan: 400 transactions covering only 2.4 days of a 7-day window. Any breadth total including that address is a lower bound and must be labelled one.",
+          "The two long-flagged invalid bech32 entries (Hatom UTK Money Market, OneDex Launchpad) still fail pre-flight validation, unchanged since run #18. They remain flagged rather than guessed."
+        ],
+        "data_gaps": [
+          "The unbonding-pool measurement covers the ten providers that moved more than 5,000 EGLD, not all 105. Gross weekly unDelegation across the whole set is therefore higher than the 70,498 reported, which is why the residual is described as fully absorbed rather than decomposed to a number.",
+          "One Binance hot-wallet breadth scan hit the page cap at 2.4 days of coverage; raw withdrawal breadth is a lower bound.",
+          "Whether p2p_org_'s 1,244 delegators have acted is not observable this week - their stake reads zero because the contract's stake is zero, not because they withdrew.",
+          "MEX's outperformance has no measured mechanism after two runs of looking; the model states the gap rather than explaining it.",
+          "Hatom UTK Money Market and OneDex Launchpad remain excluded from protocol address sets pending valid addresses."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "READING /accounts/{addr}/delegation FOR STATE, NOT JUST FOR AMOUNTS. The run #21 unbond resolved not by finding a destination but by finding a STATE the test had not imagined - userUnBondable > 0 with seconds_remaining = 0, i.e. claimable and unclaimed. That is invisible to a balance scan, invisible to a transaction scan, and invisible to the provider's locked figure. One endpoint answered a question three other instruments could not even pose.",
+          "PRE-COMMITTED THRESHOLDS HELD UP UNDER A 30% PRICE MOVE. Four of five resolved as predicted, including two - the OTC feed resumption and the DEX turnover recovery - that would have been trivially easy to narrate either way after the fact. The one inconclusive resolution was informative rather than embarrassing: it identified a design flaw (destination tests need a no-action branch with a time bound) that generalises to every future watch of this shape.",
+          "RE-MEASURING A METHODOLOGICAL CLAIM INSTEAD OF INHERITING IT. Run #21 established the wave-netting rule from ONE wave and generalised it. Re-netting the July episode as one window took a single collector change and showed weekly framing was accurate there (0.47% apart), which narrows the rule rather than repeating it. The model has now corrected its own correction, which is the behaviour the errata mechanism exists to support.",
+          "CHECKING THE LIST ENDPOINT BEFORE DERIVING AN ESTIMATE. SWTAO's per-token price nulled through four 2.5s retries, exactly the run #14 pattern that previously forced a carry-forward estimate. The /tokens?sort=marketCap list had a live price for the same token in the same run. A measured value beat a derived one for the cost of one lookup.",
+          "NETTING A SINGLE ENTITY OUT OF EVERY AGGREGATE IT TOUCHES. p2p_org_'s deregistration is 87% of the delegation TVL decline and 95% of the apparent delegator-count break. Applying the run #15/#16 decomposition rules mechanically turned two alarming headline numbers into one real event plus two artifacts.",
+          "COMPUTING WHALE TIERS ON A COMMON-ADDRESS BASIS. The previous snapshot stores 60 accounts and this one holds 100; the naive comparison showed a phantom +264K mid-tier gain. Restricting to the 48 addresses present in both removed it."
+        ],
+        "what_needs_improvement": [
+          "THE PROVIDER JOIN KEY WAS WRONG AND IT FAILED SILENTLY. previous.json keys staking_providers by IDENTITY; the live API keys by contract address. The collector joined on address, reported 79 providers as having moved more than 20K EGLD, found zero unDelegate callers, and produced an empty unbonding pool without erroring. It was only caught because 79 movers was implausible on its face. Every cross-snapshot join in this pipeline should assert a minimum match rate.",
+          "THE UNBONDING POOL COVERS TEN PROVIDERS, NOT 105. The measurement is good enough to say the residual is fully absorbed, and not good enough to decompose it. That is the difference between retiring a bad instrument and building a good one, and the run stopped at the first.",
+          "THE TURNOVER FINDING IS CONFOUNDED AND THE TEST THAT REGISTERED IT DID NOT ANTICIPATE THAT. Turnover tripled in the same week as a +30% price move and a restarted OTC feed. 'Demand is repairing' and 'there was a rally' both predict it. The persistence test registered for run #23 separates them, but the original threshold should have been specified conditional on price.",
+          "THE CUSTODY DRAWDOWN AND THE OTC RESTART HAPPENED IN THE SAME WEEK AND WERE NOT CONNECTED. 300,000 EGLD moved from Binance's staking custody to its hot wallet while 297,000 was fed into the desks from UPbit. The model reported both and tested neither against the other. Four queries would settle it.",
+          "MEX HAS NOW BEEN 'EXPLAINED' ONCE, FALSIFIED ONCE, AND LEFT UNEXPLAINED TWICE. Two mechanisms were checked this run (supply, pool depth) and both came back negative. That is progress over run #19-#20's repeated hand-waving, but a five-week, 9.8pp relative move with no mechanism is a standing hole in the model's coverage."
+        ],
+        "surprising_findings": [
+          "A 30% RALLY ARRIVED WITH DISTRIBUTION, AND EVERY HOLDING-SIDE INSTRUMENT AGREED. The OTC feed restarted at 297,000, Binance's custody drew down 300,000 to hot, Hatom depositors withdrew, CDP borrowers burned 3.4% of USH, delegators compounded at the lowest rate in nine readings, and not one LSD took a measurable subscription. The only instrument pointing the other way measures trading rather than holding.",
+          "THE 229,865 EGLD SIMPLY DID NOT MOVE. It completed unbonding and was not claimed. After a run that treated its destination as the single highest-value question, the answer was that its owner did nothing at all.",
+          "P2P.ORG DEREGISTERED ITS NODES AND LEFT 1,244 DELEGATORS ATTACHED TO A ZERO-STAKE, ZERO-APR CONTRACT. The first operator exit in tracking, and it does not show up as a provider leaving the API - it shows up as locked = 0 with 50 nodes still listed.",
+          "THE DESKS RELOADED WHILE DISTRIBUTING. Combined desk inventory rose 49,292 to a record 109,857 EGLD in the same week they pushed 252,109 net one-way to Bybit, Binance.com and Gate.io. Whatever the programme is, its supply was not exhausted by this week's delivery.",
+          "RUN #21'S NETTING CORRECTION WAS ITSELF TOO STRONG. Weekly framing was accurate for the entire July episode (0.47% apart over three weeks). The 55% overstatement was a property of one wave's straddle, not of the method.",
+          "THE TWO DEMAND INSTRUMENTS INVERTED AGAINST EACH OTHER. DEX turnover tripled to 10.83% while the identifiable bid read exactly zero, on a wallet whose balance did not change to four decimal places.",
+          "THE TWO 100%-FEE OPERATORS SHARE NOTHING. Both owner wallets hold 1.69 EGLD, received nothing in 30 days, and sent one small transfer each - to two different unlabelled recipients. The coincidence run #21 flagged has no visible connection behind it."
+        ]
+      },
+      "methodology_changes": [
+        "JOIN PROVIDERS ON IDENTITY, NOT ADDRESS. previous.json keys staking_providers by identity; the live API keys by contract address. Joining wrong is silent and catastrophic - it reported 79 phantom 20K+ movers and found zero unDelegate callers on the first pass this run.",
+        "A DEREGISTERED PROVIDER STAYS IN /providers. Detect it as locked == 0 with numNodes > 0, and confirm with an unStakeNodes call on the contract's inbound list. Set-membership 'providers leaving' logic misses it.",
+        "NET A DEREGISTERED PROVIDER OUT OF BOTH DELEGATION TVL AND THE DELEGATOR COUNT. Its users leave the locked>0 working set without undelegating, which manufactures a break in the delegator series. Report the count both ways.",
+        "AN UNBONDING CAN COMPLETE AND STILL NOT MOVE. userUnBondable > 0 with seconds = 0 means claimable-but-unclaimed; the EGLD stays inside the staking module and inside economics.staked. A destination test needs an explicit no-action branch with a time bound or it cannot resolve.",
+        "RECOVER NULL TOKEN PRICES FROM THE LIST ENDPOINTS BEFORE DERIVING THEM. /tokens/{id} and /tokens?sort=marketCap can disagree about whether a price exists; this run the list had SWTAO at $305.80 while the per-token endpoint nulled through four retries. Check the lists first, then fall back to the run #11 accumulator ratio, then to the run #14 prior-price carry-forward.",
+        "NARROW RUN #21'S WEEKLY-NETTING RULE. Weekly netting is accurate unless a wave straddles a week boundary - the July episode re-netted to within 0.47% of the sum of its weekly nets while the August wave overstates by 47.7%. Test the wave, do not assume the frame.",
+        "DO NOT PUBLISH A CORRECTED DIRECT-NODE FIGURE FROM A PARTIAL UNBONDING SUBTRACTION. Run #21 subtracted one wallet and published +52,848; the correct statement when the measured unbonding exceeds the residual is that the residual carries no direct-node signal.",
+        "WHEN TWO INSTRUMENTS FOR THE SAME QUANTITY DISAGREE, SAY WHICH ONE IS BETTER MEASURED AND WHY. Turnover covers a whole venue and is price-independent; the identifiable bid is one wallet. Reporting them as a contradiction without adjudicating is a non-answer."
+      ],
+      "new_addresses_discovered": [
+        "erd1qkazru7aw5... - Unknown Whale I's SECOND OPERATOR WALLET, not an external buyer. Nonce 566, ~46,629 EGLD. Over 30 days it sent 37,188 EGLD to Whale I and received 52,551 from it and essentially transacted with nobody else. Added to known-addresses under unlabeled_whales; closes the run #20/#21 Whale I classification as OTC operator inventory.",
+        "erd1qqqq...m8llllsyhrgzd (p2p_org_ delegation contract) - added under validators with subcategory 'deregistered'. Called unStakeNodes this week; locked 0, numNodes 50, numUsers 1,244, APR 0. Owner erd1jxuc98ud0pe7lcf3c0d4x0xf25wrf63d2n80t7muyucl6ptym3hqk0252k, not yet related to any other tracked entity.",
+        "Additional OTC desk feeder/router wallets labelled from this week's hub trace (>15K EGLD legs), terminating at Bybit, Binance.com and Gate.io. The restarted feed brought several new zero-balance pass-throughs into the set.",
+        "STILL FLAGGED, not fixed: two invalid-checksum entries in known-addresses.json (Hatom UTK Money Market, OneDex Launchpad), open since run #18. Neither is queried by the collector; a wrong replacement remains worse than a known gap."
+      ],
+      "action_items_completed": [
+        "DONE (run #21 rec #1): MAINTAIN THE SCOREBOARD AND ERRATA. Five of run #21's six open tests resolved (4 as predicted, 1 inconclusive), one carried open into week two, and seven new tests registered with thresholds and branches before next week's data exists. Two claims withdrawn with asserted_in_runs so the errata overlay warns on run #21. Prediction record appended to running_baselines.",
+        "DONE (rec #2): WHERE DOES THE 229,865 EGLD UNBOND GO? Nowhere. Both legs completed or nearly completed unbonding and NEITHER was withdrawn; the wallet sent no outbound transaction all week. None of the three pre-registered branches covered that state, which is the finding: destination tests need an explicit no-action branch with a time bound. Re-registered accordingly.",
+        "DONE (rec #3): RE-NET THE JULY EPISODE FEED-TO-DRAIN. Jul 6-27 as ONE window gives 829,863 EGLD one-way against 833,754 from summing its three weekly nets - 0.47% apart. Weekly framing was ADEQUATE for July, so run #21's blanket upper-bound rule is narrowed to waves that straddle a week boundary. The extended August wave (Aug 3-24) still overstates by 47.7%.",
+        "DONE (rec #4): DO THE 100%-FEE PROVIDERS DEREGISTER? Not yet, and no branch fired at threshold - books fell 9.6% and 15.6% rather than halving, users moved -35 and -32, fee unchanged at 1.0, 50 nodes each still listed. Test stays open into week two. The owner-counterparty question IS answered: two distinct wallets, both holding 1.69 EGLD, both with zero 30-day inbound, each sending one small transfer to a DIFFERENT unlabelled recipient. No shared counterparty on the available evidence.",
+        "DONE (rec #5): DOES THE OTC FEED RESUME? Yes, at nearly double its threshold and a week early - a 297,000 UPbit tranche against a ~150,000 bar, gross throughput 767,206, desks reloaded to a record 109,857. Standing-programme branch fired. Wave-window net reported alongside the weekly figure as instructed.",
+        "DONE (rec #6): IS THE USDT DRAIN ONE DESK OR THE BRIDGE? One desk. Supply recovered +0.44% to 552,292 on the benign branch. Holder scan supports it: top 25 hold 82% of supply, largest is Hatom's USDT Money Market at 118,671, so a single position moves the aggregate double digits.",
+        "DONE (rec #7): WHY IS MEX LEADING EGLD? Two mechanisms checked and both eliminated. MEX circulating supply moved -0.151% (6.03B tokens), three orders of magnitude too small to price a 9.8pp five-week gap; MEX/WEGLD pool depth rose to $359,078 but roughly in line with the market rather than ahead of it. The statistical claim survives, the causal one does not exist. Registered as a bounded test rather than explained a third time.",
+        "DONE (rec #8): CORRECT THE DEMAND READING FOR THE RECLASSIFIED WHALE, and close the classification. Whale I's hub take (+2,686 this week) is excluded from the demand instruments, and its largest external counterparty turns out to be a second wallet of the same operator - which closes the identification rather than extending it.",
+        "PARTIAL (rec #9/#10): BUILD THE UNBONDING-POOL SERIES. Built and recorded weekly for the first time: 158 distinct unDelegate callers moving 70,498 EGLD across the ten providers that moved more than 5,000, with per-leg settlement dates. NOT built across all 105 providers, so the residual can be shown to be fully absorbed but not decomposed. The first attempt failed silently on a wrong join key and is documented as an API quirk."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.7,
+          3.13,
+          3.16,
+          2.84,
+          2.69,
+          2.68,
+          2.76,
+          3.6
+        ],
+        "dex_volume_24h_usd": [
+          88354.28195205361,
+          160792.26882311978,
+          193678.59840165742,
+          75362.7807729906,
+          38628.36089504676,
+          40594.726618154826,
+          53782.67067584162,
+          229987.6668827292
+        ],
+        "staked_egld": [
+          14458763,
+          14538955,
+          14619977,
+          14493315,
+          14470102,
+          14468060,
+          14514338,
+          14548017
+        ],
+        "mex_price_usd": [
+          2.430275788949282e-07,
+          2.694326542414106e-07,
+          2.7007416757074616e-07,
+          2.4872942896941377e-07,
+          2.4397414242709315e-07,
+          2.472038964013605e-07,
+          2.5603716335458884e-07,
+          3.3417335112217705e-07
+        ],
+        "total_delegators": [
+          174373,
+          174349,
+          174335,
+          174341,
+          174325,
+          174330,
+          174353,
+          173042
+        ],
+        "staked_ratio": [
+          0.4773082253449375,
+          0.4791867069985865,
+          0.48108470358505084,
+          0.4761527653318647,
+          0.4746278437166162,
+          0.4737995781734133,
+          0.4745535960231805,
+          0.4748923642763583
+        ],
+        "exchange_net_flow_egld": [
+          -218471.62159921788,
+          -195706.30567509495,
+          193747.1765770316,
+          166977.62919204682,
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          506053,
+          1100791,
+          1284688,
+          313173,
+          301498,
+          604086,
+          222532,
+          767206
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1
+        },
+        "dex_turnover_ratio_pct": [
+          4.061,
+          2.141,
+          2.235,
+          2.928,
+          10.832
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0,
+          0,
+          5747.7,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          3353797.4812337724,
+          3310679.6331837727,
+          3207100.622133773,
+          3357100.6221337724,
+          3357100.6221337724,
+          3357100.6221337724,
+          3475540.385133772,
+          3175540.3850837722
+        ],
+        "reward_compound_pct": [
+          60.35,
+          61.59,
+          60.19,
+          58.81,
+          62.25,
+          59.54,
+          59.07,
+          57.03
+        ],
+        "delegation_total_locked_egld": [
+          11114380,
+          11034013
+        ],
+        "usdt_supply": [
+          549884,
+          552292
+        ],
+        "pre_committed_tests_resolved": [
+          7,
+          5
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          42.9,
+          80.0
+        ],
+        "pre_committed_tests_open": [
+          6,
+          8
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Unbonding queue table with a settlement calendar",
+          "motivation": "Run #21's unbonding card was deliberately one number because there was one observation. This run there are 158 distinct unDelegate callers moving 70,498 EGLD with settlement dates spread over 2-8 days, plus a 229,865 position that has completed unbonding and simply not been claimed - a state the card cannot express at all. The card now understates the thing it exists to show, and the claimable-but-unclaimed distinction is the single most decision-relevant fact in it.",
+          "suggested_visualization": "a table of the largest legs (amount, source provider, days remaining, wallet balance) beside a small stacked bar of EGLD becoming liquid per upcoming day, with a separate CLAIMABLE NOW band pinned at day zero for completed-but-unwithdrawn positions.",
+          "data_already_available": true,
+          "data_source": "staking_intelligence.unbonding_in_flight.queue_this_week (new this run: undelegated_egld, distinct_callers, measured_pending_egld, largest_legs with days_remaining) plus the existing legs array",
+          "priority": "high"
+        },
+        {
+          "title": "Demand instruments panel - and make it show the disagreement",
+          "motivation": "Pending for three runs, and this week is the one that makes the case: DEX turnover tripled to 10.83% while the identifiable bid read exactly zero and ex-pipeline withdrawal breadth fell to 21 recipients with the pipeline share jumping to 88.3%. Three series, all with real shape, pointing in different directions in the same week - and the report has to spend a paragraph adjudicating between them because there is no view where a reader can see it. The adjudication (turnover measures a venue and is price-independent; the bid measures one wallet) is exactly what a shared-axis panel would make obvious.",
+          "suggested_visualization": "three small multiples on a shared week axis - turnover %, identifiable bid EGLD, ex-pipeline breadth recipients - with the pipeline-share % as a shaded band behind the breadth series, and weeks where the instruments disagree in sign marked.",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.demand_instruments (dex_turnover_ratio_pct, identifiable_bid_absorbed_egld_7d, withdrawal_breadth) across reports, plus the running_baselines arrays",
+          "priority": "high"
+        },
+        {
+          "title": "Provider lifecycle strip",
+          "motivation": "p2p_org_ went from 1,244 delegators and 67,500 EGLD of node stake to zero locked via unStakeNodes, and the dashboard renders that as a single 'notable leaver' row with a previous-locked number. It cannot show that the nodes are still registered, the users are still attached, the APR is now zero, and the book did not drain - the operator left. Two 100%-fee providers are in a related state (paying nothing, keeping their books) and there is no view that connects them.",
+          "suggested_visualization": "a compact strip of provider states - healthy / fee-squeezed / zero-APR / deregistered - with each affected provider as a chip carrying locked, users and weeks-in-state, so a reader sees the distressed end of the validator set as a group rather than as scattered rows.",
+          "data_already_available": false,
+          "data_source": "derivable from /providers (locked, numNodes, apr, serviceFee, numUsers) but needs a new staking_intelligence.provider_states array carrying the state label and weeks_in_state",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Wave-window OTC netting (feed-to-drain) alongside the weekly series",
+          "status": "built",
+          "note": "Built in run #21 and it earned itself immediately - the July re-net this run needed exactly that panel to show that weekly framing was ACCURATE for July while the August wave straddles. The bracket is now carrying two waves with opposite verdicts, which is more than the original proposal anticipated."
+        },
+        {
+          "title": "Delegation unbonding queue",
+          "status": "pending",
+          "note": "The CARD was built in run #21 with the graduation condition stated explicitly: it becomes a table when the collector records the pool weekly. That collector change shipped this run (158 callers, 70,498 EGLD, settlement dates), so the graduation condition is met and the table is this run's top suggestion."
+        },
+        {
+          "title": "Pre-committed test scoreboard",
+          "status": "built",
+          "note": "Built in run #21, load-bearing this run. It resolved five run #21 tests, carried one open into week two, and registered seven new ones. The inconclusive outcome earned its place again: the unbond test could not resolve because it had no no-action branch, and having to record that in structure rather than prose is what produced the design rule."
+        },
+        {
+          "title": "Errata overlay on superseded reports",
+          "status": "built",
+          "note": "Built in run #21 and used this run for two withdrawals - run #21's own +52,848 direct-node figure and its blanket weekly-netting rule. Notable that both withdrawals are of run #21 claims by run #22, so the overlay is now correcting the run that built it, which is the behaviour it was designed for."
+        },
+        {
+          "title": "OTC hub flow map: gross vs net one-way, with venue-level netting",
+          "status": "pending",
+          "note": "Still not built and the case is stronger again: this week UPbit is a -297,000 net source while Bybit (+132,402), Binance.com (+81,652) and Gate.io (+28,346) are receivers, and the same venues invert across the wave boundary. A chord or Sankey makes a source-to-sink structure legible where a signed table does not."
+        },
+        {
+          "title": "Conclusion-revision log",
+          "status": "built",
+          "note": "Shipped as the errata overlay in run #21; see above."
+        },
+        {
+          "title": "EGLD relative-strength (beta) tracker",
+          "status": "deprioritized",
+          "note": "Deprioritised a fifth time, and this week is the cleanest reason yet: EGLD +30.43% landed between BTC +23.78% and ETH +30.67%, which is a one-line observation in the network-health narrative. A tracker would have shown a flat line through the largest price move in the series."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The week's most valuable result is that a +30% rally arrived with distribution rather than accumulation, and every instrument that could distinguish them agreed. The OTC pipeline restarted at 297,000 into the move and the desks ended with record inventory still loaded. Binance's staking custody drew down 300,000 to its hot wallet, the branch pre-registered as bearish since run #9. Hatom depositors withdrew, CDP borrowers repaid, delegators claimed instead of compounding, and no LSD took a single measurable subscription. The one instrument pointing the other way - DEX turnover tripling - measures trading rather than holding, and trading is what you would expect on both readings. The structural point is that this chain's holders used a 30% move to reduce exposure, and the supply that funded it is visible, named and only partly delivered.",
+        "actions_completed_count": 8,
+        "actions_attempted_count": 10,
+        "what_would_2x_next_week": "Resolve the unbond-withdrawal and OTC wave-#3 tests in the SAME pass, because they may be one flow: 229,865 EGLD is claimable and unclaimed at the exact moment a distribution pipeline restarted with a record 109,857 of desk inventory still loaded, and nobody has checked whether the wallet's eventual receiver appears in the desk inbound list. Second, connect the Binance custody drawdown to the pipeline - 300,000 left custody for the hot wallet in the same week 297,000 entered the desks, and four queries on the hot wallet's outbound above 10,000 EGLD would either merge two watches into one instrument or rule it out. Third, extend the unbonding pool to all 105 providers so the staked-minus-delegated residual becomes a decomposition rather than a statement that it cannot be read. Fourth, separate the turnover signal from the rally by recording volume in EGLD terms and the WEGLD/USDC pair separately, because the current reading is confounded with a +30% price week. Fifth, add a match-rate assertion to every cross-snapshot join: the provider join failed silently this run and produced 79 phantom movers before anyone noticed.",
+        "pre_committed_test_for_next_run": "UNBOND WITHDRAWAL: withdrawn to an exchange/OTC feeder = a 230K distribution event on a restarting pipeline; withdrawn and redelegated = rotation; still unwithdrawn after a second full week = inactive/lost-access holder, retire it as a live flow. OTC WAVE #3: another tranche above ~150,000 = escalating toward the re-netted run #17 peak; nothing above ~50,000 = a single reload. CUSTODY: Binance.com hot falling >150,000 with the feed continuing = the custody drawdown funds the pipeline; hot flat or custody re-parked = internal rebalancing. P2P.ORG MIGRATION: >25% of the 1,244 stranded delegators leaving within two weeks = total yield loss breaks inertia; <10% = inertia is near-absolute. TURNOVER: above ~5% = a genuine regime change and the absent-bid diagnosis is retired; below 3.5% = a rally-week spike. MEX: pool TVL +10% WoW in EGLD terms or supply -1% = a mechanism; neither for a second run = label it unexplained flow and stop. COMPOUND: below 56% = systematic monetisation; above 59% = a rally-week spike. 100%-FEE PROVIDERS: carried open into week two of three."
+      },
+      "recommendations_for_next_run": [
+        "MAINTAIN THE SCOREBOARD AND ERRATA. Resolve the 8 open pre_committed_tests, register run #23's before seeing the data, and append the prediction record to running_baselines. This run resolved 5 of run #21's 6 and carried 1 forward; note that the one inconclusive resolution was caused by a missing no-action branch, which is now a standing design rule for destination tests.",
+        "RESOLVE THE UNBOND AND WAVE #3 TOGETHER. 229,865 EGLD is claimable-and-unclaimed while the desks hold a record 109,857 loaded. Query /accounts/erd1daqlaezxx22rzyxnqx5ddkykm5ajelt0hetjnstm7rxqg78xqusqazv9ms/delegation for withdrawal, then its outbound within 72h, and check whether any receiver appears in the desk inbound list. If they are the same flow it is the largest single event the pipeline has carried.",
+        "TRACE P2P.ORG'S 1,244 STRANDED DELEGATORS. The contract has zero stake and zero APR. Enumerate the callers on its contract (withdraw / unDelegate / delegate) over the next two weeks and count how many of the 1,244 act. This is the cleanest natural experiment on participation inertia the model will get: a 100% fee moved 26% of a book and 1% of its users; a dead contract is the limit case. Also check whether owner erd1jxuc98ud0pe7 relates to the two 100%-fee operators.",
+        "BUILD THE UNBONDING QUEUE ACROSS ALL PROVIDERS, NOT JUST THE MOVERS. This run measured 70,498 across ten providers and could only say the residual was 'fully absorbed'. Querying unDelegate calls on all 105 contracts is roughly 105 paged queries - expensive but it turns the residual from an uninterpretable number into a decomposition, and it is the only forward-looking series the report has.",
+        "SEPARATE THE TURNOVER SIGNAL FROM THE RALLY. Turnover tripled in the same week as a +30% price move and a restarted OTC feed, so the constructive reading is confounded. Record volume in EGLD terms as well as USD, and record the WEGLD/USDC pair's volume separately from the rest, so a repeat can be attributed to venue demand rather than to price.",
+        "STOP EXPLAINING MEX AND START BOUNDING IT. Two runs have now looked for a mechanism and found none - supply moves are three orders of magnitude too small and pool depth grew with the market. Per the run #21 rule about repeated explanations, the next run should either measure MEX/WEGLD pool TVL in EGLD terms and farm emissions directly, or label the 9.8pp five-week gap as unexplained flow and stop.",
+        "RETIRE OR REPAIR THE IDENTIFIABLE-BID INSTRUMENT. It has read zero in three of the last four weeks including one where DEX turnover tripled. Either widen it to a set of absorber wallets discovered dynamically from the desks' outbound terminals, or drop it and let turnover plus ex-pipeline withdrawal breadth carry the demand read. Reporting a broken proxy alongside a working one every week is narrative cost.",
+        "WATCH THE HATOM RESPONSE RATIO FOR A SECOND SUB-0.30 READING. The bilateral inverse rule confirmed correctly but at 0.28, below the capacity-exhaustion threshold. Two consecutive sub-0.30 readings on |dPrice| >= 5% weeks means the deposit base the rule depends on has been drawn down and the rule should be retired rather than re-confirmed - which would be a cleaner outcome than letting it decay into a formality.",
+        "ADD A PAGE-CAP BUDGET FOR THE BREADTH SCAN. One Binance hot wallet covered 2.4 days of a 7-day window at max_pages=8. Raise the cap for exchange hot wallets specifically, or accept and label the lower bound explicitly in the field name rather than in a caveat.",
+        "CHECK WHETHER THE BINANCE 300,000 REACHES THE DESKS. The custody drawdown and the OTC restart happened in the same week and the model has not connected them. Trace the Binance.com hot wallet's outbound above 10,000 EGLD and test against the desk inbound list; a link would make the custody watch and the pipeline watch one instrument instead of two."
+      ]
     }
   ]
 }

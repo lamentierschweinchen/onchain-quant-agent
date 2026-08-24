@@ -1,14 +1,14 @@
 {
-  "generated_from": 21,
+  "generated_from": 22,
   "totals": {
-    "tests": 13,
-    "resolved": 7,
-    "open": 6,
-    "as_predicted": 3,
+    "tests": 20,
+    "resolved": 12,
+    "open": 8,
+    "as_predicted": 7,
     "against": 1,
-    "inconclusive": 1,
+    "inconclusive": 2,
     "withdrawn": 2,
-    "hit_rate_pct": 42.857142857142854
+    "hit_rate_pct": 58.333333333333336
   },
   "runs": [
     {
@@ -22,9 +22,186 @@
       "withdrawn": 2,
       "hit_rate_pct": 42.857142857142854,
       "open_after": 6
+    },
+    {
+      "run": 22,
+      "date": "2026-08-24",
+      "registered": 7,
+      "resolved": 5,
+      "as_predicted": 4,
+      "against": 0,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 80,
+      "open_after": 8
     }
   ],
   "tests": [
+    {
+      "id": "unbond-withdrawal",
+      "registered_in_run": 22,
+      "claim": "The 229,865 EGLD, now fully unbonded and claimable, is a live forward flow rather than an abandoned position.",
+      "threshold": "withdrawn and sent to an exchange or OTC feeder within the window = a 230K distribution event on top of a restarting pipeline; withdrawn and redelegated = rotation, neutral; STILL UNWITHDRAWN after this second full week = an inactive or lost-access holder, and the overhang is retired as a forward flow",
+      "branches": [
+        {
+          "condition": "withdrawn to exchange/OTC feeder",
+          "reading": "230K distribution, dominant fact of the run"
+        },
+        {
+          "condition": "withdrawn and redelegated",
+          "reading": "provider rotation - neutral"
+        },
+        {
+          "condition": "still unwithdrawn after a second full week",
+          "reading": "inactive holder; stop tracking it as a live flow"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "80,279 at seconds_remaining = 0, 149,585 at 5,279s; wallet sent zero outbound transactions in the Aug 17-24 window",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
+    {
+      "id": "otc-wave3-escalation",
+      "registered_in_run": 22,
+      "claim": "Wave #3 escalates toward the re-netted run #17 peak (409,680 one-way) rather than stopping at one reload.",
+      "threshold": "another UPbit tranche above ~150,000 next week = escalating, and the supply overhang is the dominant fact; nothing above ~50,000 = the 297,000 was a single reload and the desks work down their record inventory",
+      "branches": [
+        {
+          "condition": "tranche > 150K again",
+          "reading": "wave #3 escalating to run #17 scale"
+        },
+        {
+          "condition": "nothing > 50K",
+          "reading": "single reload; watch the desks drain the record 109,857"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "this week's tranche 297,000; desk inventory 109,857 (record); weekly net one-way 252,109",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
+    {
+      "id": "custody-drawdown-follow-through",
+      "registered_in_run": 22,
+      "claim": "The 300,000 Binance custody drawdown is the funding leg of distribution rather than internal rebalancing.",
+      "threshold": "the Binance.com hot wallet falling more than ~150,000 next week while the OTC feed continues = the two channels are one programme; hot flat or the custody re-parked = internal rebalancing and the bearish branch over-reads a plumbing move",
+      "branches": [
+        {
+          "condition": "hot falls >150K with OTC feed continuing",
+          "reading": "custody drawdown funds distribution - one programme"
+        },
+        {
+          "condition": "hot flat or custody re-parked",
+          "reading": "internal rebalancing; the pre-registered branch over-reads plumbing"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "custody 3,175,540 (-300,000), hot 492,864 (+327,974); binance_staking provider took only +2,422",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
+    {
+      "id": "p2p-org-delegator-migration",
+      "registered_in_run": 22,
+      "claim": "The 1,244 delegators stranded on p2p_org_'s zero-stake contract will move, breaking participation inertia where a 100% fee did not.",
+      "threshold": "more than ~25% of the 1,244 users leaving the contract within two weeks = a total loss of yield DOES break inertia and the stake becomes a traceable forced-migration flow; fewer than ~10% = inertia survives even total yield loss, which is the strongest possible reading of it",
+      "branches": [
+        {
+          "condition": ">25% of users leave in 2 weeks",
+          "reading": "inertia breaks at total yield loss; trace the migration flow"
+        },
+        {
+          "condition": "<10% leave",
+          "reading": "inertia is near-absolute; the delegation market has no working price mechanism for retail"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "p2p_org_ locked 0, APR 0, 1,244 users still attached, 50 nodes still listed after unStakeNodes",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
+    {
+      "id": "dex-turnover-persistence",
+      "registered_in_run": 22,
+      "claim": "The turnover step change is a demand regime shift rather than a rally-week volume spike.",
+      "threshold": "holding above ~5% next week = a genuine regime change and the absent-bid diagnosis carried since run #18 is retired; falling back below 3.5% = a spike that tracked the price move and the 2-4% band is the real level",
+      "branches": [
+        {
+          "condition": "turnover > 5%",
+          "reading": "regime change - retire the absent-bid diagnosis"
+        },
+        {
+          "condition": "turnover < 3.5%",
+          "reading": "rally-week spike; the 2-4% band stands"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "turnover 10.83% on volume $229,988 (+328%) and pool TVL $2,123,277 (+15.6%)",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
+    {
+      "id": "mex-mechanism",
+      "registered_in_run": 22,
+      "claim": "MEX's five-week outperformance of EGLD has a mechanical cause the model can measure.",
+      "threshold": "MEX/WEGLD pool TVL growing more than 10% WoW in EGLD terms OR MEX supply falling more than 1% = a mechanical explanation (liquidity migration or a real burn); NEITHER, for a second consecutive run of looking = the outperformance is unexplained flow and must be labelled as such rather than re-explained",
+      "branches": [
+        {
+          "condition": "pool TVL +10% in EGLD terms or supply -1%",
+          "reading": "mechanical - name it and close the question"
+        },
+        {
+          "condition": "neither, second run running",
+          "reading": "unexplained flow; stop generating explanations"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "supply -0.151%, pool TVL $359,078 (grew with the market), 5-week cumulative gap ~9.8pp",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
+    {
+      "id": "compound-rate-break",
+      "registered_in_run": 22,
+      "claim": "The three-week decline in the reward compound rate is delegators tracking price strength rather than noise.",
+      "threshold": "below 56% next week = a systematic shift toward monetising yield and the compound rate is a price-following series; back above 59% = a single rally-week claim spike",
+      "branches": [
+        {
+          "condition": "compound < 56%",
+          "reading": "systematic monetisation; the series follows price"
+        },
+        {
+          "condition": "compound > 59%",
+          "reading": "rally-week spike, mean-reverting"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "57.03% (280 redelegate vs 211 claim), lowest of nine; institutional tier sold 3 of 4 claims by count",
+      "resolution": null,
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
+    },
     {
       "id": "unbond-destination",
       "registered_in_run": 21,
@@ -44,13 +221,13 @@
           "reading": "idiosyncratic"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "unbonding completes ~6 and ~7 days from 2026-08-17, i.e. inside the next window",
-      "resolution": null,
-      "seen_in_run": 21,
-      "seen_in_date": "2026-08-17"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 22,
+      "measured_value": "unmoved: 80,279 fully unbonded (seconds_remaining = 0) and 149,585 with 5,279s left, both still inside the delegation contracts; wallet balance 2,370 EGLD, zero outbound transactions",
+      "resolution": "NONE of the three branches fired, because a fourth state existed that the test did not anticipate: the holder never withdrew. The EGLD is not in a delegation contract as active stake, not at an exchange, and not in the wallet - it is unbonded and unclaimed inside the contracts it was undelegated from. The test was specified on a destination and the answer is that there is not yet a destination. LESSON: a destination test needs a no-action branch with a time bound, or it cannot resolve when the counterparty simply does nothing. Re-registered below with that branch added.",
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
     },
     {
       "id": "otc-feed-resumption",
@@ -67,13 +244,13 @@
           "reading": "between cycles; watch the 1-3 week reload lag"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "this week's tranche 14,000 (-96%)",
-      "resolution": null,
-      "seen_in_run": 21,
-      "seen_in_date": "2026-08-17"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 22,
+      "measured_value": "UPbit tranche 297,000 EGLD in week one of the two-week window, against a ~150,000 threshold; gross throughput 767,206 (3.4x), desks reloaded +49,292 to 109,857",
+      "resolution": "The standing-programme branch fired at nearly double its threshold and a week early. The July-August pattern is a programme with pauses, not two discrete episodes. Circularity returned to 67%, inside the historical 63-80% band, which is itself confirmation of run #21's diagnostic that the anomalous 38% reading was a straddling return leg rather than a change in how the hub works.",
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
     },
     {
       "id": "hundred-pct-fee-providers",
@@ -117,13 +294,13 @@
           "reading": "a single desk redemption"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "USDT supply 650,171 -> 549,884 (-100,287 tokens)",
-      "resolution": null,
-      "seen_in_run": 21,
-      "seen_in_date": "2026-08-17"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 22,
+      "measured_value": "USDT supply 552,292, +0.44% - recovered rather than contracting further",
+      "resolution": "The flat-or-positive branch fired. Run #21's -15.42% was one desk redeeming, not the bridge draining. Holder inspection supports it: the top 25 addresses hold 82% of supply and the largest single holder is Hatom's USDT Money Market at 118,671, so the base is concentrated enough for one position to move it double digits. The ~450K first-order-concern scenario is withdrawn.",
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
     },
     {
       "id": "dex-turnover-recovery",
@@ -140,13 +317,13 @@
           "reading": "the bounce tracked the supply pause"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "turnover 2.24% -> 2.93% of pool TVL/day; series 4.06 / 2.14 / 2.24 / 2.93",
-      "resolution": null,
-      "seen_in_run": 21,
-      "seen_in_date": "2026-08-17"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 22,
+      "measured_value": "turnover 10.83% against a ~3.5% threshold; series 4.06 / 2.14 / 2.24 / 2.93 / 10.83",
+      "resolution": "The third-rise branch fired and then some - not a recovery to the old level but a step change past it, on volume +328% with pool depth also up 15.6%. CAVEAT the test did not anticipate: it fired in the same week as a +30% price move and a restarted OTC feed, so 'the demand side is genuinely repairing' is confounded with 'there was a rally'. The persistence test registered below is what separates them.",
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
     },
     {
       "id": "mex-relative-strength",
@@ -163,13 +340,13 @@
           "reading": "noise on thin volume"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "MEX +3.57% vs EGLD +2.99% this week; 4 consecutive weeks",
-      "resolution": null,
-      "seen_in_run": 21,
-      "seen_in_date": "2026-08-17"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 22,
+      "measured_value": "MEX +30.52% vs EGLD +30.43% - a fifth consecutive week at or above, by 0.08pp; cumulative over the five weeks MEX +23.73% vs EGLD +13.92%",
+      "resolution": "The threshold fired on the letter and the cumulative gap of ~9.8pp is material rather than noise. The reading the branch prescribed - identify the mechanism - was attempted and came back EMPTY. MEX supply moved -0.151%, three orders of magnitude too small to price the gap, and MEX/WEGLD pool depth grew roughly with the market ($359,078, rank 2) rather than ahead of it. So the statistical claim survives and the causal one does not exist yet; per the run #21 rule the model states that rather than reaching for a third explanation.",
+      "seen_in_run": 22,
+      "seen_in_date": "2026-08-24"
     },
     {
       "id": "otc-wave2-escalation",

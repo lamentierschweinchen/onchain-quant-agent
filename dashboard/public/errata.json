@@ -1,5 +1,5 @@
 {
-  "generated_from": 21,
+  "generated_from": 22,
   "claims": [
     {
       "claim": "The direct-node unwind: ~215,000 EGLD left direct-node staking over three weeks, 'the largest unexplained structural flow tracked'.",
@@ -45,6 +45,32 @@
         "2026-08-10"
       ],
       "withdrawn_in_date": "2026-08-17"
+    },
+    {
+      "claim": "Corrected for in-flight unbonding, direct-node stake GREW +52,848 this week.",
+      "asserted_in_runs": [
+        21
+      ],
+      "withdrawn_in_run": 22,
+      "reason": "The correction subtracted ONE wallet's 229,865 EGLD from the staked-minus-delegated residual and published the remainder as a direct-node figure. That subtraction was incomplete by construction: delegator unDelegations happen across the whole provider set every week, and this run measured 70,498 EGLD of them across the ten largest-moving providers ALONE. Applying the same partial method to run #22 would give a 'direct-node' number that is fully consumed by unbonding several times over.",
+      "replacement": "When measured unbonding in flight meets or exceeds the residual, the correct statement is that the residual carries no extractable direct-node signal - not a smaller direct-node number. Run #22 publishes corrected_direct_node_egld as null on that basis.",
+      "asserted_in_dates": [
+        "2026-08-17"
+      ],
+      "withdrawn_in_date": "2026-08-24"
+    },
+    {
+      "claim": "Every weekly net one-way OTC figure is an upper bound; netting must run over the wave rather than the reporting week.",
+      "asserted_in_runs": [
+        21
+      ],
+      "withdrawn_in_run": 22,
+      "reason": "The rule was generalised from a single wave. Re-netting the July episode (Jul 6-27) feed-to-drain as ONE window gives 829,863 EGLD against 833,754 from summing its three weekly nets - 0.47% apart, i.e. weekly framing was accurate there. The 55% overstatement run #21 measured is specific to waves whose feed and drain legs sit in different reporting weeks, which the August wave does (UPbit feeding one week, receiving the next) and July's did not.",
+      "replacement": "Weekly netting is adequate unless a wave straddles a week boundary. Test the wave rather than assuming the frame: the extended August wave (Aug 3-24) still overstates by 47.7%, so the wave-window figure is reported alongside the weekly one whenever a straddle is detected - the diagnostic tell remains a weekly circularity reading far outside the 63-80% band.",
+      "asserted_in_dates": [
+        "2026-08-17"
+      ],
+      "withdrawn_in_date": "2026-08-24"
     }
   ]
 }

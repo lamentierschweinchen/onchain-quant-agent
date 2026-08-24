@@ -1,0 +1,2958 @@
+{
+ "provider_movers": [
+  {
+   "key": "p2p_org_",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd",
+   "delta_egld": -69582.56472173655,
+   "locked_egld": 0.0,
+   "users": null,
+   "apr": 0,
+   "fee": null,
+   "left_active_set": true
+  },
+  {
+   "key": "pi-staking",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+   "delta_egld": 18964.481537863976,
+   "locked_egld": 97844.92693791488,
+   "users": 199,
+   "apr": 9.31,
+   "fee": 0
+  },
+  {
+   "key": "Synexis",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+   "delta_egld": -16111.305293104902,
+   "locked_egld": 175108.4503570446,
+   "users": 406,
+   "apr": 8.86,
+   "fee": 0.02
+  },
+  {
+   "key": "procryptostaking",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+   "delta_egld": -15113.03841258696,
+   "locked_egld": 141804.0957812668,
+   "users": 7031,
+   "apr": 0,
+   "fee": 1
+  },
+  {
+   "key": "egldstakingprovider",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+   "delta_egld": -14709.781944639864,
+   "locked_egld": 79639.44761197259,
+   "users": 1079,
+   "apr": 0,
+   "fee": 1
+  },
+  {
+   "key": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+   "delta_egld": 11417.490697214147,
+   "locked_egld": 680978.5635066364,
+   "users": 350,
+   "apr": 6.25,
+   "fee": 0.12
+  },
+  {
+   "key": "ninjastaking",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+   "delta_egld": -8887.652240633091,
+   "locked_egld": 207135.67031554302,
+   "users": 1562,
+   "apr": 8.49,
+   "fee": 0.05
+  },
+  {
+   "key": "pokerstaking",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpwlllllsdg7gre",
+   "delta_egld": -8716.761391394426,
+   "locked_egld": 20618.269198859616,
+   "users": 61,
+   "apr": 10,
+   "fee": 0
+  },
+  {
+   "key": "stakenest",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpwhllllsxnhsgk",
+   "delta_egld": 6567.889514638804,
+   "locked_egld": 20974.882129880494,
+   "users": 94,
+   "apr": 8.9,
+   "fee": 0
+  },
+  {
+   "key": "vaporrepublic",
+   "address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqehllllswleld8",
+   "delta_egld": 5906.029283793148,
+   "locked_egld": 179577.12758374523,
+   "users": 1117,
+   "apr": 8.98,
+   "fee": 0.025
+  }
+ ],
+ "_window": "2026-08-17..2026-08-24",
+ "provider_inbound": {
+  "p2p_org_": {
+   "function_counts": {
+    "unDelegate": 1,
+    "reDelegateRewards": 5,
+    "delegate": 1,
+    "claimRewards": 5,
+    "reward": 2,
+    "unStakeNodes": 1
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1tcvmmg43qcvagjkp3em5x4gpdufdxr46nnsuesmaf4na8s8u4glqd3vfa4",
+     "amount_egld": 16.71,
+     "timestamp": 1787511684,
+     "txHash": "cf119d951c5df3ad96f8889d07a4ede42016591ad7e80899d2ce7d5235ca4a4d"
+    }
+   ],
+   "tx_count": 15
+  },
+  "pi-staking": {
+   "function_counts": {
+    "delegate": 75,
+    "claimRewards": 46,
+    "reDelegateRewards": 43,
+    "reward": 7,
+    "withdraw": 2,
+    "unDelegate": 8,
+    "stakeNodes": 6,
+    "addNodes": 5,
+    "reStakeUnStakedNodes": 2,
+    "unStakeNodes": 2
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+     "amount_egld": 15.5,
+     "timestamp": 1787466054,
+     "txHash": "14cccb375a31cfa0d34f124d628122dabf968c7d53ddedcc0264c803a8b53933"
+    },
+    {
+     "sender": "erd127tq5nu98p20dy37k2umn456u94tk0s3s2g0x764spn0c8sj7z9s69twx2",
+     "amount_egld": 1.4,
+     "timestamp": 1787453964,
+     "txHash": "ed379d44536dfacdb0068acfab33d7bf7f0432fae01f392415f7406634911c99"
+    },
+    {
+     "sender": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+     "amount_egld": 15.0,
+     "timestamp": 1787365674,
+     "txHash": "44e52824a62d06c5edbc46f85f7976a3dabbbca36036bf9ce81a0b1e90976a44"
+    },
+    {
+     "sender": "erd1shzttzzwuhc6hy4v70v2l54a7euv7p4u4z8v97j7z698ywv9997qdg9a00",
+     "amount_egld": 4.109969430301205,
+     "timestamp": 1787327766,
+     "txHash": "0a715506970ff6be31d6674be6ba4832de903d143878c243d7a730c55949c895"
+    },
+    {
+     "sender": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+     "amount_egld": 17.0,
+     "timestamp": 1787285586,
+     "txHash": "03bd145053dd016dd9ec9db99f3df76011ce6c7c1800d5dd39844b3ec4bfc71b"
+    },
+    {
+     "sender": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+     "amount_egld": 18.0,
+     "timestamp": 1787198658,
+     "txHash": "7e94cac65fce4d02a18139eba359d36c8eb0a802896acd25a11367be2a31420c"
+    },
+    {
+     "sender": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+     "amount_egld": 36.0,
+     "timestamp": 1787112294,
+     "txHash": "d8b9126aa0b692aff647435b925854db8ffdd1515fd32fa708c58b3a4ef7229e"
+    },
+    {
+     "sender": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+     "amount_egld": 19.0,
+     "timestamp": 1786939788,
+     "txHash": "4d3b92ab5a2760d221f34e958bc8d2722b46bde5b14d3da8c6430c3da8fdfb68"
+    }
+   ],
+   "tx_count": 196
+  },
+  "Synexis": {
+   "function_counts": {
+    "reDelegateRewards": 103,
+    "delegate": 52,
+    "claimRewards": 96,
+    "reward": 7,
+    "unDelegate": 9,
+    "withdraw": 5,
+    "modifyTotalDelegationCap": 1
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1wrcxskz55czz5jv2x3ls77fn52upw72peygs8fnye4e8ulzxfpwsa4mnut",
+     "amount_egld": 7546.36493221,
+     "timestamp": 1787499360,
+     "txHash": "a52eedffbb74dfce20927e14a9db5d1381b1b32f6938add2895beba8effb49b3"
+    },
+    {
+     "sender": "erd1vynrnsdphq9dlp8zu2v9txtcgn964r6gykeec4emgjq7alfazjds0kzrtm",
+     "amount_egld": 2041.1043479825705,
+     "timestamp": 1787486832,
+     "txHash": "acab8b67aad025b88da4a2df431527081ed9b545c69efc06de90d22a2c3106c6"
+    },
+    {
+     "sender": "erd1ycxpwl2uy2n7yuze8w36hej0dzws222gxscy28kmqkq075mnfnjs3sf68t",
+     "amount_egld": 2.0,
+     "timestamp": 1787481738,
+     "txHash": "cd1ac08ae4efee115427d3f77eee9da6ed23ae49fa3e1c13e36028da49f5651f"
+    },
+    {
+     "sender": "erd1y7w3f0lg3lr994r6xxp20vwk0j9q7ygc24mjqt2hqjejm7f9pkfq5xnv78",
+     "amount_egld": 100.0,
+     "timestamp": 1787424900,
+     "txHash": "b59cab8b96a6a6515d14fbae69b63e3736a8517bfce20c21452bef38474537d4"
+    },
+    {
+     "sender": "erd1ufh7fqzy4znwd9w62cnt3fr92tkjxqyjun88352djet765algjfqe0qc4r",
+     "amount_egld": 482.87915757212494,
+     "timestamp": 1787288958,
+     "txHash": "caf8be8673c05b1c2343f3086859f6f43f6b8e068e735363d20a3b6e6837fc76"
+    },
+    {
+     "sender": "erd1966gymgemkqdpym6927hexyx5r69gkxck2ajjrtnjxe9za2x4u0sqptcd8",
+     "amount_egld": 1000.0,
+     "timestamp": 1787216070,
+     "txHash": "bf81b091f288908a8ffae6ec4161cceb4f97c93fa9769a20dbcd914bcc8b04ae"
+    },
+    {
+     "sender": "erd1vklld50pnhvngrtrr9udcv3zt8ddccs4ll880t4zuzc4qhwv4mgq9ge6t3",
+     "amount_egld": 5297.304237999293,
+     "timestamp": 1787215728,
+     "txHash": "5a2780c9254995ac1d49d7bca0f5b2664d29ef65c859f736f64f7032fbc1a649"
+    },
+    {
+     "sender": "erd1966gymgemkqdpym6927hexyx5r69gkxck2ajjrtnjxe9za2x4u0sqptcd8",
+     "amount_egld": 500.0,
+     "timestamp": 1787041674,
+     "txHash": "a54db59dcb9b7a155e19ad12a3f0215515094b7a0834384e49ba20aeef10720a"
+    },
+    {
+     "sender": "erd1hlx2vapvnvlanx62rhha0fs4qye2pauhgkxn0fvkmgfmgxj7n6wqfaxk7l",
+     "amount_egld": 704.7,
+     "timestamp": 1786964766,
+     "txHash": "7fff687eed10e74481fe46437f97e11520f7ed5b14167a5bae39b8854c2aca94"
+    }
+   ],
+   "tx_count": 273
+  },
+  "procryptostaking": {
+   "function_counts": {
+    "unDelegate": 87,
+    "reDelegateRewards": 83,
+    "claimRewards": 95,
+    "withdraw": 43,
+    "reward": 7,
+    "unStakeNodes": 3,
+    "delegate": 2
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd17ux6xs7xq43seelg7725p4f3t6xdcdkp3j6p2uwejrval9gdg6eqsr3dw2",
+     "amount_egld": 4.73185188864136,
+     "timestamp": 1787527602,
+     "txHash": "d52e711b18e0b0bde16ac92a33790b53cd4548e243be53e43fa740c7b3fde399"
+    },
+    {
+     "sender": "erd1z4ztsx06uh6vfzck4f37zqnm87kwvneyf7glrutrnudenm4gyuaqu8uch6",
+     "amount_egld": 522.0,
+     "timestamp": 1787519076,
+     "txHash": "32f361d6c38c812a9a0fac4be83900cde8628786706f2b24fba30a5fdabdff6a"
+    },
+    {
+     "sender": "erd10jgnnyq7awklsvs0ftx2wh6fjv6crwufsvxnznhgd5h79pk5mmgsdug3wz",
+     "amount_egld": 50.0,
+     "timestamp": 1787508462,
+     "txHash": "24c11283010f2d461bafe3b534ce69eb2c229bce93d0593acf9abb12e5ce2f2f"
+    },
+    {
+     "sender": "erd1c20k3hh56uhr6rm64fcrjrvtk4uykur3nqfc6ns3g2n6m68yym3q0nwdxs",
+     "amount_egld": 684.2847938763508,
+     "timestamp": 1787505522,
+     "txHash": "048f25c330e91044e23e985c9eed5933d39a3d4c6f0c0912ea0ed8a044c99be0"
+    },
+    {
+     "sender": "erd1txcnauupsrewmv7mlx9m7mldjmnv0sfjznzadt76akxvknk9uhgqgf8fst",
+     "amount_egld": 183.07942581009775,
+     "timestamp": 1787504514,
+     "txHash": "98cad6b1f58f5bb5a7c3e42a6755e92b2da68656c845537f96abfa5e9a908903"
+    },
+    {
+     "sender": "erd192sfg5zeeresq666c58w09jkgwcdv5kn3s25y6j5x5xtp85y8yfq58qgpa",
+     "amount_egld": 234.32706738756053,
+     "timestamp": 1787493828,
+     "txHash": "51902487d3cc24af4f6bffed2ba824c3c06ee3ca35a5eb98e9b2838faddd8736"
+    },
+    {
+     "sender": "erd1wjkkhpq0zjwyr0g3l6wz79lmndv5nx5fg2mty5nd9tcu6hxlvkysyp7tf4",
+     "amount_egld": 55.612541090009714,
+     "timestamp": 1787493090,
+     "txHash": "12258c39d0b7805628f8c14008b44d41425da7bd588d6697500f590b0ae53bba"
+    },
+    {
+     "sender": "erd14mgh84elv55r3ykpf8l3udzfadp5hhqxcjygfa5wrz4pxau8edqqz7lm8p",
+     "amount_egld": 10.434181656782256,
+     "timestamp": 1787477850,
+     "txHash": "fb5f52cadeccbef8401d8295d27f6427f54d574bb6f29fa1747585e46c09be9b"
+    },
+    {
+     "sender": "erd14ztga28vxd54hafqj8lx89slyhfg3vzkuq8jr4ave70nnvgn4dhs4m25mx",
+     "amount_egld": 101.55683019519026,
+     "timestamp": 1787458200,
+     "txHash": "5c9e829763cdd3e5a0bed467047f6aa39218b64d6f19a0a927d1d57b6d9f560a"
+    },
+    {
+     "sender": "erd1te8dvru8j6eqcpar8u5x7em2x7k824lszz8vn8utnpd2lkxj05jswuhsr8",
+     "amount_egld": 71.5142778016361,
+     "timestamp": 1787427138,
+     "txHash": "c44a26c2752003ab496e2edd470bfe0047298b6e9ad8ab4141e3706c1e0ba246"
+    },
+    {
+     "sender": "erd1wnzx0rpdud8u8wj5z0z70clgp3naf4x33hk6nsjpsqwkxzluku7sdhvcnp",
+     "amount_egld": 4.79060090523061,
+     "timestamp": 1787422872,
+     "txHash": "157fc21683274b5273601613445d826136bcc7ce406eddfd37d591de88e5129e"
+    },
+    {
+     "sender": "erd14xq3vl6xt2wld9ryfrz7gzv495glucymjc2k58xxm0eqzx8cye0skzztqu",
+     "amount_egld": 55.0,
+     "timestamp": 1787417940,
+     "txHash": "4d013f3a7d55a56720d996028aa94959e032689058ccabf813750d923e81f3fb"
+    },
+    {
+     "sender": "erd1z0rmjkdqsnmukyx2xnycyv78pp2xtsf8dhena6r9jg7s9rjkj3jsqjz2nm",
+     "amount_egld": 7.777941878915251,
+     "timestamp": 1787412696,
+     "txHash": "f25b90c4b5b2d9840bf7701c3acff9d5bf9b58f876abe01b84226afa984e0baf"
+    },
+    {
+     "sender": "erd19amake26mp4f3662rdxmfcmsz9gjhujjkg9a689dxf5zn28wemcs6zdpxs",
+     "amount_egld": 44.0,
+     "timestamp": 1787410194,
+     "txHash": "28ab917ac411d656165e54d56cb84ffd7c3304c2c0ef590c615cfd1f20fefbfa"
+    },
+    {
+     "sender": "erd1277wyvhs2gdn43qd62vmaxft9ew6pmqmyct3kc3t0cmcd05yj60q4fp6nn",
+     "amount_egld": 211.0,
+     "timestamp": 1787408106,
+     "txHash": "6bae84c14bfd9c304dfc244980ae28e2a432ed9a732e5b0653125618bc597d04"
+    },
+    {
+     "sender": "erd13qzcwlgu6lkgemad4axcdn05us5esml0kl9457q8yra2dgg8chwsz66750",
+     "amount_egld": 1275.0,
+     "timestamp": 1787406582,
+     "txHash": "d5b65389f3ef4237c8008b2cb3cf29eda6d168346a1fd2d1330184fc8f9ed280"
+    },
+    {
+     "sender": "erd187aj44aq3537e8l5yfrp6gpmumpxjge7cxm045ewmyyaswkna3ksvhc487",
+     "amount_egld": 177.08460100726901,
+     "timestamp": 1787394072,
+     "txHash": "5e0ca8e437d18b9ab34b22b222695f4e7e39f094dc59fdefb271e0d1277e9d64"
+    },
+    {
+     "sender": "erd1tq0z62snuwgj38t5cc4auna4mytm6jza28vlw3vy2pusr42k8shqu2stpp",
+     "amount_egld": 114.76473020754668,
+     "timestamp": 1787394024,
+     "txHash": "2a8161908637a11bc3e60dd0f26f307c5a6414fb5cf8463f5fefe3711e6db968"
+    },
+    {
+     "sender": "erd192j8g9uv6umcfles9gghhnqv2t64ee62sfg7g8m7lwesvypthpwqp0gd8f",
+     "amount_egld": 100.0022415872585,
+     "timestamp": 1787384418,
+     "txHash": "84b4a748a4fc682a70a35455beb80dfa4b2cd965d6f88ad54b99a353f3264839"
+    },
+    {
+     "sender": "erd1e7sw4ezl3uvey93vyv9jejtnxhw6ax4kfwwd5ej74dm0ra0zz63sjnqgdz",
+     "amount_egld": 57.0,
+     "timestamp": 1787381046,
+     "txHash": "d7aba1e1b2756fd4708cdbb6508e6dd4e7f24753001307fa915eedf20ded1fc7"
+    },
+    {
+     "sender": "erd1z563juvyfl7etnev8ua65vzhx65ln0rp0m783hq2m2wgdxx6z83s9t2cmv",
+     "amount_egld": 10.00000053901346,
+     "timestamp": 1787375592,
+     "txHash": "754cdace6a56cd674d5413095b14637eaaa815d9793eae65cc26d0dfb74c19a3"
+    },
+    {
+     "sender": "erd12kn0vt359nurcj6gzspqjesml43vclskq8dmkc9ung4nl9uajl7s4nz5aw",
+     "amount_egld": 450.0,
+     "timestamp": 1787373258,
+     "txHash": "51ee15074a4a9cf04c94fd1156f702eb297978295b20b86b7dccc91191a79697"
+    },
+    {
+     "sender": "erd1vx3ec97npfzh9t3aetwxhw20nzt8jeme20dc6dvmf9lzv9p9a6dq7kr6ke",
+     "amount_egld": 1332.3052625866464,
+     "timestamp": 1787372784,
+     "txHash": "0ab19b40a4236c6826f43013791f03143d48d99b0073b69f68f774a0431e6b09"
+    },
+    {
+     "sender": "erd1hhu7pex2hjkdlxzjgr7a49nwah9nyddu7q4kz893u53ccfuzlwkqce4gze",
+     "amount_egld": 12.066427521147245,
+     "timestamp": 1787370714,
+     "txHash": "103fb68149a99ff57742c59be935338da7fea940d9769a0de51e568d3d358bb9"
+    },
+    {
+     "sender": "erd18zrntdu03nuwqykfv6257m8035sxlyetq39my2xzml4ulradauzqdnrapf",
+     "amount_egld": 10.0,
+     "timestamp": 1787363574,
+     "txHash": "2d14d4dd1cadceeb317b6ad7dcf5012c4c657eae453043f08b96aae319c4d737"
+    },
+    {
+     "sender": "erd1q93wddaqdmmv6vxcdqdf07ttvfv7rr78ll5js9zmpvw39jn8yveshsj57r",
+     "amount_egld": 3.0508597110827083,
+     "timestamp": 1787352498,
+     "txHash": "c65ba844a5191bb0d662248e55e489fa650545b2ace9d86983fad81781a65fdd"
+    },
+    {
+     "sender": "erd1wum7e93vuvty89phqg3d7fwphu649e6jd07y7fefs0gas08g0sjsknvzul",
+     "amount_egld": 15.0,
+     "timestamp": 1787351580,
+     "txHash": "0e4bd8dc211bd65bf6c54a7c0228790b6870f28fc235f20fe0ac777f3637d08b"
+    },
+    {
+     "sender": "erd1wum7e93vuvty89phqg3d7fwphu649e6jd07y7fefs0gas08g0sjsknvzul",
+     "amount_egld": 1.0,
+     "timestamp": 1787351496,
+     "txHash": "a09d355e19031d7f98a4d47e51456b32b6bcfbbeeb6b386d1f41e5f2fe033d9a"
+    },
+    {
+     "sender": "erd1tejk4q5wlek8mawupgjsen4ycj70v3fj3mrfluch6aa00v3v5t5sgpllp5",
+     "amount_egld": 140.0,
+     "timestamp": 1787343096,
+     "txHash": "73afdbe92f94dfa4f05346f7b24d5e3d10c590e07f7734c8898ddbc6e77d0877"
+    },
+    {
+     "sender": "erd1la6vl5pqv6tzdyvpgmtwhqarms9xa5j0wnzwg9ntv8kpyyn80hlqxsc959",
+     "amount_egld": 100.37229863112942,
+     "timestamp": 1787342016,
+     "txHash": "313d30868fa54e2c242ca18707c4f5df0c5921446eedd7a5aa6afb5ad66ec067"
+    },
+    {
+     "sender": "erd19pwe650ph40ne0g70za8t7vynajlzt5mkmaz528tyehq9wuu6hdqqkvydj",
+     "amount_egld": 111.95097422042633,
+     "timestamp": 1787341626,
+     "txHash": "f17ee935f8daa0544761dd849886cbf52f8f8aa67b04afb7fc8327d1819a302d"
+    },
+    {
+     "sender": "erd10n3rukhreajjkt252s7tlhfvz9uhw8lrpsyej6uz4j7yq2tj485szw2cpu",
+     "amount_egld": 110.0,
+     "timestamp": 1787339634,
+     "txHash": "13da8222956f42d1b35db3841008a97b247c77ec7d2d722d0316e93052d477b2"
+    },
+    {
+     "sender": "erd128p7r6u7k857240w58xy5s5tsk068ja32a8d7saw7pe2cuskyrqq8syp0n",
+     "amount_egld": 77.27492874010316,
+     "timestamp": 1787338278,
+     "txHash": "de3d1ba2361feb6a47719a2a17043ca54241c0af4e7794e9ca6f8c20242eb054"
+    },
+    {
+     "sender": "erd1qkgf6e7w6ku77h9vc69xe8rkwsv0avryqsfa3uevtvsy8rt3lxdqs69vlf",
+     "amount_egld": 8.645282473792681,
+     "timestamp": 1787333376,
+     "txHash": "7e45a087d8a712bca614d04c6698ae9a9fa4a5c3c0fba0f580c54558250fdebb"
+    },
+    {
+     "sender": "erd1rhwwm4jtvs2up9qg6ue7vyl8lx7kjwpx2h2vqvuppssgh9uwalwqmdk27l",
+     "amount_egld": 65.14492119153142,
+     "timestamp": 1787332692,
+     "txHash": "978f8d9e3f5bdc66538de7c3573b70a3ddfe1c8007935280edaf1d702bb080b5"
+    },
+    {
+     "sender": "erd1gfjqpcur4vddvc7erqjmm9sm7x8dpnxkzguxm8254l54lz30cdqqamlfwq",
+     "amount_egld": 90.90006723007198,
+     "timestamp": 1787328384,
+     "txHash": "670edbb4f42154aa9ed14f9c4b7873c0155eafa3afaf387434c31529ad92b950"
+    },
+    {
+     "sender": "erd1tx9zrrlwywqpk2hldrndegy6nkcmwm8zurzkvg8l05hn9es40ptqq5q6qj",
+     "amount_egld": 186.2895305004187,
+     "timestamp": 1787326530,
+     "txHash": "09dc4ea7441a0e79e95022378b59b4bb8a651f623e8096b13b502d9b14378997"
+    },
+    {
+     "sender": "erd1rzuvkc2xr7u6sanfcgvlcyrseac59gkqueyk2zkd4mszfltgmr8quv70kz",
+     "amount_egld": 121.89959950958671,
+     "timestamp": 1787305380,
+     "txHash": "44169d28255349444d3b5eb6d1a35b2cf79ac36a610dd60099e26466cca1f0d2"
+    },
+    {
+     "sender": "erd1csecg7mnhcqqcxqd8n8p3jjc8ejzve6025z370pdr5y26xrmzjhsrmdfjm",
+     "amount_egld": 5.5,
+     "timestamp": 1787305296,
+     "txHash": "cbb8c7249614d1005e71a311535cd35650314183e4d8972048c0845434300dbb"
+    },
+    {
+     "sender": "erd1g6zjfpe09xhdnmw5pnyzz2afupajv6mel5mdknj86qeuqzkzr8qszscy9s",
+     "amount_egld": 101.0,
+     "timestamp": 1787299632,
+     "txHash": "f3cb9d3a3c2cf6a219f9138937f05264556baaabdd55c19275ead011f031ec6b"
+    },
+    {
+     "sender": "erd1zh5296xx8j8u9ufawm2770r6fkrrlvls9g6xe7f2wmckyjpzl4mskrmv9r",
+     "amount_egld": 508.16659203773145,
+     "timestamp": 1787293992,
+     "txHash": "17d26a44d325535a6bb827bbdd6a763699425d8bbb7d56f4d41eeee00db7fc21"
+    },
+    {
+     "sender": "erd13nq9lknymqh0q8fycmt2k0vyjtv97rsm0kp9v956dfpwk8gq3nlqtmt973",
+     "amount_egld": 175.4403069180597,
+     "timestamp": 1787291280,
+     "txHash": "a474e4da132822b59c5b63395e4860c375dad51a655dc2e3f054eaf31c8bfe5e"
+    },
+    {
+     "sender": "erd15gad3x08y0rd5kdcs55wsghqj906a9d3y89pvuy3zmjzwwlfdr6q4cm539",
+     "amount_egld": 28.0,
+     "timestamp": 1787290674,
+     "txHash": "b8d81c21265eadd09959d0bc314a55c14a0bd649e6d4b0535a065212683e9dbe"
+    },
+    {
+     "sender": "erd15t4tg9qqhvvc3jjgqcksd86yhxsef0ekuxw8cvzlv64tq9yt8v3snt8ftc",
+     "amount_egld": 100.0,
+     "timestamp": 1787288364,
+     "txHash": "3e0e04ca2d597a46ab09236ec3b310d4551710394f311f31e89bd8528d5143d9"
+    },
+    {
+     "sender": "erd1k6u4h6ekly7a4vfpcylpqpld6fsnlrjhnejey6d2grwnk29fqjyqw458cd",
+     "amount_egld": 14.1223481608524,
+     "timestamp": 1787265360,
+     "txHash": "4eaa314503af0f66e08f4a55c0133886ee95e5117d74850dde40132b6d630baf"
+    },
+    {
+     "sender": "erd1g7e6w4483lar3td5hxklzuzrealjkk25gqdrgvnh2syfv6k5pdkqtmd7l0",
+     "amount_egld": 25.0,
+     "timestamp": 1787255892,
+     "txHash": "9880206bdfe7765874bd6099f3036041767f6cff5c818e447ba0613c69988242"
+    },
+    {
+     "sender": "erd1syl8sphf208jc3ah2ypt6d3p64y7cv76rdkmlykyadymnfqd50nsv3auwn",
+     "amount_egld": 245.87219490593395,
+     "timestamp": 1787251248,
+     "txHash": "85dce8401717561747456321e210402ad980e0d127028591a20845fc80ef0b7c"
+    },
+    {
+     "sender": "erd1nn9w5d8mwcvsx5qctjzj82yz92yr2knqjgh6atwzrqlwqmwx2grshd50x0",
+     "amount_egld": 50.68313551325467,
+     "timestamp": 1787248740,
+     "txHash": "70690740f3d2a12c4c68580c77f5d5e6df3e9a5df69e49838199530d8c64f84e"
+    },
+    {
+     "sender": "erd1hw28qc5mxuwa838fxpxv3cs3s32vq4udy26lcnmdqpznczp6784s66nxsk",
+     "amount_egld": 100.0,
+     "timestamp": 1787244420,
+     "txHash": "c550479ddd1683afa931bb9ea885f7965e2c67be2bdd9286a9134d042cca1b79"
+    },
+    {
+     "sender": "erd1eda3a38jfa74v3766rrkxgjswnz86efuk0xl5zfyf2pg8vx9k40qqs6vtz",
+     "amount_egld": 6.5629912070820975,
+     "timestamp": 1787235060,
+     "txHash": "4dfdc4f0cfb33d47c249cd637204e630e7f9bfdc26f2cde2a26c3f793baab5a6"
+    },
+    {
+     "sender": "erd1fcj7jngfk47ksqxet339l68tadcgqmqfqzh35feqp57esvml20sq86c34g",
+     "amount_egld": 56.31304314728292,
+     "timestamp": 1787214846,
+     "txHash": "9f08a02267fbdb532faf6e5828a781d0bc03edfb201b4dd4462ff39357975838"
+    },
+    {
+     "sender": "erd1793fnwlkf0x7m5r53qzlk05ee87dcyklh5mled8gcp0cqa5hyres4lz5sy",
+     "amount_egld": 328.05403618313494,
+     "timestamp": 1787213958,
+     "txHash": "0ac1acabd6e9068185ed2ac4f2621bc1e8d34ac98fbafe9e6488da3f95df7e52"
+    },
+    {
+     "sender": "erd1hjnth2wgfaz9khh3qxyhqwp8r77tsuuvvcx468gphlyx45s233js2hn0wg",
+     "amount_egld": 815.7956349724676,
+     "timestamp": 1787213340,
+     "txHash": "19bb64dd4abf55cd2366cc3be73a19f1e5014a9cafed5ce43d1d84b5c3bf04ed"
+    },
+    {
+     "sender": "erd1tr6vjd85ylf9m9xa7yarj9qx7jthrhwx9097tsp6xtzgrnte8w7smmjyjs",
+     "amount_egld": 4.5994631421989665,
+     "timestamp": 1787212650,
+     "txHash": "e791eaecb8e940db4a19f564d2ceba06c34513b64c91afa7ddc90022c17d0e1c"
+    },
+    {
+     "sender": "erd1uwgvkdku77zcap0mdpv0fa6y06689hwcs2f4cf580xy2xdnp7tnq3ej48a",
+     "amount_egld": 1446.1221826765475,
+     "timestamp": 1787197392,
+     "txHash": "4f0f467d2853bd1ee8413e85170b0331584158412b66019ff81b21d29919bcd0"
+    },
+    {
+     "sender": "erd18pzyjcz5zam6faqeu7mv4drdm8j47fdehkfc6lm8r6xkj4ducefspj2saq",
+     "amount_egld": 35.0,
+     "timestamp": 1787173782,
+     "txHash": "58bee0f3b86e52878a3c448c483f658287a078f3d4e1564727b4cee6277955a2"
+    },
+    {
+     "sender": "erd1uwunngd2qhegzsg3xxww4eqeyvukeg4lu2d3ld27hjp7583jkaaqdkw83l",
+     "amount_egld": 467.9238954559372,
+     "timestamp": 1787169798,
+     "txHash": "0fc9b9b5f5e25f354048e24d7bd2e28b35e19070a3af7b72d769d32bbd0efa62"
+    },
+    {
+     "sender": "erd18nfy0vuuuqdf2a4yft2ln43yap9kejuw3m49hkj6nvaq96qjkassx76258",
+     "amount_egld": 84.03301410079506,
+     "timestamp": 1787167320,
+     "txHash": "3eefb9e5acb6c9841ab7b63fbfeb131b8869d7624c06660e3ac05ab8b4beef1e"
+    },
+    {
+     "sender": "erd1fd6chw4r3dy9zeluewdh8y3y3x40tvjt20je0l4zn2gupq77wffqg7krzq",
+     "amount_egld": 52.63762033697047,
+     "timestamp": 1787162184,
+     "txHash": "d0b7cc011e0832edf77ce459dcd9240e639b05fe8e99da5bc65ce56d99583e78"
+    },
+    {
+     "sender": "erd1zk7cpemnkrdcus7lnajq4qw9nzc8ghmppste350k2vswt5argvuqqgnfs0",
+     "amount_egld": 38.365245369957115,
+     "timestamp": 1787154456,
+     "txHash": "6def627dc53ace99cf018ffd397a5022fa4448ec36d7171700f42f29ddfcd90e"
+    },
+    {
+     "sender": "erd146x0d4eaqp82fqshtwu8ddd4mkxd8njnvfp2krkds6pyuw3pzeaq3lcvrx",
+     "amount_egld": 10.186709148784463,
+     "timestamp": 1787145300,
+     "txHash": "041dd150154752972c2e57daacb426a009c92ef7e3c1fcb94bb6646f9806d778"
+    },
+    {
+     "sender": "erd1dny5nhnanfvxxwzuvfh57462fdh3lj4na4sxfm3rg7jd3aqepvjqnnp949",
+     "amount_egld": 111.72906038937403,
+     "timestamp": 1787137170,
+     "txHash": "ff4c04969493e7a7a41bfdfe8d27e21393194615b1822043ca1e887c6eb7d672"
+    },
+    {
+     "sender": "erd1cl9nyzxxhpsqnp8saen4dcc72xpcpastlqk63kjapycv3525hznqltewrm",
+     "amount_egld": 500.0,
+     "timestamp": 1787124588,
+     "txHash": "2ba158708a268a0e5cbd70cbe09e57b5c91b30ce79d5ea90ab3cf4b20159bbef"
+    },
+    {
+     "sender": "erd198hstgp63tplznrg9tzpmn5pc4kk7essuj4urstfmm4ua7mtzjkqwkceuk",
+     "amount_egld": 823.0669518072131,
+     "timestamp": 1787117730,
+     "txHash": "b1a0c6a62e186bbfc9d1a5eb9fa21be23d3f3b302f63f4e8eae5bc38d4c05996"
+    },
+    {
+     "sender": "erd1qf0utpayzsm3lsmlfl9k85au7u09pxamclthymggjrwv68yh5atqya42vn",
+     "amount_egld": 1.710131274500029,
+     "timestamp": 1787117712,
+     "txHash": "074a374eb5f2a8fd93cfd5a9809c6a83fc24f659665b8d81a234b2633d8f9ff5"
+    },
+    {
+     "sender": "erd1ms4a7hc4daay0wr7uyxptlfg6e5wznc66kqd0j87z3323sj24gss3q727q",
+     "amount_egld": 194.0,
+     "timestamp": 1787082228,
+     "txHash": "b0fdcebba32da040ced00ba4a3d6ed5ec4b93103639acb83730716fee9edf025"
+    },
+    {
+     "sender": "erd145yzt30epqsg883r3yah3ukrpp28fwzexfrtp8r69gd2hxqs29sqprsq27",
+     "amount_egld": 1.0,
+     "timestamp": 1787081592,
+     "txHash": "0987f1ca1ad11d4ccae19e21372d872483f25069684c252fda5883e28359cb11"
+    },
+    {
+     "sender": "erd1qllr2uxwv3wc83l6mzsksm393qgskjent3ejdynscv98kgfxlq7qnug3mw",
+     "amount_egld": 7.376066885459602,
+     "timestamp": 1787081370,
+     "txHash": "480366359884bd373b16961005d0421625a554590a4645bc7aebc75436507e94"
+    },
+    {
+     "sender": "erd1d3k39fs7tyvvgz7fkc5e0cv9r2z7j8kzyjkrvf6dwalfyvswdh8s9a7zg2",
+     "amount_egld": 10.000362618408762,
+     "timestamp": 1787078268,
+     "txHash": "27c7f60fe97547d539884aaff223639f9832483db5e322359dbc155704cbb22b"
+    },
+    {
+     "sender": "erd1gxws6tsgwx9zcpvm9g2849qxnar7wdrxg4xzzs2neaf8qdpk2x9ss8wl4y",
+     "amount_egld": 23.450941349838214,
+     "timestamp": 1787077662,
+     "txHash": "e3a7f8761d87dc74b5ba5db70c37c847d17d829d40ac2ca955aa51b685893c6a"
+    },
+    {
+     "sender": "erd1h06k78alzz3ldw0kgjdxcy4s6r75zc7gnvpvh65gvvpt8tjjhwrshhl3le",
+     "amount_egld": 300.0000784874645,
+     "timestamp": 1787072478,
+     "txHash": "1bf7b545747d1727be1849facf28491000ab02c4d65a19ef16d465faeddc4e67"
+    },
+    {
+     "sender": "erd18vd0njqcymkj22rdalp8ln0a0hy5m4u5qc0ntvwwqnacfd0lexqqc6x7e5",
+     "amount_egld": 32.16464337129854,
+     "timestamp": 1787060070,
+     "txHash": "61d1f34ae1a34e6de740d4df2c5959187dc94089a1fa32ed09407d666abd5d10"
+    },
+    {
+     "sender": "erd168lgvsf4p33czt3cf7dellenk754w36dxqk9d022378sqp06ekcqam3xz2",
+     "amount_egld": 1.5412613054816053,
+     "timestamp": 1787058546,
+     "txHash": "9a8d094fb980916c4eb46ebbbf81e727b644c2a3d7c26d7e89017e9c1397670b"
+    },
+    {
+     "sender": "erd1qlmqc6ygvv70w3d7ek24vdh2ql2sglkul8fx7h87nkpcvl9q433qrwrqts",
+     "amount_egld": 10.0,
+     "timestamp": 1787052096,
+     "txHash": "b3d082dbca8d94585e8d71a2b8ae7d66b04aeb6706d874f9ea2aaa500a768e2f"
+    },
+    {
+     "sender": "erd1my455pvtxvm5pep5l9fnlmkmg5s00d5vj5l99hgpqjef3zpcdevs2lwsu2",
+     "amount_egld": 1007.8588759147776,
+     "timestamp": 1787048424,
+     "txHash": "119ca05682288f0c4ff7f257333cb86ae4ddbe6cbcec2ba76fad779520f5e68e"
+    },
+    {
+     "sender": "erd1a3r7me363quc9nxynsqfcq25xysp6c7pkurgfr9ppxtqwmeesc3qjmf3rd",
+     "amount_egld": 67.61952479283188,
+     "timestamp": 1787032968,
+     "txHash": "c1f574a1d0c05643a13fa34f9f011dc0b32ad4de0f3887643e302d95592135e8"
+    },
+    {
+     "sender": "erd1ry65wzlfqe859ltl7utghs0mz9y2fa0u8u68pxt8kw5l5ju8d5hq5rpwu9",
+     "amount_egld": 172.76500415049668,
+     "timestamp": 1787014944,
+     "txHash": "313753a615fa0bbb725c946d71a45985c53d1d5841230e37a7755f544cb291b7"
+    },
+    {
+     "sender": "erd1wum7e93vuvty89phqg3d7fwphu649e6jd07y7fefs0gas08g0sjsknvzul",
+     "amount_egld": 5.0,
+     "timestamp": 1787002866,
+     "txHash": "506ad01db13647e807124084f185a7fc75341008baca44b8d6d272859491ddfe"
+    },
+    {
+     "sender": "erd1n3frqu88ywfal530zgpu700x6ymxwwdcfy6c4xvzphcud9tjkefq4wugqu",
+     "amount_egld": 26.596483795722566,
+     "timestamp": 1786998174,
+     "txHash": "983852dce24ff9ad0fad5b093775eb2d25ded216faa783df985a574fcb507505"
+    },
+    {
+     "sender": "erd1pjjpjtlrr5ugnhqtlkn66w8pym0kn30vf0yra267vnq5wmgc8apqed3lm0",
+     "amount_egld": 124.13174541674874,
+     "timestamp": 1786988838,
+     "txHash": "ca92050f03d35436612ef890402e1a2799a2329ae7faf70bf532e14b62b8f61a"
+    },
+    {
+     "sender": "erd1m46dzgcfcgaztvgzql5fq65rg5ltcedh0qyyyjk36qngsx8xz8pssc3hdr",
+     "amount_egld": 771.4405712296531,
+     "timestamp": 1786980858,
+     "txHash": "377acfa34ce142074a634b0c074e059fbb66d93cd777d390318501808f9a3c7d"
+    },
+    {
+     "sender": "erd1mycgyhqaa49xyd0prcslalefw7v6jqjvvlw9txa9lw0rjz0edqns07uxed",
+     "amount_egld": 124.44664072995016,
+     "timestamp": 1786974846,
+     "txHash": "94935650649394a4f384d549beeb572653675b907fcd997234dae1db91688aaa"
+    },
+    {
+     "sender": "erd1m58yvmx7qp7c35n7k4z0fwteygmv7vrnck9rr9gcxq9s30nuyyhsl5e4kz",
+     "amount_egld": 36.02059336960906,
+     "timestamp": 1786959618,
+     "txHash": "92773a70d6d18471f2176203e0330697b76cbe16fcc9018e74094cbf27e4d200"
+    },
+    {
+     "sender": "erd1y85qj7qu70scz50j94juphaxqlhnztqvh8cfsjsunereccfjwshspxa308",
+     "amount_egld": 307.45,
+     "timestamp": 1786953690,
+     "txHash": "b082ed57292833a194a8f4577a9ca63d8ca8b37b7ab943233ac2c42c4603c3ff"
+    },
+    {
+     "sender": "erd18al3x6zamlyp2c662ejhsjhpuzw6vv4s0nhmngs8v9zf9xnjac3sc7lyps",
+     "amount_egld": 500.11047958568753,
+     "timestamp": 1786949154,
+     "txHash": "78861944545c127bd09d3ab4275908fdb1936a5593c1a99c1c01e53d58323d86"
+    },
+    {
+     "sender": "erd15lnk6ww9de0v8fp5ahfkpsg4ajrvrpm97dxndjsusflynnqezy9qnf5g7f",
+     "amount_egld": 50.0,
+     "timestamp": 1786945938,
+     "txHash": "7da4c85e4982c81a598238bb37ef808a1e268983a1e234093a5e1250db2b8d4d"
+    },
+    {
+     "sender": "erd1sjyl0ja0vspnkndpnrpkws2mrlpfu8gx7cx78gmsg5gk4x2jxsus9slpg7",
+     "amount_egld": 524.4473572050831,
+     "timestamp": 1786929438,
+     "txHash": "cbdefba89ed6557f2822f64b1f3bd352e9cdbb5a72a71e5f865747323f497c28"
+    }
+   ],
+   "tx_count": 320
+  },
+  "egldstakingprovider": {
+   "function_counts": {
+    "reDelegateRewards": 36,
+    "reward": 7,
+    "unDelegate": 42,
+    "claimRewards": 59,
+    "withdraw": 30,
+    "unStakeNodes": 3,
+    "delegate": 1
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd109zmdyjfheqneykl4lgmu5dr8hafnhl50xpudhtdu8uxxyrlq00s378vzm",
+     "amount_egld": 112.25538826286598,
+     "timestamp": 1787506344,
+     "txHash": "4fc115df9d7cebd743f9fbb1cab391b38b4432edcf416fbda099a763b4407c08"
+    },
+    {
+     "sender": "erd1xfcs8wf5ua2k07wtuy5463ft4yegr9p4yqzdzanp6c063fsd9syqzp9g2g",
+     "amount_egld": 2.889268994892768,
+     "timestamp": 1787500830,
+     "txHash": "412c274511ff7b1647b7b3eae1fcb17176da1f372014ad675cf19172435c2612"
+    },
+    {
+     "sender": "erd12wn78657mjvtdxwpshxam7a5xcgncj4xmv50l5s6xe2rshndnezs4nypar",
+     "amount_egld": 4723.1434305350185,
+     "timestamp": 1787489496,
+     "txHash": "f5e747c19e3937fe8eedf9d982723c0732003f84ce3eecd02d9b374c369b5d03"
+    },
+    {
+     "sender": "erd19amake26mp4f3662rdxmfcmsz9gjhujjkg9a689dxf5zn28wemcs6zdpxs",
+     "amount_egld": 53.35236433473583,
+     "timestamp": 1787410314,
+     "txHash": "ca888013b14df0ff15e438305b2882b452837c0a49daa66f2c56991eeb1921b7"
+    },
+    {
+     "sender": "erd18zc6cnkx7k6vza7t6sh3d23e9fn2xa6ppx8ylpknfur9m8qpue5qy4zttd",
+     "amount_egld": 119.08964863027423,
+     "timestamp": 1787401638,
+     "txHash": "a6882617595de4c94495d90ee227e57637df635183a4657459a986c316afd48c"
+    },
+    {
+     "sender": "erd1ekz7ejadq9yupqanrwx33rrplyxefajk392694c9kfqvet85cd9qxjnvlr",
+     "amount_egld": 1164.5717120222218,
+     "timestamp": 1787401500,
+     "txHash": "20a03c283c8f2cc060bd9314339f1436c24de69460d052bc763e9fc4d9e4544b"
+    },
+    {
+     "sender": "erd1ctvrpkkrz0p5fvngt4k7fmahnf8sqvmc68207nwa6m8ypud90h7qwpp5fl",
+     "amount_egld": 32.62318653014179,
+     "timestamp": 1787386950,
+     "txHash": "89d083437cd8ec6c50f18bfcbe0474938d995c0c980bcdba5dd28bc54653754c"
+    },
+    {
+     "sender": "erd140fkeu8ejtwddk9ll8lsvme9j2mktjaymjshjwtru996yzgamrpq84zt9c",
+     "amount_egld": 25.69417721540318,
+     "timestamp": 1787381052,
+     "txHash": "64053ca065cb21bce1a5044198792d38d45bef0b073fb202358863d075240006"
+    },
+    {
+     "sender": "erd18y8apx8jgeaj0ngmgtajnqc6w3ynd85tvt9v2m95r4ne240zzu0q78kxz4",
+     "amount_egld": 1.0,
+     "timestamp": 1787373768,
+     "txHash": "6572f5abaa978302a17ddce61f42810380acdc6a15eec9e88cce35c4db0538ac"
+    },
+    {
+     "sender": "erd1juhhw8tk97rcagtgmxeu9h4jvnc9z4k0yzgx8hlkxs4w3m9nx0lstffuk9",
+     "amount_egld": 10.0,
+     "timestamp": 1787356932,
+     "txHash": "e9125fb621301fd71a4f2d56378dfd366c741af885150808869999b45540a481"
+    },
+    {
+     "sender": "erd1tsd6kqhmt3w4fglrct6pmvfd7cvlp6x9ql2k8r42ehzdexpcgpmsu3xlmh",
+     "amount_egld": 653.9286206353784,
+     "timestamp": 1787349150,
+     "txHash": "3a745b329256ed379fe810406360949d1e10c442dfc9c79d26f06ec02abd21b8"
+    },
+    {
+     "sender": "erd1z4hdly86rhfvh6sm85ghwujdleraweyraa4l4wfc9rj0y4mjad3qv5rcsp",
+     "amount_egld": 25.542677287534854,
+     "timestamp": 1787343936,
+     "txHash": "5f06bcd5f7fb6e163d1dda6af224b3e002fa5b2514851bd386693654f09ac0b5"
+    },
+    {
+     "sender": "erd1v7zs9dkeef94zn3pjmtwx2udynmxp8qt87xdgfvfwrjzjwhs86mq64pn0t",
+     "amount_egld": 2.2310739132701043,
+     "timestamp": 1787327502,
+     "txHash": "0b6c1673908d30dee5c1467aef1da755828c11fd92b46bb6400755bd57bc1d87"
+    },
+    {
+     "sender": "erd1cca7pwfmh2rvz0pw04akuxhhn3ruqdaj9044yj4u56kxjsz356nq56vq4k",
+     "amount_egld": 550.9465076428215,
+     "timestamp": 1787324592,
+     "txHash": "1d8f5a5743059f94298852939a11529d224e9d750d81988f671da109ee54ab06"
+    },
+    {
+     "sender": "erd1mer2shn4wk4nn2mct08ny55xgpgvt2uwjuyhgpex6x399hs28dxqlcu69z",
+     "amount_egld": 23.314264434638673,
+     "timestamp": 1787302308,
+     "txHash": "d00e4537ef29a3f39a26b5b85902a6d461142323c21ac32931ab855de6d810a6"
+    },
+    {
+     "sender": "erd152emrverem2j6pw528dnu5mqsmz53gjgwq3ty3qqrn9hut8kucrqwy5knw",
+     "amount_egld": 700.7029263450675,
+     "timestamp": 1787297946,
+     "txHash": "612a29937a14c845ed677d9dcd32d419bcffbd5758d8be284d07e09a78a2f8dc"
+    },
+    {
+     "sender": "erd1ss5h0r0msnsp5dv79grvl75r8adfxd9fe2eynup3ds688aapphgs530h4x",
+     "amount_egld": 104.00005650116465,
+     "timestamp": 1787255298,
+     "txHash": "f33cce28c43962b1d48b30ad448f9979d19a17b2609ee4623a73a2b0fa88d80f"
+    },
+    {
+     "sender": "erd1xhra6j4x2safj28e89m54ttzqwv2ryeh3npxkzx9p3lkpauvkassjp9qf9",
+     "amount_egld": 150.02735951769998,
+     "timestamp": 1787250684,
+     "txHash": "ba42cb188e7dccd64f1a0f45da58980eb14715423531a649408991e7656ebe09"
+    },
+    {
+     "sender": "erd1nn9w5d8mwcvsx5qctjzj82yz92yr2knqjgh6atwzrqlwqmwx2grshd50x0",
+     "amount_egld": 51.05885254471063,
+     "timestamp": 1787248710,
+     "txHash": "73d750e170a1502290d6ac7370a98f7d8363328ee9ad38da438a1f0688b94518"
+    },
+    {
+     "sender": "erd14kstkhmcp0u9xvr9skye2sjxvrz249vpnfgt3gyurt70ujhas6kqu0960a",
+     "amount_egld": 1154.4356934539499,
+     "timestamp": 1787240400,
+     "txHash": "2952648db18659c1e2707b14af91f5193b70fcde129c79c1b307d04553b1a0a3"
+    },
+    {
+     "sender": "erd18fkqud5ydhwznde670qus0nzkm5tul5h0tzvpzzjuv6g6x5n4m5sjgpkyc",
+     "amount_egld": 230.0,
+     "timestamp": 1787237742,
+     "txHash": "adbc7cb30e7b791ee24b0859dabc239ae3a9559aed974644f69a3fa9f1db00fa"
+    },
+    {
+     "sender": "erd1qx7x4edp9qmt2ug4v737kkdkyjqhr4kl6aah6dtd5aeufacex9zqwtrhzc",
+     "amount_egld": 762.7,
+     "timestamp": 1787237556,
+     "txHash": "2edff1d829aa186747a8a47bd96853937f31d714c7cc9302e10bc28d33e75a11"
+    },
+    {
+     "sender": "erd1yzs2kzdkyajdhruvmlzacrl09rfmf4gmx8t8n9cthgmm7s6fn7rq3zrs36",
+     "amount_egld": 25.9,
+     "timestamp": 1787225310,
+     "txHash": "19d9900b56d2ba2c5af7ab2ee97462d0ce095f969c8c475a4cb98fa6ae97ba55"
+    },
+    {
+     "sender": "erd19fslglcdrv04fqujxunh2m0hmh8mkk9rn7zw32s8662020kc3mkq9lxe45",
+     "amount_egld": 30.0,
+     "timestamp": 1787217570,
+     "txHash": "29282b4bd5443fd5d1a179de2d49df017ff6a40d13ed4ad6e35fbb44ad577777"
+    },
+    {
+     "sender": "erd1wtf9zv9xa93nw0usvtr5r79zvvangk82tjrhqel8yzp3lzsl8qxshfrk6q",
+     "amount_egld": 335.24274383286934,
+     "timestamp": 1787214600,
+     "txHash": "e4b65ec4c5fd89f556829740471f4a29a4b8726c2341a4c4b2edabc09457945d"
+    },
+    {
+     "sender": "erd17ca7l7e5s3vt3v3yys5t8sl2netlqjk67v6v4zsmpgk8p2q60xdsa8ul2h",
+     "amount_egld": 103.7214309140786,
+     "timestamp": 1787204646,
+     "txHash": "60a9a6d30b67c09fea0eadb1f4dc7dd706ad127245c6bfc4c2c69e936c76d5ae"
+    },
+    {
+     "sender": "erd13eng3w54qqflnvv3ssgg58k8j4hn23x8zfsauzuxqp7z3jvswnvs7srh9k",
+     "amount_egld": 1171.1523294018032,
+     "timestamp": 1787134344,
+     "txHash": "ef4d1bdc736a6a376704a1e896e2a8f8f783300bee0da146feae5817b8b17a75"
+    },
+    {
+     "sender": "erd1qf0utpayzsm3lsmlfl9k85au7u09pxamclthymggjrwv68yh5atqya42vn",
+     "amount_egld": 2.10998676276958,
+     "timestamp": 1787117634,
+     "txHash": "cf9310f941a111d963dbe8c3b115f79bb867fcba59d18e978df33fa101c26c5a"
+    },
+    {
+     "sender": "erd1ch0pe2yruph6eyyg9y09n2eceenx8rs634v3enfvf5nf3q7qhhgqh4c6nm",
+     "amount_egld": 149.0968,
+     "timestamp": 1787084940,
+     "txHash": "82a8398b593a257c489fe4a6d327b5de34dbf7dcdbcbb5320fde1c4a662695d2"
+    },
+    {
+     "sender": "erd1vpmcvkx4kkgtjjt75h9rakn7t95uffh8urnr3yupp5x4nlu9939shk9hjt",
+     "amount_egld": 52.544974450179424,
+     "timestamp": 1787080932,
+     "txHash": "9ec5ea1258109b76ad11d9b860d607016d0cbfd4ef0afa8a677239b9d7503eb9"
+    },
+    {
+     "sender": "erd1vhtlchgkk3v5xvwmm9gylxnr4j22wvjp85ey8y6z7wrvc73h6kyqlvf4z9",
+     "amount_egld": 256.1761910123106,
+     "timestamp": 1787079786,
+     "txHash": "db3ae30eb36750228d02d2f09999a01217e93fe15408f7cf5d9c447482bdb3c8"
+    },
+    {
+     "sender": "erd15u3syhccrs2gyg43pp2rudj62p5fnuxfmt2zgyvqp0n9ka5xz74q6r9r36",
+     "amount_egld": 30.2,
+     "timestamp": 1787073210,
+     "txHash": "5717856e08dd258d2adf9f22524331aae03e2b82e30c55ba52c40e9352794711"
+    },
+    {
+     "sender": "erd1htxtlksvsezlh6jk8c940wmw3lpmgfgqytgq9y0rjpxmmmmuh6ps9h7ysv",
+     "amount_egld": 12.650148498633778,
+     "timestamp": 1787027940,
+     "txHash": "1de8ada181452080191fa827050ad9dcd62db42250417c341c77d401313d14da"
+    },
+    {
+     "sender": "erd17r9dzkv3snxe7jp7ylk4jdzeefup6cu9w8r4k6ac0a9hk9e0pmks6g6rqc",
+     "amount_egld": 411.29516422074846,
+     "timestamp": 1786995828,
+     "txHash": "782666145d55467fa2a5b965b25357d3178658d5f1d4c299f983ffc71cb63ad6"
+    },
+    {
+     "sender": "erd1sd7a6wkpla33tan5yftqwpm50w3wdgc9q0ehj7xlq70e5dlnddqqc99j3q",
+     "amount_egld": 138.02792650677264,
+     "timestamp": 1786989594,
+     "txHash": "e6d59359b35e8cce35ad0ce3c7f728e942c4c4143695b1c3b81caedd405cfc63"
+    },
+    {
+     "sender": "erd168xgjcscpyfxt6z6f2h5nz567pvezercqdcwx67xwxx356vu6x7q54xrnn",
+     "amount_egld": 7.583950102104096,
+     "timestamp": 1786979448,
+     "txHash": "140a048d0944f01cf10ea3210a3c5902b7de34d6cf126ddbe0dfd836006b5721"
+    },
+    {
+     "sender": "erd1grn30xypva4w2z8lu9n9k8hkglhdhjy49kvz3vn9869kkvecht3qn6gzz0",
+     "amount_egld": 8.001411910046537,
+     "timestamp": 1786979424,
+     "txHash": "2ef99e6b63668f09dd67ee9d1c3390f6ea27a2212d4e21f00adf006251b9f064"
+    },
+    {
+     "sender": "erd1j50454rkczk0mgyux4uc0v7a2dky53403nynfxuqm8630nhea9cqpdl5qz",
+     "amount_egld": 113.0,
+     "timestamp": 1786976424,
+     "txHash": "c040d9d24461f675bfbf95205328d7d3b43613526d88c8893a2b9958e0b1ea89"
+    },
+    {
+     "sender": "erd1xqysmfu33u6kxhmtazsnhk3t8rdvhzv5z2wdhcdptcsyzyvcp9mqcjxecy",
+     "amount_egld": 14.248405953385355,
+     "timestamp": 1786973076,
+     "txHash": "3edd4a1f5fade194161b2c61321751dfd9fb16199e26b7e7abb211dae0045266"
+    },
+    {
+     "sender": "erd1y9t2ukjstsm0v0ep5xfy76a7tx0xzqu8dqaaffg6dqapmrmxu6eq8plylh",
+     "amount_egld": 10.0,
+     "timestamp": 1786949778,
+     "txHash": "bf4163e29c544929ac8968712b4622a0e44cdcbf43c87f980c50b5332f884fa4"
+    },
+    {
+     "sender": "erd1klejnx3cmn8q528pkax4kud87f6lus7ds9neluxx6fqt9cqkndfq2eppss",
+     "amount_egld": 65.29129535370521,
+     "timestamp": 1786945794,
+     "txHash": "a5bc81435feae69bf7e276a72be34045cac53bc8749621486aa692b8d5a47073"
+    },
+    {
+     "sender": "erd1qfwwru58taw9hxdtj60qq6mhpcjuv7phecl857yzrvae44y07puqg5g20g",
+     "amount_egld": 177.10224576177245,
+     "timestamp": 1786935978,
+     "txHash": "ee34adac43e54de3d32b61c46b7ac30638eb379c08673b4969fe8d66fc0b37ec"
+    }
+   ],
+   "tx_count": 178
+  },
+  "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j": {
+   "function_counts": {
+    "reward": 7,
+    "delegate": 12,
+    "claimRewards": 6,
+    "withdraw": 4,
+    "reDelegateRewards": 4
+   },
+   "undelegate_legs": [],
+   "tx_count": 33
+  },
+  "ninjastaking": {
+   "function_counts": {
+    "reDelegateRewards": 120,
+    "claimRewards": 119,
+    "unDelegate": 17,
+    "withdraw": 9,
+    "delegate": 31,
+    "reward": 7
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1p472dwww9qqssrnwmqwy5hw3naadde4q3ry8qlwmfv5w265p0a4sfne22n",
+     "amount_egld": 28.0,
+     "timestamp": 1787517120,
+     "txHash": "b2b9628588866c7607b1c607e5bcdb26a6e2f1530c4a58fc2b8763f797ac5c1e"
+    },
+    {
+     "sender": "erd1hayxe7eprsd3v3svd6706vwwkk3fvhlp46zypmsk9jpgwulh5vessafpaq",
+     "amount_egld": 3.0,
+     "timestamp": 1787507808,
+     "txHash": "54419b82cd81793a6cec7ba88f1a03b295e6d9b9e35944e5415c86937ba09165"
+    },
+    {
+     "sender": "erd1wrcxskz55czz5jv2x3ls77fn52upw72peygs8fnye4e8ulzxfpwsa4mnut",
+     "amount_egld": 8704.0,
+     "timestamp": 1787499378,
+     "txHash": "8cc4987200eaad1494080519fd2548945bedcb917a62aab096b859372f02e87f"
+    },
+    {
+     "sender": "erd1p6gx6sgf7vg69wnkx73hekck9ejjjy55ddt5gaynvvcsqqexj3sqten8vd",
+     "amount_egld": 40.0,
+     "timestamp": 1787496780,
+     "txHash": "382892bb4a844c15a9d89d586a8ccf85685823c6a3acae6c0a8ad5f0493bf199"
+    },
+    {
+     "sender": "erd1wrgtqekuzc29apvsa4s3mxeusnm625ws3leks7pekafw6qgqs6wqyj4qmy",
+     "amount_egld": 10.0,
+     "timestamp": 1787464482,
+     "txHash": "ebd88bb57cc324b5016766341a4876d703c76d91fb8e97da17bec3c1c0f6f1a2"
+    },
+    {
+     "sender": "erd1w9rj5ywz69thqh5kumchrxx6jhkjs7gdtpzxzgksg8pjdjrn02dqnccfxr",
+     "amount_egld": 50.0,
+     "timestamp": 1787430684,
+     "txHash": "8310eb662b04c4f1848e4d567d647cc897592b555d95c0ef6cca6da0a0f9c3f1"
+    },
+    {
+     "sender": "erd1l6h5gdzs3uuze5gr988wzqwmdgjn3qdzn82tpkf9qn3pjwzkefhsumkhke",
+     "amount_egld": 31.530912222422543,
+     "timestamp": 1787320164,
+     "txHash": "83c0ee4070a230771fac0220c3bd231543497f83bef7c314557201edacb25596"
+    },
+    {
+     "sender": "erd12qehz4fpnmps844yjcgnej9ffxhlnjkjnw2u5gcwkxnyymdpl6kqhcshzt",
+     "amount_egld": 109.1593,
+     "timestamp": 1787311656,
+     "txHash": "2a2ae39aaae5f9b9d2010c38eb0fc8c144daf414686507b6d34b54aa11f04223"
+    },
+    {
+     "sender": "erd1eph8r9vt4pjy3l79ueh7ur32y2gxumc8rvm8fxy0mp8a8wknjg5q0x2v27",
+     "amount_egld": 55.732417373482164,
+     "timestamp": 1787302260,
+     "txHash": "ddf8a2f41394ce3ec3aee4989ba2aef9db25b18dc1856dd1d33639b709919600"
+    },
+    {
+     "sender": "erd1r7rct8nz3rr049cq79hx9nuammmfy7dfl750tsdpx4d6nltr200qtzqtqu",
+     "amount_egld": 500.09669062,
+     "timestamp": 1787262900,
+     "txHash": "c9cc046ca9cb912291bcd25dfd61fc1c5df551c17fdc4c838e71706aec6a1720"
+    },
+    {
+     "sender": "erd1wrgtqekuzc29apvsa4s3mxeusnm625ws3leks7pekafw6qgqs6wqyj4qmy",
+     "amount_egld": 10.0,
+     "timestamp": 1787255106,
+     "txHash": "c1db537ccbb30073d4190ece2a32256e4246bf35880ee7ebc4aedbb7732c7006"
+    },
+    {
+     "sender": "erd1fek0dys3d3hkj5j6dvzwx2n4l74h66zqyhs5dglhdy7yutxtms5qlpt9tj",
+     "amount_egld": 10.0,
+     "timestamp": 1787214336,
+     "txHash": "c99d3e5aa76197f6da67a86d9b86327011d9720dbe1537abec0c21282fd7403b"
+    },
+    {
+     "sender": "erd1kr89ndx0rz0nxtut5dpkz7ahdhslw3hp47ceuaevk3qt908z5x7sqmpu9t",
+     "amount_egld": 1029.3896286453928,
+     "timestamp": 1787184138,
+     "txHash": "415c6c732d6d14ec43ef66652c7d8f3595719f182a72a03f602cfd6b07ccd2c1"
+    },
+    {
+     "sender": "erd1wrgtqekuzc29apvsa4s3mxeusnm625ws3leks7pekafw6qgqs6wqyj4qmy",
+     "amount_egld": 10.0,
+     "timestamp": 1787166480,
+     "txHash": "ee26a37b7ca5b1657d4820b6626dec1b8690733f71a22e818ac3d35b709ed9d9"
+    },
+    {
+     "sender": "erd1cnz3vx080falsasv0a34pfzrq5q0sxr2dwwylgjptsugl6tkp2ls2kd0yp",
+     "amount_egld": 29.723830551268243,
+     "timestamp": 1787160354,
+     "txHash": "00289c085315379e83c9766b0eea0098f46488b3b8c724c7d94b87b0fbabd426"
+    },
+    {
+     "sender": "erd1wrgtqekuzc29apvsa4s3mxeusnm625ws3leks7pekafw6qgqs6wqyj4qmy",
+     "amount_egld": 10.0,
+     "timestamp": 1786999344,
+     "txHash": "9da1b55573aa9c78fc0af611da69890236942315528d3939b154b54ea4ab25a8"
+    },
+    {
+     "sender": "erd1y0rzpy9qcjm55r64fapevze7h6scea023yan30hzyjp959p5p0lqlhldhx",
+     "amount_egld": 32.12702194683828,
+     "timestamp": 1786970556,
+     "txHash": "945eb91dd8edbd2102080b09bae0131a3090806500b42da1b23869da390449ac"
+    }
+   ],
+   "tx_count": 303
+  },
+  "pokerstaking": {
+   "function_counts": {
+    "claimRewards": 15,
+    "reDelegateRewards": 23,
+    "reward": 7,
+    "delegate": 30,
+    "unDelegate": 5,
+    "withdraw": 2
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1wrcxskz55czz5jv2x3ls77fn52upw72peygs8fnye4e8ulzxfpwsa4mnut",
+     "amount_egld": 10442.0,
+     "timestamp": 1787499396,
+     "txHash": "5e8bc6d973b4b6eee236cd5a7ea87230789610fde970f5889dec99f9ee8033fd"
+    },
+    {
+     "sender": "erd1vynrnsdphq9dlp8zu2v9txtcgn964r6gykeec4emgjq7alfazjds0kzrtm",
+     "amount_egld": 36.12107520569844,
+     "timestamp": 1787468154,
+     "txHash": "854b212a983b9e88b8cd72eb94b0c3bbeed9c49b337e846d35f6d9b8983aed8d"
+    },
+    {
+     "sender": "erd1xsk4dahnrq2zd0rw7x20nypcz8kulplvcydguputa8p8qj3sukhqtsf7ym",
+     "amount_egld": 15.151515,
+     "timestamp": 1787444442,
+     "txHash": "bc80d327c3276d0ac26ea5cf9aeefc470b0f027c39e2a4044e8c3f35bae485d5"
+    },
+    {
+     "sender": "erd1dna6cdks73ypk5e9ggdr8f385u2tjp5tx9qcwpz2c4y70tc2e5cq800mwx",
+     "amount_egld": 12.24468412,
+     "timestamp": 1787238048,
+     "txHash": "2d95bf0d9d94f3ef4d9e9eb4ae8ac55170275d1ac5f8b8b1f0685c1f612c5e59"
+    },
+    {
+     "sender": "erd14g785tgweukl04206l3hst5j7kx8pnfqe96kqle3ajrv9z9wpyjqa8svec",
+     "amount_egld": 50.0,
+     "timestamp": 1787153190,
+     "txHash": "6a5e1a437bcda46f67e504f99991de4fa0b61341929ce8f40338d385effb06e7"
+    }
+   ],
+   "tx_count": 82
+  },
+  "stakenest": {
+   "function_counts": {
+    "claimRewards": 17,
+    "reDelegateRewards": 11,
+    "reward": 7,
+    "unStakeNodes": 1,
+    "stakeNodes": 4,
+    "delegate": 23,
+    "unDelegate": 2,
+    "addNodes": 4,
+    "withdraw": 2,
+    "modifyTotalDelegationCap": 1
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1t40glmudgmchkec9580pldumusxrhwnlx4jwuzkzd4dfzmmw2n8sls3604",
+     "amount_egld": 116.60701804937065,
+     "timestamp": 1787330166,
+     "txHash": "970718d857967461452c7ba86d855e5d961fa0ac778358d36c2e56f9dbc73e76"
+    },
+    {
+     "sender": "erd1m58yvmx7qp7c35n7k4z0fwteygmv7vrnck9rr9gcxq9s30nuyyhsl5e4kz",
+     "amount_egld": 9.0,
+     "timestamp": 1786959714,
+     "txHash": "9403d706ce4ed4cd43bb2ab64722a5c812abe3d0be504da92b60ba47eb84f88d"
+    }
+   ],
+   "tx_count": 72
+  },
+  "vaporrepublic": {
+   "function_counts": {
+    "delegate": 34,
+    "reDelegateRewards": 72,
+    "claimRewards": 57,
+    "reward": 7,
+    "withdraw": 2,
+    "unDelegate": 6,
+    "reStakeUnStakedNodes": 1,
+    "stakeNodes": 1
+   },
+   "undelegate_legs": [
+    {
+     "sender": "erd1yutq2f0vtu0jpxc9sngltm6f3e3s6zgh0faq950utesqp60tc0fsx2nkz5",
+     "amount_egld": 10.0,
+     "timestamp": 1787379996,
+     "txHash": "653f310394f9c652cdc3a9ed221be9b896ec441096d49f100287a1114a818d8d"
+    },
+    {
+     "sender": "erd1zc85rnd9l0n84swp9s9sqmn6zsvxv8rgpqzuc7dpg5eldq4yttwq70l7ur",
+     "amount_egld": 10.36302114668222,
+     "timestamp": 1787370012,
+     "txHash": "b80e3773201399371568f872d9adb74cbd2fe12c283a41e9dc94e8163a3b184f"
+    },
+    {
+     "sender": "erd1tsd6kqhmt3w4fglrct6pmvfd7cvlp6x9ql2k8r42ehzdexpcgpmsu3xlmh",
+     "amount_egld": 2.25,
+     "timestamp": 1787348958,
+     "txHash": "ac07b733cf035e345f2558c9137e8f893d3e411d87f406fb667da2b17dfe8c69"
+    },
+    {
+     "sender": "erd14yv2qkvveuzqvqf5gmz6j99ryfvy9aerzspzetphqj3yy82upplsahga40",
+     "amount_egld": 4.0,
+     "timestamp": 1787335440,
+     "txHash": "18cfd984ab520a45f946d5e35aa4f501f2a2d3c507e15850e112ad1d5a4963cc"
+    },
+    {
+     "sender": "erd1zcy6lezcxd7uhda9wwr5rkncvmtax4z8sle68hcpde85yf8yqjmstvls6w",
+     "amount_egld": 12.891066337846503,
+     "timestamp": 1787308500,
+     "txHash": "d7182ac047f6113e7cdd047a9cd6a9cf72585b26ce08977cba6dc8130cce30d5"
+    },
+    {
+     "sender": "erd1d8uugkwhr84j7s5vdj9vssynhratmfx42r8nmd9cyv5qvgcqxt2sxt4z0m",
+     "amount_egld": 288.0,
+     "timestamp": 1786944696,
+     "txHash": "8fba40b72da5874b79a300227ecafb2188cc9f3bece49fa52d4ec0f5eb4ad6e2"
+    }
+   ],
+   "tx_count": 180
+  }
+ },
+ "unbonding_pool": [
+  {
+   "wallet": "erd1wrcxskz55czz5jv2x3ls77fn52upw72peygs8fnye4e8ulzxfpwsa4mnut",
+   "label": "Unknown",
+   "balance_egld": 428.3794625642277,
+   "nonce": 258,
+   "this_week_undelegated": 26692.36493221,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 7546.36493221,
+     "timestamp": 1787499360
+    },
+    {
+     "provider": "ninjastaking",
+     "amount_egld": 8704.0,
+     "timestamp": 1787499378
+    },
+    {
+     "provider": "pokerstaking",
+     "amount_egld": 10442.0,
+     "timestamp": 1787499396
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 7546.36493221,
+     "seconds_remaining": 696054,
+     "days_remaining": 8.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+     "amount_egld": 8704.0,
+     "seconds_remaining": 696054,
+     "days_remaining": 8.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpwlllllsdg7gre",
+     "amount_egld": 10442.0,
+     "seconds_remaining": 696054,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 26692.36493221
+  },
+  {
+   "wallet": "erd1vklld50pnhvngrtrr9udcv3zt8ddccs4ll880t4zuzc4qhwv4mgq9ge6t3",
+   "label": "Unknown",
+   "balance_egld": 0.1004431200400082,
+   "nonce": 1253,
+   "this_week_undelegated": 5297.304237999293,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 5297.304237999293,
+     "timestamp": 1787215728
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 5297.304237999293,
+     "seconds_remaining": 436895,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 5297.304237999293
+  },
+  {
+   "wallet": "erd12wn78657mjvtdxwpshxam7a5xcgncj4xmv50l5s6xe2rshndnezs4nypar",
+   "label": "Unknown",
+   "balance_egld": 0.8447011251434768,
+   "nonce": 865,
+   "this_week_undelegated": 4723.1434305350185,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 4723.1434305350185,
+     "timestamp": 1787489496
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 4723.1434305350185,
+     "seconds_remaining": 696013,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 4723.1434305350185
+  },
+  {
+   "wallet": "erd1vynrnsdphq9dlp8zu2v9txtcgn964r6gykeec4emgjq7alfazjds0kzrtm",
+   "label": "Unknown",
+   "balance_egld": 0.00312638,
+   "nonce": 87,
+   "this_week_undelegated": 2077.225423188269,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 2041.1043479825705,
+     "timestamp": 1787486832
+    },
+    {
+     "provider": "pokerstaking",
+     "amount_egld": 36.12107520569844,
+     "timestamp": 1787468154
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 2041.1043479825705,
+     "seconds_remaining": 696073,
+     "days_remaining": 8.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpwlllllsdg7gre",
+     "amount_egld": 36.12107520569844,
+     "seconds_remaining": 696073,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 2077.225423188269
+  },
+  {
+   "wallet": "erd1966gymgemkqdpym6927hexyx5r69gkxck2ajjrtnjxe9za2x4u0sqptcd8",
+   "label": "Unknown",
+   "balance_egld": 847.3818317295718,
+   "nonce": 1176,
+   "this_week_undelegated": 1500.0,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 1000.0,
+     "timestamp": 1787216070
+    },
+    {
+     "provider": "Synexis",
+     "amount_egld": 500.0,
+     "timestamp": 1787041674
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 500.0,
+     "seconds_remaining": 264047,
+     "days_remaining": 3.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 1000.0,
+     "seconds_remaining": 436847,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 1500.0
+  },
+  {
+   "wallet": "erd1uwgvkdku77zcap0mdpv0fa6y06689hwcs2f4cf580xy2xdnp7tnq3ej48a",
+   "label": "Unknown",
+   "balance_egld": 72.24825875569022,
+   "nonce": 1028,
+   "this_week_undelegated": 1446.1221826765475,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 1446.1221826765475,
+     "timestamp": 1787197392
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 1446.1221826765475,
+     "seconds_remaining": 436844,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 1446.1221826765475
+  },
+  {
+   "wallet": "erd1vx3ec97npfzh9t3aetwxhw20nzt8jeme20dc6dvmf9lzv9p9a6dq7kr6ke",
+   "label": "Unknown",
+   "balance_egld": 412.9136651392788,
+   "nonce": 1020,
+   "this_week_undelegated": 1332.3052625866464,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 1332.3052625866464,
+     "timestamp": 1787372784
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 1332.3052625866464,
+     "seconds_remaining": 609612,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 1332.3052625866464
+  },
+  {
+   "wallet": "erd13qzcwlgu6lkgemad4axcdn05us5esml0kl9457q8yra2dgg8chwsz66750",
+   "label": "Unknown",
+   "balance_egld": 160.8857758413812,
+   "nonce": 3708,
+   "this_week_undelegated": 1275.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 1275.0,
+     "timestamp": 1787406582
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 1275.0,
+     "seconds_remaining": 609665,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 1275.0
+  },
+  {
+   "wallet": "erd13eng3w54qqflnvv3ssgg58k8j4hn23x8zfsauzuxqp7z3jvswnvs7srh9k",
+   "label": "Unknown",
+   "balance_egld": 21.913944747769136,
+   "nonce": 294,
+   "this_week_undelegated": 1171.1523294018032,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 1171.1523294018032,
+     "timestamp": 1787134344
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 1171.1523294018032,
+     "seconds_remaining": 350447,
+     "days_remaining": 4.06
+    }
+   ],
+   "total_pending_egld": 1171.1523294018032
+  },
+  {
+   "wallet": "erd1ekz7ejadq9yupqanrwx33rrplyxefajk392694c9kfqvet85cd9qxjnvlr",
+   "label": "Unknown",
+   "balance_egld": 10.653194144220953,
+   "nonce": 134,
+   "this_week_undelegated": 1164.5717120222218,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 1164.5717120222218,
+     "timestamp": 1787401500
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 1164.5717120222218,
+     "seconds_remaining": 609588,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 1164.5717120222218
+  },
+  {
+   "wallet": "erd14kstkhmcp0u9xvr9skye2sjxvrz249vpnfgt3gyurt70ujhas6kqu0960a",
+   "label": "Unknown",
+   "balance_egld": 41.34485021094857,
+   "nonce": 4196,
+   "this_week_undelegated": 1154.4356934539499,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 1154.4356934539499,
+     "timestamp": 1787240400
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 1154.4356934539499,
+     "seconds_remaining": 436818,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 1154.4356934539499
+  },
+  {
+   "wallet": "erd1sjyl0ja0vspnkndpnrpkws2mrlpfu8gx7cx78gmsg5gk4x2jxsus9slpg7",
+   "label": "Unknown",
+   "balance_egld": 0.59920949,
+   "nonce": 702,
+   "this_week_undelegated": 524.4473572050831,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 524.4473572050831,
+     "timestamp": 1786929438
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 524.4473572050831,
+     "seconds_remaining": 177612,
+     "days_remaining": 2.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxhllllssz7sl7",
+     "amount_egld": 540.2295138928849,
+     "seconds_remaining": 177612,
+     "days_remaining": 2.06
+    }
+   ],
+   "total_pending_egld": 1064.6768710979682
+  },
+  {
+   "wallet": "erd1r7rct8nz3rr049cq79hx9nuammmfy7dfl750tsdpx4d6nltr200qtzqtqu",
+   "label": "Unknown",
+   "balance_egld": 86.3346209006545,
+   "nonce": 13,
+   "this_week_undelegated": 500.09669062,
+   "legs": [
+    {
+     "provider": "ninjastaking",
+     "amount_egld": 500.09669062,
+     "timestamp": 1787262900
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+     "amount_egld": 500.09669062,
+     "seconds_remaining": 523198,
+     "days_remaining": 6.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpzlllllshp8986",
+     "amount_egld": 534.1463829552916,
+     "seconds_remaining": 523198,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 1034.2430735752916
+  },
+  {
+   "wallet": "erd1kr89ndx0rz0nxtut5dpkz7ahdhslw3hp47ceuaevk3qt908z5x7sqmpu9t",
+   "label": "Unknown",
+   "balance_egld": 3.080856206565698,
+   "nonce": 1528,
+   "this_week_undelegated": 1029.3896286453928,
+   "legs": [
+    {
+     "provider": "ninjastaking",
+     "amount_egld": 1029.3896286453928,
+     "timestamp": 1787184138
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+     "amount_egld": 1029.3896286453928,
+     "seconds_remaining": 436784,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 1029.3896286453928
+  },
+  {
+   "wallet": "erd1my455pvtxvm5pep5l9fnlmkmg5s00d5vj5l99hgpqjef3zpcdevs2lwsu2",
+   "label": "Unknown",
+   "balance_egld": 0.00492388,
+   "nonce": 988,
+   "this_week_undelegated": 1007.8588759147776,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 1007.8588759147776,
+     "timestamp": 1787048424
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 1007.8588759147776,
+     "seconds_remaining": 264020,
+     "days_remaining": 3.06
+    }
+   ],
+   "total_pending_egld": 1007.8588759147776
+  },
+  {
+   "wallet": "erd198hstgp63tplznrg9tzpmn5pc4kk7essuj4urstfmm4ua7mtzjkqwkceuk",
+   "label": "Unknown",
+   "balance_egld": 10.129819272241916,
+   "nonce": 1016,
+   "this_week_undelegated": 823.0669518072131,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 823.0669518072131,
+     "timestamp": 1787117730
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 823.0669518072131,
+     "seconds_remaining": 350412,
+     "days_remaining": 4.06
+    }
+   ],
+   "total_pending_egld": 823.0669518072131
+  },
+  {
+   "wallet": "erd1hjnth2wgfaz9khh3qxyhqwp8r77tsuuvvcx468gphlyx45s233js2hn0wg",
+   "label": "Unknown",
+   "balance_egld": 0.68385388458,
+   "nonce": 30,
+   "this_week_undelegated": 815.7956349724676,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 815.7956349724676,
+     "timestamp": 1787213340
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 815.7956349724676,
+     "seconds_remaining": 436805,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 815.7956349724676
+  },
+  {
+   "wallet": "erd1m46dzgcfcgaztvgzql5fq65rg5ltcedh0qyyyjk36qngsx8xz8pssc3hdr",
+   "label": "Unknown",
+   "balance_egld": 0.4087857082821014,
+   "nonce": 4278,
+   "this_week_undelegated": 771.4405712296531,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 771.4405712296531,
+     "timestamp": 1786980858
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 771.4405712296531,
+     "seconds_remaining": 177578,
+     "days_remaining": 2.06
+    }
+   ],
+   "total_pending_egld": 771.4405712296531
+  },
+  {
+   "wallet": "erd1qx7x4edp9qmt2ug4v737kkdkyjqhr4kl6aah6dtd5aeufacex9zqwtrhzc",
+   "label": "Unknown",
+   "balance_egld": 15.009351753182939,
+   "nonce": 99,
+   "this_week_undelegated": 762.7,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 762.7,
+     "timestamp": 1787237556
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 762.7,
+     "seconds_remaining": 436781,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 762.7
+  },
+  {
+   "wallet": "erd1hlx2vapvnvlanx62rhha0fs4qye2pauhgkxn0fvkmgfmgxj7n6wqfaxk7l",
+   "label": "Unknown",
+   "balance_egld": 20.77969949506046,
+   "nonce": 31,
+   "this_week_undelegated": 704.7,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 704.7,
+     "timestamp": 1786964766
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 704.7,
+     "seconds_remaining": 177674,
+     "days_remaining": 2.06
+    }
+   ],
+   "total_pending_egld": 704.7
+  },
+  {
+   "wallet": "erd152emrverem2j6pw528dnu5mqsmz53gjgwq3ty3qqrn9hut8kucrqwy5knw",
+   "label": "Unknown",
+   "balance_egld": 47.12304744170176,
+   "nonce": 128,
+   "this_week_undelegated": 700.7029263450675,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 700.7029263450675,
+     "timestamp": 1787297946
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 700.7029263450675,
+     "seconds_remaining": 523225,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 700.7029263450675
+  },
+  {
+   "wallet": "erd1c20k3hh56uhr6rm64fcrjrvtk4uykur3nqfc6ns3g2n6m68yym3q0nwdxs",
+   "label": "Unknown",
+   "balance_egld": 1.9010449070316446,
+   "nonce": 5047,
+   "this_week_undelegated": 684.2847938763508,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 684.2847938763508,
+     "timestamp": 1787505522
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 684.2847938763508,
+     "seconds_remaining": 696047,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 684.2847938763508
+  },
+  {
+   "wallet": "erd1tsd6kqhmt3w4fglrct6pmvfd7cvlp6x9ql2k8r42ehzdexpcgpmsu3xlmh",
+   "label": "Unknown",
+   "balance_egld": 0.008231445139839278,
+   "nonce": 21,
+   "this_week_undelegated": 656.1786206353784,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 653.9286206353784,
+     "timestamp": 1787349150
+    },
+    {
+     "provider": "vaporrepublic",
+     "amount_egld": 2.25,
+     "timestamp": 1787348958
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 653.9286206353784,
+     "seconds_remaining": 609601,
+     "days_remaining": 7.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqehllllswleld8",
+     "amount_egld": 2.25,
+     "seconds_remaining": 609601,
+     "days_remaining": 7.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqppllllls9ftvxy",
+     "amount_egld": 1.78,
+     "seconds_remaining": 696001,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 657.9586206353783
+  },
+  {
+   "wallet": "erd1cca7pwfmh2rvz0pw04akuxhhn3ruqdaj9044yj4u56kxjsz356nq56vq4k",
+   "label": "Unknown",
+   "balance_egld": 2.1103639958335227,
+   "nonce": 7696,
+   "this_week_undelegated": 550.9465076428215,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 550.9465076428215,
+     "timestamp": 1787324592
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 550.9465076428215,
+     "seconds_remaining": 523221,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 550.9465076428215
+  },
+  {
+   "wallet": "erd1z4ztsx06uh6vfzck4f37zqnm87kwvneyf7glrutrnudenm4gyuaqu8uch6",
+   "label": "Unknown",
+   "balance_egld": 395.5894657202052,
+   "nonce": 2487,
+   "this_week_undelegated": 522.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 522.0,
+     "timestamp": 1787519076
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 522.0,
+     "seconds_remaining": 782454,
+     "days_remaining": 9.06
+    }
+   ],
+   "total_pending_egld": 522.0
+  },
+  {
+   "wallet": "erd1zh5296xx8j8u9ufawm2770r6fkrrlvls9g6xe7f2wmckyjpzl4mskrmv9r",
+   "label": "Unknown",
+   "balance_egld": 3.3137805382871877,
+   "nonce": 300,
+   "this_week_undelegated": 508.16659203773145,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 508.16659203773145,
+     "timestamp": 1787293992
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 508.16659203773145,
+     "seconds_remaining": 523212,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 508.16659203773145
+  },
+  {
+   "wallet": "erd18al3x6zamlyp2c662ejhsjhpuzw6vv4s0nhmngs8v9zf9xnjac3sc7lyps",
+   "label": "Unknown",
+   "balance_egld": 1.7325410811724282,
+   "nonce": 2686,
+   "this_week_undelegated": 500.11047958568753,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 500.11047958568753,
+     "timestamp": 1786949154
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 500.11047958568753,
+     "seconds_remaining": 177612,
+     "days_remaining": 2.06
+    }
+   ],
+   "total_pending_egld": 500.11047958568753
+  },
+  {
+   "wallet": "erd1cl9nyzxxhpsqnp8saen4dcc72xpcpastlqk63kjapycv3525hznqltewrm",
+   "label": "Unknown",
+   "balance_egld": 5.100410333449447,
+   "nonce": 3161,
+   "this_week_undelegated": 500.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 500.0,
+     "timestamp": 1787124588
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 500.0,
+     "seconds_remaining": 350369,
+     "days_remaining": 4.06
+    }
+   ],
+   "total_pending_egld": 500.0
+  },
+  {
+   "wallet": "erd1ufh7fqzy4znwd9w62cnt3fr92tkjxqyjun88352djet765algjfqe0qc4r",
+   "label": "Unknown",
+   "balance_egld": 0.1103506505055983,
+   "nonce": 1566,
+   "this_week_undelegated": 482.87915757212494,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 482.87915757212494,
+     "timestamp": 1787288958
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 482.87915757212494,
+     "seconds_remaining": 523272,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 482.87915757212494
+  },
+  {
+   "wallet": "erd1uwunngd2qhegzsg3xxww4eqeyvukeg4lu2d3ld27hjp7583jkaaqdkw83l",
+   "label": "Unknown",
+   "balance_egld": 0.3826775077877705,
+   "nonce": 2879,
+   "this_week_undelegated": 467.9238954559372,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 467.9238954559372,
+     "timestamp": 1787169798
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 467.9238954559372,
+     "seconds_remaining": 436812,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 467.9238954559372
+  },
+  {
+   "wallet": "erd12kn0vt359nurcj6gzspqjesml43vclskq8dmkc9ung4nl9uajl7s4nz5aw",
+   "label": "Unknown",
+   "balance_egld": 31.328214477693678,
+   "nonce": 626,
+   "this_week_undelegated": 450.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 450.0,
+     "timestamp": 1787373258
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 450.0,
+     "seconds_remaining": 609612,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 450.0
+  },
+  {
+   "wallet": "erd17r9dzkv3snxe7jp7ylk4jdzeefup6cu9w8r4k6ac0a9hk9e0pmks6g6rqc",
+   "label": "Unknown",
+   "balance_egld": 0.7694586091010819,
+   "nonce": 891,
+   "this_week_undelegated": 411.29516422074846,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 411.29516422074846,
+     "timestamp": 1786995828
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 411.29516422074846,
+     "seconds_remaining": 263987,
+     "days_remaining": 3.06
+    }
+   ],
+   "total_pending_egld": 411.29516422074846
+  },
+  {
+   "wallet": "erd1wtf9zv9xa93nw0usvtr5r79zvvangk82tjrhqel8yzp3lzsl8qxshfrk6q",
+   "label": "Unknown",
+   "balance_egld": 672.4474388933298,
+   "nonce": 6674,
+   "this_week_undelegated": 335.24274383286934,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 335.24274383286934,
+     "timestamp": 1787214600
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 335.24274383286934,
+     "seconds_remaining": 436801,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 335.24274383286934
+  },
+  {
+   "wallet": "erd1793fnwlkf0x7m5r53qzlk05ee87dcyklh5mled8gcp0cqa5hyres4lz5sy",
+   "label": "Unknown",
+   "balance_egld": 1.1043754058110518,
+   "nonce": 4542,
+   "this_week_undelegated": 328.05403618313494,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 328.05403618313494,
+     "timestamp": 1787213958
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 328.05403618313494,
+     "seconds_remaining": 436793,
+     "days_remaining": 5.06
+    }
+   ],
+   "total_pending_egld": 328.05403618313494
+  },
+  {
+   "wallet": "erd1y85qj7qu70scz50j94juphaxqlhnztqvh8cfsjsunereccfjwshspxa308",
+   "label": "Unknown",
+   "balance_egld": 0.007548481141996609,
+   "nonce": 75,
+   "this_week_undelegated": 307.45,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 307.45,
+     "timestamp": 1786953690
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 307.45,
+     "seconds_remaining": 177612,
+     "days_remaining": 2.06
+    }
+   ],
+   "total_pending_egld": 307.45
+  },
+  {
+   "wallet": "erd1h06k78alzz3ldw0kgjdxcy4s6r75zc7gnvpvh65gvvpt8tjjhwrshhl3le",
+   "label": "Unknown",
+   "balance_egld": 0.00505938,
+   "nonce": 267,
+   "this_week_undelegated": 300.0000784874645,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 300.0000784874645,
+     "timestamp": 1787072478
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 300.0000784874645,
+     "seconds_remaining": 263986,
+     "days_remaining": 3.06
+    }
+   ],
+   "total_pending_egld": 300.0000784874645
+  },
+  {
+   "wallet": "erd1d8uugkwhr84j7s5vdj9vssynhratmfx42r8nmd9cyv5qvgcqxt2sxt4z0m",
+   "label": "Unknown",
+   "balance_egld": 82.52527423356268,
+   "nonce": 14044,
+   "this_week_undelegated": 288.0,
+   "legs": [
+    {
+     "provider": "vaporrepublic",
+     "amount_egld": 288.0,
+     "timestamp": 1786944696
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqehllllswleld8",
+     "amount_egld": 288.0,
+     "seconds_remaining": 177597,
+     "days_remaining": 2.06
+    }
+   ],
+   "total_pending_egld": 288.0
+  },
+  {
+   "wallet": "erd1vhtlchgkk3v5xvwmm9gylxnr4j22wvjp85ey8y6z7wrvc73h6kyqlvf4z9",
+   "label": "Unknown",
+   "balance_egld": 42.806328869648105,
+   "nonce": 7542,
+   "this_week_undelegated": 256.1761910123106,
+   "legs": [
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 256.1761910123106,
+     "timestamp": 1787079786
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 256.1761910123106,
+     "seconds_remaining": 350377,
+     "days_remaining": 4.06
+    }
+   ],
+   "total_pending_egld": 256.1761910123106
+  },
+  {
+   "wallet": "erd1syl8sphf208jc3ah2ypt6d3p64y7cv76rdkmlykyadymnfqd50nsv3auwn",
+   "label": "Unknown",
+   "balance_egld": 0.5890761401242622,
+   "nonce": 1642,
+   "this_week_undelegated": 245.87219490593395,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 245.87219490593395,
+     "timestamp": 1787251248
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 245.87219490593395,
+     "seconds_remaining": 523212,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 245.87219490593395
+  },
+  {
+   "wallet": "erd192sfg5zeeresq666c58w09jkgwcdv5kn3s25y6j5x5xtp85y8yfq58qgpa",
+   "label": "Unknown",
+   "balance_egld": 10.108515760745584,
+   "nonce": 1322,
+   "this_week_undelegated": 234.32706738756053,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 234.32706738756053,
+     "timestamp": 1787493828
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 234.32706738756053,
+     "seconds_remaining": 696088,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 234.32706738756053
+  },
+  {
+   "wallet": "erd1277wyvhs2gdn43qd62vmaxft9ew6pmqmyct3kc3t0cmcd05yj60q4fp6nn",
+   "label": "Unknown",
+   "balance_egld": 0.7066993111875994,
+   "nonce": 4247,
+   "this_week_undelegated": 211.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 211.0,
+     "timestamp": 1787408106
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 211.0,
+     "seconds_remaining": 609672,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 211.0
+  },
+  {
+   "wallet": "erd1v0hvt3wqm8rxhg5wjqz672lkphxthqle09786hckdv5t867snhfqt02n06",
+   "label": "Unknown",
+   "balance_egld": 18.93676902989723,
+   "nonce": 13503,
+   "this_week_undelegated": 120.5,
+   "legs": [
+    {
+     "provider": "pi-staking",
+     "amount_egld": 15.5,
+     "timestamp": 1787466054
+    },
+    {
+     "provider": "pi-staking",
+     "amount_egld": 15.0,
+     "timestamp": 1787365674
+    },
+    {
+     "provider": "pi-staking",
+     "amount_egld": 17.0,
+     "timestamp": 1787285586
+    },
+    {
+     "provider": "pi-staking",
+     "amount_egld": 18.0,
+     "timestamp": 1787198658
+    },
+    {
+     "provider": "pi-staking",
+     "amount_egld": 36.0,
+     "timestamp": 1787112294
+    },
+    {
+     "provider": "pi-staking",
+     "amount_egld": 19.0,
+     "timestamp": 1786939788
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 19.0,
+     "seconds_remaining": 91278,
+     "days_remaining": 1.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 19.0,
+     "seconds_remaining": 177678,
+     "days_remaining": 2.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 36.0,
+     "seconds_remaining": 350478,
+     "days_remaining": 4.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 18.0,
+     "seconds_remaining": 436878,
+     "days_remaining": 5.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 17.0,
+     "seconds_remaining": 523278,
+     "days_remaining": 6.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 15.0,
+     "seconds_remaining": 609678,
+     "days_remaining": 7.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 15.5,
+     "seconds_remaining": 696078,
+     "days_remaining": 8.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 15.0,
+     "seconds_remaining": 782459,
+     "days_remaining": 9.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+     "amount_egld": 30.97263089701482,
+     "seconds_remaining": 4878,
+     "days_remaining": 0.06
+    }
+   ],
+   "total_pending_egld": 185.47263089701482
+  },
+  {
+   "wallet": "erd1txcnauupsrewmv7mlx9m7mldjmnv0sfjznzadt76akxvknk9uhgqgf8fst",
+   "label": "Unknown",
+   "balance_egld": 0.005054020657505377,
+   "nonce": 1747,
+   "this_week_undelegated": 183.07942581009775,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 183.07942581009775,
+     "timestamp": 1787504514
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 183.07942581009775,
+     "seconds_remaining": 696068,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 183.07942581009775
+  },
+  {
+   "wallet": "erd187aj44aq3537e8l5yfrp6gpmumpxjge7cxm045ewmyyaswkna3ksvhc487",
+   "label": "Unknown",
+   "balance_egld": 0.06644624118534716,
+   "nonce": 1814,
+   "this_week_undelegated": 177.08460100726901,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 177.08460100726901,
+     "timestamp": 1787394072
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 177.08460100726901,
+     "seconds_remaining": 609672,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 177.08460100726901
+  },
+  {
+   "wallet": "erd1tq0z62snuwgj38t5cc4auna4mytm6jza28vlw3vy2pusr42k8shqu2stpp",
+   "label": "Unknown",
+   "balance_egld": 0.16342082381483103,
+   "nonce": 1770,
+   "this_week_undelegated": 114.76473020754668,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 114.76473020754668,
+     "timestamp": 1787394024
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 114.76473020754668,
+     "seconds_remaining": 609656,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 114.76473020754668
+  },
+  {
+   "wallet": "erd14ztga28vxd54hafqj8lx89slyhfg3vzkuq8jr4ave70nnvgn4dhs4m25mx",
+   "label": "Unknown",
+   "balance_egld": 2.519031348319288,
+   "nonce": 305,
+   "this_week_undelegated": 101.55683019519026,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 101.55683019519026,
+     "timestamp": 1787458200
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 101.55683019519026,
+     "seconds_remaining": 696065,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 101.55683019519026
+  },
+  {
+   "wallet": "erd1y7w3f0lg3lr994r6xxp20vwk0j9q7ygc24mjqt2hqjejm7f9pkfq5xnv78",
+   "label": "Unknown",
+   "balance_egld": 7.904909982415279,
+   "nonce": 4757,
+   "this_week_undelegated": 100.0,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 100.0,
+     "timestamp": 1787424900
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 100.0,
+     "seconds_remaining": 696083,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 100.0
+  },
+  {
+   "wallet": "erd19amake26mp4f3662rdxmfcmsz9gjhujjkg9a689dxf5zn28wemcs6zdpxs",
+   "label": "Unknown",
+   "balance_egld": 3.2775248198594062,
+   "nonce": 2043,
+   "this_week_undelegated": 97.35236433473582,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 44.0,
+     "timestamp": 1787410194
+    },
+    {
+     "provider": "egldstakingprovider",
+     "amount_egld": 53.35236433473583,
+     "timestamp": 1787410314
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 44.0,
+     "seconds_remaining": 609672,
+     "days_remaining": 7.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+     "amount_egld": 53.35236433473583,
+     "seconds_remaining": 609672,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 97.35236433473582
+  },
+  {
+   "wallet": "erd1te8dvru8j6eqcpar8u5x7em2x7k824lszz8vn8utnpd2lkxj05jswuhsr8",
+   "label": "Unknown",
+   "balance_egld": 0.7568703919148734,
+   "nonce": 1238,
+   "this_week_undelegated": 71.5142778016361,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 71.5142778016361,
+     "timestamp": 1787427138
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 71.5142778016361,
+     "seconds_remaining": 696060,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 71.5142778016361
+  },
+  {
+   "wallet": "erd1wjkkhpq0zjwyr0g3l6wz79lmndv5nx5fg2mty5nd9tcu6hxlvkysyp7tf4",
+   "label": "Unknown",
+   "balance_egld": 1.1752913695411584,
+   "nonce": 330,
+   "this_week_undelegated": 55.612541090009714,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 55.612541090009714,
+     "timestamp": 1787493090
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 55.612541090009714,
+     "seconds_remaining": 696072,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 55.612541090009714
+  },
+  {
+   "wallet": "erd14xq3vl6xt2wld9ryfrz7gzv495glucymjc2k58xxm0eqzx8cye0skzztqu",
+   "label": "Unknown",
+   "balance_egld": 3.216598442832576,
+   "nonce": 537,
+   "this_week_undelegated": 55.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 55.0,
+     "timestamp": 1787417940
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 55.0,
+     "seconds_remaining": 609681,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 55.0
+  },
+  {
+   "wallet": "erd10jgnnyq7awklsvs0ftx2wh6fjv6crwufsvxnznhgd5h79pk5mmgsdug3wz",
+   "label": "Unknown",
+   "balance_egld": 3.1348377187151253,
+   "nonce": 1423,
+   "this_week_undelegated": 50.0,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 50.0,
+     "timestamp": 1787508462
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 50.0,
+     "seconds_remaining": 782472,
+     "days_remaining": 9.06
+    }
+   ],
+   "total_pending_egld": 50.0
+  },
+  {
+   "wallet": "erd1tcvmmg43qcvagjkp3em5x4gpdufdxr46nnsuesmaf4na8s8u4glqd3vfa4",
+   "label": "Unknown",
+   "balance_egld": 0.00206338,
+   "nonce": 125,
+   "this_week_undelegated": 16.71,
+   "legs": [
+    {
+     "provider": "p2p_org_",
+     "amount_egld": 16.71,
+     "timestamp": 1787511684
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd",
+     "amount_egld": 16.71,
+     "seconds_remaining": 782495,
+     "days_remaining": 9.06
+    }
+   ],
+   "total_pending_egld": 16.71
+  },
+  {
+   "wallet": "erd14mgh84elv55r3ykpf8l3udzfadp5hhqxcjygfa5wrz4pxau8edqqz7lm8p",
+   "label": "Unknown",
+   "balance_egld": 0.3393807496674208,
+   "nonce": 15672,
+   "this_week_undelegated": 10.434181656782256,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 10.434181656782256,
+     "timestamp": 1787477850
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 10.434181656782256,
+     "seconds_remaining": 696081,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 10.434181656782256
+  },
+  {
+   "wallet": "erd1z0rmjkdqsnmukyx2xnycyv78pp2xtsf8dhena6r9jg7s9rjkj3jsqjz2nm",
+   "label": "Unknown",
+   "balance_egld": 0.027470698153305745,
+   "nonce": 215,
+   "this_week_undelegated": 7.777941878915251,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 7.777941878915251,
+     "timestamp": 1787412696
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 7.777941878915251,
+     "seconds_remaining": 609672,
+     "days_remaining": 7.06
+    }
+   ],
+   "total_pending_egld": 7.777941878915251
+  },
+  {
+   "wallet": "erd1ycxpwl2uy2n7yuze8w36hej0dzws222gxscy28kmqkq075mnfnjs3sf68t",
+   "label": "Unknown",
+   "balance_egld": 2.2896218370906154,
+   "nonce": 26,
+   "this_week_undelegated": 2.0,
+   "legs": [
+    {
+     "provider": "Synexis",
+     "amount_egld": 2.0,
+     "timestamp": 1787481738
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqp8lllls9jsunl",
+     "amount_egld": 1.0,
+     "seconds_remaining": 696072,
+     "days_remaining": 8.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqd8llllslmf3hu",
+     "amount_egld": 2.0,
+     "seconds_remaining": 0,
+     "days_remaining": 0.0
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqthllllsy5r6rh",
+     "amount_egld": 1.0,
+     "seconds_remaining": 696072,
+     "days_remaining": 8.06
+    },
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+     "amount_egld": 2.0,
+     "seconds_remaining": 696072,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 6.0
+  },
+  {
+   "wallet": "erd1wnzx0rpdud8u8wj5z0z70clgp3naf4x33hk6nsjpsqwkxzluku7sdhvcnp",
+   "label": "Unknown",
+   "balance_egld": 0.2930301188180129,
+   "nonce": 1545,
+   "this_week_undelegated": 4.79060090523061,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 4.79060090523061,
+     "timestamp": 1787422872
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 4.79060090523061,
+     "seconds_remaining": 696035,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 4.79060090523061
+  },
+  {
+   "wallet": "erd17ux6xs7xq43seelg7725p4f3t6xdcdkp3j6p2uwejrval9gdg6eqsr3dw2",
+   "label": "Unknown",
+   "balance_egld": 0.22142613059699126,
+   "nonce": 521,
+   "this_week_undelegated": 4.73185188864136,
+   "legs": [
+    {
+     "provider": "procryptostaking",
+     "amount_egld": 4.73185188864136,
+     "timestamp": 1787527602
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+     "amount_egld": 4.73185188864136,
+     "seconds_remaining": 782475,
+     "days_remaining": 9.06
+    }
+   ],
+   "total_pending_egld": 4.73185188864136
+  },
+  {
+   "wallet": "erd1shzttzzwuhc6hy4v70v2l54a7euv7p4u4z8v97j7z698ywv9997qdg9a00",
+   "label": "Unknown",
+   "balance_egld": 2.8777881901634927,
+   "nonce": 1836,
+   "this_week_undelegated": 4.109969430301205,
+   "legs": [
+    {
+     "provider": "pi-staking",
+     "amount_egld": 4.109969430301205,
+     "timestamp": 1787327766
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 4.109969430301205,
+     "seconds_remaining": 523308,
+     "days_remaining": 6.06
+    }
+   ],
+   "total_pending_egld": 4.109969430301205
+  },
+  {
+   "wallet": "erd127tq5nu98p20dy37k2umn456u94tk0s3s2g0x764spn0c8sj7z9s69twx2",
+   "label": "Unknown",
+   "balance_egld": 0.24350578867436734,
+   "nonce": 38,
+   "this_week_undelegated": 1.4,
+   "legs": [
+    {
+     "provider": "pi-staking",
+     "amount_egld": 1.4,
+     "timestamp": 1787453964
+    }
+   ],
+   "pending_unbonding": [
+    {
+     "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+     "amount_egld": 1.4,
+     "seconds_remaining": 696081,
+     "days_remaining": 8.06
+    }
+   ],
+   "total_pending_egld": 1.4
+  }
+ ],
+ "unbonding_pool_total_egld": 66037.27920760101,
+ "run21_unbond_wallet": {
+  "wallet": "erd1daqlaezxx22rzyxnqx5ddkykm5ajelt0hetjnstm7rxqg78xqusqazv9ms",
+  "delegation": [
+   {
+    "address": "erd1daqlaezxx22rzyxnqx5ddkykm5ajelt0hetjnstm7rxqg78xqusqazv9ms",
+    "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpvhlllls6yl73z",
+    "userUnBondable": "80279227552899939589070",
+    "userActiveStake": "0",
+    "claimableRewards": "1944795198011313050028",
+    "userUndelegatedList": [
+     {
+      "amount": "80279227552899939589070",
+      "seconds": 0
+     }
+    ]
+   },
+   {
+    "address": "erd1daqlaezxx22rzyxnqx5ddkykm5ajelt0hetjnstm7rxqg78xqusqazv9ms",
+    "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd",
+    "userUnBondable": "0",
+    "userActiveStake": "0",
+    "claimableRewards": "3962133370534277110043",
+    "userUndelegatedList": [
+     {
+      "amount": "149585378781255184713989",
+      "seconds": 5279
+     }
+    ]
+   }
+  ],
+  "balance_egld": 2369.526068877824,
+  "outbound_7d": 0,
+  "inbound_7d": 1
+ },
+ "mex_prev": {
+  "supply": "3996189141051",
+  "circulatingSupply": 3996189141051,
+  "totalSupply": 8045920000000,
+  "marketCap": 1023173
+ },
+ "mex_cur": {
+  "supply": "3990158520363",
+  "circulatingSupply": 3990173598687,
+  "totalSupply": 8045920000000,
+  "marketCap": 1333410
+ },
+ "mex_pair_prev": {
+  "address": "erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2",
+  "id": "EGLDMEX-0be9e5",
+  "symbol": "EGLDMEX",
+  "name": "EGLDMEXLP",
+  "price": 2.1800364342183873,
+  "totalValue": 291459.14885068836,
+  "volume24h": 1611.391594583785,
+  "tradesCount": 2001771,
+  "tradesCount24h": 125,
+  "deployedAt": 1636895478,
+  "state": "active",
+  "type": "experimental",
+  "exchange": "xexchange",
+  "basePrevious24hPrice": 2.4951808690888e-07,
+  "quotePrevious24hPrice": 2.67142933610957,
+  "baseId": "MEX-455c57",
+  "basePrice": 2.5603716335458884e-07,
+  "baseSymbol": "MEX",
+  "baseName": "MEX",
+  "quoteId": "WEGLD-bd4d79",
+  "quotePrice": 2.7635776911668803,
+  "quoteSymbol": "WEGLD",
+  "quoteName": "WrappedEGLD"
+ },
+ "mex_pair_cur": {
+  "address": "erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2",
+  "id": "EGLDMEX-0be9e5",
+  "symbol": "EGLDMEX",
+  "name": "EGLDMEXLP",
+  "price": 2.816651265814404,
+  "totalValue": 359078.1005511449,
+  "volume24h": 6114.429600923878,
+  "tradesCount": 2003588,
+  "tradesCount24h": 278,
+  "deployedAt": 1636895478,
+  "state": "active",
+  "type": "experimental",
+  "exchange": "xexchange",
+  "basePrevious24hPrice": 3.2582320601866e-07,
+  "quotePrevious24hPrice": 3.468283253255937,
+  "baseId": "MEX-455c57",
+  "basePrice": 3.3417335112217705e-07,
+  "baseSymbol": "MEX",
+  "baseName": "MEX",
+  "quoteId": "WEGLD-bd4d79",
+  "quotePrice": 3.532967519391509,
+  "quoteSymbol": "WEGLD",
+  "quoteName": "WrappedEGLD"
+ },
+ "undelegated_this_week_total_egld": 70498.47946500029,
+ "undelegate_callers_count": 158,
+ "unbonding_pool_coverage_note": "queried 60 of 158 unDelegate callers (top by amount plus first-pass sample)"
+}

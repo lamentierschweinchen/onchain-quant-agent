@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-08-17",
+    "last_updated": "2026-08-24",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1087,6 +1087,14 @@
       "notes": "Nonce 55, balance ~2,254 EGLD. unDelegated 149,585 from p2p_org_ on 2026-08-15 and 80,279 from erd1qqqq...pvhlllls6yl73z on 2026-08-14, both as zero-value txs with the amount in the data field; both confirmed unbonding via /accounts/{addr}/delegation. Historically received ~110 EGLD/day reward drips from erd1l23apusdq4j6jc and forwarded 12,100-15,000 EGLD chunks to erd1g4dlmma7zmt7ye (nonce 7, zero balance). This single wallet explains 97% of run #21's delegation TVL decline and the entire staked-minus-delegated residual flip.",
       "first_seen": "2026-08-17",
       "discovered_run": 21
+    },
+    "erd1qkazru7aw5heycg7c79lwmcnnczgjj2td2dg8j574h586ahwkptq20zlgy": {
+      "name": "Unknown Whale I - second operator wallet (erd1qkazru7aw5)",
+      "category": "whale",
+      "subcategory": "otc_operator_inventory",
+      "notes": "Nonce 566, ~46,629 EGLD. Identified run #22 as Whale I's largest external counterparty and then resolved as the SAME operator: over 30 days it sent 37,188 EGLD to Whale I and received 52,551 from it, and essentially nothing else (its five other counterparties total ~12,800 out and ~1 in). Closes the run #20/#21 Whale I classification - both wallets are OTC operator inventory and their hub take must be excluded from the demand instruments.",
+      "first_seen": "2026-08-24",
+      "discovered_run": 22
     }
   },
   "exchange_routers": {
@@ -1316,6 +1324,30 @@
       "notes": "Zero-balance pass-through that forwarded 23,336 EGLD from the OTC desks to Binance.com in the 2026-08-03..2026-08-10 window.",
       "first_seen": "2026-08-10",
       "discovered_run": 20
+    },
+    "erd1dmaxfyp426yr6dtjy9cs3xchnse67rnhtlh8ylnapauhhuj254dskg037g": {
+      "name": "Bybit->OTC Desk Feeder (run #22)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 50,612 EGLD from Bybit into the UPbit OTC desk complex in the 2026-08-17..2026-08-24 window.",
+      "first_seen": "2026-08-24",
+      "discovered_run": 22
+    },
+    "erd1zxlumw5tw2wuc8yrfktea0hy6a7p0lk770h8nf8ktzkgy8fzslvqjy2rek": {
+      "name": "OTC Desk->Bybit Router (run #22)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 23,317 EGLD from the OTC desks to Bybit in the 2026-08-17..2026-08-24 window.",
+      "first_seen": "2026-08-24",
+      "discovered_run": 22
+    },
+    "erd1kyc7l2pgc9j46jg0zknqfwxrxtn3nkas05war97rjcwl0rhh3hms548pf2": {
+      "name": "OTC Desk->Gate.io Router (run #22)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 23,020 EGLD from the OTC desks to Gate.io in the 2026-08-17..2026-08-24 window.",
+      "first_seen": "2026-08-24",
+      "discovered_run": 22
     }
   },
   "unknown_whales": {
@@ -1390,6 +1422,16 @@
       "name": "Whale migration destination (nonce 0)",
       "category": "whale",
       "notes": "run #17: received the full 165,006 from whale erd102hmf79en4, which went to zero. Fresh nonce-0 wallet - a wallet migration, not a sale. Distinct from the erd15ku2r2j6 KuCoin exit."
+    }
+  },
+  "validators": {
+    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqm8llllsyhrgzd": {
+      "name": "p2p_org_ delegation contract (DEREGISTERED run #22)",
+      "category": "validator",
+      "subcategory": "deregistered",
+      "notes": "Called unStakeNodes in the 2026-08-17..2026-08-24 window, taking stake 67,500 EGLD and topUp 2,083 to ZERO locked. numNodes still reads 50, APR reads 0, and numUsers still reads 1,244 - the operator withdrew the nodes from under an intact delegator book. First operator deregistration in twenty-two runs. Owner erd1jxuc98ud0pe7lcf3c0d4x0xf25wrf63d2n80t7muyucl6ptym3hqk0252k. Detection signature: locked == 0 with numNodes > 0; the provider does NOT drop out of /providers.",
+      "first_seen": "2026-08-24",
+      "discovered_run": 22
     }
   }
 }
