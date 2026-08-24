@@ -426,7 +426,8 @@ export interface UnbondingInFlight {
   legs: UnbondingLeg[]
   share_of_delegation_decline_pct?: number | null
   raw_residual_egld: number
-  corrected_direct_node_egld: number
+  corrected_direct_node_egld: number | null
+  status?: string
 }
 
 export interface StakingIntelligence {

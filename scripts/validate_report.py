@@ -78,6 +78,28 @@ DASHBOARD_INVARIANTS = [
      ["wallet", "total_egld", "legs", "raw_residual_egld", "corrected_direct_node_egld"]),
 ]
 
+# Required fields that the dashboard DOES guard against null, and which may
+# therefore legitimately be null in a report. Everything else in
+# DASHBOARD_INVARIANTS must be non-null: run #22 shipped
+# `unbonding_in_flight.corrected_direct_node_egld: null` — a deliberate and
+# correct editorial choice, because the residual carried no extractable
+# direct-node signal that week — and `formatEgldBare(null).toLocaleString()`
+# unmounted the entire React tree. Presence is NOT sufficient; the pre-run #22
+# check only rejected nulls in a hand-listed set of string fields.
+#
+# To add an entry here you must FIRST add the null branch to the component.
+NULLABLE_REQUIRED = {
+    "staking_intelligence.unbonding_in_flight.corrected_direct_node_egld",
+    "staking_intelligence.top_providers[].previous_locked_egld",
+    "staking_intelligence.top_providers[].wow_change_egld",
+    "token_activity.top_by_holders[].previous_holders",
+    "token_activity.top_by_holders[].holders_change",
+    "defi_activity.protocol_breakdown[].transfers_24h",
+    "defi_activity.protocol_breakdown[].tvl_wow_change_pct",
+    "pre_committed_tests[].outcome",
+}
+
+
 # Enum constraints the dashboard relies on (TS string-literal unions).
 # These ARE in the JSON Schema, but jsonschema-validate may not flag
 # them as critical — listing them explicitly produces clearer errors.
@@ -157,8 +179,12 @@ def check_dashboard_invariants(report):
             for field in required:
                 if field not in item:
                     errors.append(f"  {path}[{i}]: missing required field '{field}' (keys present: {sorted(item.keys())})")
-                elif item[field] is None and field in {"hash", "sender", "receiver", "identity", "address", "metric", "label", "exchange"}:
-                    errors.append(f"  {path}[{i}].{field}: required field is null")
+                elif item[field] is None and f"{path}.{field}" not in NULLABLE_REQUIRED:
+                    errors.append(
+                        f"  {path}[{i}].{field}: required field is PRESENT BUT NULL. "
+                        f"The dashboard formats it without a null guard, so this crashes the React tree "
+                        f"(HTTP 200, blank page). Either supply a value, add a null branch to the component "
+                        f"AND list '{path}.{field}' in NULLABLE_REQUIRED, or drop the containing object.")
     return errors
 
 

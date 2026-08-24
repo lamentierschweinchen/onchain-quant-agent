@@ -125,7 +125,7 @@ export function UnbondingCard({ data, reportDate }: Props) {
             Destination
           </div>
           <p className="mt-1 text-[12px] text-text-primary font-medium">
-            Unresolved — next week&apos;s biggest unknown.
+            {data.status ?? 'Unresolved — next week\u2019s biggest unknown.'}
           </p>
           <p className="mt-1 text-[11px] text-text-secondary leading-relaxed">
             A delegation contract = provider rotation, neutral. An exchange or an
@@ -144,14 +144,21 @@ export function UnbondingCard({ data, reportDate }: Props) {
           </span>
           <span>
             corrected direct-node{' '}
-            <span
-              className={
-                data.corrected_direct_node_egld >= 0 ? 'text-up' : 'text-down'
-              }
-            >
-              {data.corrected_direct_node_egld > 0 ? '+' : ''}
-              {formatEgldBare(data.corrected_direct_node_egld)}
-            </span>
+            {data.corrected_direct_node_egld == null ? (
+              <span className="text-text-secondary">
+                no signal extractable — the residual is fully absorbed by
+                unbonding in flight
+              </span>
+            ) : (
+              <span
+                className={
+                  data.corrected_direct_node_egld >= 0 ? 'text-up' : 'text-down'
+                }
+              >
+                {data.corrected_direct_node_egld > 0 ? '+' : ''}
+                {formatEgldBare(data.corrected_direct_node_egld)}
+              </span>
+            )}
           </span>
         </div>
       </div>
