@@ -5,6 +5,7 @@ import {
   formatUsd,
 } from '../lib/formatters'
 import type { ReportMetadata, ManifestEntry } from '../types/report'
+import { PageTabs } from './PageTabs'
 
 interface HeaderProps {
   metadata: ReportMetadata
@@ -46,6 +47,7 @@ export function Header({
   const delta = formatDelta(priceDelta, 'pct')
 
   const totalOk = metadata.data_sources_ok.length
+  const recovered = metadata.data_sources_recovered ?? []
   const totalFailed = metadata.data_sources_failed.length
 
   return (
@@ -60,9 +62,13 @@ export function Header({
               MultiversX Intelligence
             </span>
             <span className="text-[10px] uppercase tracking-[0.15em] text-text-muted">
-              Weekly On-Chain Brief · v2
+              Weekly Onchain Brief · v2
             </span>
           </div>
+        </div>
+
+        <div className="ml-4">
+          <PageTabs active="home" />
         </div>
 
         {/* Spacer */}
@@ -115,10 +121,10 @@ export function Header({
           )}
         </div>
 
-        <div className="h-3 w-px bg-border" />
+        <div className="hidden sm:block h-3 w-px bg-border" />
 
-        {/* Period */}
-        <span className="text-text-muted">
+        {/* Period — secondary on a phone, where the selector already names the week */}
+        <span className="hidden sm:inline text-text-muted">
           Period{' '}
           <span className="text-text-secondary font-mono">
             {formatDate(metadata.period_start.slice(0, 10))}
@@ -132,7 +138,10 @@ export function Header({
         <div className="flex-1" />
 
         {/* Data source dots */}
-        <div className="flex items-center gap-3">
+        {/* The data-source dot strip is ~240px of fixed-width content and was
+            forcing the whole page to scroll horizontally at 375px. It is
+            provenance detail, not a headline, so it waits for a wider viewport. */}
+        <div className="hidden md:flex items-center gap-3">
           {totalOk > 0 && (
             <div className="flex items-center gap-1.5">
               <div className="flex gap-[3px]">
@@ -147,6 +156,28 @@ export function Header({
               <span className="text-text-muted">{totalOk} ok</span>
             </div>
           )}
+          {/* A source that failed once and was re-queried successfully is not
+              missing data. Counting it as "failed" told the reader the report
+              had holes it does not have. */}
+          {recovered.length > 0 && (
+            <div className="flex items-center gap-1.5">
+              <div className="flex gap-[3px]">
+                {recovered.slice(0, 5).map((src) => (
+                  <span
+                    key={src}
+                    title={src}
+                    className="w-1.5 h-1.5 rounded-full bg-severity-medium"
+                  />
+                ))}
+              </div>
+              <span
+                className="text-severity-medium cursor-help"
+                title={recovered.join('\n\n')}
+              >
+                {recovered.length} retried
+              </span>
+            </div>
+          )}
           {totalFailed > 0 && (
             <div className="flex items-center gap-1.5">
               <div className="flex gap-[3px]">
@@ -158,14 +189,19 @@ export function Header({
                   />
                 ))}
               </div>
-              <span className="text-down">{totalFailed} failed</span>
+              <span
+                className="text-down cursor-help"
+                title={metadata.data_sources_failed.join('\n\n')}
+              >
+                {totalFailed} missing
+              </span>
             </div>
           )}
         </div>
 
-        <div className="h-3 w-px bg-border" />
+        <div className="hidden sm:block h-3 w-px bg-border" />
 
-        <span className="text-text-muted">
+        <span className="hidden sm:inline text-text-muted">
           Generated{' '}
           <span className="text-text-secondary font-mono">
             {formatTimestamp(metadata.generated_at)}
