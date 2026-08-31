@@ -1017,6 +1017,23 @@ Run #10 traced the pipeline's ultimate origin to Binance through a source-funder
 
 **Consequence**: the Binance-custody watch (open since run #9) and the OTC-pipeline watch (open since run #6) are ONE instrument. UPbit is no longer the sole net source. Track hot-wallet outbound above 10,000 EGLD against the desk inbound list every run.
 
+### THE PUBLISH STEP DEPLOYS THE WORKING TREE, NOT THE COMMIT (run #23, 2026-08-31)
+
+`cd dashboard && vercel --prod` uploads the local working directory. Every run before #23 assumed that was equivalent to deploying the pushed commit. It is not, and the difference is currently load-bearing:
+
+| Deployed from | Renders |
+|---|---|
+| clean checkout of HEAD | eight original sections only - NO ErrataBanner, Scoreboard, OtcPipeline or UnbondingCard |
+| local working tree | all of the above, plus an "ONCHAIN / CODE" tab bar whose `/code` route returns HTTP 404 |
+
+The cause: committed `src/App.tsx` renders the eight sections directly and never imports `src/pages/HomePage.tsx`, which IS committed and DOES wire the four run #21 panels. Only an UNCOMMITTED `App.tsx` refactor references it, alongside untracked `PageTabs.tsx`, `CodePage.tsx`, `useRoute.tsx`, `useDigests.ts` and `useStats.ts` from another session.
+
+**Rules**:
+1. Before deploying, diff the dashboard working tree against HEAD. If it is dirty, say so in the run summary - the deployed site is then not reproducible from the repo.
+2. Never "restore production to the committed state" without checking what the committed state actually renders. Run #23 did exactly that and removed four panels that had been live for two weeks; it had to redeploy the working tree to undo it.
+3. The post-deploy render check must assert on PANEL PRESENCE, not just on the absence of console errors. A page missing four sections throws nothing.
+
+
 
 ## Evolution Log
 
