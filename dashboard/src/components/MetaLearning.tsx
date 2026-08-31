@@ -1,4 +1,5 @@
 import type { MetaLearning as MetaLearningType } from '../types/report'
+import { CodeAwareText } from './ui/CodeAwareText'
 
 interface MetaLearningProps {
   data?: MetaLearningType
@@ -114,7 +115,7 @@ export function MetaLearning({ data }: MetaLearningProps) {
                     className="flex items-start gap-2 text-[12px] text-text-secondary leading-relaxed"
                   >
                     <span className="text-accent-cyan mt-1 flex-shrink-0">•</span>
-                    <span>{q}</span>
+                    <CodeAwareText text={q} />
                   </li>
                 ))}
               </ul>
@@ -131,7 +132,7 @@ export function MetaLearning({ data }: MetaLearningProps) {
                   className="flex items-start gap-2 text-[12px] text-text-primary leading-relaxed"
                 >
                   <span className="text-accent-cyan mt-1 flex-shrink-0">•</span>
-                  <span className="font-mono text-[11.5px]">{m}</span>
+                  <CodeAwareText text={m} className="text-[11.5px]" />
                 </li>
               ))}
             </ul>
@@ -150,7 +151,7 @@ export function MetaLearning({ data }: MetaLearningProps) {
                     <span className="text-accent-cyan font-mono mt-0 flex-shrink-0">
                       {String(idx + 1).padStart(2, '0')}.
                     </span>
-                    <span>{r}</span>
+                    <CodeAwareText text={r} />
                   </li>
                 ))}
               </ol>

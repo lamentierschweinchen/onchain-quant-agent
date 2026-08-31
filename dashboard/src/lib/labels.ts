@@ -119,6 +119,56 @@ const OVERRIDES: Record<string, string> = {
 }
 
 /**
+ * What happened to a claimed reward, or to a provider operator's fee income.
+ * The collector emits these as classifier slugs; a reader should see the outcome.
+ */
+export const FATE_LABELS: Record<string, string> = {
+  sold: 'Sold on an exchange',
+  held: 'Held in wallet',
+  held_or_other: 'Sent to an unlabelled wallet',
+  rotated_provider: 'Moved to another provider',
+  defi_deposit: 'Deposited into DeFi',
+  bridge: 'Bridged off-chain',
+  unknown: 'Unclassified',
+}
+
+/** Compact forms for table cells where the column already gives the context. */
+export const FATE_LABELS_SHORT: Record<string, string> = {
+  sold: 'Exchange',
+  held: 'Held',
+  held_or_other: 'Unlabelled wallet',
+  rotated_provider: 'Another provider',
+  defi_deposit: 'DeFi',
+  bridge: 'Bridge',
+  unknown: 'Unclassified',
+}
+
+/** Delegator size bands, keyed by claim value. */
+export const TIER_LABELS: Record<string, string> = {
+  whale: 'Whale',
+  institutional: 'Institutional',
+  mid_tier: 'Mid-tier',
+  retail: 'Retail',
+}
+
+/** Size band thresholds, so the bands are self-explanatory in the UI. */
+export const TIER_RANGES: Record<string, string> = {
+  whale: 'over 1,000 EGLD a claim',
+  institutional: '50–1,000 EGLD',
+  mid_tier: '1–50 EGLD',
+  retail: 'under 1 EGLD',
+}
+
+export function fateLabel(raw: string, short = false): string {
+  const map = short ? FATE_LABELS_SHORT : FATE_LABELS
+  return map[raw] ?? humanizeKey(raw)
+}
+
+export function tierLabel(raw: string): string {
+  return TIER_LABELS[raw] ?? humanizeKey(raw)
+}
+
+/**
  * Short explanations for terms the report leans on. Rendered as a subtitle so a
  * first-time reader is not expected to already know the model's vocabulary.
  */

@@ -1,5 +1,6 @@
 import type { WithdrawnClaim } from '../types/report'
 import { formatDate } from '../lib/formatters'
+import { ExpandableText } from './ui/ExpandableText'
 
 interface Props {
   /** Claims this report asserted that a LATER run withdrew. */
@@ -35,21 +36,25 @@ function ClaimRow({
       >
         {claim.claim}
       </p>
-      <p className="mt-1 text-[11px] text-text-secondary leading-relaxed">
+      <div className="mt-1 text-[11px] text-text-secondary leading-relaxed">
         <span className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
           {tone === 'superseded'
             ? `withdrawn by run #${claim.withdrawn_in_run}`
             : `asserted in run${claim.asserted_in_runs.length > 1 ? 's' : ''} #${claim.asserted_in_runs.join(', #')}`}
-        </span>{' '}
-        — {claim.reason}
-      </p>
+        </span>
+        <ExpandableText text={claim.reason} lines={2} moreLabel="Why" />
+      </div>
       {claim.replacement && (
-        <p className="mt-1 text-[11px] text-text-primary leading-relaxed">
+        <div className="mt-1 text-[11px] text-text-primary leading-relaxed">
           <span className="font-mono text-[10px] uppercase tracking-widest text-accent-cyan">
             replaced by
-          </span>{' '}
-          {claim.replacement}
-        </p>
+          </span>
+          <ExpandableText
+            text={claim.replacement}
+            lines={2}
+            moreLabel="Read the replacement"
+          />
+        </div>
       )}
       {jumpDate && onJumpToRun && (
         <button
@@ -123,11 +128,17 @@ export function ErrataBanner({ superseded, own, onJumpToRun }: Props) {
                 : `This run withdrew ${own.length} earlier claims`}
             </h3>
           </header>
-          <ul className="p-4 space-y-3">
-            {own.map((c, i) => (
-              <ClaimRow key={i} claim={c} tone="own" onJumpToRun={onJumpToRun} />
-            ))}
-          </ul>
+          <details className="group">
+            <summary className="cursor-pointer list-none px-4 py-2 text-[10.5px] font-mono uppercase tracking-widest text-text-muted transition-colors duration-100 hover:text-accent-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60 focus-visible:ring-inset">
+              <span className="group-open:hidden">Show what changed +</span>
+              <span className="hidden group-open:inline">Hide −</span>
+            </summary>
+            <ul className="px-4 pb-4 space-y-3">
+              {own.map((c, i) => (
+                <ClaimRow key={i} claim={c} tone="own" onJumpToRun={onJumpToRun} />
+              ))}
+            </ul>
+          </details>
         </section>
       )}
     </div>

@@ -365,11 +365,21 @@ export interface StakingChurn {
   providers_losing_delegators: number | null
 }
 
+/**
+ * The collector emits `total_events` / `by_count` / `by_value_egld`; the original
+ * type declared `events` / `fates_by_*`, which never matched any report. Because
+ * the fetched JSON is cast rather than parsed, TypeScript could not catch it and
+ * the fates table rendered a blank event count and all-zero fates from run #11
+ * until run #23. Both spellings are accepted so the whole archive renders.
+ */
 export interface RewardFateTier {
-  events: number
+  events?: number
+  total_events?: number
   total_value_egld: number
-  fates_by_count: Record<string, number>
-  fates_by_value_egld: Record<string, number>
+  fates_by_count?: Record<string, number>
+  by_count?: Record<string, number>
+  fates_by_value_egld?: Record<string, number>
+  by_value_egld?: Record<string, number>
 }
 
 export interface RewardOperatorEntry {

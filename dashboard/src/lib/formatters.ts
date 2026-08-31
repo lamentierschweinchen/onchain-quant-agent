@@ -35,8 +35,63 @@ export function formatUsd(value: number): string {
   if (value >= 1_000) return `$${(value / 1_000).toFixed(1)}K`
   if (value >= 1) return `$${value.toFixed(2)}`
   if (value >= 0.001) return `$${value.toFixed(4)}`
-  // Very small prices — scientific
-  return `$${value.toExponential(2)}`
+  // Sub-thousandth prices: zero-subscript, never scientific notation.
+  return formatTokenPrice(value)
+}
+
+const SUBSCRIPT_DIGITS = '₀₁₂₃₄₅₆₇₈₉'
+
+function toSubscript(n: number): string {
+  return String(n)
+    .split('')
+    .map((d) => SUBSCRIPT_DIGITS[Number(d)])
+    .join('')
+}
+
+/**
+ * Split a sub-1 number into its leading-zero count and significant digits,
+ * without ever going through exponential notation.
+ * 0.00000035410864 → { zeros: 6, digits: "35410864" }
+ */
+function decimalParts(abs: number): { zeros: number; digits: string } {
+  const frac = abs.toFixed(20).split('.')[1] ?? ''
+  let zeros = 0
+  while (zeros < frac.length && frac[zeros] === '0') zeros++
+  const digits = frac.slice(zeros).replace(/0+$/, '')
+  return { zeros, digits }
+}
+
+/**
+ * Price of one token. Micro-cap tokens on this chain trade at 1e-7, which
+ * `toExponential` renders as "$3.54e-7" — unreadable, and indistinguishable
+ * from "$3.54e-8" at a glance. Zero-subscript keeps the magnitude legible:
+ *   0.00000035410864 → "$0.0₆354"
+ *   0.000190791      → "$0.0₃190"
+ * Pair with `formatPriceFull` for the title/aria-label, since a screen reader
+ * cannot read a subscript.
+ */
+export function formatTokenPrice(value: number | null | undefined): string {
+  if (value == null || !Number.isFinite(value)) return '—'
+  if (value === 0) return '$0.00'
+  const sign = value < 0 ? '-' : ''
+  const abs = Math.abs(value)
+  if (abs >= 1) return `${sign}$${abs.toFixed(2)}`
+  if (abs >= 0.01) return `${sign}$${abs.toFixed(4)}`
+
+  const { zeros, digits } = decimalParts(abs)
+  const sig = digits.slice(0, 3) || '0'
+  if (zeros >= 3) return `${sign}$0.0${toSubscript(zeros)}${sig}`
+  return `${sign}$${abs.toFixed(zeros + 3)}`
+}
+
+/** Full-precision price for tooltips, copy and screen readers. */
+export function formatPriceFull(value: number | null | undefined): string {
+  if (value == null || !Number.isFinite(value)) return 'no price'
+  if (value === 0) return '$0.00'
+  const abs = Math.abs(value)
+  if (abs >= 0.01) return `$${abs.toFixed(4)}`
+  const { zeros, digits } = decimalParts(abs)
+  return `$0.${'0'.repeat(zeros)}${digits.slice(0, 6)}`
 }
 
 /** Compact USD without sign — for chart axes */

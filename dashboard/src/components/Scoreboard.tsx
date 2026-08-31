@@ -5,6 +5,7 @@ import type {
 } from '../types/report'
 import { NullState } from './ui/NullState'
 import { formatDateShort } from '../lib/formatters'
+import { ExpandableText } from './ui/ExpandableText'
 
 interface Props {
   /** Tests carried by the currently selected report. */
@@ -206,29 +207,39 @@ function TestCard({
         )}
       </div>
 
-      <p className="mt-1.5 text-[11px] text-text-secondary leading-relaxed">
-        <span className="font-mono text-[9.5px] uppercase tracking-widest text-text-muted">
-          What would settle it
-        </span>{' '}
-        {test.threshold}
-      </p>
+      {/* The verdict is the headline; the evidence behind it is opt-in. Showing
+          claim + threshold + measurement + resolution for every test turned this
+          panel into a quarter of the page. */}
+      {test.resolution && (
+        <ExpandableText
+          text={test.resolution}
+          lines={2}
+          className="mt-1.5 text-[11.5px] text-text-primary leading-relaxed"
+          moreLabel="Full reasoning"
+          lessLabel="Collapse"
+        />
+      )}
 
       {test.measured_value && (
-        <p className="mt-1 text-[11px] text-text-secondary leading-relaxed">
-          <span className="font-mono text-[9.5px] uppercase tracking-widest text-text-muted">
-            {isOpen ? 'Where it stands' : 'What happened'}
-          </span>{' '}
-          <span className="font-mono text-text-primary">
-            {test.measured_value}
-          </span>
-        </p>
+        <ExpandableText
+          text={test.measured_value}
+          lines={1}
+          className="mt-1.5 text-[11px] text-text-secondary leading-relaxed font-mono"
+          moreLabel={isOpen ? 'Where it stands' : 'What was measured'}
+          lessLabel="Collapse"
+        />
       )}
 
-      {test.resolution && (
-        <p className="mt-1.5 text-[11.5px] text-text-primary leading-relaxed border-t border-border-subtle pt-1.5">
-          {test.resolution}
+      <details className="mt-1.5 group">
+        <summary className="cursor-pointer list-none inline-flex items-center gap-1 rounded px-2 py-1.5 -ml-2 text-[9.5px] font-mono uppercase tracking-widest text-text-muted transition-colors duration-100 hover:text-accent-cyan hover:bg-accent-cyan/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60">
+          What would settle it
+          <span aria-hidden="true" className="group-open:hidden">+</span>
+          <span aria-hidden="true" className="hidden group-open:inline">−</span>
+        </summary>
+        <p className="mt-1 text-[11px] text-text-secondary leading-relaxed">
+          {test.threshold}
         </p>
-      )}
+      </details>
 
       <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[9.5px] font-mono uppercase tracking-widest text-text-faint">
         <span>

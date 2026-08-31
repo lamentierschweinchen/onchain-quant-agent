@@ -70,7 +70,7 @@
   {
    "category": "staking",
    "severity": "critical",
-   "finding": "RUN #22's 'FIRST OPERATOR DEREGISTRATION IN TRACKING' IS WITHDRAWN - THERE WERE TWO BEFORE IT, AND THE BIGGER ONE WAS MISSED BY TEN RUNS. Applying run #22's own detection signature (locked == 0 with numNodes > 0) to the stored snapshots shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - carrying 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users for the ENTIRE stored history. Neither was ever reported. p2p_org_ was the third, not the first, and it COMPLETED this week: its owner called removeNodes eleven times plus unBondNodes, taking numNodes 50 -> 0. The signature also needs widening - p2p_org_ no longer matches it, because a fully exited operator has no nodes left."
+   "finding": "RUN #22's 'FIRST OPERATOR DEREGISTRATION IN TRACKING' IS WITHDRAWN - THERE WERE TWO BEFORE IT, AND THE BIGGER ONE WAS MISSED BY TEN RUNS. Applying run #22's own detection signature (zero locked stake while still listing nodes) to the stored snapshots shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - carrying 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users for the ENTIRE stored history. Neither was ever reported. p2p_org_ was the third, not the first, and it COMPLETED this week: its owner called removeNodes eleven times plus unBondNodes, taking its node count from 50 to 0. The signature also needs widening - p2p_org_ no longer matches it, because a fully exited operator has no nodes left."
   },
   {
    "category": "staking",
@@ -915,7 +915,7 @@
     },
     "note": "Wave #3 spans Aug 17-31 - the feed restarted on Aug 17-24 (297,000) and escalated on Aug 24-31 (460,000). Netted feed-to-drain over the whole wave it delivered 371,179 EGLD one-way against 524,505 from summing the two weekly nets - a 41.3% overstatement. Run #22's narrowed rule predicted exactly this: the wave STRADDLES the week boundary (UPbit feeds in one week, inventory returns in the next), and the diagnostic tell fired in advance - this week's circularity of 62% sits just below the 63-80% band. The wave-window figure is the one to use for distribution; the weekly numbers are upper bounds here."
    },
-   "series_note": "gross_series is pipeline ACTIVITY, net_one_way is the distribution measure; this week they differ 2.6x. The number that matters most is neither: desk inventory ENDED at 266,213 after delivering 272,396 one-way, which means the pipeline is more loaded now than at any point since tracking began and the drain leg of wave #3 is still ahead. Bitget appears as a hub destination for the first time, taking the delivery-side venue count to five."
+   "series_note": "The gross series measures pipeline ACTIVITY; the net one-way series measures distribution; this week they differ 2.6x. The number that matters most is neither: desk inventory ENDED at 266,213 after delivering 272,396 one-way, which means the pipeline is more loaded now than at any point since tracking began and the drain leg of wave #3 is still ahead. Bitget appears as a hub destination for the first time, taking the delivery-side venue count to five."
   },
   "demand_instruments": {
    "identifiable_bid_absorbed_egld_7d": 0.0,
@@ -1451,7 +1451,7 @@
     "apr_pct": 0.0,
     "fee_pct": 12.0,
     "weeks_in_state": 2,
-    "note": "EXIT COMPLETED this week - owner called removeNodes x11 plus unBondNodes, numNodes 50 -> 0. 1,244 delegators still attached; 2 unDelegate calls all week against 4 reDelegateRewards on a contract paying nothing."
+    "note": "EXIT COMPLETED this week - owner called removeNodes x11 plus unBondNodes, its node count from 50 to 0. 1,244 delegators still attached; 2 unDelegate calls all week against 4 reDelegateRewards on a contract paying nothing."
    },
    {
     "provider": "egldstakingprovider",
@@ -1462,7 +1462,7 @@
     "apr_pct": 0.0,
     "fee_pct": 100.0,
     "weeks_in_state": 3,
-    "note": "serviceFee 1.0 / APR 0 for a third week. Book -18,136 this week; users -36."
+    "note": "a 100% service fee and 0% APR for a third week. Book -18,136 this week; users -36."
    },
    {
     "provider": "procryptostaking",
@@ -1473,7 +1473,7 @@
     "apr_pct": 0.0,
     "fee_pct": 100.0,
     "weeks_in_state": 3,
-    "note": "serviceFee 1.0 / APR 0 for a third week. Book -16,999 this week; users -55."
+    "note": "a 100% service fee and 0% APR for a third week. Book -16,999 this week; users -55."
    }
   ],
   "fee_events": [
@@ -1811,7 +1811,7 @@
     "Sample: 8 providers, 723 function calls, 96 traced claims."
    ]
   },
-  "analysis": "THE HEADLINE IS A CORRECTION TO OUR OWN HEADLINE. Run #22 called p2p_org_ 'the first operator deregistration in tracking' and built a narrative on it. Applying run #22's own detection signature - locked == 0 with numNodes > 0 - to the stored snapshot archive shows that was wrong twice over. ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots, inside the run #13 window, keeping 7 nodes and 3,961 delegators; it has been sitting at zero locked and 0% APR ever since and was never reported. stakedinc has been in the same state, with 10 nodes and ~639 users, for the entire stored history. p2p_org_ was the third. The reason both were missed is the one run #22 identified and only half-fixed: 'providers leaving' logic keyed on set membership, and previous.json only ever stored providers with locked > 0, so a provider that goes to zero simply drops out of the comparison rather than showing up as an event.\n\nP2P.ORG's EXIT COMPLETED THIS WEEK. Its owner wallet called removeNodes 11 times plus unBondNodes once, taking numNodes from 50 to 0. The contract now shows zero locked, zero nodes, zero APR - and 1,244 delegators still attached. Note that this breaks the detection signature itself: a fully exited operator has no nodes left, so 'locked == 0 AND numNodes > 0' no longer matches p2p_org_. The signature needs widening to 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'.\n\nAND THAT GIVES THE INERTIA EXPERIMENT ELEVEN WEEKS OF DATA INSTEAD OF ONE. Run #22 registered a test on whether p2p_org_'s 1,244 stranded delegators would move. This week they produced 2 unDelegate calls - 0.16% of the book - against 4 reDelegateRewards and 6 claimRewards on a contract that generates nothing at all. But ledgerbyfigment is the real evidence: ELEVEN weeks at zero yield, and its delegator count has gone 3,961 -> 3,883, a loss of 78 people, 2.0%. stakedinc has lost 2 of 639 across the whole archive. Set that against the two 100%-fee providers, whose BOOKS have collapsed - egldstakingprovider 94,349 -> 61,503 in two weeks (-22.8% this week, -51.8% over three) and procryptostaking 156,917 -> 124,805 (-12.0% this week, -20.5% over two) - while their user counts fell only -36 and -55. The conclusion is now solid enough to state plainly: in this delegation market capital responds to price signals and people do not. A total loss of yield moves roughly 2% of a user base per quarter and roughly half of its EGLD per month.\n\nUNDERNEATH, THE MARKET WAS QUIET. Delegation TVL fell -66,424 to 10,967,589 with only 8 providers moving more than 5,000 EGLD, and two of those are the 100%-fee pair. The largest genuine mover was the system aggregator contract at +24,804; below it vaporrepublic -21,512, ninjastaking -13,555, valuestaking -12,752 and oxsyai +9,407. The delegator base moved -107 to 172,935 - flat, and this week with no deregistration artifact to net out, which makes it the cleanest confirmation of the run #18 inertia base rate the model has had. 28 providers gained delegators and 43 lost them.\n\nTHE UNBONDING QUEUE, SCANNED IN FULL FOR THE FIRST TIME. Run #22 measured 70,498 EGLD of unDelegations across the ten providers that had moved; this run paged all 107 contracts and found 151,443 EGLD from 300 distinct wallets - 2.1x. The partial scan was not slightly incomplete, it was missing more than half. Measured pending unbonding across the 45 largest callers is 132,392 EGLD, the largest single leg 40,888 from a wallet holding 10 EGLD. That in turn settles the residual question the same way as last week: staked rose +3,766 while delegation fell -66,424, giving a residual of 70,190 against 151,443 of measured unbonding in flight. The residual is fully absorbed with room to spare, so corrected_direct_node_egld is published as null for a second run - and the run #22 rule that produced that answer is now confirmed rather than merely asserted.\n\nTHE RUN #21 UNBOND IS RETIRED. 229,865 EGLD, fully unbonded, sat unmoved for a second consecutive week: wallet balance unchanged at 2,369.53, zero outbound transactions, zero function calls. The no-action branch fires and the position stops being tracked as a live forward flow."
+  "analysis": "THE HEADLINE IS A CORRECTION TO OUR OWN HEADLINE. Run #22 called p2p_org_ 'the first operator deregistration in tracking' and built a narrative on it. Applying run #22's own detection signature - zero locked stake while still listing nodes - to the stored snapshot archive shows that was wrong twice over. ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots, inside the run #13 window, keeping 7 nodes and 3,961 delegators; it has been sitting at zero locked and 0% APR ever since and was never reported. stakedinc has been in the same state, with 10 nodes and ~639 users, for the entire stored history. p2p_org_ was the third. The reason both were missed is the one run #22 identified and only half-fixed: 'providers leaving' logic keyed on set membership, and previous.json only ever stored providers with locked > 0, so a provider that goes to zero simply drops out of the comparison rather than showing up as an event.\n\nP2P.ORG's EXIT COMPLETED THIS WEEK. Its owner wallet called removeNodes 11 times plus unBondNodes once, taking node count from 50 to 0. The contract now shows zero locked, zero nodes, zero APR - and 1,244 delegators still attached. Note that this breaks the detection signature itself: a fully exited operator has no nodes left, so 'zero locked stake AND still listing nodes' no longer matches p2p_org_. The signature needs widening to 'zero locked stake while still listing nodes or delegators'.\n\nAND THAT GIVES THE INERTIA EXPERIMENT ELEVEN WEEKS OF DATA INSTEAD OF ONE. Run #22 registered a test on whether p2p_org_'s 1,244 stranded delegators would move. This week they produced 2 unDelegate calls - 0.16% of the book - against 4 reDelegateRewards and 6 claimRewards on a contract that generates nothing at all. But ledgerbyfigment is the real evidence: ELEVEN weeks at zero yield, and its delegator count has gone 3,961 -> 3,883, a loss of 78 people, 2.0%. stakedinc has lost 2 of 639 across the whole archive. Set that against the two 100%-fee providers, whose BOOKS have collapsed - egldstakingprovider 94,349 -> 61,503 in two weeks (-22.8% this week, -51.8% over three) and procryptostaking 156,917 -> 124,805 (-12.0% this week, -20.5% over two) - while their user counts fell only -36 and -55. The conclusion is now solid enough to state plainly: in this delegation market capital responds to price signals and people do not. A total loss of yield moves roughly 2% of a user base per quarter and roughly half of its EGLD per month.\n\nUNDERNEATH, THE MARKET WAS QUIET. Delegation TVL fell -66,424 to 10,967,589 with only 8 providers moving more than 5,000 EGLD, and two of those are the 100%-fee pair. The largest genuine mover was the system aggregator contract at +24,804; below it vaporrepublic -21,512, ninjastaking -13,555, valuestaking -12,752 and oxsyai +9,407. The delegator base moved -107 to 172,935 - flat, and this week with no deregistration artifact to net out, which makes it the cleanest confirmation of the run #18 inertia base rate the model has had. 28 providers gained delegators and 43 lost them.\n\nTHE UNBONDING QUEUE, SCANNED IN FULL FOR THE FIRST TIME. Run #22 measured 70,498 EGLD of unDelegations across the ten providers that had moved; this run paged all 107 contracts and found 151,443 EGLD from 300 distinct wallets - 2.1x. The partial scan was not slightly incomplete, it was missing more than half. Measured pending unbonding across the 45 largest callers is 132,392 EGLD, the largest single leg 40,888 from a wallet holding 10 EGLD. That in turn settles the residual question the same way as last week: staked rose +3,766 while delegation fell -66,424, giving a residual of 70,190 against 151,443 of measured unbonding in flight. The residual is fully absorbed with room to spare, so no corrected direct-node figure is published for a second run - and the run #22 rule that produced that answer is now confirmed rather than merely asserted.\n\nTHE RUN #21 UNBOND IS RETIRED. 229,865 EGLD, fully unbonded, sat unmoved for a second consecutive week: wallet balance unchanged at 2,369.53, zero outbound transactions, zero function calls. The no-action branch fires and the position stops being tracked as a live forward flow."
  },
  "token_activity": {
   "top_by_holders": [
@@ -2279,7 +2279,7 @@
     "tvl_egld": 1073049.272521866,
     "tvl_wow_change_pct": -0.2767951235083454,
     "transfers_24h": 987,
-    "notable_events": "SUPPLY BASIS (run #13 rule): SEGLD -0.277% to 684,168, a sixth consecutive week inside the noise band. SWTAO -1.66% to 3,198 - the largest SWTAO supply move since run #14 and a genuine redemption, though on a 3,198-token base it is ~54 tokens. All four dataApi tokens priced on the FIRST pass this run with zero retries, the first clean pass since the guard was added in run #13.",
+    "notable_events": "SUPPLY BASIS (run #13 rule): SEGLD -0.277% to 684,168, a sixth consecutive week inside the noise band. SWTAO -1.66% to 3,198 - the largest SWTAO supply move since run #14 and a genuine redemption, though on a 3,198-token base it is ~54 tokens. All four the third-party price feed tokens priced on the FIRST pass this run with zero retries, the first clean pass since the guard was added in run #13.",
     "health_signal": "flat"
    },
    {
@@ -2342,7 +2342,7 @@
    }
   ],
   "sc_deployments": [],
-  "analysis": "DeFi did the same thing it did last week, one notch quieter, and the consistency is the finding.\n\nActivity was strong where it is measured in transfers: the XOXNO aggregator processed 32,462 in 24 hours and OneDex 19,015, both at the top of their ranges. But xExchange's own throughput in EGLD terms FELL -4.3%, so the venue-level demand read depends entirely on which denominator you pick - and the honest one for a chain-native question is EGLD.\n\nThe credit stack de-risked for a second consecutive week. Hatom Lending's EGLD-denominated deposits fell -4.43% against a +6.39% price, the fourth up-week confirmation of the bilateral inverse rule and - importantly - at a response ratio of 0.69, well clear of the 0.30 exhaustion threshold. Run #22 registered that two consecutive sub-0.30 readings would retire the rule; the second did not come, so the rule survives and last week's 0.28 is reclassified as one weak response to an unusually large price move rather than evidence of a depleted deposit base.\n\nUSH burned -1.53% for a second week running, 8,722 tokens, cumulative -2.4% across the two. A single burn into a rally was an anomaly; two is a behaviour, and the reading is that CDP borrowers are using appreciation to retire debt rather than to lever further. That is the mirror image of run #16, where a +16% week produced a +6.49% USH MINT. The same instrument, the same direction of price, opposite response - which says the cohort changed, not the mechanism.\n\nLiquid staking again did nothing: SEGLD -0.277%, XEGLD -0.160%, SWTAO -1.66%. Six consecutive weeks with no LSD subscription of any size, through a cumulative +39% price move. Combined with a flat delegator base and a staked ratio that FELL, the picture is consistent: nobody converted this rally into a yield-bearing on-chain position.\n\nTVL METHOD NOTE: LSD and stablecoin figures are on the supply basis per the run #13 rule, USD as context only. All four dataApi-priced tokens returned a live price on the first pass with zero retries - the first fully clean pass since the guard was added, so no fallback was needed at any level of the run #22 ordering."
+  "analysis": "DeFi did the same thing it did last week, one notch quieter, and the consistency is the finding.\n\nActivity was strong where it is measured in transfers: the XOXNO aggregator processed 32,462 in 24 hours and OneDex 19,015, both at the top of their ranges. But xExchange's own throughput in EGLD terms FELL -4.3%, so the venue-level demand read depends entirely on which denominator you pick - and the honest one for a chain-native question is EGLD.\n\nThe credit stack de-risked for a second consecutive week. Hatom Lending's EGLD-denominated deposits fell -4.43% against a +6.39% price, the fourth up-week confirmation of the bilateral inverse rule and - importantly - at a response ratio of 0.69, well clear of the 0.30 exhaustion threshold. Run #22 registered that two consecutive sub-0.30 readings would retire the rule; the second did not come, so the rule survives and last week's 0.28 is reclassified as one weak response to an unusually large price move rather than evidence of a depleted deposit base.\n\nUSH burned -1.53% for a second week running, 8,722 tokens, cumulative -2.4% across the two. A single burn into a rally was an anomaly; two is a behaviour, and the reading is that CDP borrowers are using appreciation to retire debt rather than to lever further. That is the mirror image of run #16, where a +16% week produced a +6.49% USH MINT. The same instrument, the same direction of price, opposite response - which says the cohort changed, not the mechanism.\n\nLiquid staking again did nothing: SEGLD -0.277%, XEGLD -0.160%, SWTAO -1.66%. Six consecutive weeks with no LSD subscription of any size, through a cumulative +39% price move. Combined with a flat delegator base and a staked ratio that FELL, the picture is consistent: nobody converted this rally into a yield-bearing on-chain position.\n\nTVL METHOD NOTE: LSD and stablecoin figures are on the supply basis per the run #13 rule, USD as context only. All four tokens priced through the third-party feed returned a live price on the first pass with zero retries - the first fully clean pass since the guard was added, so no fallback was needed at any level of the run #22 ordering."
  },
  "anomalies": [
   {
@@ -2369,7 +2369,7 @@
    "previous_value": 1,
    "method": "rule_based",
    "severity": "critical",
-   "description": "THREE operator deregistrations exist in the archive, not one. Applying run #22's own signature (locked == 0 with numNodes > 0) to the stored snapshots: ledgerbyfigment went 170,808 EGLD -> 0 between the 2026-06-08 and 2026-06-15 snapshots (the run #13 window) with 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history. Neither was ever reported. Run #22's 'first operator deregistration in tracking' is withdrawn. p2p_org_ additionally COMPLETED its exit this week - removeNodes x11 plus unBondNodes, numNodes 50 -> 0 - which also breaks the detection signature, since a fully exited operator has no nodes left to match on."
+   "description": "THREE operator deregistrations exist in the archive, not one. Applying run #22's own signature (zero locked stake while still listing nodes) to the stored snapshots: ledgerbyfigment went 170,808 EGLD -> 0 between the 2026-06-08 and 2026-06-15 snapshots (the run #13 window) with 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history. Neither was ever reported. Run #22's 'first operator deregistration in tracking' is withdrawn. p2p_org_ additionally COMPLETED its exit this week - removeNodes x11 plus unBondNodes, its node count from 50 to 0 - which also breaks the detection signature, since a fully exited operator has no nodes left to match on."
   },
   {
    "metric": "egld_price_usd",
@@ -2496,7 +2496,7 @@
    "method": "rule_based",
    "severity": "low",
    "change_pct": -0.06183469909039424,
-   "description": "Delegator count -107 to 172,935 (-0.062%). Reported rule_based rather than by z-score because the baseline's standard deviation is tiny relative to the base and produces the degenerate sigma the run #9 guard exists to suppress. Unlike last week there is no deregistration artifact to net out, so this is a clean reading and it confirms the run #18 base rate: the delegator base does not move, in either direction, at any price."
+   "description": "Delegator count -107 to 172,935 (-0.062%). Flagged by a named rule rather than by z-score because the baseline's standard deviation is tiny relative to the base and produces the degenerate sigma the run #9 guard exists to suppress. Unlike last week there is no deregistration artifact to net out, so this is a clean reading and it confirms the run #18 base rate: the delegator base does not move, in either direction, at any price."
   }
  ],
  "trend_indicators": {
@@ -2679,7 +2679,7 @@
   {
    "item": "THE VALIDATOR SET's DISTRESSED TAIL - three deregistrations, two of them found retrospectively",
    "weeks_on_list": 2,
-   "reason": "ledgerbyfigment (7 nodes, 3,883 users, zero-locked since the run #13 window, 170,808 EGLD at the time), stakedinc (10 nodes, 637 users, zero-locked across the whole archive), p2p_org_ (exit COMPLETED this week, numNodes 50 -> 0, 1,244 users still attached). Plus two providers at serviceFee 1.0 / APR 0 holding 221,202 EGLD between the five zero-APR contracts. PRE-COMMITTED: a FOURTH provider hitting locked == 0 with users attached within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none = the three are idiosyncratic business decisions."
+   "reason": "ledgerbyfigment (7 nodes, 3,883 users, zero-locked since the run #13 window, 170,808 EGLD at the time), stakedinc (10 nodes, 637 users, zero-locked across the whole archive), p2p_org_ (exit COMPLETED this week, its node count from 50 to 0, 1,244 users still attached). Plus two providers at a 100% service fee and 0% APR holding 221,202 EGLD between the five zero-APR contracts. PRE-COMMITTED: a FOURTH provider hitting zero locked stake with delegators still attached within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none = the three are idiosyncratic business decisions."
   },
   {
    "item": "PARTICIPATION INERTIA - now an eleven-week measurement, not a weekly observation",
@@ -2766,9 +2766,9 @@
    "THE PRE-FLIGHT BECH32 VALIDATOR DOES NOT COVER COLLECTOR SCRIPTS. scripts/validate_addresses.py checks known-addresses.json and previous.json only. This run hardcoded a Binance hot wallet with an invalid checksum directly in collect_run23.py; it returned HTTP 400, paged_txs broke on the error dict and returned [], and the collector printed '0 outbound recipients >=10K' - which would have resolved a pre-committed test on fabricated evidence. The validator must be extended to grep erd1 literals out of scripts/*.py.",
    "paged_txs SILENTLY CONVERTS AN ERROR INTO AN EMPTY WINDOW. `if not isinstance(batch, list) or not batch: break` treats an HTTP error dict identically to a genuinely empty result, so a 400 or 429 produces 'nothing happened' rather than a failure. Three separate findings this run were nulled this way. Any pagination helper must distinguish the two and record the error.",
    "THE API RATE-LIMITS (HTTP 429) UNDER THE ALL-PROVIDER SCAN. Paging ~107 provider contracts at 0.22s between requests triggered 429s on unrelated queries issued around the same time. The followup pass used exponential backoff (1s doubling to 12s) and hit zero errors. Budget for backoff, not just a fixed delay, once a run exceeds roughly 800 requests.",
-   "A FULLY EXITED OPERATOR NO LONGER MATCHES RUN #22's DEREGISTRATION SIGNATURE. p2p_org_ called removeNodes eleven times plus unBondNodes this week and now reads numNodes 0, so 'locked == 0 AND numNodes > 0' misses it. The signature must be 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'.",
+   "A FULLY EXITED OPERATOR NO LONGER MATCHES RUN #22's DEREGISTRATION SIGNATURE. p2p_org_ called removeNodes eleven times plus unBondNodes this week and now reads node count 0, so 'zero locked stake AND still listing nodes' misses it. The signature must be 'zero locked stake while still listing nodes or delegators'.",
    "previous.json ONLY EVER STORED PROVIDERS WITH locked > 0, which is why two deregistrations went unreported for ten runs. A provider that goes to zero drops out of the stored set entirely and can never appear as a WoW event. The snapshot must store the full /providers list, not the locked>0 subset.",
-   "All four dataApi-priced tokens (SEGLD, SWTAO, USH, XEGLD) returned a live price on the FIRST pass with zero retries - the first fully clean pass since the guard was added in run #13. The re-fetch guard and the run #22 list-endpoint fallback both stood down.",
+   "All four tokens priced through the third-party feed (SEGLD, SWTAO, USH, XEGLD) returned a live price on the FIRST pass with zero retries - the first fully clean pass since the guard was added in run #13. The re-fetch guard and the run #22 list-endpoint fallback both stood down.",
    "/tokens/WTAO-3ec9c0 now returns HTTP 404, so the run #11 accumulator-ratio fallback for SWTAO is permanently unavailable. Not needed this run; if SWTAO nulls again the order is list-endpoint recovery (run #22) then prior-price carry-forward (run #14).",
    "The provider join-key fix from run #22 was folded into the main collector and asserted: match rate 100% (105 of 105). The assertion is cheap and should stay on every cross-snapshot join.",
    "Raising the page cap to 30 for exchange hot wallets (run #22 rec #10) eliminated page-cap terminations from the withdrawal-breadth scan entirely - the raw figure is a full 7-day scan for the first time. The provider scan at max_pages=6 still hit the cap on the busiest contracts, so the unbonding queue figure remains a lower bound.",
@@ -2792,7 +2792,7 @@
    "The identifiable-bid repair returned a decisive NEGATIVE: all 14 desk outbound terminals are zero-balance pass-through routers retaining 1.7% of 505,597 EGLD. There are no absorbers to discover, and the instrument is retired.",
    "DEX turnover held its regime threshold in USD (10.51%) and failed it in EGLD: volume -4.3% to 61,110 EGLD/day. Both sides of the ratio scaled with price.",
    "Ex-pipeline withdrawal breadth had its best reading since the instrument was built - 50 recipients taking 400,113 EGLD, pipeline share down to 73.3% from 88.3% - and for the first time it is a full 7-day scan with no page-cap terminations.",
-   "The first full-set unbonding scan found 151,443 EGLD from 300 wallets across all 107 contracts, 2.1x run #22's ten-provider partial. The residual is again fully absorbed; corrected_direct_node_egld stays null.",
+   "The first full-set unbonding scan found 151,443 EGLD from 300 wallets across all 107 contracts, 2.1x run #22's ten-provider partial. The residual is again fully absorbed; the corrected direct-node figure stays unpublished.",
    "USH burned -1.53% for a second consecutive week into a rising price, and both wrapped dollars contracted (~$77K). Every holding-side instrument de-risked into strength.",
    "7 of 8 tests resolved this run fired as predicted (87.5%); the one inconclusive failed on a specification defect - non-contiguous branches - for the second consecutive run of specification defects."
   ],
@@ -2802,7 +2802,7 @@
    "EXTEND PRE-FLIGHT ADDRESS VALIDATION TO COLLECTOR SOURCE. The bech32 validator covers the JSON data files only; this run's invalid address was a Python constant. Grep erd1 literals out of scripts/*.py and validate those too, before the collector runs.",
    "A PAGINATION HELPER MUST NOT RETURN [] ON AN ERROR. Distinguish 'no transactions' from 'the query failed' and record the latter. Three findings were nulled this run by a helper that treats an HTTP error dict as an empty page.",
    "USE EXPONENTIAL BACKOFF ON 429, NOT A FIXED DELAY. The all-provider scan pushed the run past the API's rate limit and nulled unrelated queries issued nearby. The followup pass with 1s-to-12s backoff hit zero errors.",
-   "WIDEN THE DEREGISTRATION SIGNATURE to 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'. A fully exited operator removes its nodes and stops matching run #22's version.",
+   "WIDEN THE DEREGISTRATION SIGNATURE to 'zero locked stake while still listing nodes or delegators'. A fully exited operator removes its nodes and stops matching run #22's version.",
    "STORE THE FULL /providers LIST IN previous.json, not the locked>0 subset. Two deregistrations went unreported for ten runs because a provider that goes to zero drops out of the stored set and can never appear as a WoW event.",
    "WHEN A DETECTOR IS INVENTED, RUN IT BACKWARDS OVER THE ARCHIVE IN THE SAME RUN. Run #22 invented the deregistration signature and immediately published 'the first in tracking' without applying it to the stored snapshots. Doing so this run found two earlier cases, the larger of which was ten runs old. Any 'first X in tracking' claim must be checked with the detector that found it.",
    "SPECIFY A TEST'S THRESHOLD ON THE QUANTITY THAT CARRIES THE SIGNAL. The custody test was written on the intermediary wallet's BALANCE and would have resolved backwards: the balance rose because the funding leg outran the spending leg. Write flow tests on the flow.",
@@ -2899,7 +2899,7 @@
      22
     ],
     "withdrawn_in_run": 23,
-    "reason": "Run #22 invented the detection signature (locked == 0 with numNodes > 0) and published the claim without applying it to the stored snapshot archive. Applying it this run shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - while keeping 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history from 2026-06-01. Neither was ever reported. p2p_org_ was the third and the smallest.",
+    "reason": "Run #22 invented the detection signature (zero locked stake while still listing nodes) and published the claim without applying it to the stored snapshot archive. Applying it this run shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - while keeping 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history from 2026-06-01. Neither was ever reported. p2p_org_ was the third and the smallest.",
     "replacement": "There are three known operator deregistrations. The largest and earliest is ledgerbyfigment (run #13 window, 170,808 EGLD, 3,961 delegators at the time, 3,883 now after eleven weeks at 0% APR). The reason both earlier cases were missed is structural: previous.json stores only providers with locked > 0, so a provider going to zero drops out of the comparison set rather than registering as an event. Two standing rules follow - store the full /providers list, and run any newly invented detector backwards over the archive in the same run it is invented."
    },
    {
@@ -2909,7 +2909,7 @@
     ],
     "withdrawn_in_run": 23,
     "reason": "Run #22 measured 0.28 and flagged capacity exhaustion, registering that a second consecutive sub-0.30 reading would retire the rule. This week's up-week test returned 0.69 - price +6.39%, Hatom Lending EGLD-denominated TVL -4.43%, correct inverse sign - well clear of the threshold. The up-week series is 0.49 / 0.72 / 0.28 / 0.69.",
-    "replacement": "The 0.28 is reclassified as a single weak response to an unusually large (+30.43%) price move rather than as evidence of a depleted deposit base. The rule stands with four up-week confirmations. The wider lesson is that a response RATIO is unstable when its denominator is a record-sized price move, so the exhaustion threshold should only be applied on weeks where |dPrice| sits inside the normal 5-15% band."
+    "replacement": "The 0.28 is reclassified as a single weak response to an unusually large (+30.43%) price move rather than as evidence of a depleted deposit base. The rule stands with four up-week confirmations. The wider lesson is that a response RATIO is unstable when its denominator is a record-sized price move, so the exhaustion threshold should only be applied on weeks where the size of the price move sits inside the normal 5-15% band."
    }
   ]
  },
@@ -3077,7 +3077,7 @@
    "status": "resolved",
    "outcome": "inconclusive",
    "resolved_in_run": 22,
-   "measured_value": "unmoved: 80,279 fully unbonded (seconds_remaining = 0) and 149,585 with 5,279s left, both still inside the delegation contracts; wallet balance 2,370 EGLD, zero outbound transactions",
+   "measured_value": "unmoved: 80,279 fully unbonded (zero seconds left) and 149,585 with 5,279s left, both still inside the delegation contracts; wallet balance 2,370 EGLD, zero outbound transactions",
    "resolution": "NONE of the three branches fired, because a fourth state existed that the test did not anticipate: the holder never withdrew. The EGLD is not in a delegation contract as active stake, not at an exchange, and not in the wallet - it is unbonded and unclaimed inside the contracts it was undelegated from. The test was specified on a destination and the answer is that there is not yet a destination. LESSON: a destination test needs a no-action branch with a time bound, or it cannot resolve when the counterparty simply does nothing. Re-registered below with that branch added."
   },
   {
@@ -3186,7 +3186,7 @@
    "status": "resolved",
    "outcome": "as_predicted",
    "resolved_in_run": 23,
-   "measured_value": "egldstakingprovider -18,136 to 61,503 (-22.8% this week, -34.8% over two, -51.8% over three from ~127,500), users -36 to 1,043; procryptostaking -16,999 to 124,805 (-20.5% over two), users -55 to 6,976. serviceFee still 1.0, APR still 0, 50 nodes each - fee NOT reversed, nodes NOT deregistered.",
+   "measured_value": "egldstakingprovider -18,136 to 61,503 (-22.8% this week, -34.8% over two, -51.8% over three from ~127,500), users -36 to 1,043; procryptostaking -16,999 to 124,805 (-20.5% over two), users -55 to 6,976. the service fee still at 100%, APR still 0, 50 nodes each - fee NOT reversed, nodes NOT deregistered.",
    "resolution": "The 'books halve, users flat' branch fires. egldstakingprovider's book is down 51.8% over three weeks against a 7.2% user loss; procryptostaking is down 20.5% over two against 1.3%. The reading registered for this branch was that the delegation market's price mechanism only reaches large holders, and that is now supported by a second, much longer-running natural experiment discovered this run: ledgerbyfigment has paid 0% for eleven weeks and lost 2.0% of its delegators, stakedinc 0.3% across the whole archive. Capital leaves at roughly half a book per month; people leave at roughly two percent per quarter."
   },
   {
@@ -3274,7 +3274,7 @@
    "status": "resolved",
    "outcome": "as_predicted",
    "resolved_in_run": 23,
-   "measured_value": "2 unDelegate calls from 1,244 attached delegators in the window (0.16%), against 4 reDelegateRewards and 6 claimRewards on a contract with zero stake and zero APR; the owner meanwhile called removeNodes x11 plus unBondNodes, taking numNodes 50 -> 0",
+   "measured_value": "2 unDelegate calls from 1,244 attached delegators in the window (0.16%), against 4 reDelegateRewards and 6 claimRewards on a contract with zero stake and zero APR; the owner meanwhile called removeNodes x11 plus unBondNodes, taking its node count from 50 to 0",
    "resolution": "The '<10% leave' branch fires overwhelmingly - 0.16% in a week, against a 25% threshold for the alternative. The registered reading was that inertia is near-absolute and the delegation market has no working price mechanism for retail, and this run supplies far stronger evidence than the test asked for: ledgerbyfigment has been in the identical state for ELEVEN weeks and lost 2.0% of 3,961 delegators, and stakedinc has lost 2 of 639 across the entire archive. The most striking detail is that four wallets called reDelegateRewards on p2p_org_ this week - compounding rewards that cannot exist."
   },
   {
@@ -3394,10 +3394,10 @@
    "id": "fourth-deregistration",
    "registered_in_run": 23,
    "claim": "Operator deregistration is a trend in the MultiversX validator set, not three idiosyncratic business decisions.",
-   "threshold": "a FOURTH provider reaching locked == 0 while retaining attached delegators within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none in four weeks = the three known cases are idiosyncratic",
+   "threshold": "a FOURTH provider reaching zero locked stake while retaining attached delegators within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none in four weeks = the three known cases are idiosyncratic",
    "branches": [
     {
-     "condition": "a fourth provider hits locked == 0 with users attached within 4 weeks",
+     "condition": "a fourth provider hits zero locked stake with delegators still attached within 4 weeks",
      "reading": "operator attrition is a trend; the long tail is leaving"
     },
     {
@@ -3408,7 +3408,7 @@
    "status": "open",
    "outcome": null,
    "resolved_in_run": null,
-   "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to locked == 0 AND (numNodes > 0 OR numUsers > 0)",
+   "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to zero locked stake while still listing nodes or delegators",
    "resolution": null
   },
   {

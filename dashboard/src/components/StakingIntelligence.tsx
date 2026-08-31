@@ -11,12 +11,14 @@ import {
   formatNumber,
   formatPct,
   cleanServiceFee,
+  truncateAddress,
 } from '../lib/formatters'
 import { darkTheme, tooltipStyle } from '../lib/nivo-theme'
 import { DataTable } from './ui/DataTable'
 import { AnalysisBlock } from './ui/AnalysisBlock'
 import { MetricCard } from './ui/MetricCard'
 import type { Column } from './ui/DataTable'
+import { fateLabel, tierLabel, TIER_RANGES } from '../lib/labels'
 
 interface StakingIntelligenceProps {
   data: StakingIntelligence
@@ -119,6 +121,19 @@ export function StakingIntelligence({ data }: StakingIntelligenceProps) {
     {
       key: 'name',
       label: 'Provider',
+      // Providers with no registered identity come through as a bare 62-char
+      // contract address, which alone doubled the width of this table.
+      render: (v) => {
+        const name = String(v ?? '')
+        return name.startsWith('erd1') ? (
+          <span className="text-text-secondary" title={name}>
+            {truncateAddress(name)}
+            <span className="ml-1.5 text-[10px] text-text-faint">unnamed</span>
+          </span>
+        ) : (
+          name
+        )
+      },
     },
     {
       key: 'locked_egld',
@@ -553,43 +568,43 @@ function RewardBehaviorSection({
             <table className="w-full text-[12px] tabular">
               <thead className="bg-bg-soft">
                 <tr className="text-left">
-                  <th className="px-3 py-2 font-mono">Tier</th>
+                  <th className="px-3 py-2 font-mono">Delegator size</th>
                   <th className="px-3 py-2 font-mono text-right">Events</th>
                   <th className="px-3 py-2 font-mono text-right">EGLD claimed</th>
                   <th className="px-3 py-2 font-mono">Held</th>
                   <th className="px-3 py-2 font-mono">Sold</th>
-                  <th className="px-3 py-2 font-mono">Rotated</th>
-                  <th className="px-3 py-2 font-mono">DeFi</th>
-                  <th className="px-3 py-2 font-mono">Other</th>
+                  <th className="px-3 py-2 font-mono">Moved provider</th>
+                  <th className="px-3 py-2 font-mono">Into DeFi</th>
+                  <th className="px-3 py-2 font-mono">Unlabelled</th>
                 </tr>
               </thead>
               <tbody>
-                {sortedTiers.map(([tier, info]) => (
+                {sortedTiers.map(([tier, info]) => {
+                  const counts = info.by_count ?? info.fates_by_count ?? {}
+                  return (
                   <tr key={tier} className="border-t border-border-subtle">
-                    <td className="px-3 py-2 font-mono capitalize">
-                      {tier.replace('_', '-')}
+                    <td className="px-3 py-2">
+                      <span className="text-text-primary">{tierLabel(tier)}</span>
+                      {TIER_RANGES[tier] && (
+                        <span className="block text-[10.5px] text-text-faint">
+                          {TIER_RANGES[tier]}
+                        </span>
+                      )}
                     </td>
-                    <td className="px-3 py-2 text-right">{info.events}</td>
-                    <td className="px-3 py-2 text-right">
-                      {info.total_value_egld.toFixed(2)}
+                    <td className="px-3 py-2 text-right tabular">
+                      {info.total_events ?? info.events ?? 0}
                     </td>
-                    <td className="px-3 py-2 text-text-muted">
-                      {info.fates_by_count?.held ?? 0}
+                    <td className="px-3 py-2 text-right tabular">
+                      {formatEgldBare(info.total_value_egld)}
                     </td>
-                    <td className="px-3 py-2 text-down">
-                      {info.fates_by_count?.sold ?? 0}
-                    </td>
-                    <td className="px-3 py-2 text-text-muted">
-                      {info.fates_by_count?.rotated_provider ?? 0}
-                    </td>
-                    <td className="px-3 py-2 text-text-muted">
-                      {info.fates_by_count?.defi_deposit ?? 0}
-                    </td>
-                    <td className="px-3 py-2 text-text-muted">
-                      {info.fates_by_count?.held_or_other ?? 0}
-                    </td>
+                    <FateCell counts={counts} fate="held" />
+                    <FateCell counts={counts} fate="sold" tone="text-down" />
+                    <FateCell counts={counts} fate="rotated_provider" />
+                    <FateCell counts={counts} fate="defi_deposit" />
+                    <FateCell counts={counts} fate="held_or_other" />
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
           </div>
@@ -620,7 +635,21 @@ function RewardBehaviorSection({
                       key={op.provider}
                       className="border-t border-border-subtle align-top"
                     >
-                      <td className="px-3 py-2 font-mono">{op.provider}</td>
+                      <td className="px-3 py-2 font-mono">
+                        {op.provider?.startsWith('erd1') ? (
+                          <span
+                            className="text-text-secondary"
+                            title={op.provider}
+                          >
+                            {truncateAddress(op.provider)}
+                            <span className="block text-[10px] text-text-faint font-sans">
+                              no registered identity
+                            </span>
+                          </span>
+                        ) : (
+                          op.provider
+                        )}
+                      </td>
                       <td className="px-3 py-2">
                         {op.owner_label && op.owner_label !== 'Unknown' ? (
                           <span className="text-up">{op.owner_label}</span>
@@ -632,12 +661,22 @@ function RewardBehaviorSection({
                       </td>
                       <td className="px-3 py-2 text-right">{op.outbound_count ?? 0}</td>
                       <td className="px-3 py-2 text-text-muted">
-                        {fates.length
-                          ? fates
-                              .slice(0, 3)
-                              .map(([f, v]) => `${f}: ${v.toFixed(0)}`)
-                              .join(' · ')
-                          : '—'}
+                        {fates.length ? (
+                          <span className="flex flex-wrap gap-x-2 gap-y-0.5">
+                            {fates.slice(0, 3).map(([f, v]) => (
+                              <span key={f} className="whitespace-nowrap">
+                                {fateLabel(f, true)}{' '}
+                                <span className="tabular text-text-secondary">
+                                  {formatEgldBare(v)}
+                                </span>
+                              </span>
+                            ))}
+                          </span>
+                        ) : (
+                          <span className="text-text-faint">
+                            Sent nothing this month
+                          </span>
+                        )}
                       </td>
                     </tr>
                   )
@@ -648,6 +687,24 @@ function RewardBehaviorSection({
         </div>
       </div>
     </CardSection>
+  )
+}
+
+/** A count of nothing is more legible as a dash than as a column of zeros. */
+function FateCell({
+  counts,
+  fate,
+  tone = 'text-text-muted',
+}: {
+  counts: Record<string, number>
+  fate: string
+  tone?: string
+}) {
+  const n = counts[fate] ?? 0
+  return (
+    <td className={`px-3 py-2 tabular ${n > 0 ? tone : 'text-text-faint'}`}>
+      {n > 0 ? n : '—'}
+    </td>
   )
 }
 

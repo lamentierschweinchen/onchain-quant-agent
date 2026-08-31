@@ -13,6 +13,7 @@ import {
   formatZScore,
 } from '../lib/formatters'
 import { humanizeKey, glossFor } from '../lib/labels'
+import { ExpandableText } from './ui/ExpandableText'
 
 const SEVERITY_ORDER: Record<AnomalySeverity, number> = {
   critical: 0,
@@ -158,9 +159,13 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                   </div>
 
                   {/* description */}
-                  <p className="text-[12px] text-text-secondary leading-relaxed">
-                    {anomaly.description}
-                  </p>
+                  <ExpandableText
+                    text={anomaly.description}
+                    lines={3}
+                    className="text-[12px] text-text-secondary leading-relaxed"
+                    moreLabel="Why this was flagged"
+                    lessLabel="Collapse"
+                  />
                 </article>
               ))}
             </div>
@@ -436,9 +441,11 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                           → {fmtVal(r.after_value)}
                         </span>
                       </div>
-                      <p className="text-[11.5px] text-text-secondary mt-0.5">
-                        {r.description}
-                      </p>
+                      <ExpandableText
+                        text={r.description}
+                        lines={2}
+                        className="text-[11.5px] text-text-secondary mt-0.5"
+                      />
                     </div>
                   ))}
                 </div>
@@ -475,9 +482,13 @@ export function AnomaliesWatchList({ anomalies, watchList, trends }: Props) {
                     <p className="font-medium text-text-primary text-[12.5px]">
                       {item.item}
                     </p>
-                    <p className="text-[11.5px] text-text-secondary mt-1 leading-relaxed">
-                      {item.reason}
-                    </p>
+                    <ExpandableText
+                      text={item.reason}
+                      lines={2}
+                      className="text-[11.5px] text-text-secondary mt-1 leading-relaxed"
+                      moreLabel="Why it is on the list"
+                      lessLabel="Collapse"
+                    />
                   </div>
                 </li>
               ))}
