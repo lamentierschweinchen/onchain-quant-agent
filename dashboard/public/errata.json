@@ -78,7 +78,7 @@
         22
       ],
       "withdrawn_in_run": 23,
-      "reason": "Run #22 invented the detection signature (locked == 0 with numNodes > 0) and published the claim without applying it to the stored snapshot archive. Applying it this run shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - while keeping 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history from 2026-06-01. Neither was ever reported. p2p_org_ was the third and the smallest.",
+      "reason": "Run #22 invented the detection signature (zero locked stake while still listing nodes) and published the claim without applying it to the stored snapshot archive. Applying it this run shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - while keeping 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history from 2026-06-01. Neither was ever reported. p2p_org_ was the third and the smallest.",
       "replacement": "There are three known operator deregistrations. The largest and earliest is ledgerbyfigment (run #13 window, 170,808 EGLD, 3,961 delegators at the time, 3,883 now after eleven weeks at 0% APR). The reason both earlier cases were missed is structural: previous.json stores only providers with locked > 0, so a provider going to zero drops out of the comparison set rather than registering as an event. Two standing rules follow - store the full /providers list, and run any newly invented detector backwards over the archive in the same run it is invented.",
       "asserted_in_dates": [
         "2026-08-24"
@@ -92,9 +92,22 @@
       ],
       "withdrawn_in_run": 23,
       "reason": "Run #22 measured 0.28 and flagged capacity exhaustion, registering that a second consecutive sub-0.30 reading would retire the rule. This week's up-week test returned 0.69 - price +6.39%, Hatom Lending EGLD-denominated TVL -4.43%, correct inverse sign - well clear of the threshold. The up-week series is 0.49 / 0.72 / 0.28 / 0.69.",
-      "replacement": "The 0.28 is reclassified as a single weak response to an unusually large (+30.43%) price move rather than as evidence of a depleted deposit base. The rule stands with four up-week confirmations. The wider lesson is that a response RATIO is unstable when its denominator is a record-sized price move, so the exhaustion threshold should only be applied on weeks where |dPrice| sits inside the normal 5-15% band.",
+      "replacement": "The 0.28 is reclassified as a single weak response to an unusually large (+30.43%) price move rather than as evidence of a depleted deposit base. The rule stands with four up-week confirmations. The wider lesson is that a response RATIO is unstable when its denominator is a record-sized price move, so the exhaustion threshold should only be applied on weeks where the size of the price move sits inside the normal 5-15% band.",
       "asserted_in_dates": [
         "2026-08-24"
+      ],
+      "withdrawn_in_date": "2026-08-31"
+    },
+    {
+      "claim": "/tokens/WTAO-3ec9c0 now returns HTTP 404, so the run #11 accumulator-ratio fallback for SWTAO is permanently unavailable.",
+      "asserted_in_runs": [
+        23
+      ],
+      "withdrawn_in_run": 23,
+      "reason": "Re-queried after publication. The 404 is not a delisting — the identifier is simply wrong, and has been since run #13. Searching /tokens for WTAO returns a live WrappedTAO at WTAO-4f5363, priced at $221.90 across 1,177 holders. Every stored snapshot from 2026-06-22 onward carries the same 404 for WTAO-3ec9c0, so the fallback has been silently unavailable for eleven consecutive runs and no run noticed. Run #14 attributed that unavailability to the dataApi feed nulling WTAO alongside SWTAO; that diagnosis is withdrawn too — the price was never requested for a token that exists.",
+      "replacement": "The accumulator-ratio fallback is available. The collector now requests WTAO-4f5363. The wider rule: a 404 on a hardcoded identifier is a spelling failure until proven otherwise — search the endpoint for the ticker before concluding a source is gone, and treat a source that has failed every run since it was added as never having worked rather than as having broken.",
+      "asserted_in_dates": [
+        "2026-08-31"
       ],
       "withdrawn_in_date": "2026-08-31"
     }

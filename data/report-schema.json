@@ -76,6 +76,13 @@
           "items": {
             "type": "string"
           }
+        },
+        "data_sources_recovered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Sources that failed on the main collection pass and were successfully re-queried in a follow-up pass. Recorded separately from data_sources_failed so the header does not report recovered data as missing."
         }
       }
     },

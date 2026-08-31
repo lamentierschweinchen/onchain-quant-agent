@@ -65,6 +65,8 @@ export interface ReportMetadata {
   run_number?: number | null
   data_sources_ok: string[]
   data_sources_failed: string[]
+  /** Failed on the main pass, re-queried successfully in a follow-up pass. */
+  data_sources_recovered?: string[]
 }
 
 // ---------------------------------------------------------------------------

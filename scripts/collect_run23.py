@@ -639,7 +639,10 @@ for c in wegld_contracts:
 
 tvl_tokens = ["HUSDC-d80042","HEGLD-d61095","HUSDT-6f0914","HWBTC-49ca31","HWETH-b3d17e",
               "HBUSD-ac1fca","HHTM-e03ba5","HMEX-df6df7","HUTK-4fa4b2","HWTAO-2e9136",
-              "SEGLD-3ad2d0","SWTAO-356a25","USH-111e09","XEGLD-e413ed","WTAO-3ec9c0"]
+              # WTAO-3ec9c0 was WRONG and 404'd on every run from #13 to #23 without
+              # anyone noticing, which is why the run #11 accumulator fallback for
+              # SWTAO was believed dead. The live WrappedTAO is WTAO-4f5363.
+              "SEGLD-3ad2d0","SWTAO-356a25","USH-111e09","XEGLD-e413ed","WTAO-4f5363"]
 DATAAPI_TOKENS = {"SEGLD-3ad2d0","SWTAO-356a25","USH-111e09","XEGLD-e413ed"}
 tok_mcap = {}
 for t in tvl_tokens:

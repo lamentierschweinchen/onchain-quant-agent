@@ -45,10 +45,12 @@
    "historical provider snapshots re-read for the deregistration signature (runs #10-#22)"
   ],
   "data_sources_failed": [
-   "collect_run23.py BINANCE_HOT constant: invalid bech32 -> HTTP 400 (repaired in followup)",
-   "/accounts/{unbond}/delegation: HTTP 429 on the main pass (repaired in followup)",
-   "wave-window desk pagination: zero txs on the main pass (repaired in followup)",
-   "/tokens/WTAO-3ec9c0: HTTP 404 (accumulator fallback unavailable; not needed, SWTAO priced)"
+   "/tokens/WTAO-4f5363 was never queried: the collector has asked for WTAO-3ec9c0 since run #13, which does not exist and has returned HTTP 404 on all eleven runs since. The live WrappedTAO is WTAO-4f5363 ($221.90, 1,177 holders). No figure in this report depends on it \u2014 SWTAO priced on the first pass \u2014 but the run #11 accumulator-ratio fallback has been unavailable for eleven runs as a result. Identifier corrected in the collector for run #24."
+  ],
+  "data_sources_recovered": [
+   "Binance.com hot wallets \u2014 the main collector hardcoded an address with an invalid bech32 checksum (HTTP 400); re-queried against the three valid wallets in the follow-up pass",
+   "/accounts/{unbond}/delegation, /accounts and outbound scan \u2014 HTTP 429 during the all-provider scan; re-queried with exponential backoff in the follow-up pass",
+   "Wave-window desk pagination (Aug 17\u201331) \u2014 returned zero transactions on the main pass; re-run cleanly in the follow-up pass (214/238 and 178/286 txs)"
   ]
  },
  "executive_summary": [
@@ -2910,6 +2912,15 @@
     "withdrawn_in_run": 23,
     "reason": "Run #22 measured 0.28 and flagged capacity exhaustion, registering that a second consecutive sub-0.30 reading would retire the rule. This week's up-week test returned 0.69 - price +6.39%, Hatom Lending EGLD-denominated TVL -4.43%, correct inverse sign - well clear of the threshold. The up-week series is 0.49 / 0.72 / 0.28 / 0.69.",
     "replacement": "The 0.28 is reclassified as a single weak response to an unusually large (+30.43%) price move rather than as evidence of a depleted deposit base. The rule stands with four up-week confirmations. The wider lesson is that a response RATIO is unstable when its denominator is a record-sized price move, so the exhaustion threshold should only be applied on weeks where the size of the price move sits inside the normal 5-15% band."
+   },
+   {
+    "claim": "/tokens/WTAO-3ec9c0 now returns HTTP 404, so the run #11 accumulator-ratio fallback for SWTAO is permanently unavailable.",
+    "asserted_in_runs": [
+     23
+    ],
+    "withdrawn_in_run": 23,
+    "reason": "Re-queried after publication. The 404 is not a delisting \u2014 the identifier is simply wrong, and has been since run #13. Searching /tokens for WTAO returns a live WrappedTAO at WTAO-4f5363, priced at $221.90 across 1,177 holders. Every stored snapshot from 2026-06-22 onward carries the same 404 for WTAO-3ec9c0, so the fallback has been silently unavailable for eleven consecutive runs and no run noticed. Run #14 attributed that unavailability to the dataApi feed nulling WTAO alongside SWTAO; that diagnosis is withdrawn too \u2014 the price was never requested for a token that exists.",
+    "replacement": "The accumulator-ratio fallback is available. The collector now requests WTAO-4f5363. The wider rule: a 404 on a hardcoded identifier is a spelling failure until proven otherwise \u2014 search the endpoint for the ticker before concluding a source is gone, and treat a source that has failed every run since it was added as never having worked rather than as having broken."
    }
   ]
  },

@@ -107,10 +107,10 @@
       "id": "fourth-deregistration",
       "registered_in_run": 23,
       "claim": "Operator deregistration is a trend in the MultiversX validator set, not three idiosyncratic business decisions.",
-      "threshold": "a FOURTH provider reaching locked == 0 while retaining attached delegators within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none in four weeks = the three known cases are idiosyncratic",
+      "threshold": "a FOURTH provider reaching zero locked stake while retaining attached delegators within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none in four weeks = the three known cases are idiosyncratic",
       "branches": [
         {
-          "condition": "a fourth provider hits locked == 0 with users attached within 4 weeks",
+          "condition": "a fourth provider hits zero locked stake with delegators still attached within 4 weeks",
           "reading": "operator attrition is a trend; the long tail is leaving"
         },
         {
@@ -121,7 +121,7 @@
       "status": "open",
       "outcome": null,
       "resolved_in_run": null,
-      "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to locked == 0 AND (numNodes > 0 OR numUsers > 0)",
+      "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to zero locked stake while still listing nodes or delegators",
       "resolution": null,
       "seen_in_run": 23,
       "seen_in_date": "2026-08-31"
@@ -313,7 +313,7 @@
       "status": "resolved",
       "outcome": "as_predicted",
       "resolved_in_run": 23,
-      "measured_value": "2 unDelegate calls from 1,244 attached delegators in the window (0.16%), against 4 reDelegateRewards and 6 claimRewards on a contract with zero stake and zero APR; the owner meanwhile called removeNodes x11 plus unBondNodes, taking numNodes 50 -> 0",
+      "measured_value": "2 unDelegate calls from 1,244 attached delegators in the window (0.16%), against 4 reDelegateRewards and 6 claimRewards on a contract with zero stake and zero APR; the owner meanwhile called removeNodes x11 plus unBondNodes, taking its node count from 50 to 0",
       "resolution": "The '<10% leave' branch fires overwhelmingly - 0.16% in a week, against a 25% threshold for the alternative. The registered reading was that inertia is near-absolute and the delegation market has no working price mechanism for retail, and this run supplies far stronger evidence than the test asked for: ledgerbyfigment has been in the identical state for ELEVEN weeks and lost 2.0% of 3,961 delegators, and stakedinc has lost 2 of 639 across the entire archive. The most striking detail is that four wallets called reDelegateRewards on p2p_org_ this week - compounding rewards that cannot exist.",
       "seen_in_run": 23,
       "seen_in_date": "2026-08-31"
@@ -459,7 +459,7 @@
       "status": "resolved",
       "outcome": "as_predicted",
       "resolved_in_run": 23,
-      "measured_value": "egldstakingprovider -18,136 to 61,503 (-22.8% this week, -34.8% over two, -51.8% over three from ~127,500), users -36 to 1,043; procryptostaking -16,999 to 124,805 (-20.5% over two), users -55 to 6,976. serviceFee still 1.0, APR still 0, 50 nodes each - fee NOT reversed, nodes NOT deregistered.",
+      "measured_value": "egldstakingprovider -18,136 to 61,503 (-22.8% this week, -34.8% over two, -51.8% over three from ~127,500), users -36 to 1,043; procryptostaking -16,999 to 124,805 (-20.5% over two), users -55 to 6,976. the service fee still at 100%, APR still 0, 50 nodes each - fee NOT reversed, nodes NOT deregistered.",
       "resolution": "The 'books halve, users flat' branch fires. egldstakingprovider's book is down 51.8% over three weeks against a 7.2% user loss; procryptostaking is down 20.5% over two against 1.3%. The reading registered for this branch was that the delegation market's price mechanism only reaches large holders, and that is now supported by a second, much longer-running natural experiment discovered this run: ledgerbyfigment has paid 0% for eleven weeks and lost 2.0% of its delegators, stakedinc 0.3% across the whole archive. Capital leaves at roughly half a book per month; people leave at roughly two percent per quarter.",
       "seen_in_run": 23,
       "seen_in_date": "2026-08-31"
