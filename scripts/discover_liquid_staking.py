@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
-"""Discover liquid-staking protocols on MultiversX, including ones we do not track yet.
+"""Discover liquid-staking protocols on MultiversX, including ones we do not track.
 
-A liquid-staking contract has a precise, checkable signature:
+THE SIGNATURE
+    A liquid-staking protocol is a smart contract that (a) owns an ESDT and
+    (b) has userActiveStake > 0 on delegation contracts. It stakes EGLD on
+    behalf of other people and hands them a transferable claim. Nothing else
+    on this chain has that shape.
 
-  1. it is a smart contract  (erd1qqqq...)
-  2. it DELEGATES            (/accounts/{addr}/delegation reports userActiveStake > 0)
-  3. it ISSUES a receipt     (/accounts/{addr}/roles/tokens returns a token it owns)
+WHY IT IS DRIVEN FROM THE TOKEN SIDE
+    The obvious approach - scan delegation contracts for smart-contract senders
+    calling `delegate` - DOES NOT WORK. A contract-to-contract delegate call is
+    settled as a smart-contract result and never appears in
+    /accounts/{provider}/transactions. Verified against the VoxEGLD contract:
+    zero hits as a sender in the provider's /transactions, 50 in its /transfers.
+    This is the run #19/#21 lesson (trace through callers, SC results are
+    invisible to value-transfer scans) in a new place.
 
-Anything satisfying all three is staking EGLD on behalf of other people and handing
-them a transferable claim — that is liquid staking, whatever it calls itself.
-
-Candidates come from the delegation side, which is exhaustive by construction: an
-LSD must call `delegate` on a delegation contract, so scanning provider inbound
-transactions for smart-contract senders cannot miss one that is actually staking.
+    /tokens/{identifier} exposes `owner` directly, so going token -> owner ->
+    delegation is one hop, exhaustive over anything with a listed token, and
+    an order of magnitude cheaper.
 
 Usage:
-    python3 scripts/discover_liquid_staking.py [--days 120] [--providers 40]
+    python3 scripts/discover_liquid_staking.py
+    python3 scripts/discover_liquid_staking.py --pages 4      # widen the sweep
 """
 import argparse
 import json
@@ -51,67 +58,12 @@ def is_contract(addr):
     return bool(addr) and addr.startswith("erd1qqqq")
 
 
-def classify(addr, label_map):
-    """Apply the three-part signature. Returns a dict when it qualifies."""
-    dg = get(f"/accounts/{addr}/delegation")
-    time.sleep(0.25)
-    staked = 0.0
-    contracts = 0
-    if isinstance(dg, list):
-        for row in dg:
-            act = int(row.get("userActiveStake", "0") or 0) / 1e18
-            staked += act
-            if act > 0:
-                contracts += 1
-    if staked <= 0:
-        return None
-
-    roles = get(f"/accounts/{addr}/roles/tokens", {"size": 25})
-    time.sleep(0.25)
-    tokens = []
-    if isinstance(roles, list):
-        for t in roles:
-            ident = t.get("identifier")
-            if not ident:
-                continue
-            meta = get(f"/tokens/{ident}")
-            time.sleep(0.3)
-            if isinstance(meta, dict) and "__error__" not in meta:
-                tokens.append({
-                    "identifier": ident,
-                    "name": meta.get("name"),
-                    "supply": meta.get("supply"),
-                    "holders": meta.get("accounts"),
-                    "price_usd": meta.get("price"),
-                    "market_cap_usd": meta.get("marketCap"),
-                })
-    if not tokens:
-        return None
-
-    info = get(f"/accounts/{addr}")
-    time.sleep(0.2)
-    return {
-        "address": addr,
-        "known_label": label_map.get(addr),
-        "owner": info.get("ownerAddress") if isinstance(info, dict) else None,
-        "deployed_at": info.get("deployedAt") if isinstance(info, dict) else None,
-        "staked_egld": staked,
-        "delegation_contracts": contracts,
-        "receipt_tokens": tokens,
-    }
-
-
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--days", type=int, default=120,
-                    help="How far back to scan provider inbound for delegate calls.")
-    ap.add_argument("--providers", type=int, default=40,
-                    help="How many providers to scan, largest first.")
-    ap.add_argument("--max-pages", type=int, default=6)
+    ap.add_argument("--pages", type=int, default=3,
+                    help="Pages of 50 to pull from each ranked token list.")
     ap.add_argument("--output", default=f"{REPO}/data/collected/liquid_staking_discovery.json")
     args = ap.parse_args()
-
-    after = int(datetime.now(timezone.utc).timestamp()) - args.days * 86400
 
     kn = json.load(open(f"{REPO}/data/known-addresses.json"))
     label_map = {}
@@ -121,68 +73,107 @@ def main():
                 if isinstance(m, dict) and a.startswith("erd1"):
                     label_map[a] = m.get("name", "Unknown")
 
-    providers = get("/providers", {"size": 200, "sort": "locked", "order": "desc"})
-    if not isinstance(providers, list):
-        print("could not load providers:", providers)
-        return 1
-    active = [p for p in providers if float(p.get("locked", 0) or 0) > 0][: args.providers]
-    print(f"Scanning {len(active)} providers for smart-contract delegators "
-          f"over the last {args.days} days…\n")
+    # --- 1. Gather candidate tokens ----------------------------------------
+    # Ranked lists catch anything with real adoption; the name search catches a
+    # freshly launched LSD that has neither market cap nor holders yet, which is
+    # exactly the case that would otherwise be missed for months.
+    tokens = {}
 
-    candidates = {}
-    for i, p in enumerate(active, 1):
-        addr = p.get("provider")
-        ident = p.get("identity") or addr
-        frm = 0
-        seen = 0
-        for _ in range(args.max_pages):
-            batch = get(f"/accounts/{addr}/transactions",
-                        {"size": 50, "from": frm, "after": after, "order": "desc",
-                         "status": "success", "receiver": addr})
-            time.sleep(0.22)
-            if not isinstance(batch, list) or not batch:
-                break
-            for t in batch:
-                fn = t.get("function") or ""
-                snd = t.get("sender")
-                if fn in ("delegate", "claimRewards", "reDelegateRewards", "unDelegate") \
-                        and is_contract(snd) and snd != addr:
-                    candidates.setdefault(snd, set()).add(ident)
-                    seen += 1
-            if len(batch) < 50:
-                break
-            frm += 50
-        if i % 10 == 0 or seen:
-            print(f"  [{i}/{len(active)}] {str(ident)[:30]:32} contract-callers so far: {len(candidates)}")
+    def absorb(batch):
+        for t in batch if isinstance(batch, list) else []:
+            if isinstance(t, dict) and t.get("identifier"):
+                tokens.setdefault(t["identifier"], t)
 
-    print(f"\n{len(candidates)} smart-contract delegators found. Verifying signature…\n")
+    for term in ("EGLD", "staked", "stake"):
+        absorb(get("/tokens", {"search": term, "size": 50}))
+        print(f"  search '{term}' -> {len(tokens)} candidate tokens")
+    for sort in ("marketCap", "accounts", "transactions"):
+        for page in range(args.pages):
+            absorb(get("/tokens", {"size": 50, "from": page * 50,
+                                   "sort": sort, "order": "desc"}))
+        print(f"  sort {sort} ({args.pages} pages) -> {len(tokens)} candidate tokens")
+
+    # --- 2. Reduce to distinct smart-contract owners -----------------------
+    owners = {}
+    for ident, t in tokens.items():
+        owner = t.get("owner")
+        if is_contract(owner):
+            owners.setdefault(owner, []).append(ident)
+    print(f"\n{len(tokens)} tokens -> {len(owners)} distinct smart-contract owners to verify\n")
+
+    # --- 3. Verify: does the owner actually stake? -------------------------
     found = []
-    for addr, provs in sorted(candidates.items()):
-        res = classify(addr, label_map)
-        if res:
-            res["delegates_to"] = sorted(provs)[:6]
-            found.append(res)
-            tok = ", ".join(f"{t['identifier']} ({t['name']})" for t in res["receipt_tokens"])
-            tag = res["known_label"] or "*** NOT TRACKED ***"
-            print(f"  LSD  {addr[:24]}…  {res['staked_egld']:>12,.0f} EGLD  {tok}")
-            print(f"       {tag}")
+    for i, (owner, idents) in enumerate(sorted(owners.items()), 1):
+        dg = get(f"/accounts/{owner}/delegation")
+        time.sleep(0.22)
+        staked = 0.0
+        n = 0
+        if isinstance(dg, list):
+            for row in dg:
+                act = int(row.get("userActiveStake", "0") or 0) / 1e18
+                staked += act
+                if act > 0:
+                    n += 1
+        if staked <= 0:
+            continue
+
+        info = get(f"/accounts/{owner}")
+        time.sleep(0.2)
+        receipts = []
+        for ident in idents:
+            meta = tokens.get(ident, {})
+            full = get(f"/tokens/{ident}")
+            time.sleep(0.25)
+            if isinstance(full, dict) and "__error__" not in full:
+                meta = full
+            receipts.append({
+                "identifier": ident,
+                "name": meta.get("name"),
+                "supply": meta.get("supply"),
+                "holders": meta.get("accounts"),
+                "price_usd": meta.get("price"),
+                "market_cap_usd": meta.get("marketCap"),
+                "description": (meta.get("assets") or {}).get("description"),
+                "website": (meta.get("assets") or {}).get("website"),
+            })
+
+        entry = {
+            "address": owner,
+            "known_label": label_map.get(owner),
+            "tracked": owner in label_map,
+            "owner_of_contract": info.get("ownerAddress") if isinstance(info, dict) else None,
+            "deployed_at": info.get("deployedAt") if isinstance(info, dict) else None,
+            "staked_egld": staked,
+            "delegation_contracts": n,
+            "receipt_tokens": receipts,
+        }
+        found.append(entry)
+        tag = entry["known_label"] or "*** NOT TRACKED ***"
+        toks = ", ".join(f"{r['identifier']} ({r['name']})" for r in receipts)
+        print(f"  LSD  {staked:>12,.0f} EGLD staked  {toks}")
+        print(f"       {owner}")
+        print(f"       {tag}")
 
     found.sort(key=lambda x: -x["staked_egld"])
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "window_days": args.days,
-        "providers_scanned": len(active),
-        "contract_delegators_seen": len(candidates),
+        "method": "token owner -> delegation stake (SC-to-SC delegate calls are "
+                  "smart-contract results and invisible to /transactions)",
+        "tokens_examined": len(tokens),
+        "contract_owners_verified": len(owners),
         "liquid_staking_protocols": found,
     }
     json.dump(out, open(args.output, "w"), indent=1)
+
+    untracked = [f for f in found if not f["tracked"]]
     print(f"\nSaved {args.output}")
-    untracked = [f for f in found if not f["known_label"]]
-    print(f"\n=== {len(found)} liquid-staking protocols; {len(untracked)} NOT tracked ===")
+    print(f"\n=== {len(found)} liquid-staking protocols found; {len(untracked)} NOT tracked ===")
     for f in untracked:
-        print(f"  {f['address']}")
-        for t in f["receipt_tokens"]:
-            print(f"    {t['identifier']} {t['name']} supply={t['supply']} holders={t['holders']}")
+        print(f"  {f['address']}  {f['staked_egld']:,.0f} EGLD")
+        for r in f["receipt_tokens"]:
+            print(f"    {r['identifier']}  {r['name']}  supply={r['supply']}  holders={r['holders']}")
+            if r.get("description"):
+                print(f"      {r['description'][:120]}")
     return 0
 
 

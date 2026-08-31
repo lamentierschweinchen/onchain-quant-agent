@@ -1489,5 +1489,31 @@
       "first_seen": "2026-08-31",
       "discovered_run": 23
     }
+  },
+  "defi_liquid_staking": {
+    "erd1qqqqqqqqqqqqqpgqaqxztq0y764dnet95jwtse5u5zkg92sfacts6h9su3": {
+      "name": "SALSA: Liquid Staking",
+      "category": "defi",
+      "subcategory": "liquid_staking",
+      "notes": "Staking Agency Liquid Staking Algorithm. Issues LEGLD-d74da9 (LiquidEGLD). The LARGEST untracked liquid-staking protocol at discovery: 6,451 EGLD staked, 5,080 LEGLD supply across 382 holders - 3.7x the size of the VoxEGLD launch that prompted the sweep, and it had never been measured. Receipt token(s): LEGLD-d74da9.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd1qqqqqqqqqqqqqpgql6v06snr0jtg9gesuvsre83f6rvqr0wr8ltsjgfta3": {
+      "name": "Dinovox: VoxEGLD Liquid Staking",
+      "category": "defi",
+      "subcategory": "liquid_staking",
+      "notes": "Issues VOXEGLD-5872e5 (VoxEGLD), an auto-compounding liquid-staking token. Deployed 2026-07-21 (run #17 window); 1,757 EGLD staked, 1,748 supply, 78 holders at discovery. Flagged by the operator, which is what prompted building the detector. Receipt token(s): VOXEGLD-5872e5.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd1qqqqqqqqqqqqqpgqawus4zu5w2frmhh9rscjqnu9x6msfjya2d2sfw7tsn": {
+      "name": "VestaX Finance: Liquid Staking",
+      "category": "defi",
+      "subcategory": "liquid_staking",
+      "notes": "Issues VEGLD-2b9319 (VestaXStakedEGLD) with auto-compounding. 1,121 EGLD staked, 802 supply, 439 holders at discovery - the widest holder base of the untracked three. Receipt token(s): VEGLD-2b9319.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    }
   }
 }

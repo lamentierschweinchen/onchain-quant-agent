@@ -642,7 +642,11 @@ tvl_tokens = ["HUSDC-d80042","HEGLD-d61095","HUSDT-6f0914","HWBTC-49ca31","HWETH
               # WTAO-3ec9c0 was WRONG and 404'd on every run from #13 to #23 without
               # anyone noticing, which is why the run #11 accumulator fallback for
               # SWTAO was believed dead. The live WrappedTAO is WTAO-4f5363.
-              "SEGLD-3ad2d0","SWTAO-356a25","USH-111e09","XEGLD-e413ed","WTAO-4f5363"]
+              "SEGLD-3ad2d0","SWTAO-356a25","USH-111e09","XEGLD-e413ed","WTAO-4f5363",
+              # Emerging liquid staking, found by scripts/discover_liquid_staking.py
+              # (run #23). Small today, but supply is the leading indicator and
+              # SALSA had already reached 5,080 LEGLD before anyone measured it.
+              "LEGLD-d74da9","VOXEGLD-5872e5","VEGLD-2b9319","JWLEGLD-023462"]
 DATAAPI_TOKENS = {"SEGLD-3ad2d0","SWTAO-356a25","USH-111e09","XEGLD-e413ed"}
 tok_mcap = {}
 for t in tvl_tokens:
