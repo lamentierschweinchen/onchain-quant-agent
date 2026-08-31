@@ -1,0 +1,3503 @@
+{
+ "metadata": {
+  "report_date": "2026-08-31",
+  "period_start": "2026-08-24",
+  "period_end": "2026-08-31",
+  "generated_at": "2026-08-31T16:39:40.056558Z",
+  "egld_price_usd": 3.83,
+  "btc_price_usd": 78581,
+  "eth_price_usd": 2468.79,
+  "run_number": 23,
+  "data_sources_ok": [
+   "/economics",
+   "/stats",
+   "/accounts?sort=balance",
+   "/tokens?sort=accounts",
+   "/tokens?sort=transactions",
+   "/tokens?sort=marketCap",
+   "/providers?size=200",
+   "/identities",
+   "/mex/economics",
+   "/mex/pairs",
+   "/mex/pairs?size=50",
+   "/mex/tokens",
+   "/mex/farms",
+   "coingecko/simple/price",
+   "/accounts/{addr} + /transactions x38",
+   "paginated desk in/outbound (7d)",
+   "two-hop both-legs hub netting, 7d window",
+   "wave #3 extended window netting (Aug 17-31)",
+   "historical hub-trace windows (carried forward)",
+   "229,865 EGLD unbond resolution (rec #3)",
+   "all-provider unDelegate scan x107 (rec #5)",
+   "unbonding pool /accounts/{addr}/delegation x45",
+   "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+   "100%-fee provider follow-through",
+   "Binance hot outbound >10K vs desk inbound (rec #11)",
+   "dynamic absorber discovery from desk terminals (rec #8)",
+   "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+   "/accounts/{addr}/transfers/count x7",
+   "/tokens/{id} x15 (dataApi re-fetch + list recovery)",
+   "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+   "followup pass: 3 valid Binance.com hot wallets (main collector's hardcoded address failed bech32)",
+   "followup pass: unbond wallet info/delegation/outbound (429 recovery)",
+   "followup pass: wave #3 extended window netting Aug 17-31",
+   "historical provider snapshots re-read for the deregistration signature (runs #10-#22)"
+  ],
+  "data_sources_failed": [
+   "collect_run23.py BINANCE_HOT constant: invalid bech32 -> HTTP 400 (repaired in followup)",
+   "/accounts/{unbond}/delegation: HTTP 429 on the main pass (repaired in followup)",
+   "wave-window desk pagination: zero txs on the main pass (repaired in followup)",
+   "/tokens/WTAO-3ec9c0: HTTP 404 (accumulator fallback unavailable; not needed, SWTAO priced)"
+  ]
+ },
+ "executive_summary": [
+  {
+   "category": "network",
+   "severity": "high",
+   "finding": "EGLD ROSE +6.39% TO $3.83 WHILE BOTH MAJORS FELL - THE FIRST EGLD-SPECIFIC DECOUPLING TO THE UPSIDE SINCE RUN #16. BTC -0.97%, ETH -1.07%. Last week's +30.43% was a beta move that landed between the majors; this one is not, and the run #16 rule applies - when EGLD moves against a flat-or-falling tape the move has an EGLD-specific component. z=+2.89sigma, with the standing caveat that three consecutive up-weeks have pulled the baseline up and the z understates the break. The chain-side instruments did not corroborate: staked EGLD moved +3,766 (flat), the staked ratio FELL -0.064pp, and DEX volume in EGLD terms fell -4.3%."
+  },
+  {
+   "category": "whale",
+   "severity": "critical",
+   "finding": "THE LARGEST STAGED SUPPLY OVERHANG IN TRACKING - THE DESKS DELIVERED 272,396 EGLD ONE-WAY AND STILL ENDED THE WEEK WITH A RECORD 266,213 LOADED. UPbit fed 460,000 EGLD (+55% on last week's 297,000), gross throughput 709,850 out against 903,083 in, 62% circular. Desk inventory rose +156,356 to 266,213 - 2.4x the previous record set last week. Two-hop destinations: Binance.com +117,884, Bybit +105,679, Gate.io +33,944, with UPbit the sole net source at -460,000. Run #22's wave-#3 escalation test fires at 3x its threshold."
+  },
+  {
+   "category": "whale",
+   "severity": "critical",
+   "finding": "BINANCE IS A DESK FEEDER - THE CUSTODY WATCH AND THE PIPELINE WATCH ARE ONE INSTRUMENT. Run #22 asked whether the 300,000 custody drawdown reaches the desks; it does. The staking custody sent 500,000 to the Binance.com hot wallet this week, and that wallet forwarded 135,003 EGLD into the OTC desks - 73,421 through the feeder identified in run #19, 30,554 through the run #20 feeder, and 21,297 direct - while returning 303,242 to custody. Custody is now 2,978,782 (-196,758 WoW, a second consecutive drawdown; -497K over two weeks). The pre-registered branch tested the hot wallet's BALANCE, which ROSE 159,709 because custody refilled it faster than it spent - a balance threshold cannot see a flow that is funded faster than it is spent, and the claim resolves on the flow trace instead."
+  },
+  {
+   "category": "staking",
+   "severity": "critical",
+   "finding": "RUN #22's 'FIRST OPERATOR DEREGISTRATION IN TRACKING' IS WITHDRAWN - THERE WERE TWO BEFORE IT, AND THE BIGGER ONE WAS MISSED BY TEN RUNS. Applying run #22's own detection signature (locked == 0 with numNodes > 0) to the stored snapshots shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - carrying 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users for the ENTIRE stored history. Neither was ever reported. p2p_org_ was the third, not the first, and it COMPLETED this week: its owner called removeNodes eleven times plus unBondNodes, taking numNodes 50 -> 0. The signature also needs widening - p2p_org_ no longer matches it, because a fully exited operator has no nodes left."
+  },
+  {
+   "category": "staking",
+   "severity": "high",
+   "finding": "PARTICIPATION INERTIA IS NOW MEASURED IN MONTHS, AND CAPITAL AND PEOPLE MOVE AT COMPLETELY DIFFERENT SPEEDS. ledgerbyfigment has paid 0% APR for ELEVEN WEEKS and lost 78 of 3,961 delegators (-2.0%); stakedinc has paid nothing for the whole stored history and lost 2 of 639; p2p_org_'s 1,244 stranded delegators produced exactly 2 unDelegate calls this week, against 4 reDelegateRewards and 6 claimRewards on a contract that generates nothing. Against that, the two 100%-fee providers' BOOKS have halved - egldstakingprovider 94,349 -> 61,503 in two weeks (-34.8%, -51.8% over three), procryptostaking 156,917 -> 124,805 (-20.5%) - with users down only 6.1% and 1.3%. The delegation market has a price mechanism for large holders and none for retail."
+  },
+  {
+   "category": "whale",
+   "severity": "high",
+   "finding": "THE IDENTIFIABLE-BID REPAIR FAILED, AND THE FAILURE IS THE ANSWER. Run #22 recommended discovering absorber wallets dynamically from the desks' outbound terminals rather than watching one wallet. All 14 terminals were scanned: every one is a zero-balance pass-through router, and of 505,597 EGLD received they retained 8,545 (1.7%). There are no absorbers on the outbound side of this pipeline to discover - the desks deliver exclusively to venues through routers. The Mega Whale proxy read exactly zero for a third straight week (balance unchanged to four decimals, zero transactions). The instrument is retired: demand is carried by DEX turnover and ex-pipeline withdrawal breadth from here."
+  },
+  {
+   "category": "defi",
+   "severity": "medium",
+   "finding": "DEX TURNOVER HELD THE REGIME THRESHOLD ON THE USD RATIO AND FAILED IT IN EGLD TERMS - THE CONFOUND RUN #22 ASKED TO SEPARATE. Turnover 10.51% against last week's 10.83%, comfortably above the ~5% branch, so the pre-committed test fires on the regime-change side. But volume in EGLD terms fell from 63,885 to 61,110 EGLD/day (-4.3%) and pool depth in EGLD terms fell -1.4% - the USD ratio held because both sides scaled with a +6.4% price, not because more EGLD changed hands. WEGLD/USDC is 95.1% of all volume; ex that one pair the venue traded $11,543 in 24h, about 3,014 EGLD."
+  },
+  {
+   "category": "staking",
+   "severity": "medium",
+   "finding": "THE 229,865 EGLD UNBOND DID NOT MOVE FOR A SECOND FULL WEEK AND IS RETIRED AS A LIVE FLOW. Balance unchanged at 2,369.53 EGLD, 229,865 still sitting unbonded-and-unclaimed inside the delegation contracts, zero outbound transactions, zero function calls. That is the no-action branch run #22 added after the test failed to resolve for want of one - it fires, and the overhang stops being tracked as forward supply. Meanwhile the WEEKLY unbonding queue more than doubled: 151,443 EGLD unDelegated by 300 distinct wallets across all 107 provider contracts (run #22 measured 70,498 across ten), with 132,392 measured pending. The staked-minus-delegated residual of 70,190 is again fully absorbed, so no direct-node figure is published."
+  }
+ ],
+ "network_health": {
+  "economics": {
+   "egld_price_usd": 3.83,
+   "market_cap_usd": 117517767,
+   "total_supply": 30683490,
+   "circulating_supply": 30683490,
+   "staked_egld": 14551783,
+   "staked_ratio": 0.474254493214429,
+   "staking_apr": 0.087004,
+   "base_apr": 0.106594,
+   "topup_apr": 0.062946,
+   "token_market_cap_usd": 47157007
+  },
+  "activity": {
+   "total_accounts": 9250203,
+   "total_transactions": 624124595,
+   "epoch": 2222,
+   "blocks": 127931254,
+   "shards": 3,
+   "transactions_7d": 1300795,
+   "avg_daily_transactions": 185827
+  },
+  "deltas": {
+   "price_change_pct": 6.388888888888888,
+   "market_cap_change_pct": 6.559559157121084,
+   "staked_ratio_change_pp": -0.06378710619293071,
+   "apr_change_pp": -0.005299999999999749,
+   "accounts_added": 3488,
+   "transactions_added": 1300795,
+   "supply_added": 49144,
+   "staked_egld_added": 3766,
+   "epoch_advanced": 7,
+   "btc_correlation_note": "BTC -0.97%, ETH -1.07%, EGLD +6.39% - EGLD rose while BOTH majors fell. That is the run #16 decoupling signature and the opposite of last week, when EGLD's +30.43% landed between BTC +23.78% and ETH +30.67% and carried no EGLD-specific component."
+  },
+  "analysis": "EGLD closed at $3.83, +6.39%, and did it against a falling tape - BTC -0.97%, ETH -1.07%. By the run #16 rule that is an EGLD-specific move rather than beta, and it is the second week running that the price has behaved differently from the chain underneath it.\n\nNothing on-chain corroborates a demand story. Total staked moved +3,766 EGLD to 14,551,783 - flat to three significant figures - and because supply grew 49,144 EGLD of emission, the staked RATIO actually FELL -0.064pp to 47.43%. 1,300,795 transactions settled over 7 epochs (185,827/day) and 3,488 accounts were created, both unremarkable. DEX volume rose +1.8% in dollars and FELL -4.3% in EGLD. Delegation TVL fell -66,424. The delegator base fell -107. Network APR -0.005pp to 8.70%.\n\nSo the honest framing is a price that moved on its own while every participation instrument sat still - and it moved in the same week the OTC pipeline delivered 272,396 EGLD one-way to exchange order books and reloaded to a record 266,213. A rising price into that much staged supply is the week's central tension, and it is not resolved by anything the model can currently see on the bid side."
+ },
+ "whale_intelligence": {
+  "large_transactions": [
+   {
+    "hash": "6c0c8b2aa49ce5638a2759dc96bf3ef629f95296d529197145b5eddfb5244b37",
+    "timestamp": "2026-08-30T14:52:42Z",
+    "sender": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p",
+    "sender_label": "Binance Staking",
+    "receiver": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+    "receiver_label": "Binance.com",
+    "value_egld": 500000.0,
+    "value_usd": 1915000.0,
+    "flow_type": "exchange_to_exchange"
+   },
+   {
+    "hash": "445ad45baa6972ec43c1f3816928772d64718602f3c5d3c7ce158e8f2f1e05a3",
+    "timestamp": "2026-08-30T15:18:54Z",
+    "sender": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "sender_label": "UPbit",
+    "receiver": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+    "receiver_label": "UPbit OTC Desk",
+    "value_egld": 360000.0,
+    "value_usd": 1378800.0,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "dce116c099fe6ac3d214609d8b9b106e73ea84a1604b86a98b8261a2fd6eee4b",
+    "timestamp": "2026-08-25T09:43:18Z",
+    "sender": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+    "sender_label": "Binance.com",
+    "receiver": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p",
+    "receiver_label": "Binance Staking",
+    "value_egld": 303241.85299999994,
+    "value_usd": 1161416.2969899997,
+    "flow_type": "exchange_to_exchange"
+   },
+   {
+    "hash": "cf73ed2ac0d28e726a549591cb34a4088b766862de00b912d590dd80b62c3c68",
+    "timestamp": "2026-08-24T02:32:54Z",
+    "sender": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p",
+    "sender_label": "Binance Staking",
+    "receiver": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+    "receiver_label": "Binance.com",
+    "value_egld": 300000.0,
+    "value_usd": 1149000.0,
+    "flow_type": "exchange_to_exchange"
+   },
+   {
+    "hash": "232db957d3a45131a99970902f0f1f9dca862c2fa1f03ceda59f928f63ea238d",
+    "timestamp": "2026-08-28T14:50:18Z",
+    "sender": "erd1z4xerdjq6aa2rusvk9wlx5x7qjevnnmsclnm56wnuaaa8u9upyqq2e306k",
+    "sender_label": "Coinbase Custody 2 (migration destination)",
+    "receiver": "erd17w456angn8vnf9fl44amnux5fchpa70p58nyz8yns9gvsz566fps7h89fr",
+    "receiver_label": "Unknown",
+    "value_egld": 40000.0,
+    "value_usd": 153200.0,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "e824bdacce8ec08da0d1f17d728e5e120e9ea8d849206c9c16454d51e6672b83",
+    "timestamp": "2026-08-30T09:46:00Z",
+    "sender": "erd1dmaxfyp426yr6dtjy9cs3xchnse67rnhtlh8ylnapauhhuj254dskg037g",
+    "sender_label": "Bybit->OTC Desk Feeder (run #22)",
+    "receiver": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "receiver_label": "UPbit",
+    "value_egld": 31925.100805,
+    "value_usd": 122273.13608314999,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "9bdd200c582b978aba174f6e6bdb217e5bb0f040fcbf6b266a982955dd6a0778",
+    "timestamp": "2026-08-27T22:54:30Z",
+    "sender": "erd1m9qn6gvercs6ksvtn924w4y7z9ppglyfugpu34al26t9u4mvzvqqlq9dc3",
+    "sender_label": "Coinbase (secondary)",
+    "receiver": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul",
+    "receiver_label": "Unknown Whale B (liquidated to Coinbase)",
+    "value_egld": 18108.04024082591,
+    "value_usd": 69353.79412236324,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "78fb51b8b13c9033ec6fc4733b3b11383f21d8f7c5f4a8160121f981eef4f60c",
+    "timestamp": "2026-08-30T22:52:36Z",
+    "sender": "erd1dmaxfyp426yr6dtjy9cs3xchnse67rnhtlh8ylnapauhhuj254dskg037g",
+    "sender_label": "Bybit->OTC Desk Feeder (run #22)",
+    "receiver": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+    "receiver_label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+    "value_egld": 17995.99905,
+    "value_usd": 68924.6763615,
+    "flow_type": "whale_to_whale"
+   },
+   {
+    "hash": "f2504654801bb64f4e06a9015e09ef65f8e6c451a88afd00a5a6a21e4e334243",
+    "timestamp": "2026-08-30T22:47:42Z",
+    "sender": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "sender_label": "Bybit",
+    "receiver": "erd1dmaxfyp426yr6dtjy9cs3xchnse67rnhtlh8ylnapauhhuj254dskg037g",
+    "receiver_label": "Bybit->OTC Desk Feeder (run #22)",
+    "value_egld": 17995.999,
+    "value_usd": 68924.67617,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "f454ffeef38d51233bcc93890f2e52a7aa0514a01d3f2a69cbef5402cb724536",
+    "timestamp": "2026-08-31T07:10:42Z",
+    "sender": "erd10qcjunqdmgn58pgzndwg35tgms9ud40ey2f384df6fqrupuyh60sxz5ya4",
+    "sender_label": "Binance.com->OTC Desk Feeder (run #20)",
+    "receiver": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "receiver_label": "UPbit",
+    "value_egld": 17930.99735,
+    "value_usd": 68675.71985050001,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "0e4851ad78fae81819da1235ca01292d4ea63242f9655787f311a76b0790915b",
+    "timestamp": "2026-08-31T00:00:06Z",
+    "sender": "erd1h39er99patvu9xdc6vvuyg87c37zerf2wyj2ehhyyvwpacxuryjs63sdc3",
+    "sender_label": "Bybit->OTC Desk Feeder (run #20)",
+    "receiver": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+    "receiver_label": "UPbit OTC Desk",
+    "value_egld": 16038.39905,
+    "value_usd": 61427.0683615,
+    "flow_type": "whale_to_whale"
+   },
+   {
+    "hash": "f12f6d5b6effc7086d58e2df2950bcfad7b8c034103aa6adc7cf68dfb53823f5",
+    "timestamp": "2026-08-30T23:55:36Z",
+    "sender": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "sender_label": "Bybit",
+    "receiver": "erd1h39er99patvu9xdc6vvuyg87c37zerf2wyj2ehhyyvwpacxuryjs63sdc3",
+    "receiver_label": "Bybit->OTC Desk Feeder (run #20)",
+    "value_egld": 16038.399000000001,
+    "value_usd": 61427.068170000006,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "9d571b30312d74a16d2f5873a6fff9125985c20410e3fe534dbc580f27c6f316",
+    "timestamp": "2026-08-30T09:45:00Z",
+    "sender": "erd1h39er99patvu9xdc6vvuyg87c37zerf2wyj2ehhyyvwpacxuryjs63sdc3",
+    "sender_label": "Bybit->OTC Desk Feeder (run #20)",
+    "receiver": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "receiver_label": "UPbit",
+    "value_egld": 15653.49895,
+    "value_usd": 59952.9009785,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "a9142005a4805d8d9cb51197a74f5d5e766f75a643006062e0d5f705d148a880",
+    "timestamp": "2026-08-31T03:07:00Z",
+    "sender": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+    "sender_label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+    "receiver": "erd1e9luc4ynhpsya80rplukemy6cy6k08229pa3tp6h9484x0pll5usatwm5a",
+    "receiver_label": "OTC->Bybit Router 5 (nonce 302)",
+    "value_egld": 15000.0,
+    "value_usd": 57450.0,
+    "flow_type": "whale_to_whale"
+   },
+   {
+    "hash": "7fa932f64a381433e586c1e096ed15b18c4478fc5844da6637f9112df08f4cb0",
+    "timestamp": "2026-08-30T19:00:36Z",
+    "sender": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+    "sender_label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+    "receiver": "erd1g6fntjtzv4s2mx3txffamtxymgn22g2d3pkn2yjg77aj27svaszq2r5nyc",
+    "receiver_label": "OTC->Bybit Router 6 (nonce 507)",
+    "value_egld": 15000.0,
+    "value_usd": 57450.0,
+    "flow_type": "whale_to_whale"
+   },
+   {
+    "hash": "8f7c000fc5689fcb32ceb71eb699ef743e34de57a4ad962076ac825946a5690b",
+    "timestamp": "2026-08-31T00:26:42Z",
+    "sender": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+    "sender_label": "UPbit OTC Desk",
+    "receiver": "erd1g8ll9qrhmevdhjmtk8q02klu8a6q8z7xk0aqml7vncvpxdjwrdgq5ve8we",
+    "receiver_label": "OTC\u2192Bybit Router (UPbit-side, nonce 150)",
+    "value_egld": 15000.0,
+    "value_usd": 57450.0,
+    "flow_type": "whale_to_whale"
+   },
+   {
+    "hash": "1747ba69c1aa91a37b685c789dcbf4d84fbff148c5499bcdf6d9dc16c2c0b690",
+    "timestamp": "2026-08-31T03:08:36Z",
+    "sender": "erd1e9luc4ynhpsya80rplukemy6cy6k08229pa3tp6h9484x0pll5usatwm5a",
+    "sender_label": "OTC->Bybit Router 5 (nonce 302)",
+    "receiver": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "receiver_label": "Bybit",
+    "value_egld": 14999.99995,
+    "value_usd": 57449.9998085,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "5fcf9e77af54f42139f3125888ae0fcbda075bb6cc88fcacd4b74ff9d5836540",
+    "timestamp": "2026-08-31T00:28:18Z",
+    "sender": "erd1g8ll9qrhmevdhjmtk8q02klu8a6q8z7xk0aqml7vncvpxdjwrdgq5ve8we",
+    "sender_label": "OTC\u2192Bybit Router (UPbit-side, nonce 150)",
+    "receiver": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "receiver_label": "Bybit",
+    "value_egld": 14999.99995,
+    "value_usd": 57449.9998085,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "79d25a1c11dbcf8f6834db4445e793344dd185f948031e6ab37d9f183af0a11b",
+    "timestamp": "2026-08-30T19:02:18Z",
+    "sender": "erd1g6fntjtzv4s2mx3txffamtxymgn22g2d3pkn2yjg77aj27svaszq2r5nyc",
+    "sender_label": "OTC->Bybit Router 6 (nonce 507)",
+    "receiver": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "receiver_label": "Bybit",
+    "value_egld": 14999.99995,
+    "value_usd": 57449.9998085,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "a02e32f3125c437563b4c76cc324eab6078d17a48712ec25782e97aef7007e21",
+    "timestamp": "2026-08-30T22:53:36Z",
+    "sender": "erd1dmaxfyp426yr6dtjy9cs3xchnse67rnhtlh8ylnapauhhuj254dskg037g",
+    "sender_label": "Bybit->OTC Desk Feeder (run #22)",
+    "receiver": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "receiver_label": "UPbit",
+    "value_egld": 14022.19145,
+    "value_usd": 53704.993253500004,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "fa4b51df151ecf1847687dcd0e980f75490f4fb5ac835df197f64d04dfa7c3c0",
+    "timestamp": "2026-08-30T09:46:00Z",
+    "sender": "erd10qcjunqdmgn58pgzndwg35tgms9ud40ey2f384df6fqrupuyh60sxz5ya4",
+    "sender_label": "Binance.com->OTC Desk Feeder (run #20)",
+    "receiver": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "receiver_label": "UPbit",
+    "value_egld": 13659.99835,
+    "value_usd": 52317.7936805,
+    "flow_type": "exchange_inflow"
+   },
+   {
+    "hash": "a2254e6322390fd01ca4876805a70959ef21c257bb69ff56d73c2cfc08d8d7d4",
+    "timestamp": "2026-08-31T07:10:30Z",
+    "sender": "erd15jwxwcpedflwm9c42suya2hzulmc222purazcsszq4u8c0ql8rnsx6vmll",
+    "sender_label": "Bybit->OTC Desk Feeder (run #20)",
+    "receiver": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+    "receiver_label": "UPbit OTC Desk",
+    "value_egld": 10648.99905,
+    "value_usd": 40785.6663615,
+    "flow_type": "whale_to_whale"
+   },
+   {
+    "hash": "546d720d7f617ad08c3741e061131982ecafd364d446f16f4c011a65d4f300a8",
+    "timestamp": "2026-08-31T07:05:54Z",
+    "sender": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "sender_label": "Bybit",
+    "receiver": "erd10qcjunqdmgn58pgzndwg35tgms9ud40ey2f384df6fqrupuyh60sxz5ya4",
+    "receiver_label": "Binance.com->OTC Desk Feeder (run #20)",
+    "value_egld": 10648.999,
+    "value_usd": 40785.66617,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "56e8490a3411afd7bd9e32249452c97738e9f59c709aa2c0e3171e8574525fee",
+    "timestamp": "2026-08-31T07:05:54Z",
+    "sender": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "sender_label": "Bybit",
+    "receiver": "erd15jwxwcpedflwm9c42suya2hzulmc222purazcsszq4u8c0ql8rnsx6vmll",
+    "receiver_label": "Bybit->OTC Desk Feeder (run #20)",
+    "value_egld": 10648.999,
+    "value_usd": 40785.66617,
+    "flow_type": "exchange_outflow"
+   },
+   {
+    "hash": "fbc1165b4a1700e86da2b9651e32883f9f2ec1af47178fd44f4584e24af2b731",
+    "timestamp": "2026-08-31T08:34:06Z",
+    "sender": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+    "sender_label": "UPbit OTC Desk",
+    "receiver": "erd1an6dv5hg36pscczvt999cd7ax3pjknutd6zxhddqk946z0djrq8sh2lud7",
+    "receiver_label": "OTC Desk->Bybit Router (run #20)",
+    "value_egld": 10648.9964,
+    "value_usd": 40785.656212,
+    "flow_type": "whale_to_whale"
+   }
+  ],
+  "wallet_changes": [
+   {
+    "address": "erd1rf4hv70arudgzus0ymnnsnc4pml0jkywg2xjvzslg0mz4nn2tg7q7k0t6p",
+    "label": "Binance Staking",
+    "category": "exchange",
+    "tier": "mega_whale",
+    "balance_current_egld": 2978782.2380337724,
+    "balance_previous_egld": 3175540.3850837722,
+    "change_egld": -196758.1470499998,
+    "change_pct": -6.196052425414493
+   },
+   {
+    "address": "erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49",
+    "label": "UPbit",
+    "category": "exchange",
+    "tier": "large_whale",
+    "balance_current_egld": 950444.1671240445,
+    "balance_previous_egld": 1115362.4786635546,
+    "change_egld": -164918.31153951015,
+    "change_pct": -14.786073110251829
+   },
+   {
+    "address": "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets",
+    "label": "Binance.com",
+    "category": "exchange",
+    "tier": "large_whale",
+    "balance_current_egld": 651260.7369994464,
+    "balance_previous_egld": 492863.9728205596,
+    "change_egld": 158396.76417888683,
+    "change_pct": 32.13802852588608
+   },
+   {
+    "address": "erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r",
+    "label": "OTC Distribution Wallet (coordinated with UPbit OTC Desk)",
+    "category": "other",
+    "tier": "large_whale",
+    "balance_current_egld": 133708.16077335872,
+    "balance_previous_egld": 54494.86347169873,
+    "change_egld": 79213.29730165999,
+    "change_pct": 145.35919948271544
+   },
+   {
+    "address": "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5",
+    "label": "UPbit OTC Desk",
+    "category": "other",
+    "tier": "large_whale",
+    "balance_current_egld": 132505.15989968902,
+    "balance_previous_egld": 55362.50898512902,
+    "change_egld": 77142.65091456001,
+    "change_pct": 139.34095894259667
+   },
+   {
+    "address": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul",
+    "label": "Unknown Whale B (liquidated to Coinbase)",
+    "category": "other",
+    "tier": "large_whale",
+    "balance_current_egld": 123068.86533138761,
+    "balance_previous_egld": 86564.09045839938,
+    "change_egld": 36504.77487298823,
+    "change_pct": 42.17080625427647
+   },
+   {
+    "address": "erd1vj3efd5czwearu0gr3vjct8ef53lvtl7vs42vts2kh2qn3cucrnsj7ymqx",
+    "label": "Bybit",
+    "category": "exchange",
+    "tier": "large_whale",
+    "balance_current_egld": 497497.94862913,
+    "balance_previous_egld": 473190.12122286827,
+    "change_egld": 24307.827406261757,
+    "change_pct": 5.137010752346834
+   },
+   {
+    "address": "erd1w547kw69kpd60vlpr9pe0pn9nnqeljrcaz73znenjpgt0h3qlqqqm3szxj",
+    "label": "Bitget",
+    "category": "exchange",
+    "tier": "mid_whale",
+    "balance_current_egld": 81773.62126624418,
+    "balance_previous_egld": 67390.13577730811,
+    "change_egld": 14383.485488936072,
+    "change_pct": 21.343606631787406
+   },
+   {
+    "address": "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3",
+    "label": "xExchange: WrappedEGLD Contract Shard 1",
+    "category": "defi",
+    "tier": "large_whale",
+    "balance_current_egld": 237019.3511943288,
+    "balance_previous_egld": 249044.97795251667,
+    "change_egld": -12025.626758187864,
+    "change_pct": -4.8286967507052845
+   },
+   {
+    "address": "erd1rlqdj67qxp9l4gt895hwsjl7akrw6td3hhxwm2u4l2te9fzr3gjq6qzh4e",
+    "label": "Unknown",
+    "category": "unknown",
+    "tier": "mid_whale",
+    "balance_current_egld": 76192.41756881001,
+    "balance_previous_egld": 87457.65750401,
+    "change_egld": -11265.239935199992,
+    "change_pct": -12.880793125157131
+   },
+   {
+    "address": "erd1qqqqqqqqqqqqqpgqhh54y3z2srvvclhfgt6dmtrc6l4tua0fjmlskl58yg",
+    "label": "Growth Dividend Fund for Users",
+    "category": "team",
+    "tier": "large_whale",
+    "balance_current_egld": 370362.93903936376,
+    "balance_previous_egld": 360505.20756631345,
+    "change_egld": 9857.731473050313,
+    "change_pct": 2.734421380372716
+   },
+   {
+    "address": "erd1qqqqqqqqqqqqqpgqa9unh4m4j3nyg3l7cvlw8wshumx58m6089pspt29xm",
+    "label": "Ecosystem Growth Fund for Builders",
+    "category": "team",
+    "tier": "large_whale",
+    "balance_current_egld": 370362.93903936376,
+    "balance_previous_egld": 360505.20756631345,
+    "change_egld": 9857.731473050313,
+    "change_pct": 2.734421380372716
+   },
+   {
+    "address": "erd12qe0fhz420vq3wdeglj5xrxn0cueaapl2h3wfppx6vtcxr5p7ljs577cxl",
+    "label": "Unknown",
+    "category": "unknown",
+    "tier": "mid_whale",
+    "balance_current_egld": 89241.38957999999,
+    "balance_previous_egld": 79611.85951,
+    "change_egld": 9629.530069999993,
+    "change_pct": 12.095597476642828
+   },
+   {
+    "address": "erd1vxa2vkdd945k0d6v8dscm8pwt56ueujdtzsyghh6zu4c4lf0kyjqaqkhd2",
+    "label": "Unknown Whale",
+    "category": "other",
+    "tier": "large_whale",
+    "balance_current_egld": 295430.15079,
+    "balance_previous_egld": 286926.515777,
+    "change_egld": 8503.635012999992,
+    "change_pct": 2.9636978617929612
+   },
+   {
+    "address": "erd1hl5y4ahk2a52rf4znn69a62w8skjputp7h3wxfsyyq3kykj0j2uqt7vqmy",
+    "label": "Unknown Whale",
+    "category": "other",
+    "tier": "large_whale",
+    "balance_current_egld": 225034.6177054335,
+    "balance_previous_egld": 216939.51155712604,
+    "change_egld": 8095.106148307474,
+    "change_pct": 3.7315038142214187
+   },
+   {
+    "address": "erd1rpvpgwk55snsmj87ydjsjdzlfrghex0wy9ukmrzqtrrh7k9q88zsew7n9t",
+    "label": "Unknown",
+    "category": "unknown",
+    "tier": "mid_whale",
+    "balance_current_egld": 28709.80342701,
+    "balance_previous_egld": 36100.769479999995,
+    "change_egld": -7390.966052989996,
+    "change_pct": -20.473153784394064
+   },
+   {
+    "address": "erd1vadknqe8tasfwz62sn5gre0ws8x08rnuy2lp6cw0np5aktl7sndsh9wtw7",
+    "label": "Unknown",
+    "category": "unknown",
+    "tier": "mid_whale",
+    "balance_current_egld": 88834.38660622669,
+    "balance_previous_egld": 81894.36337660461,
+    "change_egld": 6940.023229622078,
+    "change_pct": 8.47436007006642
+   },
+   {
+    "address": "erd1qqqqqqqqqqqqqpgq35qkf34a8svu4r2zmfzuztmeltqclapv78ss5jleq3",
+    "label": "Hatom: EGLD Money Market",
+    "category": "defi",
+    "tier": "large_whale",
+    "balance_current_egld": 113107.25325759828,
+    "balance_previous_egld": 119477.30336757624,
+    "change_egld": -6370.050109977965,
+    "change_pct": -5.331598496477842
+   },
+   {
+    "address": "erd1qkazru7aw5heycg7c79lwmcnnczgjj2td2dg8j574h586ahwkptq20zlgy",
+    "label": "Unknown Whale I - second operator wallet (erd1qkazru7aw5)",
+    "category": "whale",
+    "tier": "mid_whale",
+    "balance_current_egld": 40299.587547040006,
+    "balance_previous_egld": 46628.559777689996,
+    "change_egld": -6328.97223064999,
+    "change_pct": -13.573166876318929
+   },
+   {
+    "address": "erd17l22xekj5lvfulatz20xr0llxky6c8zr923r95qg3pfx668m862skjdveh",
+    "label": "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)",
+    "category": "whale",
+    "tier": "large_whale",
+    "balance_current_egld": 321619.06388110796,
+    "balance_previous_egld": 315616.9558311079,
+    "change_egld": 6002.108050000039,
+    "change_pct": 1.901706463835191
+   }
+  ],
+  "whale_tiers": {
+   "mega_whales": {
+    "threshold_egld": 1000000,
+    "count_current": 2,
+    "count_previous": 3,
+    "total_balance_egld": 4077841.5603692075,
+    "previous_total_balance_egld": 5389962.186082762,
+    "net_change_egld": -1312120.6257135542,
+    "net_change_pct": -24.34378165215215
+   },
+   "large_whales": {
+    "threshold_egld": 100000,
+    "count_current": 17,
+    "count_previous": 13,
+    "total_balance_egld": 4959206.588834524,
+    "previous_total_balance_egld": 3404793.947037505,
+    "net_change_egld": 1554412.6417970192,
+    "net_change_pct": 45.653647943938175
+   },
+   "mid_whales": {
+    "threshold_egld": 10000,
+    "count_current": 29,
+    "count_previous": 32,
+    "total_balance_egld": 1209006.9942311672,
+    "previous_total_balance_egld": 1394584.2520944919,
+    "net_change_egld": -185577.2578633246,
+    "net_change_pct": -13.30699508363232
+   }
+  },
+  "exchange_flows": {
+   "total_exchange_egld_current": 6066921.292055095,
+   "total_exchange_egld_previous": 6258861.010224893,
+   "net_change_egld": -191939.71816979814,
+   "net_change_pct": -3.066687658604858,
+   "direction": "outflow",
+   "signal": "Net exchange flow -191,940 EGLD (-3.07%), and per the run #15 decomposition rule it must be read entity by entity because two entities exceed the net. UPbit alone is -164,918 and that is the desk-loading leg - it sent 460,000 EGLD to its own OTC desk in standard transfers. Binance's -38,361 nets a 500,000 custody-to-hot transfer against a 303,242 return. Ex those two the complex was +11,340 - a mild INFLOW into a rising price, led by Bybit and Bitget, both of which are hub destinations. Per the run #14 joint-read rule the balance deltas are the weaker channel this week: the pipeline moved 709,850 gross and 272,396 one-way, an order of magnitude more than the net balance change. 8 addresses without a prior-week balance were excluded from the delta per the run #18 rule.",
+   "by_exchange": [
+    {
+     "exchange": "Binance Staking",
+     "change_egld": -196758.1470499998,
+     "pct": -6.196052425414493
+    },
+    {
+     "exchange": "UPbit",
+     "change_egld": -164918.31153951015,
+     "pct": -14.786073110251829
+    },
+    {
+     "exchange": "Binance.com",
+     "change_egld": 158396.76417888683,
+     "pct": 32.13802852588608
+    },
+    {
+     "exchange": "Coinbase Custody 2 (migration destination)",
+     "change_egld": -39999.999899999995,
+     "pct": -99.80039832958832
+    },
+    {
+     "exchange": "Bybit",
+     "change_egld": 24307.827406261757,
+     "pct": 5.137010752346834
+    },
+    {
+     "exchange": "Bitget",
+     "change_egld": 14383.485488936072,
+     "pct": 21.343606631787406
+    },
+    {
+     "exchange": "KuCoin",
+     "change_egld": 5293.508741843922,
+     "pct": 2.9713414011882513
+    },
+    {
+     "exchange": "Coinbase (secondary)",
+     "change_egld": 4845.434893823462,
+     "pct": 7.059066969551485
+    },
+    {
+     "exchange": "Crypto.com",
+     "change_egld": 4607.94230107218,
+     "pct": 2.3548163928242283
+    },
+    {
+     "exchange": "Gate.io",
+     "change_egld": -4512.714106034284,
+     "pct": -7.488323695126287
+    },
+    {
+     "exchange": "MEXC",
+     "change_egld": 2414.4914149216784,
+     "pct": 2.6334214655795956
+    },
+    {
+     "exchange": "Binance.com",
+     "change_egld": 0.0,
+     "pct": 0.0
+    }
+   ],
+   "entity_netting": [
+    {
+     "entity": "UPbit",
+     "wallets_count": 1,
+     "net_flow_egld": -164918.31153951015,
+     "interpretation": "-164,918 (-14.8%) is the OTC LOADING LEG, not customer withdrawal (run #16 rule). UPbit sent 460,000 EGLD to its own desk in traceable standard transfers - more than its balance fell, because inventory returned from the desks in the same window. It is the sole net SOURCE of the entire pipeline at -460,000."
+    },
+    {
+     "entity": "Binance",
+     "wallets_count": 3,
+     "net_flow_egld": -38361.382871112786,
+     "interpretation": "-38,361 across 3 wallets, and NOT a customer-flow signal. Internally: staking custody -> hot 500,000, hot -> custody 303,242. Externally the informative number is that the hot wallet pushed 135,003 EGLD into the OTC desks through two previously identified feeders and one direct transfer - the first time Binance has been observed feeding the pipeline, and the answer to a question open since run #22."
+    },
+    {
+     "entity": "Coinbase",
+     "wallets_count": 2,
+     "net_flow_egld": -35154.565006176534,
+     "interpretation": "-35,155 (-32.3%), the largest proportional fall of the week. Coinbase Custody 2 sent 40,000 and Coinbase (secondary) 18,108 to Unknown Whale B, which now holds 123,069 - per the run #17 migration rule the receiver holds it, so this is withdrawal to a holder, not distribution."
+    },
+    {
+     "entity": "Bybit",
+     "wallets_count": 1,
+     "net_flow_egld": 24307.827406261757,
+     "interpretation": "+24,308. Bybit is the second-largest net RECEIVER from the hub (+105,679 two-hop-resolved) but its balance rose only 24,308, so most of what arrived has already been absorbed or moved on. Note Bybit also FED the desks 152,918 - it is on both sides, which is what the circularity measure exists to catch."
+    },
+    {
+     "entity": "Bitget",
+     "wallets_count": 1,
+     "net_flow_egld": 14383.485488936072,
+     "interpretation": "+14,383 (+21.3%), the largest proportional BUILD. Bitget appears as a hub destination for the first time (+4,610 two-hop-resolved) - a fifth venue on the delivery side."
+    },
+    {
+     "entity": "KuCoin",
+     "wallets_count": 1,
+     "net_flow_egld": 5293.508741843922,
+     "interpretation": "+5,294 across 1 wallet(s), +2.97%."
+    },
+    {
+     "entity": "Crypto.com",
+     "wallets_count": 1,
+     "net_flow_egld": 4607.94230107218,
+     "interpretation": "+4,608 across 1 wallet(s), +2.35%."
+    },
+    {
+     "entity": "Gate.io",
+     "wallets_count": 1,
+     "net_flow_egld": -4512.714106034284,
+     "interpretation": "-4,513 (-7.5%) against a hub inflow of +33,944 - Gate.io absorbed desk output and still shed balance, so customers withdrew more than the pipeline delivered."
+    },
+    {
+     "entity": "MEXC",
+     "wallets_count": 1,
+     "net_flow_egld": 2414.4914149216784,
+     "interpretation": "+2,414 across 1 wallet(s), +2.63%."
+    }
+   ]
+  },
+  "dormant_activations": [],
+  "otc_pipeline": {
+   "gross_outbound_egld_7d": 709849.78959989,
+   "gross_inbound_egld_7d": 903083.08697089,
+   "circular_egld_7d": 437453.90997289,
+   "net_one_way_egld_7d": 272395.879627,
+   "circular_share_pct": 61.626264652337625,
+   "desk_balance_egld": 266213.32067304774,
+   "previous_desk_balance_egld": 109857.37245682775,
+   "upbit_reload_egld": 460000.0,
+   "venue_netting": [
+    {
+     "venue": "UPbit",
+     "desk_to_venue_egld": 0,
+     "venue_to_desk_egld": 460000.0,
+     "net_egld": -460000.0
+    },
+    {
+     "venue": "Binance.com",
+     "desk_to_venue_egld": 312889.49681360007,
+     "venue_to_desk_egld": 195005.14234811196,
+     "net_egld": 117884.35446548811
+    },
+    {
+     "venue": "Bybit",
+     "desk_to_venue_egld": 258596.95238232004,
+     "venue_to_desk_egld": 152918.12045882092,
+     "net_egld": 105678.83192349912
+    },
+    {
+     "venue": "Gate.io",
+     "desk_to_venue_egld": 98603.91240499998,
+     "venue_to_desk_egld": 64659.99042690148,
+     "net_egld": 33943.9219780985
+    },
+    {
+     "venue": "Unknown Whale I (active)",
+     "desk_to_venue_egld": 30094.7946,
+     "venue_to_desk_egld": 22083.065472122267,
+     "net_egld": 8011.729127877734
+    },
+    {
+     "venue": "Bitget",
+     "desk_to_venue_egld": 7397.13732674,
+     "venue_to_desk_egld": 2787.5912669333666,
+     "net_egld": 4609.546059806634
+    }
+   ],
+   "gross_series_egld_7d": {
+    "run12": 44335.0,
+    "run13": 66128.0,
+    "run14": 186124.0,
+    "run15": 506053.0,
+    "run16": 1100791.0,
+    "run17": 1284688.0,
+    "run18": 313173.0,
+    "run19": 301498.0,
+    "run20": 604086.0,
+    "run21": 222532.22091155002,
+    "run22": 767205.64438598,
+    "run23": 709849.78959989
+   },
+   "net_one_way_series_egld_7d": {
+    "run16": 309197.42167140986,
+    "run17_peak": 409679.7168037797,
+    "run18": 114877.44298188001,
+    "run19": 61435.0,
+    "run20": 188658.46010815236,
+    "run21": 138265.08248977782,
+    "run22": 252109.2145337999,
+    "run23": 272395.879627
+   },
+   "circularity_series_pct": {
+    "run16": 71.91134090743884,
+    "run17_peak": 68.11057436725672,
+    "run18": 63.282638051534626,
+    "run19": 80.0,
+    "run20": 68.76962264743244,
+    "run21": 37.867387507567216,
+    "run22": 67.1,
+    "run23": 61.6
+   },
+   "peak_window_renetted": {
+    "window": "2026-07-13..2026-07-20 (run #17 peak)",
+    "gross_egld": 1284688.2898484399,
+    "circular_egld": 875008.5730446602,
+    "net_one_way_egld": 409679.7168037797,
+    "circular_share_pct": 68.11057436725672,
+    "net_by_venue": {
+     "Binance.com": 128282.68462967512,
+     "Bitget": 6438.669693044825,
+     "Bybit": 219601.80717830616,
+     "Gate.io": 8533.939259724277,
+     "UPbit": -214000.0,
+     "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)": 2769.0,
+     "Unknown Whale I (active)": 42206.47804302973
+    }
+   },
+   "backfilled_windows": [
+    {
+     "window": "2026-07-06..2026-07-27 (JULY EPISODE re-netted as ONE window, run #22)",
+     "gross_egld": 2698348.79975907,
+     "circular_egld": 1868485.918902,
+     "net_one_way_egld": 829862.88085707,
+     "circular_share_pct": 69.24552967610538,
+     "net_by_venue": {
+      "Binance.com": 313970.8341222777,
+      "Bitget": 7424.80444067709,
+      "Bybit": 378207.1705600335,
+      "Gate.io": 51152.345448751425,
+      "UPbit": -777000.0,
+      "Unknown Whale (OTC SOURCE confirmed run #8; -26K distributed via erd1nhtq4\u2192erd1ecyftln\u2192OTC Distribution+UPbit OTC; funding source still TBD)": 3264.0,
+      "Unknown Whale I (active)": 74482.49313808023
+     }
+    }
+   ],
+   "wave_window_netting": {
+    "window": "2026-08-17..2026-08-31 (WAVE #3 feed-to-drain)",
+    "gross_outbound_egld": 1191040.3422028099,
+    "gross_inbound_egld": 1478608.5960863,
+    "circular_egld": 819861.5294762999,
+    "circular_share_pct": 68.83574807885846,
+    "net_one_way_egld": 371178.81272651,
+    "sum_of_weekly_nets_egld": 524504.8796270001,
+    "weekly_frame_overstatement_egld": 153326.06690049008,
+    "weekly_frame_overstatement_pct": 41.30787147418971,
+    "net_by_venue": {
+     "Binance.com": 120415.38309757056,
+     "Bitget": 10112.568059187559,
+     "Bybit": 209260.59206692287,
+     "Gate.io": 21661.599430264643,
+     "UPbit": -657000.0,
+     "Unknown Whale I (active)": 7545.020888994499
+    },
+    "outbound_by_venue": {
+     "Binance.com": 464377.02543387,
+     "Bybit": 512206.94392548,
+     "Gate.io": 146208.411127,
+     "Unknown Whale I (active)": 52578.14576461,
+     "Bitget": 13486.16676828
+    },
+    "inbound_by_venue": {
+     "UPbit": 657000.0,
+     "Gate.io": 124546.81169673536,
+     "Binance.com": 343961.6423362994,
+     "Bybit": 302946.35185855714,
+     "Unknown Whale I (active)": 45033.124875615504,
+     "Bitget": 3373.5987090924405
+    },
+    "note": "Wave #3 spans Aug 17-31 - the feed restarted on Aug 17-24 (297,000) and escalated on Aug 24-31 (460,000). Netted feed-to-drain over the whole wave it delivered 371,179 EGLD one-way against 524,505 from summing the two weekly nets - a 41.3% overstatement. Run #22's narrowed rule predicted exactly this: the wave STRADDLES the week boundary (UPbit feeds in one week, inventory returns in the next), and the diagnostic tell fired in advance - this week's circularity of 62% sits just below the 63-80% band. The wave-window figure is the one to use for distribution; the weekly numbers are upper bounds here."
+   },
+   "series_note": "gross_series is pipeline ACTIVITY, net_one_way is the distribution measure; this week they differ 2.6x. The number that matters most is neither: desk inventory ENDED at 266,213 after delivering 272,396 one-way, which means the pipeline is more loaded now than at any point since tracking began and the drain leg of wave #3 is still ahead. Bitget appears as a hub destination for the first time, taking the delivery-side venue count to five."
+  },
+  "demand_instruments": {
+   "identifiable_bid_absorbed_egld_7d": 0.0,
+   "mega_whale_balance_egld": 1099059.3223354353,
+   "mega_whale_change_egld": 0.0,
+   "coinbase_routing_balance_egld": 93.40060445331223,
+   "coinbase_routing_inflow_egld": 0,
+   "coinbase_routing_funder": null,
+   "coinbase_routing_funder_label": "n/a - no inbound this week",
+   "weeks_at_zero": 3,
+   "weeks_at_zero_in_last_four": 4,
+   "bid_to_distribution_ratio_pct": 0.0,
+   "dex_turnover_ratio_pct": 10.51112195197727,
+   "previous_dex_turnover_ratio_pct": 10.831730624232451,
+   "dex_volume_egld_24h": 61110.477775181396,
+   "previous_dex_volume_egld_24h": 63885.46302298033,
+   "pool_tvl_egld": 581388.7238144523,
+   "previous_pool_tvl_egld": 589799.2226658363,
+   "wegld_usdc_volume_usd": 222509.8682500037,
+   "wegld_usdc_share_of_volume_pct": 95.06810200106644,
+   "ex_wegld_usdc_volume_usd": 11543.26162894105,
+   "ex_wegld_usdc_volume_egld": 3013.906430532911,
+   "absorber_scan": {
+    "terminals_scanned": 14,
+    "terminals_retaining_over_half": 0,
+    "total_received_from_desks_egld": 505596.7489057,
+    "total_retained_egld": 8545.450999999997,
+    "retained_share_pct": 1.6901712715707808,
+    "verdict": "No absorbers exist on the outbound side of this pipeline. All 14 terminals are zero-balance pass-through routers. The single-wallet identifiable-bid instrument is RETIRED rather than repaired."
+   },
+   "withdrawal_breadth": {
+    "distinct_recipients_raw": 78,
+    "total_egld_raw": 1497134.4661857449,
+    "distinct_recipients_ex_pipeline": 50,
+    "total_egld_ex_pipeline": 400112.5443214748,
+    "pipeline_share_pct": 73.27477568926437
+   },
+   "withdrawal_breadth_top": [
+    {
+     "address": "erd14c23mu0away2sty9uga0uqjcdydnxp05l067kcmxs0mv4ntqvzhsgmvw0r",
+     "label": "Unknown",
+     "egld": 43009.9952
+    },
+    {
+     "address": "erd17w456angn8vnf9fl44amnux5fchpa70p58nyz8yns9gvsz566fps7h89fr",
+     "label": "Unknown",
+     "egld": 40000.0
+    },
+    {
+     "address": "erd1at3jm3xvzxhdgt4f695l7l2f6r0tpkqjnemfpc0raam5e9xtjuqqs6fkul",
+     "label": "Unknown Whale B (liquidated to Coinbase)",
+     "egld": 36504.774872988215
+    },
+    {
+     "address": "erd1czy36kjjts3mvwgs47pne6m9uysuwljxl34nxj74gx046ywe5gtsgpjfxd",
+     "label": "Unknown",
+     "egld": 25935.139
+    },
+    {
+     "address": "erd1tx933j8r57smz7s7c6y4p4nzx9np968gpt66escfym3908k3zcqqcde3y8",
+     "label": "Unknown",
+     "egld": 24266.62214085
+    },
+    {
+     "address": "erd1ukxuufpkva67hu8ae097euz9teegzv564sc9pf00u3puwer92h6qf07yl4",
+     "label": "Unknown",
+     "egld": 19786.74975
+    }
+   ]
+  },
+  "analysis": "THE PIPELINE. UPbit fed 460,000 EGLD into the OTC desks this week against 297,000 last week and 14,000 the week before - three data points that make the July-August pattern a single escalating programme rather than episodic. The desks moved 709,850 out and took 903,083 in; 62% round-trips to the venue that supplied it, leaving 272,396 of genuine one-way movement. Two-hop resolution puts the destinations at Binance.com +117,884, Bybit +105,679, Gate.io +33,944 and, for the first time, Bitget +4,610. Every one of those is an exchange deposit address, so this is the run #17 signature: supply arriving at order books rather than dispersing to holders.\n\nTHE PART THAT MATTERS MORE IS WHAT DID NOT GO OUT. Desk inventory rose +156,356 to 266,213 - 2.4x the record set last week - AFTER delivering 272,396 one-way. For comparison, the entire run #17 peak wave delivered 409,680 one-way from a starting inventory of 335,430. The desks now hold 266,213 with a feed still running. This is the largest staged, undelivered supply position the model has recorded.\n\nBINANCE JOINED THE FEED SIDE. Run #22 flagged that the custody drawdown and the OTC restart happened in the same week without a demonstrated link. There is one. The staking custody sent 500,000 to the Binance.com hot wallet; the hot wallet forwarded 135,003 EGLD to the desks - 73,421 through the feeder identified in run #19, 30,554 through the run #20 feeder, and 21,297 straight to a desk - and returned 303,242 to custody. Custody has now fallen -196,758 this week on top of last week's -300,000. Note what this does to the pre-registered branch: it was written on the hot wallet's BALANCE falling more than 150,000, and the balance instead ROSE 159,709 because custody refilled it faster than it distributed. A balance test cannot see a flow whose funding outruns its spending; the flow trace can, and it says the two channels are one programme.\n\nEXCHANGE BALANCES. Headline -191,940 EGLD. UPbit's -164,918 is desk loading and Binance's -38,361 is internal plumbing; ex those two the complex took a mild INFLOW of +11,340 into a rising price, led by Bybit +24,308 and Bitget +14,383 - both hub destinations, so even that is pipeline output rather than independent customer behaviour. Coinbase's -35,155 resolves to a migration: 58,108 across two transfers to Unknown Whale B, which still holds it.\n\nTIERS - READ THE NETTED VERSION. Raw, the 48-address common basis shows mega -1,312,121 (-24.3%) and large +1,554,413 (+45.7%), which is almost entirely a reclassification artifact: FOUR wallets crossed a threshold this week - UPbit fell out of the mega tier at 950,444, and both OTC desks plus Unknown Whale B crossed up into the large tier. Holding every wallet in its PRIOR tier (the run #14 boundary guard) gives mega -361,676, large +214,686, mid +203,705. Decomposed: the mega figure is Binance custody (-196,758) plus UPbit's desk load (-164,918) and NOTHING else - two wallets, both pipeline mechanics. The large tier is the Binance.com hot wallet (+158,397) plus Bybit (+24,308), i.e. the receiving end of the same two flows. The mid tier's +203,705 is three quarters the two OTC desks filling up (+156,356) plus Unknown Whale B (+36,505); ex those three it moved +10,844. So on a netted basis NO tier accumulated independently this week - every figure above 10,000 EGLD belongs to the distribution pipeline or to a wallet migration.\n\nDEMAND. The identifiable-bid instrument has been repaired-or-retired and the answer is retired. Scanning all 14 desk outbound terminals for wallets that KEEP what they receive found none: 505,597 EGLD passed through them and 8,545 (1.7%) stayed. Every terminal is a zero-balance router with a high nonce. The Mega Whale proxy read zero for a third consecutive week and in four of the last five. What is left is turnover - which held its ratio but fell in EGLD terms - and ex-pipeline withdrawal breadth, which improved markedly: 50 distinct recipients took 400,113 EGLD off exchanges outside the pipeline, against 21 recipients and 133,521 last week, with the pipeline share falling from 88.3% to 73.3%. That is the one genuinely constructive reading available: more distinct wallets took more EGLD off venues than in any week since the instrument was built. The page-cap budget raised for hot wallets this run (run #22 rec #10) means the raw figure of 1,497,134 EGLD is a full 7-day scan with NO page-cap terminations - the first week that is true."
+ },
+ "staking_intelligence": {
+  "summary": {
+   "total_staked_egld": 14551783,
+   "total_delegated_egld": 10967588.734584803,
+   "staked_ratio": 0.474254493214429,
+   "num_providers": 105,
+   "apr_min": 5.11,
+   "apr_max": 9.4,
+   "apr_weighted_avg": 7.917394319911834
+  },
+  "top_providers": [
+   {
+    "rank": 1,
+    "identity": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+    "name": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+    "locked_egld": 705782.9843259468,
+    "previous_locked_egld": 680978.5635066364,
+    "share_pct": 6.435170039703949,
+    "apr_pct": 6.22,
+    "fee_pct": 12.0,
+    "num_users": 353,
+    "num_nodes": 50,
+    "wow_change_egld": 24804.420819310355
+   },
+   {
+    "rank": 2,
+    "identity": "stakingagency",
+    "name": "stakingagency",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqhllllsajxzat",
+    "locked_egld": 436695.5565416148,
+    "previous_locked_egld": 439287.03876561875,
+    "share_pct": 3.981691574234131,
+    "apr_pct": 7.87,
+    "fee_pct": 12.0,
+    "num_users": 9933,
+    "num_nodes": 106,
+    "wow_change_egld": -2591.4822240039357
+   },
+   {
+    "rank": 3,
+    "identity": "binance_staking",
+    "name": "binance_staking",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqc0llllsayxegu",
+    "locked_egld": 402714.4906851951,
+    "previous_locked_egld": 402041.49823263625,
+    "share_pct": 3.6718598812452696,
+    "apr_pct": 7.04,
+    "fee_pct": 7.920000000000001,
+    "num_users": 8506,
+    "num_nodes": 50,
+    "wow_change_egld": 672.9924525588285
+   },
+   {
+    "rank": 4,
+    "identity": "truststaking",
+    "name": "truststaking",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzhllllsp9wvyl",
+    "locked_egld": 380539.4737772574,
+    "previous_locked_egld": 379372.70605229965,
+    "share_pct": 3.469673079345853,
+    "apr_pct": 7.96,
+    "fee_pct": 12.0,
+    "num_users": 7168,
+    "num_nodes": 96,
+    "wow_change_egld": 1166.7677249577246
+   },
+   {
+    "rank": 5,
+    "identity": "meria",
+    "name": "meria",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq8hlllls7a6h85",
+    "locked_egld": 351824.57310552534,
+    "previous_locked_egld": 355949.9022932759,
+    "share_pct": 3.2078570925630565,
+    "apr_pct": 7.86,
+    "fee_pct": 12.0,
+    "num_users": 10860,
+    "num_nodes": 94,
+    "wow_change_egld": -4125.3291877505835
+   },
+   {
+    "rank": 6,
+    "identity": "istariv",
+    "name": "istariv",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrhlllls062tu4",
+    "locked_egld": 280074.11119044264,
+    "previous_locked_egld": 279447.46888158395,
+    "share_pct": 2.5536525663773926,
+    "apr_pct": 8.14,
+    "fee_pct": 12.0,
+    "num_users": 4066,
+    "num_nodes": 76,
+    "wow_change_egld": 626.6423088586889
+   },
+   {
+    "rank": 7,
+    "identity": "thepalmtreenw",
+    "name": "thepalmtreenw",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqy8lllls62y8s5",
+    "locked_egld": 261145.055737221,
+    "previous_locked_egld": 261698.63636672017,
+    "share_pct": 2.381061708794163,
+    "apr_pct": 8.12,
+    "fee_pct": 12.0,
+    "num_users": 3648,
+    "num_nodes": 76,
+    "wow_change_egld": -553.5806294991635
+   },
+   {
+    "rank": 8,
+    "identity": "validblocks",
+    "name": "validblocks",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq90llllslwfcr3",
+    "locked_egld": 241362.9291722571,
+    "previous_locked_egld": 239512.47854826995,
+    "share_pct": 2.200692741250881,
+    "apr_pct": 7.96,
+    "fee_pct": 7.000000000000001,
+    "num_users": 4509,
+    "num_nodes": 50,
+    "wow_change_egld": 1850.4506239871553
+   },
+   {
+    "rank": 9,
+    "identity": "incalng",
+    "name": "incalng",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqd8llllslmf3hu",
+    "locked_egld": 230474.40142536347,
+    "previous_locked_egld": 230611.3478622726,
+    "share_pct": 2.1014136015019758,
+    "apr_pct": 8.58,
+    "fee_pct": 1.0,
+    "num_users": 2763,
+    "num_nodes": 50,
+    "wow_change_egld": -136.9464369091438
+   },
+   {
+    "rank": 10,
+    "identity": "oxsyai",
+    "name": "oxsyai",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqp8lllls9jsunl",
+    "locked_egld": 211881.18173992855,
+    "previous_locked_egld": 202474.51716922576,
+    "share_pct": 1.931884818691186,
+    "apr_pct": 8.26,
+    "fee_pct": 6.9,
+    "num_users": 1213,
+    "num_nodes": 50,
+    "wow_change_egld": 9406.664570702793
+   },
+   {
+    "rank": 11,
+    "identity": "primal-block-one",
+    "name": "primal-block-one",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqx8llllsxavffq",
+    "locked_egld": 209656.8526669999,
+    "previous_locked_egld": 208623.69381437264,
+    "share_pct": 1.9116038879710677,
+    "apr_pct": 8.01,
+    "fee_pct": 10.0,
+    "num_users": 3529,
+    "num_nodes": 67,
+    "wow_change_egld": 1033.158852627268
+   },
+   {
+    "rank": 12,
+    "identity": "westake",
+    "name": "westake",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq68lllls2g8068",
+    "locked_egld": 198466.29247815392,
+    "previous_locked_egld": 198553.18027292858,
+    "share_pct": 1.8095708845492848,
+    "apr_pct": 8.59,
+    "fee_pct": 5.0,
+    "num_users": 2452,
+    "num_nodes": 50,
+    "wow_change_egld": -86.88779477466596
+   },
+   {
+    "rank": 13,
+    "identity": "star_staking",
+    "name": "star_staking",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqprhllllsj9265l",
+    "locked_egld": 196144.77478115217,
+    "previous_locked_egld": 197171.0575621322,
+    "share_pct": 1.7884038098787953,
+    "apr_pct": 8.69,
+    "fee_pct": 0,
+    "num_users": 309,
+    "num_nodes": 43,
+    "wow_change_egld": -1026.282780980022
+   },
+   {
+    "rank": 14,
+    "identity": "bober",
+    "name": "bober",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq0hlllls4nnxck",
+    "locked_egld": 194630.21807656594,
+    "previous_locked_egld": 194965.34431854117,
+    "share_pct": 1.774594423501913,
+    "apr_pct": 8.46,
+    "fee_pct": 7.000000000000001,
+    "num_users": 1052,
+    "num_nodes": 50,
+    "wow_change_egld": -335.1262419752311
+   },
+   {
+    "rank": 15,
+    "identity": "aurentum",
+    "name": "aurentum",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqmhllllsjg335n",
+    "locked_egld": 194035.50954881686,
+    "previous_locked_egld": 194816.34074000144,
+    "share_pct": 1.7691720053009667,
+    "apr_pct": 8.2,
+    "fee_pct": 10.0,
+    "num_users": 1581,
+    "num_nodes": 50,
+    "wow_change_egld": -780.8311911845813
+   },
+   {
+    "rank": 16,
+    "identity": "ninjastaking",
+    "name": "ninjastaking",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+    "locked_egld": 193580.41293571587,
+    "previous_locked_egld": 207135.67031554302,
+    "share_pct": 1.7650225370439567,
+    "apr_pct": 8.66,
+    "fee_pct": 5.0,
+    "num_users": 1555,
+    "num_nodes": 50,
+    "wow_change_egld": -13555.257379827148
+   },
+   {
+    "rank": 17,
+    "identity": "orangestaking",
+    "name": "orangestaking",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxhllllssz7sl7",
+    "locked_egld": 193025.2024054185,
+    "previous_locked_egld": 194217.19822595752,
+    "share_pct": 1.7599602526737688,
+    "apr_pct": 8.03,
+    "fee_pct": 12.0,
+    "num_users": 2814,
+    "num_nodes": 50,
+    "wow_change_egld": -1191.995820539014
+   },
+   {
+    "rank": 18,
+    "identity": "core-block",
+    "name": "core-block",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpf0llllsccsy0c",
+    "locked_egld": 193014.63649652718,
+    "previous_locked_egld": 193971.47035159005,
+    "share_pct": 1.7598639150999684,
+    "apr_pct": 8.21,
+    "fee_pct": 10.0,
+    "num_users": 1908,
+    "num_nodes": 50,
+    "wow_change_egld": -956.8338550628687
+   },
+   {
+    "rank": 19,
+    "identity": "mapleleafnetwork",
+    "name": "mapleleafnetwork",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpp8llllscdsdm4",
+    "locked_egld": 189209.53725997094,
+    "previous_locked_egld": 192607.84673087354,
+    "share_pct": 1.7251698786199408,
+    "apr_pct": 9.18,
+    "fee_pct": 0,
+    "num_users": 964,
+    "num_nodes": 50,
+    "wow_change_egld": -3398.3094709026045
+   },
+   {
+    "rank": 20,
+    "identity": "orius",
+    "name": "orius",
+    "provider_address": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp80lllls7xp8j0",
+    "locked_egld": 187033.64720333045,
+    "previous_locked_egld": 192276.40939152075,
+    "share_pct": 1.7053306039234057,
+    "apr_pct": 8.48,
+    "fee_pct": 7.99,
+    "num_users": 1226,
+    "num_nodes": 50,
+    "wow_change_egld": -5242.762188190303
+   }
+  ],
+  "concentration": {
+   "top_5_share_pct": 20.76625166709226,
+   "top_10_share_pct": 31.934957103707855,
+   "hhi": 0.020232248792071313,
+   "hhi_previous": 0.019948416866214652,
+   "hhi_interpretation": "HHI 0.02023 (previous 0.01995), far below the 0.15 competitive threshold; top-5 20.77%, top-10 31.93%. Both edged up as two distressed books shrank out of the denominator. The delegation market remains the least concentrated part of the network - and that is precisely why the distressed tail matters: concentration is not the risk here, operator attrition is."
+  },
+  "apr_distribution": {
+   "buckets": [
+    {
+     "label": "5-6%",
+     "min_apr_pct": 5,
+     "max_apr_pct": 6,
+     "provider_count": 2,
+     "total_locked_egld": 30345.358510693404
+    },
+    {
+     "label": "6-7%",
+     "min_apr_pct": 6,
+     "max_apr_pct": 7,
+     "provider_count": 1,
+     "total_locked_egld": 705782.9843259468
+    },
+    {
+     "label": "7-8%",
+     "min_apr_pct": 7,
+     "max_apr_pct": 8,
+     "provider_count": 19,
+     "total_locked_egld": 2459406.586897956
+    },
+    {
+     "label": "8-9%",
+     "min_apr_pct": 8,
+     "max_apr_pct": 9,
+     "provider_count": 73,
+     "total_locked_egld": 7044587.335093194
+    },
+    {
+     "label": "9-10%",
+     "min_apr_pct": 9,
+     "max_apr_pct": 10,
+     "provider_count": 5,
+     "total_locked_egld": 506264.2513553729
+    },
+    {
+     "label": "10%+",
+     "min_apr_pct": 10,
+     "max_apr_pct": 99,
+     "provider_count": 0,
+     "total_locked_egld": 0
+    }
+   ],
+   "zero_apr_providers": 5,
+   "zero_apr_locked_egld": 221202.21840163934
+  },
+  "apr_outliers": {
+   "top_apr": [
+    {
+     "identity": "pi-staking",
+     "name": "pi-staking",
+     "apr_pct": 9.4,
+     "fee_pct": 0,
+     "locked_egld": 98299.91196306444
+    },
+    {
+     "identity": "pokerstaking",
+     "name": "pokerstaking",
+     "apr_pct": 9.4,
+     "fee_pct": 0,
+     "locked_egld": 21066.66706535093
+    },
+    {
+     "identity": "stakenest",
+     "name": "stakenest",
+     "apr_pct": 9.36,
+     "fee_pct": 0,
+     "locked_egld": 21337.853671742912
+    },
+    {
+     "identity": "Synexis",
+     "name": "Synexis",
+     "apr_pct": 9.2,
+     "fee_pct": 2.0,
+     "locked_egld": 176350.28139524368
+    },
+    {
+     "identity": "mapleleafnetwork",
+     "name": "mapleleafnetwork",
+     "apr_pct": 9.18,
+     "fee_pct": 0,
+     "locked_egld": 189209.53725997094
+    }
+   ],
+   "lowest_fee": [
+    {
+     "identity": "pi-staking",
+     "name": "pi-staking",
+     "apr_pct": 9.4,
+     "fee_pct": 0,
+     "locked_egld": 98299.91196306444
+    },
+    {
+     "identity": "pokerstaking",
+     "name": "pokerstaking",
+     "apr_pct": 9.4,
+     "fee_pct": 0,
+     "locked_egld": 21066.66706535093
+    },
+    {
+     "identity": "stakenest",
+     "name": "stakenest",
+     "apr_pct": 9.36,
+     "fee_pct": 0,
+     "locked_egld": 21337.853671742912
+    },
+    {
+     "identity": "mapleleafnetwork",
+     "name": "mapleleafnetwork",
+     "apr_pct": 9.18,
+     "fee_pct": 0,
+     "locked_egld": 189209.53725997094
+    },
+    {
+     "identity": "impactstaking",
+     "name": "impactstaking",
+     "apr_pct": 8.72,
+     "fee_pct": 0,
+     "locked_egld": 8995.356859915262
+    }
+   ]
+  },
+  "churn": {
+   "total_delegators_current": 172935,
+   "total_delegators_previous": 173042,
+   "delegators_added": -107,
+   "delegators_change_pct": -0.06183469909039424,
+   "providers_gaining_delegators": 28,
+   "providers_losing_delegators": 43
+  },
+  "provider_states": [
+   {
+    "provider": "stakedinc",
+    "state": "deregistered",
+    "locked_egld": 0.0,
+    "num_users": 637,
+    "num_nodes": 10,
+    "apr_pct": 0.0,
+    "fee_pct": 15.0,
+    "weeks_in_state": 13,
+    "note": "zero-locked with 10 nodes across the ENTIRE stored snapshot history (2026-06-01 onward)"
+   },
+   {
+    "provider": "ledgerbyfigment",
+    "state": "deregistered",
+    "locked_egld": 0.0,
+    "num_users": 3883,
+    "num_nodes": 7,
+    "apr_pct": 0.0,
+    "fee_pct": 12.0,
+    "weeks_in_state": 11,
+    "note": "zero-locked since the 2026-06-15 snapshot (run #13 window); 170,808 EGLD and 3,961 delegators at the time - never reported"
+   },
+   {
+    "provider": "p2p_org_",
+    "state": "deregistered",
+    "locked_egld": 0.0,
+    "num_users": 1244,
+    "num_nodes": 0,
+    "apr_pct": 0.0,
+    "fee_pct": 12.0,
+    "weeks_in_state": 2,
+    "note": "EXIT COMPLETED this week - owner called removeNodes x11 plus unBondNodes, numNodes 50 -> 0. 1,244 delegators still attached; 2 unDelegate calls all week against 4 reDelegateRewards on a contract paying nothing."
+   },
+   {
+    "provider": "egldstakingprovider",
+    "state": "zero_apr",
+    "locked_egld": 61503.13489727798,
+    "num_users": 1043,
+    "num_nodes": 50,
+    "apr_pct": 0.0,
+    "fee_pct": 100.0,
+    "weeks_in_state": 3,
+    "note": "serviceFee 1.0 / APR 0 for a third week. Book -18,136 this week; users -36."
+   },
+   {
+    "provider": "procryptostaking",
+    "state": "zero_apr",
+    "locked_egld": 124805.43914140244,
+    "num_users": 6976,
+    "num_nodes": 50,
+    "apr_pct": 0.0,
+    "fee_pct": 100.0,
+    "weeks_in_state": 3,
+    "note": "serviceFee 1.0 / APR 0 for a third week. Book -16,999 this week; users -55."
+   }
+  ],
+  "fee_events": [
+   {
+    "provider": "egldstakingprovider",
+    "fee_from_pct": 100.0,
+    "fee_to_pct": 100,
+    "apr_from_pct": 0.0,
+    "apr_to_pct": 0,
+    "locked_egld": 61503.13489727798,
+    "locked_wow_egld": -18136.312714694606,
+    "users": 1043,
+    "users_wow": -36,
+    "num_nodes": 50
+   },
+   {
+    "provider": "procryptostaking",
+    "fee_from_pct": 100.0,
+    "fee_to_pct": 100,
+    "apr_from_pct": 0.0,
+    "apr_to_pct": 0,
+    "locked_egld": 124805.43914140244,
+    "locked_wow_egld": -16998.656639864363,
+    "users": 6976,
+    "users_wow": -55,
+    "num_nodes": 50
+   }
+  ],
+  "unbonding_in_flight": {
+   "wallet": "erd1daqlaezxx22rzyxnqx5ddkykm5ajelt0hetjnstm7rxqg78xqusqazv9ms",
+   "total_egld": 229864.60633415513,
+   "legs": [
+    {
+     "provider": "erd1qqqqqq...ls6yl73z",
+     "amount": 80279.22755289993,
+     "days_to_unbond": 0.0,
+     "date": "2026-08-14"
+    },
+    {
+     "provider": "erd1qqqqqq...lsyhrgzd",
+     "amount": 149585.3787812552,
+     "days_to_unbond": 0.0,
+     "date": "2026-08-15"
+    }
+   ],
+   "share_of_delegation_decline_pct": 0.0,
+   "raw_residual_egld": 70190.46054613777,
+   "corrected_direct_node_egld": null,
+   "status": "UNMOVED FOR A SECOND FULL WEEK - RETIRED AS A LIVE FLOW. Balance unchanged at 2,369.53 EGLD, 229,865 still unbonded-and-unclaimed inside the delegation contracts, zero outbound transactions and zero function calls in the window. That is the no-action branch run #22 added to the test after it failed to resolve for want of one. The holder is inactive or has lost access; the overhang stops being tracked as forward supply.",
+   "queue_this_week": {
+    "undelegated_egld": 151442.89485919426,
+    "distinct_callers": 300,
+    "measured_pending_egld": 132391.79235271766,
+    "largest_legs": [
+     {
+      "wallet": "erd155j9c36hp5dkqp7u5gwjek00g2axermvqdzk3j7mpk9k8yunpy4s9fpq8c",
+      "amount_egld": 18880.0,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqehllllswleld8",
+      "days_remaining": 6.06,
+      "wallet_balance_egld": 10.376710408354551
+     },
+     {
+      "wallet": "erd155j9c36hp5dkqp7u5gwjek00g2axermvqdzk3j7mpk9k8yunpy4s9fpq8c",
+      "amount_egld": 10008.0,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+      "days_remaining": 6.06,
+      "wallet_balance_egld": 10.376710408354551
+     },
+     {
+      "wallet": "erd155j9c36hp5dkqp7u5gwjek00g2axermvqdzk3j7mpk9k8yunpy4s9fpq8c",
+      "amount_egld": 10000.0,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqq48llllszfjtl6",
+      "days_remaining": 6.06,
+      "wallet_balance_egld": 10.376710408354551
+     },
+     {
+      "wallet": "erd1me5hmqt5qg9r9jgw9r936444va6f4qw4uf0y2sgk0hsfhmtwvhnscdu9us",
+      "amount_egld": 7644.456156292867,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpt0llllsy0c2kv",
+      "days_remaining": 3.06,
+      "wallet_balance_egld": 0.433328198493247
+     },
+     {
+      "wallet": "erd17c9t2duqfc90n0qsr4flzmekxmragvlj0xr58usjyen2escne6dsyykhkz",
+      "amount_egld": 6747.36,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu0llllsvrk9na",
+      "days_remaining": 6.06,
+      "wallet_balance_egld": 4424.857573291409
+     },
+     {
+      "wallet": "erd1dkzjgv0fasrflkyexp309x9trczydgnfxm0tmwuv4wukl95r0mpqwdc3z5",
+      "amount_egld": 5775.0,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+      "days_remaining": 5.06,
+      "wallet_balance_egld": 9.710054460334948
+     },
+     {
+      "wallet": "erd17c9t2duqfc90n0qsr4flzmekxmragvlj0xr58usjyen2escne6dsyykhkz",
+      "amount_egld": 5532.0,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu0llllsvrk9na",
+      "days_remaining": 3.06,
+      "wallet_balance_egld": 4424.857573291409
+     },
+     {
+      "wallet": "erd1ql2d04t5d9llkuw4zazec274k6uhajkyraleus4unvax3m7xc6vquncqet",
+      "amount_egld": 5350.000000000001,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp80lllls7xp8j0",
+      "days_remaining": 4.06,
+      "wallet_balance_egld": 0.27506930456
+     },
+     {
+      "wallet": "erd1flukw9kde3htlu4ajskgwuuhrgjljlr9npv5tqsucfeadl3pxdhq7a5z58",
+      "amount_egld": 4588.932428050047,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqpd8llllszyfqlk",
+      "days_remaining": 2.06,
+      "wallet_balance_egld": 0.8683856317836002
+     },
+     {
+      "wallet": "erd10n0q4zfxalz2xvw8k9mdtvf6z648wfzw8u5gdef7t0l3d7vc4f2s2p52p7",
+      "amount_egld": 3959.501203051402,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqxlllllsmehg53",
+      "days_remaining": 5.06,
+      "wallet_balance_egld": 40.3829813435956
+     },
+     {
+      "wallet": "erd10ywlqp02tu2gnd4dpfn8w5t0w792fuf334uw8kt0y0uekvf5echqpn770w",
+      "amount_egld": 3929.582085246469,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqallllls5rqmaf",
+      "days_remaining": 3.06,
+      "wallet_balance_egld": 1.02878561362277
+     },
+     {
+      "wallet": "erd17n4l53fyjrz28958n4rq474dhxuttmp9t8wazmmsg2cs4wp37a2qp5uh0k",
+      "amount_egld": 3580.2061795389636,
+      "contract": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqp08lllls7npwxz",
+      "days_remaining": 8.06,
+      "wallet_balance_egld": 8.564389824480477
+     }
+    ],
+    "coverage_note": "FIRST FULL-SET SCAN (run #22 rec #5): all 107 provider contracts with locked > 0 or nodes > 0 were paged for unDelegate calls, not just the movers. 300 distinct wallets unDelegated 151,443 EGLD - 2.1x the 70,498 run #22 measured across ten providers, which tells you how much the partial scan was missing. /accounts/{addr}/delegation was then queried for the 45 largest callers, giving 132,392 EGLD of measured pending unbonding. CAVEAT: 4 provider scans terminated on the 6-page cap, so the 151,443 figure is a LOWER bound on the busiest contracts."
+   }
+  },
+  "reward_behavior": {
+   "providers_sampled": 8,
+   "delegator_window_days": 7,
+   "operator_window_days": 30,
+   "function_distribution": {
+    "reDelegateRewards": {
+     "count": 333,
+     "share_pct": 46.06
+    },
+    "claimRewards": {
+     "count": 246,
+     "share_pct": 34.02
+    },
+    "delegate": {
+     "count": 64,
+     "share_pct": 8.85
+    },
+    "unDelegate": {
+     "count": 33,
+     "share_pct": 4.56
+    },
+    "reward": {
+     "count": 31,
+     "share_pct": 4.29
+    },
+    "withdraw": {
+     "count": 16,
+     "share_pct": 2.21
+    }
+   },
+   "compound_pct_at_function_level": 57.51,
+   "compound_vs_claim": {
+    "redelegate_count": 333,
+    "claim_count": 246
+   },
+   "delegator_fates_by_tier": {
+    "whale": {
+     "by_count": {
+      "held": 1,
+      "held_or_other": 1
+     },
+     "by_value_egld": {
+      "held": 2583.81,
+      "held_or_other": 1050.83
+     },
+     "total_events": 2,
+     "total_value_egld": 3634.64
+    },
+    "retail": {
+     "by_count": {
+      "held": 41,
+      "held_or_other": 8,
+      "rotated_provider": 4,
+      "defi_deposit": 1
+     },
+     "by_value_egld": {
+      "held": 6.14,
+      "held_or_other": 1.02,
+      "rotated_provider": 1.0,
+      "defi_deposit": 0.09
+     },
+     "total_events": 54,
+     "total_value_egld": 8.25
+    },
+    "institutional": {
+     "by_count": {
+      "sold": 3,
+      "held": 3
+     },
+     "by_value_egld": {
+      "sold": 251.98,
+      "held": 516.25
+     },
+     "total_events": 6,
+     "total_value_egld": 768.23
+    },
+    "mid_tier": {
+     "by_count": {
+      "held_or_other": 14,
+      "held": 18,
+      "rotated_provider": 2
+     },
+     "by_value_egld": {
+      "held_or_other": 126.13,
+      "held": 96.65,
+      "rotated_provider": 9.32
+     },
+     "total_events": 34,
+     "total_value_egld": 232.09
+    }
+   },
+   "provider_operators": [
+    {
+     "provider": "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlhllllsr0pd0j",
+     "owner_address": "erd1q3r6dphmmaly7wg5h0lh2dp7tvc2us46xt606qjr2glwyuggr4tquvex2h",
+     "owner_label": "Unknown",
+     "owner_balance_egld": 0.88595663,
+     "outbound_count": 0,
+     "fates_by_count": {},
+     "fates_by_value_egld": {}
+    },
+    {
+     "provider": "stakingagency",
+     "owner_address": "erd1yj4jlay9rrzahran7jxk89gsg9frxw6l5qyca9dqhp8c4f5e0vdsytwkvl",
+     "owner_label": "stakingagency operator",
+     "owner_balance_egld": 0.10546883059578893,
+     "outbound_count": 9,
+     "fates_by_count": {
+      "held_or_other": 9
+     },
+     "fates_by_value_egld": {
+      "held_or_other": 487.91
+     }
+    },
+    {
+     "provider": "binance_staking",
+     "owner_address": "erd1p3423t9rj5nxnqnyz2hzr43xrddxvzggwhp0amjgyhr4v939vstsmh6vtc",
+     "owner_label": "binance_staking operator",
+     "owner_balance_egld": 9.050452696936297,
+     "outbound_count": 0,
+     "fates_by_count": {},
+     "fates_by_value_egld": {}
+    },
+    {
+     "provider": "truststaking",
+     "owner_address": "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm",
+     "owner_label": "XOXNO: Deployer Wallet",
+     "owner_balance_egld": 20.00502268,
+     "outbound_count": 6,
+     "fates_by_count": {
+      "held_or_other": 3,
+      "defi_deposit": 3
+     },
+     "fates_by_value_egld": {
+      "held_or_other": 525.33,
+      "defi_deposit": 2484.56
+     }
+    },
+    {
+     "provider": "meria",
+     "owner_address": "erd1fx5t2nwq4fh9jws5xqfl85hr0l8tuqks9sr7ut9wrpkp7dugzxnqyksfyg",
+     "owner_label": "meria operator",
+     "owner_balance_egld": 0.053669652708055106,
+     "outbound_count": 0,
+     "fates_by_count": {},
+     "fates_by_value_egld": {}
+    },
+    {
+     "provider": "istariv",
+     "owner_address": "erd1qkfnucxmuxgevllj9j234j9cqqktcnwqtff8ps9vg0fzupzf0zvstpgrkv",
+     "owner_label": "istariv operator",
+     "owner_balance_egld": 0.7865806740736988,
+     "outbound_count": 1,
+     "fates_by_count": {
+      "held_or_other": 1
+     },
+     "fates_by_value_egld": {
+      "held_or_other": 596.0
+     }
+    },
+    {
+     "provider": "thepalmtreenw",
+     "owner_address": "erd1kz2kumr0clug4ht2ek0l4l9drvq3rne9lmkwrjf3qv2luyuuaj2szjwv0f",
+     "owner_label": "thepalmtreenw operator",
+     "owner_balance_egld": 665.1274906465761,
+     "outbound_count": 4,
+     "fates_by_count": {
+      "held_or_other": 4
+     },
+     "fates_by_value_egld": {
+      "held_or_other": 850.0
+     }
+    },
+    {
+     "provider": "validblocks",
+     "owner_address": "erd1mdpdlqyulvf05n87ze8a75fwvg4anz2y4jh8vcd2a67edmarqjlqxfyzzq",
+     "owner_label": "validblocks operator",
+     "owner_balance_egld": 0.509202406084531,
+     "outbound_count": 0,
+     "fates_by_count": {},
+     "fates_by_value_egld": {}
+    }
+   ],
+   "key_findings": [
+    "Compound rate 57.51% (333 reDelegateRewards vs 246 claimRewards) - a FOURTH consecutive decline and the lowest of ten readings (58.54 / 60.35 / 61.59 / 60.19 / 58.81 / 62.25 / 59.54 / 59.07 / 57.03 / 57.51).",
+    "THE PRE-COMMITTED TEST LANDED BETWEEN ITS BRANCHES. Run #22 registered 'below 56% = systematic monetisation, above 59% = rally-week spike'. 57.51% is neither, so the test resolves INCONCLUSIVE - the second run in a row a test could not resolve on a specification defect rather than on the data. Branches must be contiguous.",
+    "Interpreted on the trend rather than the threshold: four consecutive declines through a flat week, a +30% week and a +6% week is not price-following behaviour. It is a slow drift toward taking yield in cash.",
+    "INSTITUTIONAL TIER SOLD AGAIN: 3 of 6 institutional claims (50-1000 EGLD) went to a labelled exchange, 252 EGLD sold against 516 held. Second consecutive week this tier has led with selling.",
+    "RETAIL STILL DOES NOT SELL - a tenth consecutive run. 54 retail claims, ZERO to any labelled exchange; 41 held, 8 unlabelled, 4 rotated provider, 1 into DeFi.",
+    "Mid-tier (1-50 EGLD): 18 held, 14 unlabelled, 2 provider rotations, no exchange destinations.",
+    "unDelegate was 4.56% of observed function calls and withdraw 2.21% - both consistent with the doubled unbonding queue measured across the full provider set.",
+    "PROVIDER OPERATORS DID NOT SELL FEES for an eleventh consecutive run. Zero exchange destinations across all sampled owner wallets in 30 days; truststaking's owner (XOXNO: Deployer Wallet) again made the only sizeable move, 2,484.56 EGLD into a DeFi contract.",
+    "Sample: 8 providers, 723 function calls, 96 traced claims."
+   ]
+  },
+  "analysis": "THE HEADLINE IS A CORRECTION TO OUR OWN HEADLINE. Run #22 called p2p_org_ 'the first operator deregistration in tracking' and built a narrative on it. Applying run #22's own detection signature - locked == 0 with numNodes > 0 - to the stored snapshot archive shows that was wrong twice over. ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots, inside the run #13 window, keeping 7 nodes and 3,961 delegators; it has been sitting at zero locked and 0% APR ever since and was never reported. stakedinc has been in the same state, with 10 nodes and ~639 users, for the entire stored history. p2p_org_ was the third. The reason both were missed is the one run #22 identified and only half-fixed: 'providers leaving' logic keyed on set membership, and previous.json only ever stored providers with locked > 0, so a provider that goes to zero simply drops out of the comparison rather than showing up as an event.\n\nP2P.ORG's EXIT COMPLETED THIS WEEK. Its owner wallet called removeNodes 11 times plus unBondNodes once, taking numNodes from 50 to 0. The contract now shows zero locked, zero nodes, zero APR - and 1,244 delegators still attached. Note that this breaks the detection signature itself: a fully exited operator has no nodes left, so 'locked == 0 AND numNodes > 0' no longer matches p2p_org_. The signature needs widening to 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'.\n\nAND THAT GIVES THE INERTIA EXPERIMENT ELEVEN WEEKS OF DATA INSTEAD OF ONE. Run #22 registered a test on whether p2p_org_'s 1,244 stranded delegators would move. This week they produced 2 unDelegate calls - 0.16% of the book - against 4 reDelegateRewards and 6 claimRewards on a contract that generates nothing at all. But ledgerbyfigment is the real evidence: ELEVEN weeks at zero yield, and its delegator count has gone 3,961 -> 3,883, a loss of 78 people, 2.0%. stakedinc has lost 2 of 639 across the whole archive. Set that against the two 100%-fee providers, whose BOOKS have collapsed - egldstakingprovider 94,349 -> 61,503 in two weeks (-22.8% this week, -51.8% over three) and procryptostaking 156,917 -> 124,805 (-12.0% this week, -20.5% over two) - while their user counts fell only -36 and -55. The conclusion is now solid enough to state plainly: in this delegation market capital responds to price signals and people do not. A total loss of yield moves roughly 2% of a user base per quarter and roughly half of its EGLD per month.\n\nUNDERNEATH, THE MARKET WAS QUIET. Delegation TVL fell -66,424 to 10,967,589 with only 8 providers moving more than 5,000 EGLD, and two of those are the 100%-fee pair. The largest genuine mover was the system aggregator contract at +24,804; below it vaporrepublic -21,512, ninjastaking -13,555, valuestaking -12,752 and oxsyai +9,407. The delegator base moved -107 to 172,935 - flat, and this week with no deregistration artifact to net out, which makes it the cleanest confirmation of the run #18 inertia base rate the model has had. 28 providers gained delegators and 43 lost them.\n\nTHE UNBONDING QUEUE, SCANNED IN FULL FOR THE FIRST TIME. Run #22 measured 70,498 EGLD of unDelegations across the ten providers that had moved; this run paged all 107 contracts and found 151,443 EGLD from 300 distinct wallets - 2.1x. The partial scan was not slightly incomplete, it was missing more than half. Measured pending unbonding across the 45 largest callers is 132,392 EGLD, the largest single leg 40,888 from a wallet holding 10 EGLD. That in turn settles the residual question the same way as last week: staked rose +3,766 while delegation fell -66,424, giving a residual of 70,190 against 151,443 of measured unbonding in flight. The residual is fully absorbed with room to spare, so corrected_direct_node_egld is published as null for a second run - and the run #22 rule that produced that answer is now confirmed rather than merely asserted.\n\nTHE RUN #21 UNBOND IS RETIRED. 229,865 EGLD, fully unbonded, sat unmoved for a second consecutive week: wallet balance unchanged at 2,369.53, zero outbound transactions, zero function calls. The no-action branch fires and the position stops being tracked as a live forward flow."
+ },
+ "token_activity": {
+  "top_by_holders": [
+   {
+    "identifier": "DRX-b7f337",
+    "name": "DoctorX",
+    "holders": 2468752,
+    "previous_holders": 2468758,
+    "holders_change": -6,
+    "price_usd": 1.7855166475337034e-07,
+    "market_cap_usd": 36267.19370999728,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "WEGLD-bd4d79",
+    "name": "WrappedEGLD",
+    "holders": 131411,
+    "previous_holders": 131517,
+    "holders_change": -106,
+    "price_usd": 3.829361032032816,
+    "market_cap_usd": 2142610.8391052224,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "HYPE-619661",
+    "name": "HYPE",
+    "holders": 117626,
+    "previous_holders": 117720,
+    "holders_change": -94,
+    "price_usd": 5.3369060274330565e-08,
+    "market_cap_usd": 2981.788968099168,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "MEX-455c57",
+    "name": "MEX",
+    "holders": 102752,
+    "previous_holders": 102812,
+    "holders_change": -60,
+    "price_usd": 3.541392310776202e-07,
+    "market_cap_usd": 1412084.9676919926,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "RIDE-7d18e9",
+    "name": "holoride",
+    "holders": 97213,
+    "previous_holders": 97289,
+    "holders_change": -76,
+    "price_usd": 0.00019079141108563965,
+    "market_cap_usd": 167877.28245001493,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "QWT-46ac01",
+    "name": "QoWatt",
+    "holders": 94361,
+    "previous_holders": 94454,
+    "holders_change": -93,
+    "price_usd": 0.000155495220640188,
+    "market_cap_usd": 25573.747234829643,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "ZPAY-247875",
+    "name": "ZoidPay",
+    "holders": 91212,
+    "previous_holders": 91297,
+    "holders_change": -85,
+    "price_usd": 0.005995210336245813,
+    "market_cap_usd": 3687069.4067700393,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "BHAT-c1fde3",
+    "name": "BHNetwork",
+    "holders": 86328,
+    "previous_holders": 86411,
+    "holders_change": -83,
+    "price_usd": 0.00014756277461822745,
+    "market_cap_usd": 13703.404957070064,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "USDC-c76f1f",
+    "name": "WrappedUSDC",
+    "holders": 80726,
+    "previous_holders": 80773,
+    "holders_change": -47,
+    "price_usd": 0.9998956125391122,
+    "market_cap_usd": 7705559.11346217,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "UTK-2f80e9",
+    "name": "xMoney UTK",
+    "holders": 75068,
+    "previous_holders": 75139,
+    "holders_change": -71,
+    "price_usd": 0.01945563617736078,
+    "market_cap_usd": 4165013.9367543557,
+    "volume_24h_usd": null
+   }
+  ],
+  "top_by_volume": [
+   {
+    "identifier": "WEGLD-bd4d79",
+    "name": "WrappedEGLD",
+    "transactions": 8656488,
+    "previous_transactions": 8652808,
+    "change_pct": 0.042529546477860135,
+    "price_usd": 3.829361032032816,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "USDC-c76f1f",
+    "name": "WrappedUSDC",
+    "transactions": 2170063,
+    "previous_transactions": 2167207,
+    "change_pct": 0.1317825200822995,
+    "price_usd": 0.9998956125391122,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "MEX-455c57",
+    "name": "MEX",
+    "transactions": 2035181,
+    "previous_transactions": 2034648,
+    "change_pct": 0.02619617742233546,
+    "price_usd": 3.541392310776202e-07,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "UTK-2f80e9",
+    "name": "xMoney UTK",
+    "transactions": 859542,
+    "previous_transactions": 859446,
+    "change_pct": 0.011169986246954434,
+    "price_usd": 0.01945563617736078,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "BOBER-9eb764",
+    "name": "BOBER",
+    "transactions": 783072,
+    "previous_transactions": 782516,
+    "change_pct": 0.07105286026100424,
+    "price_usd": 0.00010041494999704456,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "ZPAY-247875",
+    "name": "ZoidPay",
+    "transactions": 759218,
+    "previous_transactions": 759013,
+    "change_pct": 0.027008760060763123,
+    "price_usd": 0.005995210336245813,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "RIDE-7d18e9",
+    "name": "holoride",
+    "transactions": 670575,
+    "previous_transactions": 670467,
+    "change_pct": 0.01610817534643763,
+    "price_usd": 0.00019079141108563965,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "EGLDMEX-0be9e5",
+    "name": "EGLDMEXLP",
+    "transactions": 664296,
+    "previous_transactions": 664261,
+    "change_pct": 0.005269013234255812,
+    "price_usd": null,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "CGO-5e9528",
+    "name": "CathenaGold",
+    "transactions": 527709,
+    "previous_transactions": 527454,
+    "change_pct": 0.0483454481338657,
+    "price_usd": 8.382195842432225e-07,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "AERO-458bbf",
+    "name": "Aerovek",
+    "transactions": 509541,
+    "previous_transactions": 509459,
+    "change_pct": 0.016095505232020635,
+    "price_usd": 3.8703334387946645e-05,
+    "volume_24h_usd": null
+   }
+  ],
+  "top_by_market_cap": [
+   {
+    "identifier": "EMRS-6e4067",
+    "name": "EmoryaSportsX",
+    "holders": 10344,
+    "previous_holders": null,
+    "price_usd": 3.3964e-05,
+    "market_cap_usd": 33963791.39457399,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "USDC-c76f1f",
+    "name": "WrappedUSDC",
+    "holders": 80726,
+    "previous_holders": 80773,
+    "price_usd": 0.9998956125391122,
+    "market_cap_usd": 7705559.11346217,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "UTK-2f80e9",
+    "name": "xMoney UTK",
+    "holders": 75068,
+    "previous_holders": 75139,
+    "price_usd": 0.01945563617736078,
+    "market_cap_usd": 4165013.9367543557,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "ZPAY-247875",
+    "name": "ZoidPay",
+    "holders": 91212,
+    "previous_holders": 91297,
+    "price_usd": 0.005995210336245813,
+    "market_cap_usd": 3687069.4067700393,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "SEGLD-3ad2d0",
+    "name": "StakedEGLD",
+    "holders": 1396,
+    "previous_holders": null,
+    "price_usd": 4.661011986578661,
+    "market_cap_usd": 3188917.3014642578,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "HSEGLD-c13a4e",
+    "name": "HatomSEGLD",
+    "holders": 443,
+    "previous_holders": null,
+    "price_usd": 4.751316388672509,
+    "market_cap_usd": 2996976.4314632765,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "WEGLD-bd4d79",
+    "name": "WrappedEGLD",
+    "holders": 131411,
+    "previous_holders": 131517,
+    "price_usd": 3.829361032032816,
+    "market_cap_usd": 2142610.8391052224,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "HTM-f51d55",
+    "name": "Hatom",
+    "holders": 49955,
+    "previous_holders": 50046,
+    "price_usd": 0.025735010087327422,
+    "market_cap_usd": 2091916.7276537898,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "XOXNO-c1293a",
+    "name": "XOXNO",
+    "holders": 28909,
+    "previous_holders": null,
+    "price_usd": 0.025667405813946848,
+    "market_cap_usd": 1906178.936150883,
+    "volume_24h_usd": null
+   },
+   {
+    "identifier": "FOXSY-5d5f3e",
+    "name": "Foxsy",
+    "holders": 38524,
+    "previous_holders": null,
+    "price_usd": 0.0017693032142571835,
+    "market_cap_usd": 1696093.5535426878,
+    "volume_24h_usd": null
+   }
+  ],
+  "newly_issued": [
+   {
+    "identifier": "VMP-618fbc",
+    "name": "VMPXQ",
+    "holders": 1,
+    "transactions": 1,
+    "deployer": "erd1hu805tx4xee2n9awpdwd6m56029edmgartt9l354wtxv0ymxzspsl0cpf7",
+    "note": "below the >10 holder / >5 tx quality bar"
+   },
+   {
+    "identifier": "QKJ-17ee00",
+    "name": "QKJXV",
+    "holders": 1,
+    "transactions": 1,
+    "deployer": "erd1hu805tx4xee2n9awpdwd6m56029edmgartt9l354wtxv0ymxzspsl0cpf7",
+    "note": "below the >10 holder / >5 tx quality bar"
+   },
+   {
+    "identifier": "MMX-d1882c",
+    "name": "memex",
+    "holders": 1,
+    "transactions": 0,
+    "deployer": "erd1amcut55f488paljpkaa6dcg4w6h2ax7afaytvqtqzy3pz35aksnskw7rrh",
+    "note": "below the >10 holder / >5 tx quality bar"
+   }
+  ],
+  "xexchange": {
+   "total_pairs": 552,
+   "total_volume_24h_usd": 234053.12987894475,
+   "mex_price_usd": 3.541086469631204e-07,
+   "mex_market_cap_usd": 1411963,
+   "mex_price_change_24h_pct": null,
+   "mex_price_change_wow_pct": 5.965555234730494,
+   "top_pair": "WrappedEGLD/WrappedUSDC",
+   "top_pair_volume_24h_usd": 222509.8682500037,
+   "top_pair_dominance_pct": 95.06810200106644,
+   "top_pairs_by_volume": [
+    {
+     "name": "WrappedEGLD/WrappedUSDC",
+     "volume_24h_usd": 222509.8682500037,
+     "tvl_usd": 1591892.8821313307,
+     "trades_count_24h": 1324,
+     "is_other": false,
+     "share_pct": 95.06810200106644
+    },
+    {
+     "name": "MEX/WrappedEGLD",
+     "volume_24h_usd": 6251.729074149937,
+     "tvl_usd": 385202.4949911973,
+     "trades_count_24h": 230,
+     "is_other": false,
+     "share_pct": 2.6710726224355175
+    },
+    {
+     "name": "ZoidPay/WrappedEGLD",
+     "volume_24h_usd": 3510.510208559024,
+     "tvl_usd": 53018.79861526286,
+     "trades_count_24h": 58,
+     "is_other": false,
+     "share_pct": 1.4998774895147544
+    },
+    {
+     "name": "WrappedUSDC/MEX",
+     "volume_24h_usd": 1232.0655792197645,
+     "tvl_usd": 27001.953131872575,
+     "trades_count_24h": 79,
+     "is_other": false,
+     "share_pct": 0.5264042313200445
+    },
+    {
+     "name": "Ofero/WrappedEGLD",
+     "volume_24h_usd": 426.32856824107876,
+     "tvl_usd": 12253.432188951638,
+     "trades_count_24h": 24,
+     "is_other": false,
+     "share_pct": 0.18215033845588022
+    }
+   ],
+   "pool_tvl_usd": 2226718.8122093524,
+   "previous_pool_tvl_usd": 2123277.2015970107,
+   "turnover_ratio_pct": 10.51112195197727,
+   "previous_turnover_ratio_pct": 10.831730624232451,
+   "dex_vol_wow_pct": 1.7676873944238676,
+   "dex_volume_egld_24h": 61110.477775181396,
+   "previous_dex_volume_egld_24h": 63885.46302298033,
+   "dex_vol_egld_wow_pct": -4.343688088792186,
+   "pool_tvl_egld": 581388.7238144523,
+   "previous_pool_tvl_egld": 589799.2226658363,
+   "wegld_usdc_share_of_volume_pct": 95.06810200106644,
+   "ex_wegld_usdc_volume_usd": 11543.26162894105,
+   "mex_pair_depth": {
+    "pair": "MEX/WEGLD",
+    "tvl_usd": 385202.4949911973,
+    "tvl_egld": 100575.06396637006,
+    "previous_tvl_egld": 99743.91681976247,
+    "tvl_egld_wow_pct": 0.8332810391930711,
+    "volume_24h_usd": 6251.729074149937,
+    "trades_24h": 230,
+    "share_of_pool_tvl_pct": 17.299108126229868,
+    "depth_rank": 2
+   }
+  },
+  "analysis": "THE MEX STREAK BROKE, AND THE MECHANISM HUNT IS CLOSED WITHOUT AN ANSWER. MEX +5.97% against EGLD +6.39% - the first week in six that MEX has UNDERPERFORMED, by 0.42pp. Run #22's pre-committed mechanism test asked for MEX/WEGLD pool TVL growing more than 10% WoW in EGLD terms or supply falling more than 1%. Neither: pool TVL in EGLD terms moved +0.83% ($385,202, 100,575 EGLD, rank 2 by depth, 230 trades) and supply moved -0.070%. That is the 'neither, second run running' branch, so per the run #21 rule about repeated explanations the model stops generating them: the five-week ~9.8pp gap is UNEXPLAINED FLOW and is labelled as such. The streak ending in the same week is a reasonable coda - whatever it was, it is not obviously still running.\n\nTHE DEX SPLIT INTO ITS TWO COMPONENTS AND THEY DISAGREE - which is exactly what run #22 asked for. In dollars, volume $234,053 (+1.8%) on pool TVL $2,226,719 (+4.9%), turnover 10.51% against 10.83% - the regime holds. In EGLD, volume fell from 63,885 to 61,110 EGLD/day (-4.3%) and pool depth from 589,799 to 581,389 EGLD (-1.4%). Both sides of the ratio scaled with the price, which is why the ratio held. The venue did not process more EGLD this week than last; it processed slightly less. Concentration is unchanged and extreme: WEGLD/USDC is 95.1% of all volume on 1,324 trades, and the entire rest of xExchange traded $11,543 - about 3,014 EGLD - in 24 hours.\n\nSTABLECOINS DRAINED, BOTH OF THEM. USDT 545,052 (-1.31%) and USDC 7,706,364 (-0.90%). USDC falling 69,658 tokens is well past the 0.1% stablecoin threshold and is the larger of the two in absolute terms; the on-chain dollar base fell roughly $75K in a week when the price rose 6.4%. Dollars left the chain into strength - the same direction as every other holding-side instrument this week.\n\nHOLDER COUNTS FELL ON EVERY TOP-10 TOKEN AGAIN - WEGLD -106, HYPE -94, QWT -93, ZPAY -85 - the continuing dust-account attrition, unremarkable on its own but now unbroken for most of the tracked period. NEWLY ISSUED: 3 issuances cleared the ESDT system-SC scan and all 3 have exactly 1 holder (VMP-618fbc, QKJ-17ee00, MMX-d1882c). That is a seventh consecutive week with no launch clearing the >10-holder / >5-tx bar."
+ },
+ "defi_activity": {
+  "protocols": [
+   {
+    "name": "xExchange",
+    "category": "dex",
+    "volume_24h_usd": 234053.12987894475,
+    "active_pairs": 552,
+    "transfers_24h": null,
+    "tvl_usd": 2140731.1171086687,
+    "tvl_egld": 558937.628487903,
+    "tvl_wow_change_pct": 3.8829169593219963
+   },
+   {
+    "name": "Hatom Lending",
+    "category": "lending",
+    "volume_24h_usd": 0.0,
+    "active_pairs": 0,
+    "transfers_24h": 265,
+    "tvl_usd": 4436854.981853584,
+    "tvl_egld": 1158447.7759408834,
+    "tvl_wow_change_pct": -4.432235073198213
+   },
+   {
+    "name": "Hatom Liquid Staking",
+    "category": "liquid_staking",
+    "volume_24h_usd": 0.0,
+    "active_pairs": 0,
+    "transfers_24h": 987,
+    "tvl_usd": 4109778.713758747,
+    "tvl_egld": 1073049.272521866,
+    "tvl_wow_change_pct": -0.2767951235083454
+   },
+   {
+    "name": "XOXNO LSD",
+    "category": "liquid_staking",
+    "volume_24h_usd": 0.0,
+    "active_pairs": 0,
+    "transfers_24h": 433,
+    "tvl_usd": 966798.3057603753,
+    "tvl_egld": 252427.75607320503,
+    "tvl_wow_change_pct": -0.15961726840190316
+   }
+  ],
+  "protocol_breakdown": [
+   {
+    "protocol": "xExchange",
+    "category": "dex",
+    "addresses_tracked": 16,
+    "tvl_usd": 2140731.1171086687,
+    "tvl_egld": 558937.628487903,
+    "tvl_wow_change_pct": 3.8829169593219963,
+    "transfers_24h": null,
+    "volume_24h_usd": 234053.12987894475,
+    "notable_events": "THE TURNOVER REGIME HELD IN USD AND FAILED IN EGLD. Turnover 10.83% -> 10.51%, above the ~5% branch, but volume in EGLD terms fell -4.3% to 61,110 EGLD/day and pool depth -1.4% to 581,389 EGLD. Both sides scaled with price. WEGLD contract balance 558,938 EGLD (roughly flat); WEGLD supply 559,499. Concentration 95.1% WEGLD/USDC.",
+    "health_signal": "flat"
+   },
+   {
+    "protocol": "Hatom Lending",
+    "category": "lending",
+    "addresses_tracked": 13,
+    "tvl_usd": 4436854.981853584,
+    "tvl_egld": 1158447.7759408834,
+    "tvl_wow_change_pct": -4.432235073198213,
+    "transfers_24h": 265,
+    "notable_events": "BILATERAL INVERSE RULE: FOURTH UP-WEEK CONFIRMATION, AND THE CAPACITY-EXHAUSTION WATCH IS CLEARED. Price +6.39% (evaluable, past the |5%| guardrail), EGLD-denominated TVL -4.43% - correct inverse sign at a response ratio of 0.69. Run #22 asked whether a SECOND consecutive sub-0.30 reading would appear, which would have meant the deposit base was exhausted and the rule should be retired. It did not: 0.49 / 0.72 / 0.28 / 0.69. The 0.28 was a single weak reading against a +30% move, not depletion. USD TVL $4,436,855 (+1.7%) is price.",
+    "health_signal": "shrinking"
+   },
+   {
+    "protocol": "Hatom Liquid Staking",
+    "category": "liquid_staking",
+    "addresses_tracked": 2,
+    "tvl_usd": 4109778.713758747,
+    "tvl_egld": 1073049.272521866,
+    "tvl_wow_change_pct": -0.2767951235083454,
+    "transfers_24h": 987,
+    "notable_events": "SUPPLY BASIS (run #13 rule): SEGLD -0.277% to 684,168, a sixth consecutive week inside the noise band. SWTAO -1.66% to 3,198 - the largest SWTAO supply move since run #14 and a genuine redemption, though on a 3,198-token base it is ~54 tokens. All four dataApi tokens priced on the FIRST pass this run with zero retries, the first clean pass since the guard was added in run #13.",
+    "health_signal": "flat"
+   },
+   {
+    "protocol": "Hatom USH",
+    "category": "stablecoin",
+    "addresses_tracked": 4,
+    "tvl_usd": 555709.7271097311,
+    "tvl_egld": 145093.92352734492,
+    "tvl_wow_change_pct": -1.5257133960854834,
+    "transfers_24h": null,
+    "notable_events": "USH BURNED -1.53% (8,722 tokens) to 562,945 - a SECOND consecutive burn into a rising price. Run #22 noted that a burn during a rally fits neither the run #11 (burn = de-leveraging in a decline) nor run #16 (mint = leverage returning in a rally) framing; two in a row makes it a pattern rather than an oddity. CDP borrowers are repaying debt as their collateral appreciates. Cumulative -2.4% over two weeks.",
+    "health_signal": "shrinking"
+   },
+   {
+    "protocol": "XOXNO LSD",
+    "category": "liquid_staking",
+    "addresses_tracked": 3,
+    "tvl_usd": 966798.3057603753,
+    "tvl_egld": 252427.75607320503,
+    "tvl_wow_change_pct": -0.15961726840190316,
+    "transfers_24h": 433,
+    "notable_events": "XEGLD supply -0.160% to 228,307 - a fourth week inside the noise band. The run #14 -29.2% redemption episode is closed. 433 transfers in 24h.",
+    "health_signal": "flat"
+   },
+   {
+    "protocol": "XOXNO Aggregator",
+    "category": "aggregator",
+    "addresses_tracked": 1,
+    "tvl_usd": 0.0,
+    "tvl_egld": 0.0,
+    "tvl_wow_change_pct": null,
+    "transfers_24h": 32462,
+    "volume_24h_usd": 0.0,
+    "notable_events": "32,462 transfers in 24h - a new high for this contract and the clearest single activity reading on the network. Non-custodial routing, so TVL is not the metric.",
+    "health_signal": "spiking"
+   },
+   {
+    "protocol": "OneDex",
+    "category": "aggregator",
+    "addresses_tracked": 5,
+    "tvl_usd": 0.0,
+    "tvl_egld": 0.0,
+    "tvl_wow_change_pct": null,
+    "transfers_24h": 19015,
+    "volume_24h_usd": 0.0,
+    "notable_events": "19,015 transfers in 24h, also at the top of its range. One tracked address (OneDex Launchpad) still fails bech32 validation and stays excluded rather than guessed - a gap open since run #18.",
+    "health_signal": "growing"
+   },
+   {
+    "protocol": "JEXchange",
+    "category": "dex",
+    "addresses_tracked": 4,
+    "tvl_usd": 0.0,
+    "tvl_egld": 0.0,
+    "tvl_wow_change_pct": null,
+    "transfers_24h": 6775,
+    "volume_24h_usd": 0.0,
+    "notable_events": "Fees contract 6,775 transfers in 24h; the aggregator contract returned 0 for a third consecutive run, which is now more likely a wrong address than a halt and should be re-derived.",
+    "health_signal": "flat"
+   }
+  ],
+  "sc_deployments": [],
+  "analysis": "DeFi did the same thing it did last week, one notch quieter, and the consistency is the finding.\n\nActivity was strong where it is measured in transfers: the XOXNO aggregator processed 32,462 in 24 hours and OneDex 19,015, both at the top of their ranges. But xExchange's own throughput in EGLD terms FELL -4.3%, so the venue-level demand read depends entirely on which denominator you pick - and the honest one for a chain-native question is EGLD.\n\nThe credit stack de-risked for a second consecutive week. Hatom Lending's EGLD-denominated deposits fell -4.43% against a +6.39% price, the fourth up-week confirmation of the bilateral inverse rule and - importantly - at a response ratio of 0.69, well clear of the 0.30 exhaustion threshold. Run #22 registered that two consecutive sub-0.30 readings would retire the rule; the second did not come, so the rule survives and last week's 0.28 is reclassified as one weak response to an unusually large price move rather than evidence of a depleted deposit base.\n\nUSH burned -1.53% for a second week running, 8,722 tokens, cumulative -2.4% across the two. A single burn into a rally was an anomaly; two is a behaviour, and the reading is that CDP borrowers are using appreciation to retire debt rather than to lever further. That is the mirror image of run #16, where a +16% week produced a +6.49% USH MINT. The same instrument, the same direction of price, opposite response - which says the cohort changed, not the mechanism.\n\nLiquid staking again did nothing: SEGLD -0.277%, XEGLD -0.160%, SWTAO -1.66%. Six consecutive weeks with no LSD subscription of any size, through a cumulative +39% price move. Combined with a flat delegator base and a staked ratio that FELL, the picture is consistent: nobody converted this rally into a yield-bearing on-chain position.\n\nTVL METHOD NOTE: LSD and stablecoin figures are on the supply basis per the run #13 rule, USD as context only. All four dataApi-priced tokens returned a live price on the first pass with zero retries - the first fully clean pass since the guard was added, so no fallback was needed at any level of the run #22 ordering."
+ },
+ "anomalies": [
+  {
+   "metric": "otc_desk_inventory_egld",
+   "current_value": 266213.32067304774,
+   "previous_value": 109857.37245682775,
+   "method": "rule_based",
+   "severity": "critical",
+   "change_pct": 142.32631340028223,
+   "description": "Combined OTC desk inventory 266,213 EGLD, +156,356 (+142%) - 2.4x last week's record and by a wide margin the largest staged supply position in tracking. The comparison that matters: the run #17 peak wave DELIVERED 409,680 one-way from a starting inventory of 335,430; the desks now hold 266,213 having ALREADY delivered 272,396 this week, with the feed still running. This is the single most decision-relevant number in the report."
+  },
+  {
+   "metric": "otc_pipeline_upbit_tranche_egld",
+   "current_value": 460000.0,
+   "previous_value": 297000.0,
+   "method": "rule_based",
+   "severity": "critical",
+   "change_pct": 54.88215488215488,
+   "description": "UPbit fed 460,000 EGLD into the desks against 297,000 last week and 14,000 the week before. That is 3x run #21's escalation threshold of ~150,000 and makes the tranche series 14,000 / 297,000 / 460,000 - an escalating programme, not episodic reloads. UPbit is the sole net SOURCE of the whole pipeline at -460,000 this week and -657,000 over the Aug 17-31 wave."
+  },
+  {
+   "metric": "provider_deregistration_backfill",
+   "current_value": 3,
+   "previous_value": 1,
+   "method": "rule_based",
+   "severity": "critical",
+   "description": "THREE operator deregistrations exist in the archive, not one. Applying run #22's own signature (locked == 0 with numNodes > 0) to the stored snapshots: ledgerbyfigment went 170,808 EGLD -> 0 between the 2026-06-08 and 2026-06-15 snapshots (the run #13 window) with 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history. Neither was ever reported. Run #22's 'first operator deregistration in tracking' is withdrawn. p2p_org_ additionally COMPLETED its exit this week - removeNodes x11 plus unBondNodes, numNodes 50 -> 0 - which also breaks the detection signature, since a fully exited operator has no nodes left to match on."
+  },
+  {
+   "metric": "egld_price_usd",
+   "current_value": 3.83,
+   "previous_value": 3.6,
+   "method": "z_score",
+   "severity": "medium",
+   "average_value": 2.945,
+   "stddev": 0.3061862178478973,
+   "z_score": 2.8903978964841506,
+   "change_pct": 6.388888888888888,
+   "description": "EGLD $3.83, +6.39%, z=+2.89sigma. The rule-based cross-check is the finding, not the z: BTC -0.97% and ETH -1.07% BOTH FELL, so this is an EGLD-specific move under the run #16 decoupling rule - the opposite of last week, when +30.43% landed between the majors and carried no EGLD-specific component. The run #16 caveat also applies: three consecutive up-weeks have pulled the baseline mean up, so the absolute z understates the break."
+  },
+  {
+   "metric": "binance_staking_custody_egld",
+   "current_value": 2978782.2380337724,
+   "previous_value": 3175540.3850837722,
+   "method": "z_score",
+   "severity": "high",
+   "average_value": 3324245.0466462723,
+   "stddev": 88756.69366809117,
+   "z_score": -3.892245129188457,
+   "change_pct": -6.196052425414493,
+   "description": "Binance Staking custody -196,758 to 2,978,782, z=-3.89sigma - a second consecutive drawdown, -497K over two weeks, and the lowest custody balance since the position was first flagged in run #9. The mechanics are fully traced this week: custody sent 500,000 to the Binance.com hot wallet, the hot wallet forwarded 135,003 into the OTC desks through two previously identified feeders plus one direct transfer, and returned 303,242 to custody. The custody watch and the pipeline watch are one instrument from here."
+  },
+  {
+   "metric": "unbonding_queue_undelegated_egld_7d",
+   "current_value": 151442.89485919426,
+   "previous_value": 70498,
+   "method": "rule_based",
+   "severity": "high",
+   "change_pct": 114.81871096938106,
+   "description": "151,443 EGLD unDelegated by 300 distinct wallets across all 107 provider contracts - 2.1x run #22's 70,498, which was measured across ten providers only. The jump is mostly METHOD, not behaviour: the first full-set scan shows the partial scan was missing more than half the queue. Measured pending unbonding 132,392 EGLD. Treat the 151,443 as the first comparable point in a new series, not as a 2x increase in unbonding."
+  },
+  {
+   "metric": "absorber_scan_retained_share_pct",
+   "current_value": 1.6901712715707808,
+   "previous_value": null,
+   "method": "rule_based",
+   "severity": "high",
+   "description": "Run #22's proposed repair of the identifiable-bid instrument returns a decisive negative. All 14 of the desks' outbound terminals were scanned for wallets that RETAIN what they receive: 505,597 EGLD passed through them and 8,545 (1.7%) stayed. Every terminal is a zero-balance, high-nonce pass-through router. There are no absorbers on the outbound side of this pipeline to discover, so the instrument is RETIRED rather than repaired. The Mega Whale proxy read exactly zero for a third consecutive week (balance 1,099,059.3223 unchanged to four decimals, zero transactions) and in four of the last five."
+  },
+  {
+   "metric": "dex_volume_egld_24h",
+   "current_value": 61110.477775181396,
+   "previous_value": 63885.46302298033,
+   "method": "rule_based",
+   "severity": "medium",
+   "change_pct": -4.343688088792186,
+   "description": "Run #22 asked for DEX volume in EGLD terms so the turnover signal could be separated from the price move, and the separation matters: turnover held at 10.51% (above its ~5% regime branch) while EGLD-denominated volume FELL from 63,885 to 61,110 EGLD/day (-4.3%) and EGLD-denominated pool depth fell -1.4%. The ratio held because both sides scaled with a +6.4% price. The venue processed slightly LESS EGLD than last week."
+  },
+  {
+   "metric": "reward_compound_pct",
+   "current_value": 57.51,
+   "previous_value": 57.03,
+   "method": "z_score",
+   "severity": "medium",
+   "average_value": 59.85375,
+   "stddev": 1.5367005035139412,
+   "z_score": -1.525183335751238,
+   "description": "Compound rate 57.51% (333 redelegate vs 246 claim), z=-1.53sigma - a fourth consecutive decline and the lowest of ten readings. The pre-committed test could not resolve: its branches were 'below 56%' and 'above 59%' and the reading landed between them. Read on the trend instead: four declines spanning a flat week, a +30% week and a +6% week is not price-following, it is a slow drift toward taking yield in cash. The institutional tier sold 3 of 6 claims for a second consecutive week; retail sold nothing for a tenth run."
+  },
+  {
+   "metric": "withdrawal_breadth_ex_pipeline_egld",
+   "current_value": 400112.5443214748,
+   "previous_value": 133520.83666306452,
+   "method": "rule_based",
+   "severity": "medium",
+   "change_pct": 199.66299966434886,
+   "description": "50 distinct non-exchange addresses took 400,113 EGLD off exchanges outside the pipeline, against 21 recipients and 133,521 last week, with the pipeline share of exchange outflow value falling from 88.3% to 73.3%. This is the only unambiguously constructive instrument in the report and it is at its best reading since the measure was built. It is also the first week with a full 7-day scan and ZERO page-cap terminations, after the hot-wallet page budget was raised on run #22's recommendation - so unlike previous weeks the raw figure of 1,497,134 EGLD is not a lower bound."
+  },
+  {
+   "metric": "stablecoin_supply_usdc",
+   "current_value": 7706364.0,
+   "previous_value": 7776022.0,
+   "method": "rule_based",
+   "severity": "medium",
+   "change_pct": -0.8958050787407752,
+   "description": "USDC supply -0.90% to 7,706,364 (69,658 tokens redeemed), well past the 0.1% stablecoin threshold, alongside USDT -1.31% to 545,052. About $77K of on-chain dollars left in a week when EGLD rose 6.4% - dollars exiting into strength, the same direction as every other holding-side instrument."
+  },
+  {
+   "metric": "ush_supply",
+   "current_value": 562945.0,
+   "previous_value": 571667.0,
+   "method": "rule_based",
+   "severity": "medium",
+   "change_pct": -1.5257133960854834,
+   "description": "USH supply -1.53% (8,722 tokens burned) to 562,945 - a SECOND consecutive burn into a rising price, cumulative -2.4%. One burn into a rally was an anomaly against the run #11/#16 framing; two makes it a behaviour. CDP borrowers are retiring debt as collateral appreciates, the mirror of run #16 where a +16% week produced a +6.49% MINT."
+  },
+  {
+   "metric": "hatom_lending_inverse_response_ratio",
+   "current_value": 0.6937411418918943,
+   "previous_value": 0.28,
+   "method": "rule_based",
+   "severity": "low",
+   "description": "BILATERAL INVERSE RULE, fourth up-week confirmation: price +6.39%, Hatom Lending EGLD-denominated TVL -4.43%, response ratio 0.69. Run #22 registered that a SECOND consecutive sub-0.30 reading would mean the deposit base was exhausted and the rule should be retired. It did not come - the up-week series is 0.49 / 0.72 / 0.28 / 0.69, so the 0.28 is reclassified as one weak response to an unusually large price move rather than depletion. The rule survives."
+  },
+  {
+   "metric": "exchange_net_flow_egld",
+   "current_value": -191939.71816979814,
+   "previous_value": -33937,
+   "method": "z_score",
+   "severity": "low",
+   "average_value": -14876.195268011128,
+   "stddev": 139520.16555423947,
+   "z_score": -1.269089111229246,
+   "description": "Net exchange flow -191,940 EGLD, z=-1.27sigma. Per the run #15 rule it must be decomposed before it is labelled: UPbit's -164,918 is desk loading and Binance's -38,361 is internal plumbing. Ex those two the complex took a mild INFLOW of +11,340 led by Bybit and Bitget - both hub destinations, so even that is pipeline output rather than independent customer behaviour."
+  },
+  {
+   "metric": "otc_pipeline_throughput_egld_7d",
+   "current_value": 709849.78959989,
+   "previous_value": 767206,
+   "method": "z_score",
+   "severity": "low",
+   "average_value": 637503.375,
+   "stddev": 363832.5682116492,
+   "z_score": 0.1988453506388811,
+   "description": "Gross desk throughput 709,850 EGLD out against 903,083 in, z=+0.20sigma - unremarkable against a baseline that already contains the 1.28M run #17 peak, which is why the gross figure is reported at low severity and the inventory and tranche numbers carry the finding. Net one-way 272,396 at 62% circularity - just BELOW the historical 63-80% band, which run #21 established as the diagnostic tell that a wave straddles a week boundary. It does; see the wave-window netting."
+  },
+  {
+   "metric": "total_delegators",
+   "current_value": 172935,
+   "previous_value": 173042,
+   "method": "rule_based",
+   "severity": "low",
+   "change_pct": -0.06183469909039424,
+   "description": "Delegator count -107 to 172,935 (-0.062%). Reported rule_based rather than by z-score because the baseline's standard deviation is tiny relative to the base and produces the degenerate sigma the run #9 guard exists to suppress. Unlike last week there is no deregistration artifact to net out, so this is a clean reading and it confirms the run #18 base rate: the delegator base does not move, in either direction, at any price."
+  }
+ ],
+ "trend_indicators": {
+  "accelerating_exchange_outflows": [
+   {
+    "exchange": "UPbit",
+    "trend": "down",
+    "cumulative_change_pct": -20.1,
+    "weeks_in_trend": 2,
+    "interpretation": "UPbit -164,918 for a second consecutive week while sending 460,000 to its own OTC desk. Per the run #16 rule this is the LOADING leg of a distribution programme, not customer withdrawal. Over the two weeks it has fed the desks 757,000 EGLD and its balance has fallen ~280,000 - the difference is inventory cycling back from the desks."
+   },
+   {
+    "exchange": "Binance",
+    "trend": "down",
+    "cumulative_change_pct": -11.3,
+    "weeks_in_trend": 2,
+    "interpretation": "Binance Staking custody -196,758 on top of last week's -300,000, and this week the destination is traced all the way through: hot wallet -> 135,003 into the OTC desks via two named feeders. Two channels that were tracked separately for fourteen runs are one programme."
+   },
+   {
+    "exchange": "Bybit",
+    "trend": "up",
+    "cumulative_change_pct": 17.4,
+    "weeks_in_trend": 3,
+    "interpretation": "+24,308 for a third consecutive build. Bybit is simultaneously the second-largest net receiver from the hub (+105,679) AND a feeder into it (152,918 in) - it sits on both sides, which is what the circularity measure exists to separate."
+   },
+   {
+    "exchange": "Coinbase",
+    "trend": "down",
+    "cumulative_change_pct": -45.8,
+    "weeks_in_trend": 2,
+    "interpretation": "-35,155 across 2 wallets, a second consecutive fall. Resolved per the run #17 migration rule: Coinbase Custody 2 sent 40,000 and Coinbase (secondary) 18,108 to Unknown Whale B, which holds the lot. A withdrawal to a holder, not distribution."
+   },
+   {
+    "exchange": "Bitget",
+    "trend": "up",
+    "cumulative_change_pct": 21.3,
+    "weeks_in_trend": 1,
+    "interpretation": "+14,383 (+21.3%), the largest proportional build of the week, and Bitget appears as an OTC hub destination for the first time (+4,610 two-hop-resolved). That takes the delivery-side venue count to five and is a genuine widening of the distribution surface rather than a rotation among the existing four."
+   }
+  ],
+  "validator_movements": {
+   "providers_joining": 0,
+   "providers_leaving": 0,
+   "net_provider_change": 0,
+   "notable_joiners": [],
+   "notable_leavers": [
+    {
+     "identity": "ledgerbyfigment",
+     "name": "ledgerbyfigment (BACKFILLED - deregistered in the run #13 window, never reported)",
+     "previous_locked_egld": 170808.0
+    },
+    {
+     "identity": "stakedinc",
+     "name": "stakedinc (BACKFILLED - zero-locked across the entire stored history)",
+     "previous_locked_egld": 0.0
+    }
+   ]
+  },
+  "token_supply_events": [
+   {
+    "identifier": "USDC-c76f1f",
+    "name": "WrappedUSDC",
+    "event": "burn",
+    "supply_previous": "7776022",
+    "supply_current": "7706364",
+    "change_pct": -0.8958050787407752,
+    "description": "69,658 USDC redeemed (-0.90%), well past the 0.1% stablecoin threshold. Together with USDT's -1.31% that is ~$77K of on-chain dollars leaving during a +6.4% price week."
+   },
+   {
+    "identifier": "USDT-f8c08c",
+    "name": "WrappedUSDT",
+    "event": "burn",
+    "supply_previous": "552292",
+    "supply_current": "545052",
+    "change_pct": -1.3109007553975072,
+    "description": "USDT -1.31% to 545,052, resuming the contraction that run #21 flagged and run #22 read as resolved. Two of the last three weeks negative on a base under 600K."
+   },
+   {
+    "identifier": "USH-111e09",
+    "name": "Hatom USH",
+    "event": "burn",
+    "supply_previous": "571667",
+    "supply_current": "562945",
+    "change_pct": -1.5257133960854834,
+    "description": "8,722 USH burned (-1.53%), a second consecutive burn into a rising price. CDP borrowers retiring debt as collateral appreciates - a behaviour, not an anomaly, now that it has repeated."
+   },
+   {
+    "identifier": "MEX-455c57",
+    "name": "MEX",
+    "event": "burn",
+    "supply_previous": "3990158520363",
+    "supply_current": "3987373236886",
+    "change_pct": -0.06980383016829647,
+    "description": "MEX supply -0.070%, far inside the 1% threshold the mechanism test required. Combined with MEX/WEGLD pool depth moving +0.83% in EGLD terms, neither branch of the mechanism test fires and the outperformance is closed as unexplained flow."
+   }
+  ],
+  "consecutive_streaks": [
+   {
+    "metric": "otc_desk_inventory_egld",
+    "direction": "up",
+    "weeks": 2,
+    "cumulative_change_pct": 338.9,
+    "interpretation": "60,565 -> 109,857 -> 266,213. Two consecutive reloads to successive records while ALSO delivering 272,396 one-way this week. The pipeline is accumulating faster than it distributes, which has not happened before in tracking."
+   },
+   {
+    "metric": "reward_compound_pct",
+    "direction": "down",
+    "weeks": 4,
+    "cumulative_change_pct": -7.614457831325305,
+    "interpretation": "62.25 -> 59.54 -> 59.07 -> 57.03 -> 57.51%. Four consecutive declines spanning a flat week, a +30% week and a +6% week. Because the sign is the same across opposite price regimes, this is not a price-following series - it is a slow drift toward monetising yield."
+   },
+   {
+    "metric": "identifiable_bid_absorbed_egld_7d",
+    "direction": "flat",
+    "weeks": 3,
+    "cumulative_change_pct": 0.0,
+    "interpretation": "Zero for a third straight week and in four of the last five. With the absorber scan returning no candidates anywhere on the desks' outbound side, the instrument is retired rather than re-reported."
+   },
+   {
+    "metric": "lsd_supply_all",
+    "direction": "flat",
+    "weeks": 6,
+    "cumulative_change_pct": 0.0,
+    "interpretation": "SEGLD, XEGLD and SWTAO have all sat inside the noise band on the supply basis for six weeks, through a cumulative ~+39% price move. Nobody has converted this rally into a yield-bearing on-chain position at any measurable scale."
+   },
+   {
+    "metric": "total_delegators",
+    "direction": "flat",
+    "weeks": 11,
+    "cumulative_change_pct": -0.9,
+    "interpretation": "-107 this week to 172,935, and this time with no deregistration artifact to net out. Run #18 promoted the flat base to a background assumption at six weeks; at eleven, with two providers now proven to hold their books at 0% APR for a quarter, it is better described as a structural property of this delegation market than as a weekly observation."
+   },
+   {
+    "metric": "provider_operator_fee_selling",
+    "direction": "flat",
+    "weeks": 11,
+    "cumulative_change_pct": 0.0,
+    "interpretation": "Eleven consecutive runs with zero exchange destinations from any sampled provider-operator wallet. A base rate; only a break would be newsworthy."
+   },
+   {
+    "metric": "newly_issued_quality",
+    "direction": "flat",
+    "weeks": 7,
+    "cumulative_change_pct": 0.0,
+    "interpretation": "Seven consecutive weeks with no token issuance clearing the >10-holder / >5-transaction bar. This week's 3 all have exactly 1 holder. Primary issuance on this chain is effectively dormant."
+   }
+  ],
+  "regime_shifts": [
+   {
+    "metric": "otc_desk_inventory_egld",
+    "before_value": 109857.0,
+    "after_value": 266213.32067304774,
+    "description": "Desk inventory stepped from a 60-110K band to 266,213 while simultaneously delivering 272,396 one-way. Flagged as a CANDIDATE regime shift: the methodology requires the new level to hold two weeks before promotion, and the obvious alternative is a single large staging event that drains next week. Pre-committed thresholds registered below."
+   },
+   {
+    "metric": "binance_pipeline_participation",
+    "before_value": 0.0,
+    "after_value": 135002.50315414,
+    "description": "Binance moved from being the pipeline's ultimate ORIGIN (run #10, via a source-funder chain) to feeding the desks directly: 135,003 EGLD from the Binance.com hot wallet into two named OTC feeders and one desk this week, funded by a 500,000 custody drawdown. For fourteen runs the custody watch and the pipeline watch were separate instruments; they are now one."
+   },
+   {
+    "metric": "operator_deregistration_count",
+    "before_value": 1,
+    "after_value": 3,
+    "description": "Not a shift in the world but in what the model can see. The deregistration signature invented in run #22 was applied backwards this run and found two prior cases, the larger of which (ledgerbyfigment, 170,808 EGLD, 3,961 delegators) went unreported for ten runs. Any claim of the form 'first X in tracking' should now be checked against the archive with the detector that found it, in the same run."
+   }
+  ]
+ },
+ "watch_list": [
+  {
+   "item": "OTC DESK INVENTORY AT A RECORD 266,213 EGLD - the drain leg of wave #3 is still ahead",
+   "weeks_on_list": 23,
+   "reason": "The desks delivered 272,396 one-way this week AND ended +156,356 at 266,213, 2.4x last week's record. UPbit's tranche series is 14,000 / 297,000 / 460,000. Destinations two hops out: Binance.com +117,884, Bybit +105,679, Gate.io +33,944, Bitget +4,610 (new). PRE-COMMITTED: desks draining below ~120,000 next week = the overhang is being delivered and this is the largest single distribution wave in tracking; inventory holding above ~220,000 with the feed continuing = staging is still running and the delivery is ahead of us, not behind."
+  },
+  {
+   "item": "BINANCE CUSTODY -> HOT -> OTC DESKS is one programme; custody down 497K in two weeks",
+   "weeks_on_list": 17,
+   "reason": "Custody 2,978,782 (-196,758 this week, -497K over two). The hot wallet forwarded 135,003 into the desks through the run #19 and run #20 feeders plus one direct transfer, and returned 303,242 to custody. The balance-based branch registered in run #22 could not see this because custody refilled the hot wallet faster than it spent. PRE-COMMITTED, now specified on FLOW not balance: Binance hot sending more than ~50,000 to desk feeders again next week = a standing funding programme and the custody drawdown should be read as scheduled supply; nothing above ~10,000 = this week was a one-off routing and the two watches separate again."
+  },
+  {
+   "item": "THE VALIDATOR SET's DISTRESSED TAIL - three deregistrations, two of them found retrospectively",
+   "weeks_on_list": 2,
+   "reason": "ledgerbyfigment (7 nodes, 3,883 users, zero-locked since the run #13 window, 170,808 EGLD at the time), stakedinc (10 nodes, 637 users, zero-locked across the whole archive), p2p_org_ (exit COMPLETED this week, numNodes 50 -> 0, 1,244 users still attached). Plus two providers at serviceFee 1.0 / APR 0 holding 221,202 EGLD between the five zero-APR contracts. PRE-COMMITTED: a FOURTH provider hitting locked == 0 with users attached within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none = the three are idiosyncratic business decisions."
+  },
+  {
+   "item": "PARTICIPATION INERTIA - now an eleven-week measurement, not a weekly observation",
+   "weeks_on_list": 3,
+   "reason": "ledgerbyfigment has paid nothing for eleven weeks and lost 78 of 3,961 delegators (-2.0%); stakedinc has lost 2 of 639 across the archive; p2p_org_ produced 2 unDelegate calls from 1,244 users this week against 4 reDelegateRewards on a dead contract. Meanwhile the 100%-fee providers' books fell -22.8% and -12.0% with users down -36 and -55. Capital responds to price; people do not. GRADUATING to a background assumption per the run #18 rule - only a break is reportable from here."
+  },
+  {
+   "item": "DEX TURNOVER - the ratio held, the EGLD throughput did not",
+   "weeks_on_list": 5,
+   "reason": "Turnover 10.51% vs 10.83%, above the ~5% regime branch, so the pre-committed test fires constructively. But volume in EGLD terms fell -4.3% to 61,110 EGLD/day and pool depth -1.4%. PRE-COMMITTED: EGLD-denominated volume above ~70,000/day next week = a genuine demand regime and the constructive reading stands on its own terms; below ~60,000 = the USD turnover ratio is tracking price and should be reported in EGLD from here."
+  },
+  {
+   "item": "WITHDRAWAL BREADTH EX-PIPELINE - best reading since the instrument was built",
+   "weeks_on_list": 5,
+   "reason": "50 distinct recipients took 400,113 EGLD off exchanges outside the pipeline (21 / 133,521 last week), pipeline share 73.3% against 88.3%. First week with a full 7-day scan and no page-cap terminations, so it is not a lower bound. Largest ex-pipeline recipients are unlabelled wallets at 43,010, 40,000 and 36,505 EGLD. PRE-COMMITTED: holding above ~40 recipients and ~300,000 EGLD next week = a genuine broadening of off-venue accumulation and the strongest bid evidence the model has; falling back under ~25 recipients = this week tracked the rally and the pipeline still dominates the channel."
+  },
+  {
+   "item": "COMPOUND RATE - fourth consecutive decline, test unresolvable on a specification defect",
+   "weeks_on_list": 4,
+   "reason": "57.51% (333 vs 246), lowest of ten. Run #22's branches were 'below 56%' and 'above 59%' and the reading landed in the gap, so the test resolves inconclusive for the second consecutive run of specification defects. RE-REGISTERED with contiguous branches: below 57% next week = the drift is systematic and the compound rate becomes a standing bearish participation indicator; 57% or above = it has stabilised and the four-week decline was a level shift, not a trend."
+  },
+  {
+   "item": "THE 229,865 EGLD UNBOND - RETIRED",
+   "weeks_on_list": 3,
+   "reason": "Unmoved for a second full week: balance 2,369.53 EGLD unchanged, 229,865 still unbonded-and-unclaimed inside the delegation contracts, zero outbound transactions and zero function calls. The no-action branch run #22 added fires. The holder is inactive or has lost access; this stops being tracked as forward supply and comes off the list unless it moves."
+  },
+  {
+   "item": "UNBONDING QUEUE - first full-set scan resets the series",
+   "weeks_on_list": 3,
+   "reason": "All 107 contracts paged: 300 distinct wallets unDelegated 151,443 EGLD, 2.1x run #22's ten-provider partial. Measured pending 132,392, largest leg 40,888 from a wallet holding 10 EGLD. The residual of 70,190 is again fully absorbed, so no direct-node figure is published for a second run. Treat 151,443 as point one of a new comparable series - the earlier partial figures are not comparable to it."
+  },
+  {
+   "item": "MEX RELATIVE STRENGTH - streak broken, mechanism closed as unexplained",
+   "weeks_on_list": 6,
+   "reason": "MEX +5.97% vs EGLD +6.39% - the first underperformance in six weeks. The mechanism test's two branches both failed: supply -0.070% (needed >1%) and MEX/WEGLD pool depth +0.83% in EGLD terms (needed >10%). Per the run #21 rule the model stops generating explanations: the five-week ~9.8pp gap is labelled unexplained flow. GRADUATING off the list."
+  },
+  {
+   "item": "STABLECOIN BASE - both wrapped dollars contracted into a rising price",
+   "weeks_on_list": 1,
+   "reason": "USDC -0.90% (69,658 tokens) and USDT -1.31%, ~$77K of on-chain dollars leaving in a +6.4% price week. USDT is negative in two of the last three weeks on a base under 600K. Watch whether this becomes a third consecutive contraction, which would make the dollar base a de-risking instrument in its own right rather than plumbing noise."
+  }
+ ],
+ "meta_learning": {
+  "run_number": 23,
+  "endpoints_that_worked": [
+   "/economics",
+   "/stats",
+   "/accounts?sort=balance",
+   "/tokens?sort=accounts",
+   "/tokens?sort=transactions",
+   "/tokens?sort=marketCap",
+   "/providers?size=200",
+   "/identities",
+   "/mex/economics",
+   "/mex/pairs",
+   "/mex/pairs?size=50",
+   "/mex/tokens",
+   "/mex/farms",
+   "coingecko/simple/price",
+   "/accounts/{addr} + /transactions x38",
+   "paginated desk in/outbound (7d)",
+   "two-hop both-legs hub netting, 7d window",
+   "wave #3 extended window netting (Aug 17-31)",
+   "historical hub-trace windows (carried forward)",
+   "229,865 EGLD unbond resolution (rec #3)",
+   "all-provider unDelegate scan x107 (rec #5)",
+   "unbonding pool /accounts/{addr}/delegation x45",
+   "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+   "100%-fee provider follow-through",
+   "Binance hot outbound >10K vs desk inbound (rec #11)",
+   "dynamic absorber discovery from desk terminals (rec #8)",
+   "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+   "/accounts/{addr}/transfers/count x7",
+   "/tokens/{id} x15 (dataApi re-fetch + list recovery)",
+   "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+  ],
+  "endpoints_that_failed": [
+   "collect_run23.py BINANCE_HOT constant returned HTTP 400 (invalid bech32) - repaired in the followup pass",
+   "/accounts/{unbond_wallet}/delegation, /accounts and outbound scan: HTTP 429 - repaired in the followup pass",
+   "wave-window desk pagination returned zero txs on the main pass - repaired in the followup pass",
+   "/tokens/WTAO-3ec9c0: HTTP 404"
+  ],
+  "api_quirks": [
+   "THE PRE-FLIGHT BECH32 VALIDATOR DOES NOT COVER COLLECTOR SCRIPTS. scripts/validate_addresses.py checks known-addresses.json and previous.json only. This run hardcoded a Binance hot wallet with an invalid checksum directly in collect_run23.py; it returned HTTP 400, paged_txs broke on the error dict and returned [], and the collector printed '0 outbound recipients >=10K' - which would have resolved a pre-committed test on fabricated evidence. The validator must be extended to grep erd1 literals out of scripts/*.py.",
+   "paged_txs SILENTLY CONVERTS AN ERROR INTO AN EMPTY WINDOW. `if not isinstance(batch, list) or not batch: break` treats an HTTP error dict identically to a genuinely empty result, so a 400 or 429 produces 'nothing happened' rather than a failure. Three separate findings this run were nulled this way. Any pagination helper must distinguish the two and record the error.",
+   "THE API RATE-LIMITS (HTTP 429) UNDER THE ALL-PROVIDER SCAN. Paging ~107 provider contracts at 0.22s between requests triggered 429s on unrelated queries issued around the same time. The followup pass used exponential backoff (1s doubling to 12s) and hit zero errors. Budget for backoff, not just a fixed delay, once a run exceeds roughly 800 requests.",
+   "A FULLY EXITED OPERATOR NO LONGER MATCHES RUN #22's DEREGISTRATION SIGNATURE. p2p_org_ called removeNodes eleven times plus unBondNodes this week and now reads numNodes 0, so 'locked == 0 AND numNodes > 0' misses it. The signature must be 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'.",
+   "previous.json ONLY EVER STORED PROVIDERS WITH locked > 0, which is why two deregistrations went unreported for ten runs. A provider that goes to zero drops out of the stored set entirely and can never appear as a WoW event. The snapshot must store the full /providers list, not the locked>0 subset.",
+   "All four dataApi-priced tokens (SEGLD, SWTAO, USH, XEGLD) returned a live price on the FIRST pass with zero retries - the first fully clean pass since the guard was added in run #13. The re-fetch guard and the run #22 list-endpoint fallback both stood down.",
+   "/tokens/WTAO-3ec9c0 now returns HTTP 404, so the run #11 accumulator-ratio fallback for SWTAO is permanently unavailable. Not needed this run; if SWTAO nulls again the order is list-endpoint recovery (run #22) then prior-price carry-forward (run #14).",
+   "The provider join-key fix from run #22 was folded into the main collector and asserted: match rate 100% (105 of 105). The assertion is cheap and should stay on every cross-snapshot join.",
+   "Raising the page cap to 30 for exchange hot wallets (run #22 rec #10) eliminated page-cap terminations from the withdrawal-breadth scan entirely - the raw figure is a full 7-day scan for the first time. The provider scan at max_pages=6 still hit the cap on the busiest contracts, so the unbonding queue figure remains a lower bound.",
+   "The two long-flagged invalid bech32 entries (Hatom UTK Money Market, OneDex Launchpad) still fail pre-flight validation, unchanged since run #18. Still flagged rather than guessed."
+  ],
+  "data_gaps": [
+   "4 provider contracts hit the 6-page cap during the unDelegate scan, so the 151,443 EGLD unbonding-queue figure is a LOWER bound on the busiest contracts.",
+   "Measured pending unbonding covers the 45 largest unDelegate callers of 300, so the pool total is also a lower bound.",
+   "The JEXchange aggregator contract has returned 0 transfers for three consecutive runs. That is now more likely a stale address than a halt and should be re-derived rather than re-reported.",
+   "Hatom UTK Money Market and OneDex Launchpad remain excluded from protocol address sets pending valid addresses.",
+   "MEX's five-week outperformance has no measured mechanism after two runs of looking and is closed as unexplained flow rather than explained.",
+   "The archive cannot be pushed earlier than 2026-06-01 for provider state, so ledgerbyfigment's deregistration is dated to the run #13 window but stakedinc's zero-locked state has no discoverable start date."
+  ],
+  "key_findings": [
+   "EGLD +6.39% to $3.83 while BTC -0.97% and ETH -1.07% BOTH FELL - the first EGLD-specific decoupling to the upside since run #16, and the opposite of last week's beta move.",
+   "The OTC desks delivered 272,396 EGLD one-way AND ended the week with a record 266,213 still loaded (+156,356, 2.4x the prior record). The pipeline is accumulating faster than it distributes - which has not happened before in tracking.",
+   "UPbit's tranche series is now 14,000 / 297,000 / 460,000 - an escalating programme, and 3x run #21's escalation threshold.",
+   "Binance is a desk feeder. Custody sent 500,000 to the hot wallet, which forwarded 135,003 into the OTC desks via two named feeders plus one direct transfer. Seventeen runs of watching custody and twenty-three of watching the pipeline collapse into one instrument.",
+   "Run #22's 'first operator deregistration in tracking' is WITHDRAWN: ledgerbyfigment deregistered in the run #13 window with 170,808 EGLD and 3,961 delegators and was never reported; stakedinc has been in the same state across the entire archive.",
+   "Participation inertia is now an eleven-week measurement: ledgerbyfigment lost 2.0% of its delegators over eleven weeks of zero yield, stakedinc 0.3% across the archive, p2p_org_ produced 2 unDelegate calls from 1,244 users - while the 100%-fee providers' books fell 51.8% and 20.5%. Capital responds to price signals; people do not.",
+   "The identifiable-bid repair returned a decisive NEGATIVE: all 14 desk outbound terminals are zero-balance pass-through routers retaining 1.7% of 505,597 EGLD. There are no absorbers to discover, and the instrument is retired.",
+   "DEX turnover held its regime threshold in USD (10.51%) and failed it in EGLD: volume -4.3% to 61,110 EGLD/day. Both sides of the ratio scaled with price.",
+   "Ex-pipeline withdrawal breadth had its best reading since the instrument was built - 50 recipients taking 400,113 EGLD, pipeline share down to 73.3% from 88.3% - and for the first time it is a full 7-day scan with no page-cap terminations.",
+   "The first full-set unbonding scan found 151,443 EGLD from 300 wallets across all 107 contracts, 2.1x run #22's ten-provider partial. The residual is again fully absorbed; corrected_direct_node_egld stays null.",
+   "USH burned -1.53% for a second consecutive week into a rising price, and both wrapped dollars contracted (~$77K). Every holding-side instrument de-risked into strength.",
+   "7 of 8 tests resolved this run fired as predicted (87.5%); the one inconclusive failed on a specification defect - non-contiguous branches - for the second consecutive run of specification defects."
+  ],
+  "action_items_from_previous": 11,
+  "action_items_completed": 10,
+  "methodology_changes": [
+   "EXTEND PRE-FLIGHT ADDRESS VALIDATION TO COLLECTOR SOURCE. The bech32 validator covers the JSON data files only; this run's invalid address was a Python constant. Grep erd1 literals out of scripts/*.py and validate those too, before the collector runs.",
+   "A PAGINATION HELPER MUST NOT RETURN [] ON AN ERROR. Distinguish 'no transactions' from 'the query failed' and record the latter. Three findings were nulled this run by a helper that treats an HTTP error dict as an empty page.",
+   "USE EXPONENTIAL BACKOFF ON 429, NOT A FIXED DELAY. The all-provider scan pushed the run past the API's rate limit and nulled unrelated queries issued nearby. The followup pass with 1s-to-12s backoff hit zero errors.",
+   "WIDEN THE DEREGISTRATION SIGNATURE to 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'. A fully exited operator removes its nodes and stops matching run #22's version.",
+   "STORE THE FULL /providers LIST IN previous.json, not the locked>0 subset. Two deregistrations went unreported for ten runs because a provider that goes to zero drops out of the stored set and can never appear as a WoW event.",
+   "WHEN A DETECTOR IS INVENTED, RUN IT BACKWARDS OVER THE ARCHIVE IN THE SAME RUN. Run #22 invented the deregistration signature and immediately published 'the first in tracking' without applying it to the stored snapshots. Doing so this run found two earlier cases, the larger of which was ten runs old. Any 'first X in tracking' claim must be checked with the detector that found it.",
+   "SPECIFY A TEST'S THRESHOLD ON THE QUANTITY THAT CARRIES THE SIGNAL. The custody test was written on the intermediary wallet's BALANCE and would have resolved backwards: the balance rose because the funding leg outran the spending leg. Write flow tests on the flow.",
+   "BRANCH CONDITIONS MUST PARTITION THE OUTCOME SPACE WITH NO GAPS. The compound-rate test offered 'below 56%' and 'above 59%' and the reading landed in between, making it unresolvable. Two consecutive runs have now lost a test to a specification defect rather than to the data.",
+   "REPORT VENUE THROUGHPUT IN EGLD AS WELL AS USD. A USD turnover ratio holds through a price move because both numerator and denominator scale with it; the EGLD figure showed volume actually fell. This closed run #22's confound in a single line."
+  ],
+  "new_addresses_discovered": 2,
+  "most_valuable_insight": "The most valuable result this run is a correction to our own headline, and it generalises. Run #22 invented a detection signature for operator deregistration, applied it to one week, and published 'the first operator deregistration in tracking'. Running that same signature backwards over the stored archive - a few seconds of work that run #22 did not do - shows ledgerbyfigment deregistered in the run #13 window with 170,808 EGLD and 3,961 delegators, and stakedinc has been in that state for the whole archive. Both went unreported for ten runs, and the reason is structural: previous.json only ever stored providers with locked > 0, so a provider going to zero silently leaves the comparison set. The generalisable rule is that a newly invented detector must be run over the archive in the same run it is invented, because the archive is where its false-negative rate is measurable. The finding it produced is also the more important one substantively: with eleven weeks of ledgerbyfigment and a whole archive of stakedinc, participation inertia stops being a weekly observation and becomes a measured constant - a total loss of yield removes roughly half a provider's EGLD in a month and roughly two percent of its people in a quarter.",
+  "top_recommendation": "Resolve the desk-inventory-drain test, because it is the largest forward-looking quantity the model has ever carried. The desks hold 266,213 EGLD - more than the entire run #17 peak wave delivered - having ALREADY delivered 272,396 one-way this week, with UPbit's feed escalating and Binance now feeding alongside it. Either that inventory is delivered next week, in which case wave #3 is the largest distribution event in tracking and the +6% price move happened into it; or it holds, in which case the staging is still running and the delivery is ahead of us. Both readings are actionable and they point opposite ways for the following month.",
+  "recommendations_for_next_run": [
+   "MAINTAIN THE SCOREBOARD AND ERRATA. Resolve the 7 open pre_committed_tests, register run #24's before seeing the data, and append the prediction record to running_baselines. This run resolved all 8 of run #22's open tests, 7 as predicted and 1 inconclusive on a specification defect - the second consecutive run to lose a test that way, so check the new branches partition cleanly before registering them.",
+   "RESOLVE THE DESK-INVENTORY DRAIN. The desks hold a record 266,213 EGLD after delivering 272,396 one-way. Measure the drain, re-net the Aug 17 wave feed-to-drain now that a third week exists, and trace the destinations two hops as usual. This is the single highest-value query of the week.",
+   "EXTEND scripts/validate_addresses.py TO COVER COLLECTOR SOURCE. This run hardcoded an invalid Binance hot wallet in collect_run23.py, got HTTP 400, and silently produced '0 outbound recipients >=10K' - which would have resolved a pre-committed test on fabricated evidence. Grep erd1 literals out of scripts/*.py and validate them in the pre-flight. Roughly twenty lines and it closes a class of silent failure the JSON-only validator cannot see.",
+   "FIX paged_txs TO DISTINGUISH ERROR FROM EMPTY, AND ADD 429 BACKOFF. Three findings were nulled this run by a helper that treats an HTTP error dict as an empty page, and the all-provider scan pushed the run past the API rate limit. The followup pass with exponential backoff had zero errors, so port that behaviour into the main collector.",
+   "STORE THE FULL /providers LIST IN previous.json. Storing only locked>0 providers is why two deregistrations went unreported for ten runs. This is a one-line change with a ten-run backlog behind it.",
+   "TRACK THE THREE DEREGISTERED PROVIDERS' DELEGATOR COUNTS AS A STANDING SERIES. ledgerbyfigment (3,883), stakedinc (637) and p2p_org_ (1,244) are a natural experiment on participation inertia running at three different durations - 11 weeks, the whole archive, and 2 weeks. Four numbers a week turns the strongest qualitative finding in the report into a measured decay rate.",
+   "RAISE THE PROVIDER-SCAN PAGE CAP OR SAMPLE THE BUSY CONTRACTS SEPARATELY. Several contracts hit the 6-page cap during the unDelegate scan, so this run's 151,443 EGLD queue figure is a lower bound on exactly the providers where most unbonding happens. Either raise the cap for contracts with >250 weekly inbound txs or page those alone at a higher budget.",
+   "RE-DERIVE THE JEXCHANGE AGGREGATOR ADDRESS. It has returned 0 transfers for three consecutive runs while the fees contract reports 6,775. That pattern is a stale address, not a halted protocol, and it has been reported as a data gap twice without being fixed.",
+   "REPORT DEX TURNOVER IN EGLD TERMS AS THE PRIMARY SERIES. The USD ratio held this week only because both sides scaled with a +6.4% price while EGLD volume fell 4.3%. The EGLD series is price-independent and is the one that answers the demand question.",
+   "WATCH FOR A THIRD CONSECUTIVE STABLECOIN CONTRACTION. USDC -0.90% and USDT -1.31% into a rising price is the first time both wrapped dollars have contracted together. A third week would make the on-chain dollar base a de-risking instrument worth reporting alongside USH rather than plumbing noise."
+  ],
+  "dashboard_feature_suggestions": [
+   {
+    "title": "Desk inventory vs delivery - the staging chart",
+    "motivation": "This run's central fact cannot be seen anywhere on the dashboard: the desks delivered 272,396 EGLD one-way AND ended the week holding a record 266,213, meaning the pipeline accumulated faster than it distributed for the first time in tracking. The OtcPipeline panel shows gross and net one-way bars per week, which is throughput; desk INVENTORY is a stock, and the relationship between the two (how much was staged versus how much left) is what tells a reader whether a distribution wave is ahead of them or behind them. Right now that comparison exists only as a sentence.",
+    "suggested_visualization": "a combined chart per week - bars for net one-way delivered, an overlaid line for end-of-week desk inventory, and a shaded area for cumulative undelivered stage. Weeks where inventory rose while delivery was positive (only run #23 so far) marked explicitly.",
+    "data_already_available": true,
+    "data_source": "whale_intelligence.otc_pipeline.desk_balance_egld and net_one_way_series_egld_7d across reports; both fields already exist in every report from run #19 onward",
+    "priority": "high"
+   },
+   {
+    "title": "Provider lifecycle strip - now with three real cases and a decay series",
+    "motivation": "Carried from run #22 at medium priority; this run makes it high. There are three deregistered providers with attached delegators (ledgerbyfigment 3,883 users for 11 weeks, stakedinc 637 across the archive, p2p_org_ 1,244 for 2 weeks) plus two at 100% fee with zero APR, and together they are the strongest quantitative finding the report has produced - a measured decay rate for participation inertia. The dashboard renders none of it; p2p_org_ appears as a single 'notable leaver' row and the other two appear nowhere at all.",
+    "suggested_visualization": "a compact strip of provider states (healthy / fee-squeezed / zero-APR / deregistered) with each distressed provider as a chip carrying locked, users and weeks-in-state, plus a small sparkline of each one's delegator count over its weeks at zero yield - the decay curve is the finding.",
+    "data_already_available": true,
+    "data_source": "staking_intelligence.provider_states (NEW this run - state, locked_egld, num_users, num_nodes, apr_pct, fee_pct, weeks_in_state, note), plus per-week delegator counts recoverable from data/collected/*.json",
+    "priority": "high"
+   },
+   {
+    "title": "Errata linkage from the withdrawn claim to its replacement",
+    "motivation": "The errata overlay warns a reader of a superseded archived report, which is the right behaviour, but this run withdraws a claim ('first operator deregistration in tracking') whose replacement is a substantially bigger finding sitting in a different run's report. A reader who lands on run #22 sees a warning and no route to what is now known. The overlay has the data to link them - withdrawn_claims already carries withdrawn_in_run and replacement text.",
+    "suggested_visualization": "make the errata banner's replacement text a link to the correcting report, anchored to the section that carries the corrected finding, so a superseded claim routes forward rather than merely flagging itself.",
+    "data_already_available": true,
+    "data_source": "meta_learning.withdrawn_claims (claim, asserted_in_runs, withdrawn_in_run, reason, replacement) already aggregated into public/errata.json by generate-manifest.ts",
+    "priority": "medium"
+   }
+  ],
+  "dashboard_suggestions_followup": [
+   {
+    "title": "Unbonding queue table with a settlement calendar",
+    "status": "pending",
+    "note": "Not built. The case is stronger again - the first full-set scan found 300 distinct callers moving 151,443 EGLD, 2.1x last run's partial, and the card still renders one wallet's position as if it were the whole story. It was not built this run for a deliberate reason worth recording: the dashboard working tree carries uncommitted in-flight work from another session (App.tsx, Header.tsx, index.css, plus new PageTabs/CodePage files), and editing components into that state risks conflicting with work this run cannot see."
+   },
+   {
+    "title": "Demand instruments panel - and make it show the disagreement",
+    "status": "deprioritized",
+    "note": "Deprioritised because the run resolved the disagreement it was proposed to display. The identifiable bid is RETIRED - all 14 desk terminals were scanned and none retains what it receives, so there is no absorber series to plot. A panel built around three disagreeing instruments would now be plotting two, one of which is being replaced by its EGLD-denominated version. Re-propose once the EGLD turnover series has two points."
+   },
+   {
+    "title": "Provider lifecycle strip",
+    "status": "pending",
+    "note": "Carried and PROMOTED from medium to high. Run #22 proposed it with one deregistered provider and no state array; this run there are three deregistered providers with 5,764 attached delegators between them, two at 100% fee, and the data it asked for now exists as staking_intelligence.provider_states."
+   },
+   {
+    "title": "OTC hub flow map: gross vs net one-way, with venue-level netting",
+    "status": "pending",
+    "note": "Still not built, third run of asking. This week adds a fifth delivery venue (Bitget) and, for the first time, a second SOURCE - Binance alongside UPbit - so the structure is genuinely a source-to-sink graph now rather than one source fanning out. A signed table cannot show that two sources feed five sinks through a shared router layer."
+   },
+   {
+    "title": "Wave-window OTC netting (feed-to-drain) alongside the weekly series",
+    "status": "built",
+    "note": "Built run #21, load-bearing again. Wave #3 (Aug 17-31) nets 371,179 one-way against 524,505 summed weekly, a 41% overstatement, and the straddle was PREDICTED in advance this run by the circularity reading falling below the 63-80% band - the diagnostic run #21 registered is now doing forward work rather than post-hoc explanation."
+   },
+   {
+    "title": "Pre-committed test scoreboard",
+    "status": "built",
+    "note": "Built run #21. This run resolved all 8 open tests. Its most useful property this week was negative: two of the resolutions exposed defects in how the tests were WRITTEN (a balance threshold that could not see the flow, non-contiguous branches) rather than in the data, and having the thresholds recorded verbatim is what made those visible."
+   },
+   {
+    "title": "Errata overlay on superseded reports",
+    "status": "built",
+    "note": "Built run #21 and doing exactly its job this run - it now carries the withdrawal of run #22's 'first operator deregistration in tracking', which is the largest single correction the project has published. See the new suggestion above for the one thing it still cannot do: route the reader forward to the replacement."
+   },
+   {
+    "title": "EGLD relative-strength (beta) tracker",
+    "status": "deprioritized",
+    "note": "Deprioritised a sixth time, though this week is the strongest case yet against the streak: EGLD +6.39% while both majors fell is exactly what such a tracker would highlight. It remains one line in the network-health narrative, and six weeks of deprioritisation is itself the answer - if it were load-bearing it would have been built."
+   }
+  ],
+  "withdrawn_claims": [
+   {
+    "claim": "p2p_org_ is the FIRST operator deregistration in tracking.",
+    "asserted_in_runs": [
+     22
+    ],
+    "withdrawn_in_run": 23,
+    "reason": "Run #22 invented the detection signature (locked == 0 with numNodes > 0) and published the claim without applying it to the stored snapshot archive. Applying it this run shows ledgerbyfigment went from 170,808 EGLD to zero between the 2026-06-08 and 2026-06-15 snapshots - inside the run #13 window - while keeping 7 nodes and 3,961 delegators, and stakedinc has been zero-locked with 10 nodes and ~639 users across the entire stored history from 2026-06-01. Neither was ever reported. p2p_org_ was the third and the smallest.",
+    "replacement": "There are three known operator deregistrations. The largest and earliest is ledgerbyfigment (run #13 window, 170,808 EGLD, 3,961 delegators at the time, 3,883 now after eleven weeks at 0% APR). The reason both earlier cases were missed is structural: previous.json stores only providers with locked > 0, so a provider going to zero drops out of the comparison set rather than registering as an event. Two standing rules follow - store the full /providers list, and run any newly invented detector backwards over the archive in the same run it is invented."
+   },
+   {
+    "claim": "The bilateral inverse rule's response ratio has fallen below the 0.30 depositor-capacity-exhaustion threshold, indicating the deposit base the rule depends on has been drawn down.",
+    "asserted_in_runs": [
+     22
+    ],
+    "withdrawn_in_run": 23,
+    "reason": "Run #22 measured 0.28 and flagged capacity exhaustion, registering that a second consecutive sub-0.30 reading would retire the rule. This week's up-week test returned 0.69 - price +6.39%, Hatom Lending EGLD-denominated TVL -4.43%, correct inverse sign - well clear of the threshold. The up-week series is 0.49 / 0.72 / 0.28 / 0.69.",
+    "replacement": "The 0.28 is reclassified as a single weak response to an unusually large (+30.43%) price move rather than as evidence of a depleted deposit base. The rule stands with four up-week confirmations. The wider lesson is that a response RATIO is unstable when its denominator is a record-sized price move, so the exhaustion threshold should only be applied on weeks where |dPrice| sits inside the normal 5-15% band."
+   }
+  ]
+ },
+ "pre_committed_tests": [
+  {
+   "id": "otc-wave2-escalation",
+   "registered_in_run": 20,
+   "claim": "Wave #2 of the OTC distribution escalates to the scale of the re-netted run #17 peak (409,680 EGLD one-way).",
+   "threshold": "net one-way > ~300,000 AND UPbit tranche > ~350,000 = matches/exceeds the peak; net < ~100,000 = a two-week burst rather than a wave",
+   "branches": [
+    {
+     "condition": "net > 300K and tranche > 350K",
+     "reading": "supply overhang is the dominant fact on the chain"
+    },
+    {
+     "condition": "net < 100K",
+     "reading": "a two-week burst, not a wave"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "inconclusive",
+   "resolved_in_run": 21,
+   "measured_value": "weekly net 138,265 on a 14,000 tranche (-96%); wave-netted 210,922",
+   "resolution": "NEITHER branch fired, and the attempt to resolve it exposed a flaw in the measure. The escalation threshold missed by a wide margin - the UPbit tranche collapsed 96% to 14,000 and the desks returned 130,000 to UPbit - but the weekly net (138,265) landed between the two thresholds. Netting the wave feed-to-drain instead gives 210,922 against 326,924 from summing its two weekly nets, so the thresholds were specified on a quantity that is frame-dependent. Substantive answer: the wave did not escalate, it stopped."
+  },
+  {
+   "id": "bid-scale-up",
+   "registered_in_run": 20,
+   "claim": "The identifiable bid (Mega Whale absorber via the Coinbase Routing pipe) is genuinely back rather than a one-off maintenance transfer.",
+   "threshold": "a tranche of 30,000-50,000 EGLD = the bid is back; another sub-10,000 week or a return to zero = maintenance transfer and the dormancy finding is revived",
+   "branches": [
+    {
+     "condition": "tranche 30-50K",
+     "reading": "the demand deficit is closing"
+    },
+    {
+     "condition": "sub-10K or zero",
+     "reading": "maintenance transfer; revive bid dormancy as structural"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 21,
+   "measured_value": "0 EGLD - zero transactions on both the absorber and the Coinbase Routing wallet",
+   "resolution": "The sub-10K/zero branch fired exactly as written. Run #20's 5,748 EGLD reactivation was a maintenance transfer; bid dormancy is revived as a structural finding, absent in 3 of the last 4 weeks."
+  },
+  {
+   "id": "whale-i-classification",
+   "registered_in_run": 20,
+   "claim": "'Unknown Whale I' is OTC operator inventory rather than a genuine large buyer.",
+   "threshold": "> 60% of counterparty value being hub feeders and routers = operator inventory, net it out of the one-way figure; broad and external = a genuine buyer belonging in the demand instruments",
+   "branches": [
+    {
+     "condition": ">60% hub counterparties",
+     "reading": "operator inventory - net it out of distribution, do not count as demand"
+    },
+    {
+     "condition": "broad external counterparties",
+     "reading": "a genuine large buyer - the most consequential reclassification available"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 21,
+   "measured_value": "68.9% of inbound value, 55.7% of outbound, 62.5% combined (30d trace, 661/562 txs, no page-cap truncation)",
+   "resolution": "Threshold cleared on the combined and inbound bases, marginally missed on outbound alone. Reclassified as OTC operator inventory with that caveat; its hub take is no longer counted as demand and one-way ex-whale-I is 135,407."
+  },
+  {
+   "id": "xegld-redemption-destination",
+   "registered_in_run": 20,
+   "claim": "The XEGLD (XOXNO LSD) redemption that decoupled from price is migration rather than an exit.",
+   "threshold": "destinations in native delegation contracts = migration, constructive; destinations at exchanges = exit, bearish; a single large recipient = idiosyncratic",
+   "branches": [
+    {
+     "condition": "native delegation contracts",
+     "reading": "migration - constructive"
+    },
+    {
+     "condition": "exchanges",
+     "reading": "exit - bearish"
+    },
+    {
+     "condition": "one large recipient",
+     "reading": "idiosyncratic, dismissable"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 21,
+   "measured_value": "8 callers, onward flows 80-600 EGLD each, 531 EGLD into native delegation, 0 EGLD to any labelled exchange",
+   "resolution": "The constructive branch fired, with an idiosyncratic flavour: retail-scale rotation, partly into native delegation, no exchange destination and no single large redeemer. Supply decelerated to -0.80%. The LSD contract itself has zero outbound value txs, so the trace ran through the unDelegate/withdraw callers."
+  },
+  {
+   "id": "fee-cut-follow-through",
+   "registered_in_run": 20,
+   "claim": "MultiversX delegators respond to fee price signals: stake returns to egldstakingprovider after its 24% -> 15% cut.",
+   "threshold": "stake returning within 2-3 weeks = delegators respond to price signals and other high-fee incumbents follow; stake continuing to leave = delegator inertia dominates fee economics",
+   "branches": [
+    {
+     "condition": "stake returns",
+     "reading": "the yield-arbitrage mechanism works in both directions"
+    },
+    {
+     "condition": "stake keeps leaving",
+     "reading": "inertia dominates; the mechanism is weaker than assumed"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "withdrawn",
+   "resolved_in_run": 21,
+   "measured_value": "the provider set its fee to 100% (APR 0) and shed a further -33,182 EGLD / -13 users; procryptostaking did the same at 20% -> 100%",
+   "resolution": "The test's premise was withdrawn rather than resolved. One week after the cut, the same provider moved 15% -> 100%, zeroing delegator APR, and the other named incumbent did too - different owners, 50 nodes each. A fee change is not evidence of competition, so run #20's 'first competitive repricing in twenty runs' is withdrawn. Incidental finding: a zero-yield signal moved 26% of one book but only 13 of ~1,124 users."
+  },
+  {
+   "id": "direct-node-unwind-trace",
+   "registered_in_run": 20,
+   "claim": "Node operators are exiting direct staking - ~215K EGLD over three weeks, the largest unexplained structural flow tracked.",
+   "threshold": "one operator unstaking = idiosyncratic; broad operator exit = an economics story about the base/top-up APR split",
+   "branches": [
+    {
+     "condition": "one operator",
+     "reading": "idiosyncratic"
+    },
+    {
+     "condition": "broad",
+     "reading": "a protocol-level finding about the APR split"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "withdrawn",
+   "resolved_in_run": 21,
+   "measured_value": "residual flipped +282,713; one wallet held 229,865 EGLD in delegation unbonding; corrected direct-node change +52,848",
+   "resolution": "Neither branch: the flow does not exist. The staked-minus-delegated residual also contains delegation unbonding in flight, and one wallet's unDelegate pair (149,585 + 80,279, both zero-value txs with the amount in the data field) explains the entire flip. Corrected, direct-node stake GREW. The three-run narrative is withdrawn."
+  },
+  {
+   "id": "mex-stale-pricing",
+   "registered_in_run": 20,
+   "claim": "MEX outperforming EGLD is stale pricing in illiquid pairs (the explanation given in runs #19 and #20).",
+   "threshold": "query the MEX pairs' actual TVL and trade counts - if the pricing is real, MEX outperforming its own chain's native token through a distribution wave is a finding, not noise",
+   "status": "resolved",
+   "outcome": "against",
+   "resolved_in_run": 21,
+   "measured_value": "MEX/WEGLD holds $291,459 of pool TVL - 15.9% of all xExchange depth, the #2 deepest pool - on 125 trades in 24h",
+   "resolution": "The model's own explanation is falsified. The pair is thin in volume but properly priced, and MEX has matched or beaten EGLD for four consecutive weeks. A real finding with no mechanism attached yet."
+  },
+  {
+   "id": "unbond-destination",
+   "registered_in_run": 21,
+   "claim": "The 229,865 EGLD unbonding from a single wallet is provider rotation rather than distribution.",
+   "threshold": "arrives at a delegation contract = rotation, neutral; at an exchange or OTC feeder = a distribution event larger than this week's entire OTC one-way figure; stays in the wallet = idiosyncratic",
+   "branches": [
+    {
+     "condition": "delegation contract",
+     "reading": "provider rotation - neutral"
+    },
+    {
+     "condition": "exchange or OTC feeder",
+     "reading": "a 230K distribution event and the dominant fact of the run"
+    },
+    {
+     "condition": "stays in wallet",
+     "reading": "idiosyncratic"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "inconclusive",
+   "resolved_in_run": 22,
+   "measured_value": "unmoved: 80,279 fully unbonded (seconds_remaining = 0) and 149,585 with 5,279s left, both still inside the delegation contracts; wallet balance 2,370 EGLD, zero outbound transactions",
+   "resolution": "NONE of the three branches fired, because a fourth state existed that the test did not anticipate: the holder never withdrew. The EGLD is not in a delegation contract as active stake, not at an exchange, and not in the wallet - it is unbonded and unclaimed inside the contracts it was undelegated from. The test was specified on a destination and the answer is that there is not yet a destination. LESSON: a destination test needs a no-action branch with a time bound, or it cannot resolve when the counterparty simply does nothing. Re-registered below with that branch added."
+  },
+  {
+   "id": "otc-feed-resumption",
+   "registered_in_run": 21,
+   "claim": "The July-August OTC pattern is a standing programme rather than two discrete episodes.",
+   "threshold": "a fresh UPbit tranche above ~150,000 within two weeks = standing programme; nothing above ~50,000 for two consecutive weeks = between cycles",
+   "branches": [
+    {
+     "condition": "tranche > 150K within 2 weeks",
+     "reading": "a standing distribution programme"
+    },
+    {
+     "condition": "nothing > 50K for 2 weeks",
+     "reading": "between cycles; watch the 1-3 week reload lag"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 22,
+   "measured_value": "UPbit tranche 297,000 EGLD in week one of the two-week window, against a ~150,000 threshold; gross throughput 767,206 (3.4x), desks reloaded +49,292 to 109,857",
+   "resolution": "The standing-programme branch fired at nearly double its threshold and a week early. The July-August pattern is a programme with pauses, not two discrete episodes. Circularity returned to 67%, inside the historical 63-80% band, which is itself confirmation of run #21's diagnostic that the anomalous 38% reading was a straddling return leg rather than a change in how the hub works."
+  },
+  {
+   "id": "usdt-drain",
+   "registered_in_run": 21,
+   "claim": "The 15.42% USDT contraction is one desk closing a position, not the bridge draining.",
+   "threshold": "another > 5% contraction = the bridge is draining and ~450K remaining becomes a first-order concern; flat or positive = it was one redemption",
+   "branches": [
+    {
+     "condition": "another >5% contraction",
+     "reading": "on-chain dollar base contracting materially"
+    },
+    {
+     "condition": "flat or positive",
+     "reading": "a single desk redemption"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 22,
+   "measured_value": "USDT supply 552,292, +0.44% - recovered rather than contracting further",
+   "resolution": "The flat-or-positive branch fired. Run #21's -15.42% was one desk redeeming, not the bridge draining. Holder inspection supports it: the top 25 addresses hold 82% of supply and the largest single holder is Hatom's USDT Money Market at 118,671, so the base is concentrated enough for one position to move it double digits. The ~450K first-order-concern scenario is withdrawn."
+  },
+  {
+   "id": "dex-turnover-recovery",
+   "registered_in_run": 21,
+   "claim": "The two-week turnover recovery is a returning bid rather than an artifact of the supply pause.",
+   "threshold": "a third rise above ~3.5% with the OTC feed still off = the demand side is genuinely repairing; a reversion below 2.5% = the bounce tracked the supply pause",
+   "branches": [
+    {
+     "condition": "third rise above 3.5%",
+     "reading": "stop describing demand as absent"
+    },
+    {
+     "condition": "reversion below 2.5%",
+     "reading": "the bounce tracked the supply pause"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 22,
+   "measured_value": "turnover 10.83% against a ~3.5% threshold; series 4.06 / 2.14 / 2.24 / 2.93 / 10.83",
+   "resolution": "The third-rise branch fired and then some - not a recovery to the old level but a step change past it, on volume +328% with pool depth also up 15.6%. CAVEAT the test did not anticipate: it fired in the same week as a +30% price move and a restarted OTC feed, so 'the demand side is genuinely repairing' is confounded with 'there was a rally'. The persistence test registered below is what separates them."
+  },
+  {
+   "id": "mex-relative-strength",
+   "registered_in_run": 21,
+   "claim": "MEX leading EGLD is a genuine relative-value signal, not noise on thin volume.",
+   "threshold": "a fifth consecutive week of MEX >= EGLD = a real signal needing a mechanism (buybacks, emissions, rotation); a reversion = four weeks of noise",
+   "branches": [
+    {
+     "condition": "5th week MEX >= EGLD",
+     "reading": "a real signal - identify the mechanism"
+    },
+    {
+     "condition": "reversion",
+     "reading": "noise on thin volume"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 22,
+   "measured_value": "MEX +30.52% vs EGLD +30.43% - a fifth consecutive week at or above, by 0.08pp; cumulative over the five weeks MEX +23.73% vs EGLD +13.92%",
+   "resolution": "The threshold fired on the letter and the cumulative gap of ~9.8pp is material rather than noise. The reading the branch prescribed - identify the mechanism - was attempted and came back EMPTY. MEX supply moved -0.151%, three orders of magnitude too small to price the gap, and MEX/WEGLD pool depth grew roughly with the market ($359,078, rank 2) rather than ahead of it. So the statistical claim survives and the causal one does not exist yet; per the run #21 rule the model states that rather than reaching for a third explanation."
+  },
+  {
+   "id": "hundred-pct-fee-providers",
+   "registered_in_run": 21,
+   "claim": "The two providers at a 100% service fee are winding down, and their delegators are inert rather than trapped.",
+   "threshold": "books halving again with flat user counts = retail inertia is absolute; fee reversed = an operational move; nodes deregistered = the first genuine validator exit in tracking",
+   "branches": [
+    {
+     "condition": "books halve, users flat",
+     "reading": "the delegation market's price mechanism only reaches large holders"
+    },
+    {
+     "condition": "fee reversed",
+     "reading": "an operational move; run #20's reading was early rather than wrong"
+    },
+    {
+     "condition": "nodes deregistered",
+     "reading": "first genuine validator exit; 251,266 EGLD becomes a forced-migration flow"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "egldstakingprovider -18,136 to 61,503 (-22.8% this week, -34.8% over two, -51.8% over three from ~127,500), users -36 to 1,043; procryptostaking -16,999 to 124,805 (-20.5% over two), users -55 to 6,976. serviceFee still 1.0, APR still 0, 50 nodes each - fee NOT reversed, nodes NOT deregistered.",
+   "resolution": "The 'books halve, users flat' branch fires. egldstakingprovider's book is down 51.8% over three weeks against a 7.2% user loss; procryptostaking is down 20.5% over two against 1.3%. The reading registered for this branch was that the delegation market's price mechanism only reaches large holders, and that is now supported by a second, much longer-running natural experiment discovered this run: ledgerbyfigment has paid 0% for eleven weeks and lost 2.0% of its delegators, stakedinc 0.3% across the whole archive. Capital leaves at roughly half a book per month; people leave at roughly two percent per quarter."
+  },
+  {
+   "id": "unbond-withdrawal",
+   "registered_in_run": 22,
+   "claim": "The 229,865 EGLD, now fully unbonded and claimable, is a live forward flow rather than an abandoned position.",
+   "threshold": "withdrawn and sent to an exchange or OTC feeder within the window = a 230K distribution event on top of a restarting pipeline; withdrawn and redelegated = rotation, neutral; STILL UNWITHDRAWN after this second full week = an inactive or lost-access holder, and the overhang is retired as a forward flow",
+   "branches": [
+    {
+     "condition": "withdrawn to exchange/OTC feeder",
+     "reading": "230K distribution, dominant fact of the run"
+    },
+    {
+     "condition": "withdrawn and redelegated",
+     "reading": "provider rotation - neutral"
+    },
+    {
+     "condition": "still unwithdrawn after a second full week",
+     "reading": "inactive holder; stop tracking it as a live flow"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "wallet balance unchanged at 2,369.53 EGLD, 229,865 still unbonded-and-unclaimed inside the delegation contracts, ZERO outbound transactions and zero function calls in the Aug 24-31 window",
+   "resolution": "The no-action branch - added to this test in run #22 precisely because its absence made the run #21 version unresolvable - fires cleanly. Two full weeks with a claimable position untouched is an inactive or lost-access holder, so the 229,865 is retired as a live forward flow. This is the first time a no-action branch has resolved a test, and it validates the run #22 design rule that every destination test needs one with a time bound."
+  },
+  {
+   "id": "otc-wave3-escalation",
+   "registered_in_run": 22,
+   "claim": "Wave #3 escalates toward the re-netted run #17 peak (409,680 one-way) rather than stopping at one reload.",
+   "threshold": "another UPbit tranche above ~150,000 next week = escalating, and the supply overhang is the dominant fact; nothing above ~50,000 = the 297,000 was a single reload and the desks work down their record inventory",
+   "branches": [
+    {
+     "condition": "tranche > 150K again",
+     "reading": "wave #3 escalating to run #17 scale"
+    },
+    {
+     "condition": "nothing > 50K",
+     "reading": "single reload; watch the desks drain the record 109,857"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "UPbit tranche 460,000 EGLD against a ~150,000 escalation threshold - 3x it; gross throughput 709,850 out / 903,083 in; net one-way 272,396; desk inventory 266,213 (+156,356), 2.4x the prior record",
+   "resolution": "The escalation branch fires at three times its threshold. But the test's framing - 'escalates toward the run #17 peak of 409,680 one-way' - undersells what happened: the wave delivered 272,396 one-way AND reloaded to a record 266,213 in the same week, so the pipeline is now accumulating faster than it distributes. The run #17 peak drained its inventory delivering 409,680; this one has not started draining. Netted feed-to-drain over Aug 17-31 the wave has delivered 371,179 one-way, against 524,505 from summing the two weekly nets (41% overstatement) - and run #22's narrowed straddle rule predicted the overstatement in advance from this week's 62% circularity sitting below the 63-80% band."
+  },
+  {
+   "id": "custody-drawdown-follow-through",
+   "registered_in_run": 22,
+   "claim": "The 300,000 Binance custody drawdown is the funding leg of distribution rather than internal rebalancing.",
+   "threshold": "the Binance.com hot wallet falling more than ~150,000 next week while the OTC feed continues = the two channels are one programme; hot flat or the custody re-parked = internal rebalancing and the bearish branch over-reads a plumbing move",
+   "branches": [
+    {
+     "condition": "hot falls >150K with OTC feed continuing",
+     "reading": "custody drawdown funds distribution - one programme"
+    },
+    {
+     "condition": "hot flat or custody re-parked",
+     "reading": "internal rebalancing; the pre-registered branch over-reads plumbing"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "custody -196,758 to 2,978,782 (a second consecutive drawdown, -497K over two weeks); the Binance.com hot wallet ROSE 159,709 to 652,573 but forwarded 135,003 EGLD into the OTC desks - 73,421 via the run #19 feeder, 30,554 via the run #20 feeder, 21,297 direct - while returning 303,242 to custody",
+   "resolution": "The CLAIM resolves as predicted - the custody drawdown is the funding leg of distribution, demonstrated by direct flow tracing for the first time in seventeen runs of watching this wallet. The THRESHOLD was mis-specified and would have resolved the opposite way if applied literally: it required the hot wallet's BALANCE to fall more than 150,000, and the balance ROSE because custody refilled it faster than it distributed. LESSON: a balance-delta threshold cannot detect a flow whose funding outruns its spending. Specify such tests on the flow (does X send to Y) rather than on the intermediary's balance. The re-registered version below does this."
+  },
+  {
+   "id": "p2p-org-delegator-migration",
+   "registered_in_run": 22,
+   "claim": "The 1,244 delegators stranded on p2p_org_'s zero-stake contract will move, breaking participation inertia where a 100% fee did not.",
+   "threshold": "more than ~25% of the 1,244 users leaving the contract within two weeks = a total loss of yield DOES break inertia and the stake becomes a traceable forced-migration flow; fewer than ~10% = inertia survives even total yield loss, which is the strongest possible reading of it",
+   "branches": [
+    {
+     "condition": ">25% of users leave in 2 weeks",
+     "reading": "inertia breaks at total yield loss; trace the migration flow"
+    },
+    {
+     "condition": "<10% leave",
+     "reading": "inertia is near-absolute; the delegation market has no working price mechanism for retail"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "2 unDelegate calls from 1,244 attached delegators in the window (0.16%), against 4 reDelegateRewards and 6 claimRewards on a contract with zero stake and zero APR; the owner meanwhile called removeNodes x11 plus unBondNodes, taking numNodes 50 -> 0",
+   "resolution": "The '<10% leave' branch fires overwhelmingly - 0.16% in a week, against a 25% threshold for the alternative. The registered reading was that inertia is near-absolute and the delegation market has no working price mechanism for retail, and this run supplies far stronger evidence than the test asked for: ledgerbyfigment has been in the identical state for ELEVEN weeks and lost 2.0% of 3,961 delegators, and stakedinc has lost 2 of 639 across the entire archive. The most striking detail is that four wallets called reDelegateRewards on p2p_org_ this week - compounding rewards that cannot exist."
+  },
+  {
+   "id": "dex-turnover-persistence",
+   "registered_in_run": 22,
+   "claim": "The turnover step change is a demand regime shift rather than a rally-week volume spike.",
+   "threshold": "holding above ~5% next week = a genuine regime change and the absent-bid diagnosis carried since run #18 is retired; falling back below 3.5% = a spike that tracked the price move and the 2-4% band is the real level",
+   "branches": [
+    {
+     "condition": "turnover > 5%",
+     "reading": "regime change - retire the absent-bid diagnosis"
+    },
+    {
+     "condition": "turnover < 3.5%",
+     "reading": "rally-week spike; the 2-4% band stands"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "turnover 10.51% against a ~5% regime threshold; volume $234,053 (+1.8%), pool TVL $2,226,719 (+4.9%). IN EGLD TERMS: volume 63,885 -> 61,110 EGLD/day (-4.3%), pool depth -1.4%",
+   "resolution": "The regime-change branch fires on the metric as defined, and the reading it prescribed - retire the absent-bid diagnosis carried since run #18 - is accepted with one qualification the test could not anticipate. The EGLD-denominated decomposition that run #22 recommended shows the ratio held because BOTH sides scaled with a +6.4% price: the venue processed slightly LESS EGLD than last week. So the absent-bid diagnosis is retired, but on the strength of withdrawal breadth rather than turnover, and the turnover series should be reported in EGLD terms from here."
+  },
+  {
+   "id": "mex-mechanism",
+   "registered_in_run": 22,
+   "claim": "MEX's five-week outperformance of EGLD has a mechanical cause the model can measure.",
+   "threshold": "MEX/WEGLD pool TVL growing more than 10% WoW in EGLD terms OR MEX supply falling more than 1% = a mechanical explanation (liquidity migration or a real burn); NEITHER, for a second consecutive run of looking = the outperformance is unexplained flow and must be labelled as such rather than re-explained",
+   "branches": [
+    {
+     "condition": "pool TVL +10% in EGLD terms or supply -1%",
+     "reading": "mechanical - name it and close the question"
+    },
+    {
+     "condition": "neither, second run running",
+     "reading": "unexplained flow; stop generating explanations"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "as_predicted",
+   "resolved_in_run": 23,
+   "measured_value": "MEX supply -0.070% (threshold was -1%); MEX/WEGLD pool TVL +0.83% in EGLD terms (threshold +10%), $385,202 / 100,575 EGLD at depth rank 2. Separately the outperformance streak BROKE: MEX +5.97% vs EGLD +6.39%",
+   "resolution": "The 'neither, second run running' branch fires. Per the run #21 rule about repeated explanations, the model stops generating them: the five-week ~9.8pp MEX-over-EGLD gap is labelled UNEXPLAINED FLOW and the question is closed rather than re-opened. The streak ending in the same week is a fitting coda - whatever drove it is no longer obviously running. This is the cleanest example so far of a pre-committed test being used to stop work rather than to start it."
+  },
+  {
+   "id": "compound-rate-break",
+   "registered_in_run": 22,
+   "claim": "The three-week decline in the reward compound rate is delegators tracking price strength rather than noise.",
+   "threshold": "below 56% next week = a systematic shift toward monetising yield and the compound rate is a price-following series; back above 59% = a single rally-week claim spike",
+   "branches": [
+    {
+     "condition": "compound < 56%",
+     "reading": "systematic monetisation; the series follows price"
+    },
+    {
+     "condition": "compound > 59%",
+     "reading": "rally-week spike, mean-reverting"
+    }
+   ],
+   "status": "resolved",
+   "outcome": "inconclusive",
+   "resolved_in_run": 23,
+   "measured_value": "57.51% (333 redelegate vs 246 claim) - a fourth consecutive decline and the lowest of ten readings, but BETWEEN the two branches (below 56% / above 59%)",
+   "resolution": "UNRESOLVABLE ON A SPECIFICATION DEFECT, not on the data. The branches were non-contiguous and the reading landed in the 56-59% gap. This is the second consecutive run in which a test failed to resolve because of how it was written rather than what happened - run #22's unbond test lacked a no-action branch, this one lacks the middle of its range. NEW STANDING RULE: branch conditions must partition the outcome space with no gaps. Substantively, four consecutive declines spanning a flat week, a +30% week and a +6% week is not a price-following series, and the re-registered version below uses a single contiguous cut."
+  },
+  {
+   "id": "desk-inventory-drain",
+   "registered_in_run": 23,
+   "claim": "The record desk inventory is staged supply awaiting delivery, not a permanent inventory level.",
+   "threshold": "desks falling below ~120,000 next week = the overhang is being delivered and wave #3 becomes the largest distribution wave in tracking; inventory holding at or above ~220,000 with the feed continuing = staging is still running and the delivery is ahead; between 120,000 and 220,000 = partial delivery, re-measure",
+   "branches": [
+    {
+     "condition": "desks < 120,000",
+     "reading": "the overhang was delivered; wave #3 is the largest distribution wave tracked"
+    },
+    {
+     "condition": "desks >= 220,000 with feed continuing",
+     "reading": "staging still running; the delivery leg is ahead of us"
+    },
+    {
+     "condition": "desks between 120,000 and 220,000",
+     "reading": "partial delivery; re-measure without concluding"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "desk inventory 266,213 (+156,356, 2.4x the prior record) after delivering 272,396 one-way; UPbit tranche series 14,000 / 297,000 / 460,000",
+   "resolution": null
+  },
+  {
+   "id": "binance-desk-feed-standing",
+   "registered_in_run": 23,
+   "claim": "Binance's custody-to-hot-to-desk routing is a standing funding programme, not a one-off.",
+   "threshold": "SPECIFIED ON FLOW, NOT BALANCE (the run #22 version failed on exactly this): the Binance.com hot wallet sending more than ~50,000 EGLD to OTC desks or their known feeders next week = a standing programme and the custody drawdown is scheduled supply; nothing above ~10,000 = one-off routing and the custody and pipeline watches separate again; between 10,000 and 50,000 = continuing but not scaled",
+   "branches": [
+    {
+     "condition": "hot -> desks/feeders > 50,000",
+     "reading": "standing programme; custody drawdown is scheduled supply"
+    },
+    {
+     "condition": "hot -> desks/feeders < 10,000",
+     "reading": "one-off routing; separate the two watches again"
+    },
+    {
+     "condition": "between 10,000 and 50,000",
+     "reading": "continuing but not scaled; keep both watches joined provisionally"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "hot -> desks 135,003 this week via the run #19 feeder (73,421), the run #20 feeder (30,554) and one direct 21,297; custody -196,758 to 2,978,782",
+   "resolution": null
+  },
+  {
+   "id": "fourth-deregistration",
+   "registered_in_run": 23,
+   "claim": "Operator deregistration is a trend in the MultiversX validator set, not three idiosyncratic business decisions.",
+   "threshold": "a FOURTH provider reaching locked == 0 while retaining attached delegators within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none in four weeks = the three known cases are idiosyncratic",
+   "branches": [
+    {
+     "condition": "a fourth provider hits locked == 0 with users attached within 4 weeks",
+     "reading": "operator attrition is a trend; the long tail is leaving"
+    },
+    {
+     "condition": "none within 4 weeks",
+     "reading": "the three are idiosyncratic business decisions, not a market signal"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to locked == 0 AND (numNodes > 0 OR numUsers > 0)",
+   "resolution": null
+  },
+  {
+   "id": "dex-demand-in-egld",
+   "registered_in_run": 23,
+   "claim": "The DEX turnover regime reflects genuine venue demand rather than the price move it coincided with.",
+   "threshold": "EGLD-denominated 24h volume above ~70,000 next week = genuine demand growth independent of price; below ~60,000 = the USD turnover ratio has been tracking price and the series must be reported in EGLD from here; 60,000-70,000 = flat, no conclusion",
+   "branches": [
+    {
+     "condition": "EGLD volume > 70,000/day",
+     "reading": "genuine venue demand independent of price"
+    },
+    {
+     "condition": "EGLD volume < 60,000/day",
+     "reading": "USD turnover tracks price; report the series in EGLD"
+    },
+    {
+     "condition": "60,000-70,000/day",
+     "reading": "flat; no conclusion"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "turnover 10.51% (USD ratio held above the 5% branch) but EGLD volume 63,885 -> 61,110/day (-4.3%) and EGLD pool depth -1.4%",
+   "resolution": null
+  },
+  {
+   "id": "withdrawal-breadth-broadening",
+   "registered_in_run": 23,
+   "claim": "The jump in ex-pipeline withdrawal breadth is a genuine broadening of off-venue accumulation, not a rally artifact.",
+   "threshold": "holding above ~40 distinct recipients AND ~300,000 EGLD next week = a real broadening and the strongest bid evidence the model has; falling below ~25 recipients = this week tracked the rally and the pipeline still dominates the withdrawal channel",
+   "branches": [
+    {
+     "condition": ">40 recipients and >300,000 EGLD",
+     "reading": "genuine broadening of off-venue accumulation"
+    },
+    {
+     "condition": "<25 recipients",
+     "reading": "rally artifact; the pipeline still owns the channel"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "50 recipients / 400,113 EGLD ex-pipeline against 21 / 133,521 last week; pipeline share 73.3% vs 88.3%. First week with no page-cap terminations, so not a lower bound",
+   "resolution": null
+  },
+  {
+   "id": "compound-rate-drift",
+   "registered_in_run": 23,
+   "claim": "The four-week decline in the reward compound rate is a systematic drift toward monetising yield.",
+   "threshold": "CONTIGUOUS BRANCHES (the run #22 version failed on a gap): below 57.0% next week = the drift is systematic and the compound rate becomes a standing bearish participation indicator; 57.0% or above = it has stabilised and the four-week decline was a level shift rather than a trend",
+   "branches": [
+    {
+     "condition": "compound < 57.0%",
+     "reading": "systematic drift; standing bearish participation indicator"
+    },
+    {
+     "condition": "compound >= 57.0%",
+     "reading": "stabilised; the decline was a level shift, not a trend"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "57.51% (333 vs 246), fourth consecutive decline, lowest of ten; institutional tier sold 3 of 6 claims for a second week",
+   "resolution": null
+  },
+  {
+   "id": "stablecoin-base-contraction",
+   "registered_in_run": 23,
+   "claim": "The wrapped-dollar base contracting into a rising price is de-risking, not plumbing noise.",
+   "threshold": "a THIRD consecutive week of combined USDC+USDT contraction = the on-chain dollar base is a de-risking instrument and should be reported alongside USH; any week of net expansion = plumbing noise and the two-week run was redemption timing",
+   "branches": [
+    {
+     "condition": "third consecutive combined contraction",
+     "reading": "the dollar base is a de-risking instrument; promote it"
+    },
+    {
+     "condition": "net expansion",
+     "reading": "plumbing noise; drop it"
+    }
+   ],
+   "status": "open",
+   "outcome": null,
+   "resolved_in_run": null,
+   "measured_value": "USDC -0.90% (69,658 tokens), USDT -1.31%; ~$77K combined during a +6.39% price week",
+   "resolution": null
+  }
+ ]
+}

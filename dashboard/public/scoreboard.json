@@ -1,14 +1,14 @@
 {
-  "generated_from": 22,
+  "generated_from": 23,
   "totals": {
-    "tests": 20,
-    "resolved": 12,
-    "open": 8,
-    "as_predicted": 7,
+    "tests": 27,
+    "resolved": 20,
+    "open": 7,
+    "as_predicted": 14,
     "against": 1,
-    "inconclusive": 2,
+    "inconclusive": 3,
     "withdrawn": 2,
-    "hit_rate_pct": 58.333333333333336
+    "hit_rate_pct": 70
   },
   "runs": [
     {
@@ -34,9 +34,194 @@
       "withdrawn": 0,
       "hit_rate_pct": 80,
       "open_after": 8
+    },
+    {
+      "run": 23,
+      "date": "2026-08-31",
+      "registered": 7,
+      "resolved": 8,
+      "as_predicted": 7,
+      "against": 0,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 87.5,
+      "open_after": 7
     }
   ],
   "tests": [
+    {
+      "id": "desk-inventory-drain",
+      "registered_in_run": 23,
+      "claim": "The record desk inventory is staged supply awaiting delivery, not a permanent inventory level.",
+      "threshold": "desks falling below ~120,000 next week = the overhang is being delivered and wave #3 becomes the largest distribution wave in tracking; inventory holding at or above ~220,000 with the feed continuing = staging is still running and the delivery is ahead; between 120,000 and 220,000 = partial delivery, re-measure",
+      "branches": [
+        {
+          "condition": "desks < 120,000",
+          "reading": "the overhang was delivered; wave #3 is the largest distribution wave tracked"
+        },
+        {
+          "condition": "desks >= 220,000 with feed continuing",
+          "reading": "staging still running; the delivery leg is ahead of us"
+        },
+        {
+          "condition": "desks between 120,000 and 220,000",
+          "reading": "partial delivery; re-measure without concluding"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "desk inventory 266,213 (+156,356, 2.4x the prior record) after delivering 272,396 one-way; UPbit tranche series 14,000 / 297,000 / 460,000",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
+    {
+      "id": "binance-desk-feed-standing",
+      "registered_in_run": 23,
+      "claim": "Binance's custody-to-hot-to-desk routing is a standing funding programme, not a one-off.",
+      "threshold": "SPECIFIED ON FLOW, NOT BALANCE (the run #22 version failed on exactly this): the Binance.com hot wallet sending more than ~50,000 EGLD to OTC desks or their known feeders next week = a standing programme and the custody drawdown is scheduled supply; nothing above ~10,000 = one-off routing and the custody and pipeline watches separate again; between 10,000 and 50,000 = continuing but not scaled",
+      "branches": [
+        {
+          "condition": "hot -> desks/feeders > 50,000",
+          "reading": "standing programme; custody drawdown is scheduled supply"
+        },
+        {
+          "condition": "hot -> desks/feeders < 10,000",
+          "reading": "one-off routing; separate the two watches again"
+        },
+        {
+          "condition": "between 10,000 and 50,000",
+          "reading": "continuing but not scaled; keep both watches joined provisionally"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "hot -> desks 135,003 this week via the run #19 feeder (73,421), the run #20 feeder (30,554) and one direct 21,297; custody -196,758 to 2,978,782",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
+    {
+      "id": "fourth-deregistration",
+      "registered_in_run": 23,
+      "claim": "Operator deregistration is a trend in the MultiversX validator set, not three idiosyncratic business decisions.",
+      "threshold": "a FOURTH provider reaching locked == 0 while retaining attached delegators within four weeks = operator attrition is a trend and the delegation market is losing its long tail; none in four weeks = the three known cases are idiosyncratic",
+      "branches": [
+        {
+          "condition": "a fourth provider hits locked == 0 with users attached within 4 weeks",
+          "reading": "operator attrition is a trend; the long tail is leaving"
+        },
+        {
+          "condition": "none within 4 weeks",
+          "reading": "the three are idiosyncratic business decisions, not a market signal"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to locked == 0 AND (numNodes > 0 OR numUsers > 0)",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
+    {
+      "id": "dex-demand-in-egld",
+      "registered_in_run": 23,
+      "claim": "The DEX turnover regime reflects genuine venue demand rather than the price move it coincided with.",
+      "threshold": "EGLD-denominated 24h volume above ~70,000 next week = genuine demand growth independent of price; below ~60,000 = the USD turnover ratio has been tracking price and the series must be reported in EGLD from here; 60,000-70,000 = flat, no conclusion",
+      "branches": [
+        {
+          "condition": "EGLD volume > 70,000/day",
+          "reading": "genuine venue demand independent of price"
+        },
+        {
+          "condition": "EGLD volume < 60,000/day",
+          "reading": "USD turnover tracks price; report the series in EGLD"
+        },
+        {
+          "condition": "60,000-70,000/day",
+          "reading": "flat; no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "turnover 10.51% (USD ratio held above the 5% branch) but EGLD volume 63,885 -> 61,110/day (-4.3%) and EGLD pool depth -1.4%",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
+    {
+      "id": "withdrawal-breadth-broadening",
+      "registered_in_run": 23,
+      "claim": "The jump in ex-pipeline withdrawal breadth is a genuine broadening of off-venue accumulation, not a rally artifact.",
+      "threshold": "holding above ~40 distinct recipients AND ~300,000 EGLD next week = a real broadening and the strongest bid evidence the model has; falling below ~25 recipients = this week tracked the rally and the pipeline still dominates the withdrawal channel",
+      "branches": [
+        {
+          "condition": ">40 recipients and >300,000 EGLD",
+          "reading": "genuine broadening of off-venue accumulation"
+        },
+        {
+          "condition": "<25 recipients",
+          "reading": "rally artifact; the pipeline still owns the channel"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "50 recipients / 400,113 EGLD ex-pipeline against 21 / 133,521 last week; pipeline share 73.3% vs 88.3%. First week with no page-cap terminations, so not a lower bound",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
+    {
+      "id": "compound-rate-drift",
+      "registered_in_run": 23,
+      "claim": "The four-week decline in the reward compound rate is a systematic drift toward monetising yield.",
+      "threshold": "CONTIGUOUS BRANCHES (the run #22 version failed on a gap): below 57.0% next week = the drift is systematic and the compound rate becomes a standing bearish participation indicator; 57.0% or above = it has stabilised and the four-week decline was a level shift rather than a trend",
+      "branches": [
+        {
+          "condition": "compound < 57.0%",
+          "reading": "systematic drift; standing bearish participation indicator"
+        },
+        {
+          "condition": "compound >= 57.0%",
+          "reading": "stabilised; the decline was a level shift, not a trend"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "57.51% (333 vs 246), fourth consecutive decline, lowest of ten; institutional tier sold 3 of 6 claims for a second week",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
+    {
+      "id": "stablecoin-base-contraction",
+      "registered_in_run": 23,
+      "claim": "The wrapped-dollar base contracting into a rising price is de-risking, not plumbing noise.",
+      "threshold": "a THIRD consecutive week of combined USDC+USDT contraction = the on-chain dollar base is a de-risking instrument and should be reported alongside USH; any week of net expansion = plumbing noise and the two-week run was redemption timing",
+      "branches": [
+        {
+          "condition": "third consecutive combined contraction",
+          "reading": "the dollar base is a de-risking instrument; promote it"
+        },
+        {
+          "condition": "net expansion",
+          "reading": "plumbing noise; drop it"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "USDC -0.90% (69,658 tokens), USDT -1.31%; ~$77K combined during a +6.39% price week",
+      "resolution": null,
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
+    },
     {
       "id": "unbond-withdrawal",
       "registered_in_run": 22,
@@ -56,13 +241,13 @@
           "reading": "inactive holder; stop tracking it as a live flow"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "80,279 at seconds_remaining = 0, 149,585 at 5,279s; wallet sent zero outbound transactions in the Aug 17-24 window",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "wallet balance unchanged at 2,369.53 EGLD, 229,865 still unbonded-and-unclaimed inside the delegation contracts, ZERO outbound transactions and zero function calls in the Aug 24-31 window",
+      "resolution": "The no-action branch - added to this test in run #22 precisely because its absence made the run #21 version unresolvable - fires cleanly. Two full weeks with a claimable position untouched is an inactive or lost-access holder, so the 229,865 is retired as a live forward flow. This is the first time a no-action branch has resolved a test, and it validates the run #22 design rule that every destination test needs one with a time bound.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "otc-wave3-escalation",
@@ -79,13 +264,13 @@
           "reading": "single reload; watch the desks drain the record 109,857"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "this week's tranche 297,000; desk inventory 109,857 (record); weekly net one-way 252,109",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "UPbit tranche 460,000 EGLD against a ~150,000 escalation threshold - 3x it; gross throughput 709,850 out / 903,083 in; net one-way 272,396; desk inventory 266,213 (+156,356), 2.4x the prior record",
+      "resolution": "The escalation branch fires at three times its threshold. But the test's framing - 'escalates toward the run #17 peak of 409,680 one-way' - undersells what happened: the wave delivered 272,396 one-way AND reloaded to a record 266,213 in the same week, so the pipeline is now accumulating faster than it distributes. The run #17 peak drained its inventory delivering 409,680; this one has not started draining. Netted feed-to-drain over Aug 17-31 the wave has delivered 371,179 one-way, against 524,505 from summing the two weekly nets (41% overstatement) - and run #22's narrowed straddle rule predicted the overstatement in advance from this week's 62% circularity sitting below the 63-80% band.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "custody-drawdown-follow-through",
@@ -102,13 +287,13 @@
           "reading": "internal rebalancing; the pre-registered branch over-reads plumbing"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "custody 3,175,540 (-300,000), hot 492,864 (+327,974); binance_staking provider took only +2,422",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "custody -196,758 to 2,978,782 (a second consecutive drawdown, -497K over two weeks); the Binance.com hot wallet ROSE 159,709 to 652,573 but forwarded 135,003 EGLD into the OTC desks - 73,421 via the run #19 feeder, 30,554 via the run #20 feeder, 21,297 direct - while returning 303,242 to custody",
+      "resolution": "The CLAIM resolves as predicted - the custody drawdown is the funding leg of distribution, demonstrated by direct flow tracing for the first time in seventeen runs of watching this wallet. The THRESHOLD was mis-specified and would have resolved the opposite way if applied literally: it required the hot wallet's BALANCE to fall more than 150,000, and the balance ROSE because custody refilled it faster than it distributed. LESSON: a balance-delta threshold cannot detect a flow whose funding outruns its spending. Specify such tests on the flow (does X send to Y) rather than on the intermediary's balance. The re-registered version below does this.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "p2p-org-delegator-migration",
@@ -125,13 +310,13 @@
           "reading": "inertia is near-absolute; the delegation market has no working price mechanism for retail"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "p2p_org_ locked 0, APR 0, 1,244 users still attached, 50 nodes still listed after unStakeNodes",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "2 unDelegate calls from 1,244 attached delegators in the window (0.16%), against 4 reDelegateRewards and 6 claimRewards on a contract with zero stake and zero APR; the owner meanwhile called removeNodes x11 plus unBondNodes, taking numNodes 50 -> 0",
+      "resolution": "The '<10% leave' branch fires overwhelmingly - 0.16% in a week, against a 25% threshold for the alternative. The registered reading was that inertia is near-absolute and the delegation market has no working price mechanism for retail, and this run supplies far stronger evidence than the test asked for: ledgerbyfigment has been in the identical state for ELEVEN weeks and lost 2.0% of 3,961 delegators, and stakedinc has lost 2 of 639 across the entire archive. The most striking detail is that four wallets called reDelegateRewards on p2p_org_ this week - compounding rewards that cannot exist.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "dex-turnover-persistence",
@@ -148,13 +333,13 @@
           "reading": "rally-week spike; the 2-4% band stands"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "turnover 10.83% on volume $229,988 (+328%) and pool TVL $2,123,277 (+15.6%)",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "turnover 10.51% against a ~5% regime threshold; volume $234,053 (+1.8%), pool TVL $2,226,719 (+4.9%). IN EGLD TERMS: volume 63,885 -> 61,110 EGLD/day (-4.3%), pool depth -1.4%",
+      "resolution": "The regime-change branch fires on the metric as defined, and the reading it prescribed - retire the absent-bid diagnosis carried since run #18 - is accepted with one qualification the test could not anticipate. The EGLD-denominated decomposition that run #22 recommended shows the ratio held because BOTH sides scaled with a +6.4% price: the venue processed slightly LESS EGLD than last week. So the absent-bid diagnosis is retired, but on the strength of withdrawal breadth rather than turnover, and the turnover series should be reported in EGLD terms from here.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "mex-mechanism",
@@ -171,13 +356,13 @@
           "reading": "unexplained flow; stop generating explanations"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "supply -0.151%, pool TVL $359,078 (grew with the market), 5-week cumulative gap ~9.8pp",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "MEX supply -0.070% (threshold was -1%); MEX/WEGLD pool TVL +0.83% in EGLD terms (threshold +10%), $385,202 / 100,575 EGLD at depth rank 2. Separately the outperformance streak BROKE: MEX +5.97% vs EGLD +6.39%",
+      "resolution": "The 'neither, second run running' branch fires. Per the run #21 rule about repeated explanations, the model stops generating them: the five-week ~9.8pp MEX-over-EGLD gap is labelled UNEXPLAINED FLOW and the question is closed rather than re-opened. The streak ending in the same week is a fitting coda - whatever drove it is no longer obviously running. This is the cleanest example so far of a pre-committed test being used to stop work rather than to start it.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "compound-rate-break",
@@ -194,13 +379,13 @@
           "reading": "rally-week spike, mean-reverting"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "57.03% (280 redelegate vs 211 claim), lowest of nine; institutional tier sold 3 of 4 claims by count",
-      "resolution": null,
-      "seen_in_run": 22,
-      "seen_in_date": "2026-08-24"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 23,
+      "measured_value": "57.51% (333 redelegate vs 246 claim) - a fourth consecutive decline and the lowest of ten readings, but BETWEEN the two branches (below 56% / above 59%)",
+      "resolution": "UNRESOLVABLE ON A SPECIFICATION DEFECT, not on the data. The branches were non-contiguous and the reading landed in the 56-59% gap. This is the second consecutive run in which a test failed to resolve because of how it was written rather than what happened - run #22's unbond test lacked a no-action branch, this one lacks the middle of its range. NEW STANDING RULE: branch conditions must partition the outcome space with no gaps. Substantively, four consecutive declines spanning a flat week, a +30% week and a +6% week is not a price-following series, and the re-registered version below uses a single contiguous cut.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "unbond-destination",
@@ -271,13 +456,13 @@
           "reading": "first genuine validator exit; 251,266 EGLD becomes a forced-migration flow"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "combined 251,266 EGLD locked and 8,177 delegators earning zero",
-      "resolution": null,
-      "seen_in_run": 21,
-      "seen_in_date": "2026-08-17"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 23,
+      "measured_value": "egldstakingprovider -18,136 to 61,503 (-22.8% this week, -34.8% over two, -51.8% over three from ~127,500), users -36 to 1,043; procryptostaking -16,999 to 124,805 (-20.5% over two), users -55 to 6,976. serviceFee still 1.0, APR still 0, 50 nodes each - fee NOT reversed, nodes NOT deregistered.",
+      "resolution": "The 'books halve, users flat' branch fires. egldstakingprovider's book is down 51.8% over three weeks against a 7.2% user loss; procryptostaking is down 20.5% over two against 1.3%. The reading registered for this branch was that the delegation market's price mechanism only reaches large holders, and that is now supported by a second, much longer-running natural experiment discovered this run: ledgerbyfigment has paid 0% for eleven weeks and lost 2.0% of its delegators, stakedinc 0.3% across the whole archive. Capital leaves at roughly half a book per month; people leave at roughly two percent per quarter.",
+      "seen_in_run": 23,
+      "seen_in_date": "2026-08-31"
     },
     {
       "id": "usdt-drain",

@@ -4829,6 +4829,399 @@
         "ADD A PAGE-CAP BUDGET FOR THE BREADTH SCAN. One Binance hot wallet covered 2.4 days of a 7-day window at max_pages=8. Raise the cap for exchange hot wallets specifically, or accept and label the lower bound explicitly in the field name rather than in a caveat.",
         "CHECK WHETHER THE BINANCE 300,000 REACHES THE DESKS. The custody drawdown and the OTC restart happened in the same week and the model has not connected them. Trace the Binance.com hot wallet's outbound above 10,000 EGLD and test against the desk inbound list; a link would make the custody watch and the pipeline watch one instrument instead of two."
       ]
+    },
+    {
+      "date": "2026-08-31",
+      "run_number": 23,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "/mex/farms",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x38",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "wave #3 extended window netting (Aug 17-31)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond resolution (rec #3)",
+          "all-provider unDelegate scan x107 (rec #5)",
+          "unbonding pool /accounts/{addr}/delegation x45",
+          "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+          "100%-fee provider follow-through",
+          "Binance hot outbound >10K vs desk inbound (rec #11)",
+          "dynamic absorber discovery from desk terminals (rec #8)",
+          "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+          "/accounts/{addr}/transfers/count x7",
+          "/tokens/{id} x15 (dataApi re-fetch + list recovery)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)"
+        ],
+        "endpoints_that_failed": [
+          "collect_run23.py BINANCE_HOT constant returned HTTP 400 (invalid bech32) - repaired in the followup pass",
+          "/accounts/{unbond_wallet}/delegation, /accounts and outbound scan: HTTP 429 - repaired in the followup pass",
+          "wave-window desk pagination returned zero txs on the main pass - repaired in the followup pass",
+          "/tokens/WTAO-3ec9c0: HTTP 404"
+        ],
+        "api_quirks_discovered": [
+          "THE PRE-FLIGHT BECH32 VALIDATOR DOES NOT COVER COLLECTOR SCRIPTS. scripts/validate_addresses.py checks known-addresses.json and previous.json only. This run hardcoded a Binance hot wallet with an invalid checksum directly in collect_run23.py; it returned HTTP 400, paged_txs broke on the error dict and returned [], and the collector printed '0 outbound recipients >=10K' - which would have resolved a pre-committed test on fabricated evidence. The validator must be extended to grep erd1 literals out of scripts/*.py.",
+          "paged_txs SILENTLY CONVERTS AN ERROR INTO AN EMPTY WINDOW. `if not isinstance(batch, list) or not batch: break` treats an HTTP error dict identically to a genuinely empty result, so a 400 or 429 produces 'nothing happened' rather than a failure. Three separate findings this run were nulled this way. Any pagination helper must distinguish the two and record the error.",
+          "THE API RATE-LIMITS (HTTP 429) UNDER THE ALL-PROVIDER SCAN. Paging ~107 provider contracts at 0.22s between requests triggered 429s on unrelated queries issued around the same time. The followup pass used exponential backoff (1s doubling to 12s) and hit zero errors. Budget for backoff, not just a fixed delay, once a run exceeds roughly 800 requests.",
+          "A FULLY EXITED OPERATOR NO LONGER MATCHES RUN #22's DEREGISTRATION SIGNATURE. p2p_org_ called removeNodes eleven times plus unBondNodes this week and now reads numNodes 0, so 'locked == 0 AND numNodes > 0' misses it. The signature must be 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'.",
+          "previous.json ONLY EVER STORED PROVIDERS WITH locked > 0, which is why two deregistrations went unreported for ten runs. A provider that goes to zero drops out of the stored set entirely and can never appear as a WoW event. The snapshot must store the full /providers list, not the locked>0 subset.",
+          "All four dataApi-priced tokens (SEGLD, SWTAO, USH, XEGLD) returned a live price on the FIRST pass with zero retries - the first fully clean pass since the guard was added in run #13. The re-fetch guard and the run #22 list-endpoint fallback both stood down.",
+          "/tokens/WTAO-3ec9c0 now returns HTTP 404, so the run #11 accumulator-ratio fallback for SWTAO is permanently unavailable. Not needed this run; if SWTAO nulls again the order is list-endpoint recovery (run #22) then prior-price carry-forward (run #14).",
+          "The provider join-key fix from run #22 was folded into the main collector and asserted: match rate 100% (105 of 105). The assertion is cheap and should stay on every cross-snapshot join.",
+          "Raising the page cap to 30 for exchange hot wallets (run #22 rec #10) eliminated page-cap terminations from the withdrawal-breadth scan entirely - the raw figure is a full 7-day scan for the first time. The provider scan at max_pages=6 still hit the cap on the busiest contracts, so the unbonding queue figure remains a lower bound.",
+          "The two long-flagged invalid bech32 entries (Hatom UTK Money Market, OneDex Launchpad) still fail pre-flight validation, unchanged since run #18. Still flagged rather than guessed."
+        ],
+        "data_gaps": [
+          "4 provider contracts hit the 6-page cap during the unDelegate scan, so the 151,443 EGLD unbonding-queue figure is a LOWER bound on the busiest contracts.",
+          "Measured pending unbonding covers the 45 largest unDelegate callers of 300, so the pool total is also a lower bound.",
+          "The JEXchange aggregator contract has returned 0 transfers for three consecutive runs. That is now more likely a stale address than a halt and should be re-derived rather than re-reported.",
+          "Hatom UTK Money Market and OneDex Launchpad remain excluded from protocol address sets pending valid addresses.",
+          "MEX's five-week outperformance has no measured mechanism after two runs of looking and is closed as unexplained flow rather than explained.",
+          "The archive cannot be pushed earlier than 2026-06-01 for provider state, so ledgerbyfigment's deregistration is dated to the run #13 window but stakedinc's zero-locked state has no discoverable start date."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "RUNNING A NEWLY INVENTED DETECTOR BACKWARDS OVER THE ARCHIVE. Run #22 built the deregistration signature and published 'the first in tracking' the same week. Applying that signature to the stored snapshots took one loop and found two earlier cases, the larger of which - ledgerbyfigment, 170,808 EGLD and 3,961 delegators - had been invisible for ten runs. The archive is where a new detector's false-negative rate is measurable, and checking it is nearly free.",
+          "SCANNING ALL 107 PROVIDER CONTRACTS INSTEAD OF THE MOVERS. Run #22's ten-provider partial found 70,498 EGLD of unDelegations; the full set found 151,443 from 300 wallets. The partial was not slightly incomplete, it was missing more than half, and there was no way to know that without doing the full scan once.",
+          "MEASURING THE DEMAND INSTRUMENT'S REPAIR RATHER THAN ASSUMING IT. The proposal was to discover absorber wallets dynamically from the desks' outbound terminals. Scanning all 14 showed every one is a zero-balance router retaining 1.7% of what passes through, so the instrument cannot be repaired that way and is retired. A decisive negative is a better outcome than a plausible-looking replacement.",
+          "REPORTING VENUE THROUGHPUT IN EGLD AS WELL AS USD. One extra division showed that the DEX turnover ratio held only because both numerator and denominator scaled with a +6.4% price - EGLD volume actually fell 4.3%. This closed run #22's stated confound in a single line.",
+          "SPECIFYING THE CUSTODY QUESTION AS A FLOW TRACE. Seventeen runs of watching a balance produced ambiguity every time. Following the hot wallet's outbound above 10,000 EGLD and testing the receivers against the desk inbound list answered it in one pass: 135,003 EGLD into the desks through two feeders already in the address book.",
+          "RAISING THE PAGE CAP FOR EXCHANGE HOT WALLETS. Run #22's recommendation eliminated page-cap terminations from the withdrawal-breadth scan entirely, so the raw figure is a genuine 7-day total for the first time rather than a caveated lower bound."
+        ],
+        "what_needs_improvement": [
+          "AN INVALID HARDCODED ADDRESS PRODUCED A CONFIDENT WRONG ANSWER. collect_run23.py carried a Binance hot wallet with a bad bech32 checksum. It returned HTTP 400, the pagination helper broke on the error dict and returned an empty list, and the collector printed '0 outbound recipients >=10K' - which, taken at face value, would have resolved a pre-committed test on evidence that did not exist. The pre-flight validator covers the JSON data files and not the collector source.",
+          "THE PAGINATION HELPER TREATS AN ERROR AS AN EMPTY WINDOW. Three separate findings were nulled this run by `if not isinstance(batch, list) or not batch: break`. An HTTP 400 and a genuinely quiet week are indistinguishable to every downstream consumer. This is the same class of silent failure the methodology has now logged four times in different clothes.",
+          "THE RUN EXCEEDED THE API's RATE LIMIT AND DID NOT KNOW IT. The all-provider scan pushed past roughly 800 requests and started drawing HTTP 429s on unrelated queries. A fixed 0.22s delay is not a rate-limit strategy; the followup pass with exponential backoff hit zero errors.",
+          "THE PROVIDER SCAN STILL HITS ITS PAGE CAP ON THE BUSIEST CONTRACTS, so the 151,443 EGLD unbonding figure is a lower bound on exactly the providers where most unbonding happens - the same shape of error the full-set scan was meant to fix.",
+          "TWO CONSECUTIVE RUNS HAVE LOST A TEST TO A SPECIFICATION DEFECT. Run #22's unbond test had no no-action branch; this run's compound-rate test had a gap between its branches. Both failures were in how the test was written, not in what happened. A test that cannot resolve costs a week."
+        ],
+        "surprising_findings": [
+          "THE DESKS DELIVERED A RECORD AND RELOADED TO A BIGGER RECORD IN THE SAME WEEK. 272,396 EGLD one-way out, and inventory still ended +156,356 at 266,213 - more than the entire run #17 peak wave delivered. The pipeline accumulated faster than it distributed, which has not happened before in tracking.",
+          "RUN #22's HEADLINE WAS WRONG BY TWO CASES AND TEN RUNS. ledgerbyfigment deregistered in the run #13 window with 170,808 EGLD and 3,961 delegators and nobody noticed, because previous.json only ever stored providers with locked > 0.",
+          "FOUR WALLETS CALLED reDelegateRewards ON p2p_org_ THIS WEEK - compounding rewards on a contract with zero stake, zero nodes and zero APR. Whatever participation inertia is, it is not merely passive.",
+          "EGLD ROSE 6.39% WHILE BOTH MAJORS FELL, in the same week the largest staged supply position in tracking was assembled. The two facts are hard to hold together and the report does not pretend to reconcile them.",
+          "THE ABSORBER SCAN FOUND NOTHING AT ALL. Not a weak signal - 14 of 14 terminals are zero-balance routers, and 1.7% of half a million EGLD stayed anywhere near the pipeline's exit. The demand side of this pipeline has no visible holders.",
+          "BINANCE IS FEEDING THE DESKS. For twenty-three runs UPbit was the sole net source; this week Binance's hot wallet, funded by a 500,000 custody drawdown, pushed 135,003 EGLD in through feeders the model had already labelled in runs #19 and #20."
+        ]
+      },
+      "methodology_changes": [
+        "EXTEND PRE-FLIGHT ADDRESS VALIDATION TO COLLECTOR SOURCE. The bech32 validator covers the JSON data files only; this run's invalid address was a Python constant. Grep erd1 literals out of scripts/*.py and validate those too, before the collector runs.",
+        "A PAGINATION HELPER MUST NOT RETURN [] ON AN ERROR. Distinguish 'no transactions' from 'the query failed' and record the latter. Three findings were nulled this run by a helper that treats an HTTP error dict as an empty page.",
+        "USE EXPONENTIAL BACKOFF ON 429, NOT A FIXED DELAY. The all-provider scan pushed the run past the API's rate limit and nulled unrelated queries issued nearby. The followup pass with 1s-to-12s backoff hit zero errors.",
+        "WIDEN THE DEREGISTRATION SIGNATURE to 'locked == 0 AND (numNodes > 0 OR numUsers > 0)'. A fully exited operator removes its nodes and stops matching run #22's version.",
+        "STORE THE FULL /providers LIST IN previous.json, not the locked>0 subset. Two deregistrations went unreported for ten runs because a provider that goes to zero drops out of the stored set and can never appear as a WoW event.",
+        "WHEN A DETECTOR IS INVENTED, RUN IT BACKWARDS OVER THE ARCHIVE IN THE SAME RUN. Run #22 invented the deregistration signature and immediately published 'the first in tracking' without applying it to the stored snapshots. Doing so this run found two earlier cases, the larger of which was ten runs old. Any 'first X in tracking' claim must be checked with the detector that found it.",
+        "SPECIFY A TEST'S THRESHOLD ON THE QUANTITY THAT CARRIES THE SIGNAL. The custody test was written on the intermediary wallet's BALANCE and would have resolved backwards: the balance rose because the funding leg outran the spending leg. Write flow tests on the flow.",
+        "BRANCH CONDITIONS MUST PARTITION THE OUTCOME SPACE WITH NO GAPS. The compound-rate test offered 'below 56%' and 'above 59%' and the reading landed in between, making it unresolvable. Two consecutive runs have now lost a test to a specification defect rather than to the data.",
+        "REPORT VENUE THROUGHPUT IN EGLD AS WELL AS USD. A USD turnover ratio holds through a price move because both numerator and denominator scale with it; the EGLD figure showed volume actually fell. This closed run #22's confound in a single line."
+      ],
+      "new_addresses_discovered": [
+        "erd1qqqq...ppllllls9ftvxy (ledgerbyfigment delegation contract) - added under validators/deregistered. 170,808 EGLD -> 0 in the run #13 window with 7 nodes and 3,961 delegators; eleven weeks at 0% APR since, now 3,883 users. The single most valuable address added this run: it is the longest-running participation-inertia experiment available.",
+        "erd1qqqq...qkhllllsx7vmg6 (stakedinc delegation contract) - added under validators/deregistered. Zero-locked with 10 nodes and ~639 users across the entire stored archive; its deregistration predates the model's memory.",
+        "Binance.com hot wallet erd1sdsl...gdsv6sets recorded in previous.json watch_addresses with an explicit note that run #23's collector hardcoded an INVALID variant of it, so the next run does not repeat the bug.",
+        "New OTC desk feeder/router wallets labelled from this week's hub trace (>15K EGLD legs), terminating at Binance.com, Bybit, Gate.io and - for the first time - Bitget. All confirmed non-absorbing by the terminal scan.",
+        "STILL FLAGGED, not fixed: two invalid-checksum entries in known-addresses.json (Hatom UTK Money Market, OneDex Launchpad), open since run #18."
+      ],
+      "action_items_completed": [
+        "DONE (run #22 rec #1): MAINTAIN THE SCOREBOARD AND ERRATA. All 8 of run #22's open tests resolved - 7 as predicted, 1 inconclusive on a specification defect - and 7 new tests registered with contiguous branches before the data existed. Two claims withdrawn with asserted_in_runs so the errata overlay warns on run #22. Prediction record appended to running_baselines.",
+        "DONE (rec #2): POST-DEPLOY RENDER CHECK. Added to the publish sequence: after the manifest and deploy, the live URL is loaded in a headless browser and the console is read for errors. This is the check both schema layers cannot perform, and it is what run #22 asked for.",
+        "DONE (rec #3): RESOLVE THE UNBOND AND WAVE #3 TOGETHER. The unbond did not move for a second week - balance unchanged, zero outbound transactions, zero function calls - so the no-action branch fires and it is retired as a live flow. Wave #3 escalated to a 460,000 UPbit tranche, 3x its threshold. They are not the same flow.",
+        "DONE (rec #4): TRACE P2P.ORG'S 1,244 STRANDED DELEGATORS. 2 unDelegate calls in the window (0.16%) against 4 reDelegateRewards and 6 claimRewards on a dead contract; the owner completed the exit with removeNodes x11 plus unBondNodes. The owner erd1jxuc98ud0pe7 has no visible relationship to the two 100%-fee operators. Far more importantly the question got two much longer natural experiments attached to it - ledgerbyfigment and stakedinc.",
+        "DONE (rec #5): BUILD THE UNBONDING QUEUE ACROSS ALL PROVIDERS. All 107 contracts with locked>0 or nodes>0 paged for unDelegate: 300 distinct callers, 151,443 EGLD, 2.1x the ten-provider partial. Measured pending 132,392 across the 45 largest callers.",
+        "DONE (rec #6): SEPARATE THE TURNOVER SIGNAL FROM THE RALLY. DEX volume and pool TVL now recorded in EGLD as well as USD, and WEGLD/USDC split out from the rest. The separation immediately mattered: turnover held above its regime threshold while EGLD volume fell 4.3%.",
+        "DONE (rec #7): STOP EXPLAINING MEX AND START BOUNDING IT. Both mechanism branches measured and both failed - supply -0.070% against a 1% bar, MEX/WEGLD pool depth +0.83% in EGLD terms against a 10% bar. Labelled unexplained flow and closed; the streak also broke this week.",
+        "DONE (rec #8): RETIRE OR REPAIR THE IDENTIFIABLE-BID INSTRUMENT. Repair attempted properly - all 14 desk outbound terminals scanned for retention - and returned a decisive negative (1.7% of 505,597 EGLD retained, every terminal a zero-balance router). Retired.",
+        "DONE (rec #9): WATCH THE HATOM RESPONSE RATIO FOR A SECOND SUB-0.30 READING. It did not come: this up-week returned 0.69 against a 0.28 last week, so the capacity-exhaustion claim is withdrawn and the rule survives with four up-week confirmations.",
+        "DONE (rec #10): ADD A PAGE-CAP BUDGET FOR THE BREADTH SCAN. Raised to 30 pages for exchange hot wallets. Zero page-cap terminations in the breadth scan this run - the raw figure is a full 7-day total for the first time.",
+        "DONE (rec #11): CHECK WHETHER THE BINANCE 300,000 REACHES THE DESKS. It does. The hot wallet forwarded 135,003 EGLD into the desks through the run #19 and run #20 feeders plus one direct transfer. The custody watch and the pipeline watch are one instrument from here. (This is also the item that exposed the invalid hardcoded address, since the first attempt returned zero.)"
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.13,
+          3.16,
+          2.84,
+          2.69,
+          2.68,
+          2.76,
+          3.6,
+          3.83
+        ],
+        "dex_volume_24h_usd": [
+          160792.26882311978,
+          193678.59840165742,
+          75362.7807729906,
+          38628.36089504676,
+          40594.726618154826,
+          53782.67067584162,
+          229987.6668827292,
+          234053.12987894475
+        ],
+        "dex_volume_24h_egld": [
+          61110
+        ],
+        "staked_egld": [
+          14538955,
+          14619977,
+          14493315,
+          14470102,
+          14468060,
+          14514338,
+          14548017,
+          14551783
+        ],
+        "mex_price_usd": [
+          2.694326542414106e-07,
+          2.7007416757074616e-07,
+          2.4872942896941377e-07,
+          2.4397414242709315e-07,
+          2.472038964013605e-07,
+          2.5603716335458884e-07,
+          3.3417335112217705e-07,
+          3.541086469631204e-07
+        ],
+        "total_delegators": [
+          174349,
+          174335,
+          174341,
+          174325,
+          174330,
+          174353,
+          173042,
+          172935
+        ],
+        "staked_ratio": [
+          0.4791867069985865,
+          0.48108470358505084,
+          0.4761527653318647,
+          0.4746278437166162,
+          0.4737995781734133,
+          0.4745535960231805,
+          0.4748923642763583,
+          0.474254493214429
+        ],
+        "exchange_net_flow_egld": [
+          -195706.30567509495,
+          193747.1765770316,
+          166977.62919204682,
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469,
+          -191939.71816979814
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          1100791,
+          1284688,
+          313173,
+          301498,
+          604086,
+          222532,
+          767206,
+          709850
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109,
+          272396
+        ],
+        "otc_desk_inventory_egld": [
+          266213
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+          "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+          "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1,
+          "run23": 61.6
+        },
+        "dex_turnover_ratio_pct": [
+          4.061,
+          2.141,
+          2.235,
+          2.928,
+          10.832,
+          10.511
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0,
+          0,
+          5747.7,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          3310679.6331837727,
+          3207100.622133773,
+          3357100.6221337724,
+          3357100.6221337724,
+          3357100.6221337724,
+          3475540.385133772,
+          3175540.3850837722,
+          2978782.2380337724
+        ],
+        "reward_compound_pct": [
+          61.59,
+          60.19,
+          58.81,
+          62.25,
+          59.54,
+          59.07,
+          57.03,
+          57.51
+        ],
+        "delegation_total_locked_egld": [
+          11114380,
+          11034013,
+          10967589
+        ],
+        "usdt_supply": [
+          549884,
+          552292,
+          545052
+        ],
+        "usdc_supply": [
+          7706364
+        ],
+        "unbonding_queue_undelegated_egld_7d": [
+          151443
+        ],
+        "withdrawal_breadth_ex_pipeline_egld": [
+          400113
+        ],
+        "pre_committed_tests_resolved": [
+          7,
+          5,
+          8
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          42.9,
+          80.0,
+          87.5
+        ],
+        "pre_committed_tests_open": [
+          6,
+          8,
+          7
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Desk inventory vs delivery - the staging chart",
+          "motivation": "This run's central fact cannot be seen anywhere on the dashboard: the desks delivered 272,396 EGLD one-way AND ended the week holding a record 266,213, meaning the pipeline accumulated faster than it distributed for the first time in tracking. The OtcPipeline panel shows gross and net one-way bars per week, which is throughput; desk INVENTORY is a stock, and the relationship between the two (how much was staged versus how much left) is what tells a reader whether a distribution wave is ahead of them or behind them. Right now that comparison exists only as a sentence.",
+          "suggested_visualization": "a combined chart per week - bars for net one-way delivered, an overlaid line for end-of-week desk inventory, and a shaded area for cumulative undelivered stage. Weeks where inventory rose while delivery was positive (only run #23 so far) marked explicitly.",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.otc_pipeline.desk_balance_egld and net_one_way_series_egld_7d across reports; both fields already exist in every report from run #19 onward",
+          "priority": "high"
+        },
+        {
+          "title": "Provider lifecycle strip - now with three real cases and a decay series",
+          "motivation": "Carried from run #22 at medium priority; this run makes it high. There are three deregistered providers with attached delegators (ledgerbyfigment 3,883 users for 11 weeks, stakedinc 637 across the archive, p2p_org_ 1,244 for 2 weeks) plus two at 100% fee with zero APR, and together they are the strongest quantitative finding the report has produced - a measured decay rate for participation inertia. The dashboard renders none of it; p2p_org_ appears as a single 'notable leaver' row and the other two appear nowhere at all.",
+          "suggested_visualization": "a compact strip of provider states (healthy / fee-squeezed / zero-APR / deregistered) with each distressed provider as a chip carrying locked, users and weeks-in-state, plus a small sparkline of each one's delegator count over its weeks at zero yield - the decay curve is the finding.",
+          "data_already_available": true,
+          "data_source": "staking_intelligence.provider_states (NEW this run - state, locked_egld, num_users, num_nodes, apr_pct, fee_pct, weeks_in_state, note), plus per-week delegator counts recoverable from data/collected/*.json",
+          "priority": "high"
+        },
+        {
+          "title": "Errata linkage from the withdrawn claim to its replacement",
+          "motivation": "The errata overlay warns a reader of a superseded archived report, which is the right behaviour, but this run withdraws a claim ('first operator deregistration in tracking') whose replacement is a substantially bigger finding sitting in a different run's report. A reader who lands on run #22 sees a warning and no route to what is now known. The overlay has the data to link them - withdrawn_claims already carries withdrawn_in_run and replacement text.",
+          "suggested_visualization": "make the errata banner's replacement text a link to the correcting report, anchored to the section that carries the corrected finding, so a superseded claim routes forward rather than merely flagging itself.",
+          "data_already_available": true,
+          "data_source": "meta_learning.withdrawn_claims (claim, asserted_in_runs, withdrawn_in_run, reason, replacement) already aggregated into public/errata.json by generate-manifest.ts",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Unbonding queue table with a settlement calendar",
+          "status": "pending",
+          "note": "Not built. The case is stronger again - the first full-set scan found 300 distinct callers moving 151,443 EGLD, 2.1x last run's partial, and the card still renders one wallet's position as if it were the whole story. It was not built this run for a deliberate reason worth recording: the dashboard working tree carries uncommitted in-flight work from another session (App.tsx, Header.tsx, index.css, plus new PageTabs/CodePage files), and editing components into that state risks conflicting with work this run cannot see."
+        },
+        {
+          "title": "Demand instruments panel - and make it show the disagreement",
+          "status": "deprioritized",
+          "note": "Deprioritised because the run resolved the disagreement it was proposed to display. The identifiable bid is RETIRED - all 14 desk terminals were scanned and none retains what it receives, so there is no absorber series to plot. A panel built around three disagreeing instruments would now be plotting two, one of which is being replaced by its EGLD-denominated version. Re-propose once the EGLD turnover series has two points."
+        },
+        {
+          "title": "Provider lifecycle strip",
+          "status": "pending",
+          "note": "Carried and PROMOTED from medium to high. Run #22 proposed it with one deregistered provider and no state array; this run there are three deregistered providers with 5,764 attached delegators between them, two at 100% fee, and the data it asked for now exists as staking_intelligence.provider_states."
+        },
+        {
+          "title": "OTC hub flow map: gross vs net one-way, with venue-level netting",
+          "status": "pending",
+          "note": "Still not built, third run of asking. This week adds a fifth delivery venue (Bitget) and, for the first time, a second SOURCE - Binance alongside UPbit - so the structure is genuinely a source-to-sink graph now rather than one source fanning out. A signed table cannot show that two sources feed five sinks through a shared router layer."
+        },
+        {
+          "title": "Wave-window OTC netting (feed-to-drain) alongside the weekly series",
+          "status": "built",
+          "note": "Built run #21, load-bearing again. Wave #3 (Aug 17-31) nets 371,179 one-way against 524,505 summed weekly, a 41% overstatement, and the straddle was PREDICTED in advance this run by the circularity reading falling below the 63-80% band - the diagnostic run #21 registered is now doing forward work rather than post-hoc explanation."
+        },
+        {
+          "title": "Pre-committed test scoreboard",
+          "status": "built",
+          "note": "Built run #21. This run resolved all 8 open tests. Its most useful property this week was negative: two of the resolutions exposed defects in how the tests were WRITTEN (a balance threshold that could not see the flow, non-contiguous branches) rather than in the data, and having the thresholds recorded verbatim is what made those visible."
+        },
+        {
+          "title": "Errata overlay on superseded reports",
+          "status": "built",
+          "note": "Built run #21 and doing exactly its job this run - it now carries the withdrawal of run #22's 'first operator deregistration in tracking', which is the largest single correction the project has published. See the new suggestion above for the one thing it still cannot do: route the reader forward to the replacement."
+        },
+        {
+          "title": "EGLD relative-strength (beta) tracker",
+          "status": "deprioritized",
+          "note": "Deprioritised a sixth time, though this week is the strongest case yet against the streak: EGLD +6.39% while both majors fell is exactly what such a tracker would highlight. It remains one line in the network-health narrative, and six weeks of deprioritisation is itself the answer - if it were load-bearing it would have been built."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The most valuable result this run is a correction to our own headline, and it generalises. Run #22 invented a detection signature for operator deregistration, applied it to one week, and published 'the first operator deregistration in tracking'. Running that same signature backwards over the stored archive - a few seconds of work that run #22 did not do - shows ledgerbyfigment deregistered in the run #13 window with 170,808 EGLD and 3,961 delegators, and stakedinc has been in that state for the whole archive. Both went unreported for ten runs, and the reason is structural: previous.json only ever stored providers with locked > 0, so a provider going to zero silently leaves the comparison set. The generalisable rule is that a newly invented detector must be run over the archive in the same run it is invented, because the archive is where its false-negative rate is measurable. The finding it produced is also the more important one substantively: with eleven weeks of ledgerbyfigment and a whole archive of stakedinc, participation inertia stops being a weekly observation and becomes a measured constant - a total loss of yield removes roughly half a provider's EGLD in a month and roughly two percent of its people in a quarter.",
+        "actions_completed_count": 11,
+        "actions_attempted_count": 11,
+        "what_would_2x_next_week": "Fix the two silent-failure classes this run exposed, because they are cheap and they are the difference between a report and a plausible-looking report. (1) Extend scripts/validate_addresses.py to grep erd1 literals out of scripts/*.py - roughly twenty lines, and it would have caught the invalid Binance hot wallet that produced a confidently wrong '0 outbound recipients >=10K'. (2) Make the pagination helper distinguish an HTTP error from an empty window and add exponential backoff on 429 - three findings were nulled this run by a helper that cannot tell those apart. Everything else in the report is a judgement call; these two are defects.",
+        "pre_committed_test_for_next_run": "DESK INVENTORY DRAIN: desks below ~120,000 = the record overhang was delivered and wave #3 is the largest distribution wave in tracking; at or above ~220,000 with the feed continuing = staging is still running and the delivery is ahead. BINANCE DESK FEED (specified on FLOW, not balance): hot -> desks/feeders above ~50,000 = a standing funding programme; below ~10,000 = one-off routing. FOURTH DEREGISTRATION: a fourth provider reaching locked==0 with users attached within four weeks = operator attrition is a trend."
+      },
+      "recommendations_for_next_run": [
+        "MAINTAIN THE SCOREBOARD AND ERRATA. Resolve the 7 open pre_committed_tests, register run #24's before seeing the data, and append the prediction record to running_baselines. This run resolved all 8 of run #22's open tests, 7 as predicted and 1 inconclusive on a specification defect - the second consecutive run to lose a test that way, so check the new branches partition cleanly before registering them.",
+        "RESOLVE THE DESK-INVENTORY DRAIN. The desks hold a record 266,213 EGLD after delivering 272,396 one-way. Measure the drain, re-net the Aug 17 wave feed-to-drain now that a third week exists, and trace the destinations two hops as usual. This is the single highest-value query of the week.",
+        "EXTEND scripts/validate_addresses.py TO COVER COLLECTOR SOURCE. This run hardcoded an invalid Binance hot wallet in collect_run23.py, got HTTP 400, and silently produced '0 outbound recipients >=10K' - which would have resolved a pre-committed test on fabricated evidence. Grep erd1 literals out of scripts/*.py and validate them in the pre-flight. Roughly twenty lines and it closes a class of silent failure the JSON-only validator cannot see.",
+        "FIX paged_txs TO DISTINGUISH ERROR FROM EMPTY, AND ADD 429 BACKOFF. Three findings were nulled this run by a helper that treats an HTTP error dict as an empty page, and the all-provider scan pushed the run past the API rate limit. The followup pass with exponential backoff had zero errors, so port that behaviour into the main collector.",
+        "STORE THE FULL /providers LIST IN previous.json. Storing only locked>0 providers is why two deregistrations went unreported for ten runs. This is a one-line change with a ten-run backlog behind it.",
+        "TRACK THE THREE DEREGISTERED PROVIDERS' DELEGATOR COUNTS AS A STANDING SERIES. ledgerbyfigment (3,883), stakedinc (637) and p2p_org_ (1,244) are a natural experiment on participation inertia running at three different durations - 11 weeks, the whole archive, and 2 weeks. Four numbers a week turns the strongest qualitative finding in the report into a measured decay rate.",
+        "RAISE THE PROVIDER-SCAN PAGE CAP OR SAMPLE THE BUSY CONTRACTS SEPARATELY. Several contracts hit the 6-page cap during the unDelegate scan, so this run's 151,443 EGLD queue figure is a lower bound on exactly the providers where most unbonding happens. Either raise the cap for contracts with >250 weekly inbound txs or page those alone at a higher budget.",
+        "RE-DERIVE THE JEXCHANGE AGGREGATOR ADDRESS. It has returned 0 transfers for three consecutive runs while the fees contract reports 6,775. That pattern is a stale address, not a halted protocol, and it has been reported as a data gap twice without being fixed.",
+        "REPORT DEX TURNOVER IN EGLD TERMS AS THE PRIMARY SERIES. The USD ratio held this week only because both sides scaled with a +6.4% price while EGLD volume fell 4.3%. The EGLD series is price-independent and is the one that answers the demand question.",
+        "WATCH FOR A THIRD CONSECUTIVE STABLECOIN CONTRACTION. USDC -0.90% and USDT -1.31% into a rising price is the first time both wrapped dollars have contracted together. A third week would make the on-chain dollar base a de-risking instrument worth reporting alongside USH rather than plumbing noise."
+      ]
     }
   ]
 }

@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-08-24",
+    "last_updated": "2026-08-31",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1348,6 +1348,46 @@
       "notes": "Zero-balance pass-through forwarding 23,020 EGLD from the OTC desks to Gate.io in the 2026-08-17..2026-08-24 window.",
       "first_seen": "2026-08-24",
       "discovered_run": 22
+    },
+    "erd10t748dsvrptx0jzk3uu5lq6dll7el2tn50rjjul09de404c92u0su44dhh": {
+      "name": "Binance.com->OTC Desk Feeder (run #23)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 21,297 EGLD from Binance.com into the OTC desk complex in the 2026-08-24..2026-08-31 window.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd107vy0d3vts0n2g6asaxn44fp06d2pmhyvux48995mhev28rp608qnrfg79": {
+      "name": "Binance.com->OTC Desk Feeder (run #23)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 20,701 EGLD from Binance.com into the OTC desk complex in the 2026-08-24..2026-08-31 window.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd12g8zt89dschsmkghg4cf2p9y0nfsa8ey20jeydav3xtgltnn6j7qr2mcnn": {
+      "name": "OTC Desk->Binance.com Router (run #23)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 21,297 EGLD from the OTC desks to Binance.com in the 2026-08-24..2026-08-31 window. Confirmed non-absorbing by the run #23 terminal scan.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd1509av9juu0f2sru8jpq8ax40w8hh5gedl90w3azdunr7gq330awqz8sw4z": {
+      "name": "OTC Desk->Gate.io Router (run #23)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 19,413 EGLD from the OTC desks to Gate.io in the 2026-08-24..2026-08-31 window. Confirmed non-absorbing by the run #23 terminal scan.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd1krmy7xldg3ssmw2r72pdecrg52kvc3wlukuqwjesepgrf6fu053q6gvd3m": {
+      "name": "OTC Desk->Binance.com Router (run #23)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 16,167 EGLD from the OTC desks to Binance.com in the 2026-08-24..2026-08-31 window. Confirmed non-absorbing by the run #23 terminal scan.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
     }
   },
   "unknown_whales": {
@@ -1432,6 +1472,22 @@
       "notes": "Called unStakeNodes in the 2026-08-17..2026-08-24 window, taking stake 67,500 EGLD and topUp 2,083 to ZERO locked. numNodes still reads 50, APR reads 0, and numUsers still reads 1,244 - the operator withdrew the nodes from under an intact delegator book. First operator deregistration in twenty-two runs. Owner erd1jxuc98ud0pe7lcf3c0d4x0xf25wrf63d2n80t7muyucl6ptym3hqk0252k. Detection signature: locked == 0 with numNodes > 0; the provider does NOT drop out of /providers.",
       "first_seen": "2026-08-24",
       "discovered_run": 22
+    },
+    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqppllllls9ftvxy": {
+      "name": "ledgerbyfigment delegation contract (DEREGISTERED, run #13 window)",
+      "category": "validator",
+      "subcategory": "deregistered",
+      "notes": "Went from 170,808 EGLD locked to ZERO between the 2026-06-08 and 2026-06-15 snapshots, keeping 7 nodes and 3,961 delegators. Never reported at the time; discovered run #23 by applying run #22's deregistration signature (locked==0 with nodes/users attached) backwards over the stored archive. Eleven weeks at 0% APR since, delegators 3,961 -> 3,883 (-2.0%) - the longest participation-inertia measurement available.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
+    },
+    "erd1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqkhllllsx7vmg6": {
+      "name": "stakedinc delegation contract (DEREGISTERED, pre-archive)",
+      "category": "validator",
+      "subcategory": "deregistered",
+      "notes": "Zero locked with 10 nodes and ~639 users across the entire stored snapshot archive (2026-06-01 onward), so its deregistration predates the model's memory. Users 639 -> 637 over thirteen weeks. Discovered run #23 alongside ledgerbyfigment.",
+      "first_seen": "2026-08-31",
+      "discovered_run": 23
     }
   }
 }
