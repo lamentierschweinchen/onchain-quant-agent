@@ -2341,10 +2341,43 @@
     "volume_24h_usd": 0.0,
     "notable_events": "Fees contract 6,775 transfers in 24h; the aggregator contract returned 0 for a third consecutive run, which is now more likely a wrong address than a halt and should be re-derived.",
     "health_signal": "flat"
+   },
+   {
+    "protocol": "SALSA (Staking Agency)",
+    "category": "liquid_staking",
+    "addresses_tracked": 1,
+    "tvl_usd": 24881.76746136305,
+    "tvl_egld": 6450.547468433076,
+    "tvl_wow_change_pct": null,
+    "transfers_24h": null,
+    "notable_events": "DISCOVERED AFTER PUBLICATION and measured at discovery, so there is no week-over-week comparison yet. LEGLD-d74da9 supply 5080 across 382 holders, against 6,451 EGLD actively delegated. Staking Agency Liquid Staking Algorithm. The LARGEST protocol the tracked set was missing - 3.7x the launch that prompted the sweep, and never measured in twenty-three runs.",
+    "health_signal": null
+   },
+   {
+    "protocol": "Dinovox VoxEGLD",
+    "category": "liquid_staking",
+    "addresses_tracked": 1,
+    "tvl_usd": 6798.012844298085,
+    "tvl_egld": 1756.8293137606825,
+    "tvl_wow_change_pct": null,
+    "transfers_24h": null,
+    "notable_events": "DISCOVERED AFTER PUBLICATION and measured at discovery, so there is no week-over-week comparison yet. VOXEGLD-5872e5 supply 1748 across 78 holders, against 1,757 EGLD actively delegated. Auto-compounding liquid staking, contract deployed 2026-07-21 inside the run #17 window. Flagged by the operator, which is what prompted building the detector.",
+    "health_signal": null
+   },
+   {
+    "protocol": "VestaX Finance",
+    "category": "liquid_staking",
+    "addresses_tracked": 1,
+    "tvl_usd": 4294.818001485156,
+    "tvl_egld": 1121.362402476542,
+    "tvl_wow_change_pct": null,
+    "transfers_24h": null,
+    "notable_events": "DISCOVERED AFTER PUBLICATION and measured at discovery, so there is no week-over-week comparison yet. VEGLD-2b9319 supply 802 across 439 holders, against 1,121 EGLD actively delegated. Auto-compounding liquid staking. The widest holder base of the three at 439, on the smallest book - the most retail-distributed of them. No price feed on VEGLD, so USD is derived from EGLD staked.",
+    "health_signal": null
    }
   ],
   "sc_deployments": [],
-  "analysis": "DeFi did the same thing it did last week, one notch quieter, and the consistency is the finding.\n\nActivity was strong where it is measured in transfers: the XOXNO aggregator processed 32,462 in 24 hours and OneDex 19,015, both at the top of their ranges. But xExchange's own throughput in EGLD terms FELL -4.3%, so the venue-level demand read depends entirely on which denominator you pick - and the honest one for a chain-native question is EGLD.\n\nThe credit stack de-risked for a second consecutive week. Hatom Lending's EGLD-denominated deposits fell -4.43% against a +6.39% price, the fourth up-week confirmation of the bilateral inverse rule and - importantly - at a response ratio of 0.69, well clear of the 0.30 exhaustion threshold. Run #22 registered that two consecutive sub-0.30 readings would retire the rule; the second did not come, so the rule survives and last week's 0.28 is reclassified as one weak response to an unusually large price move rather than evidence of a depleted deposit base.\n\nUSH burned -1.53% for a second week running, 8,722 tokens, cumulative -2.4% across the two. A single burn into a rally was an anomaly; two is a behaviour, and the reading is that CDP borrowers are using appreciation to retire debt rather than to lever further. That is the mirror image of run #16, where a +16% week produced a +6.49% USH MINT. The same instrument, the same direction of price, opposite response - which says the cohort changed, not the mechanism.\n\nLiquid staking again did nothing: SEGLD -0.277%, XEGLD -0.160%, SWTAO -1.66%. Six consecutive weeks with no LSD subscription of any size, through a cumulative +39% price move. Combined with a flat delegator base and a staked ratio that FELL, the picture is consistent: nobody converted this rally into a yield-bearing on-chain position.\n\nTVL METHOD NOTE: LSD and stablecoin figures are on the supply basis per the run #13 rule, USD as context only. All four tokens priced through the third-party feed returned a live price on the first pass with zero retries - the first fully clean pass since the guard was added, so no fallback was needed at any level of the run #22 ordering."
+  "analysis": "DeFi did the same thing it did last week, one notch quieter, and the consistency is the finding.\n\nActivity was strong where it is measured in transfers: the XOXNO aggregator processed 32,462 in 24 hours and OneDex 19,015, both at the top of their ranges. But xExchange's own throughput in EGLD terms FELL -4.3%, so the venue-level demand read depends entirely on which denominator you pick - and the honest one for a chain-native question is EGLD.\n\nThe credit stack de-risked for a second consecutive week. Hatom Lending's EGLD-denominated deposits fell -4.43% against a +6.39% price, the fourth up-week confirmation of the bilateral inverse rule and - importantly - at a response ratio of 0.69, well clear of the 0.30 exhaustion threshold. Run #22 registered that two consecutive sub-0.30 readings would retire the rule; the second did not come, so the rule survives and last week's 0.28 is reclassified as one weak response to an unusually large price move rather than evidence of a depleted deposit base.\n\nUSH burned -1.53% for a second week running, 8,722 tokens, cumulative -2.4% across the two. A single burn into a rally was an anomaly; two is a behaviour, and the reading is that CDP borrowers are using appreciation to retire debt rather than to lever further. That is the mirror image of run #16, where a +16% week produced a +6.49% USH MINT. The same instrument, the same direction of price, opposite response - which says the cohort changed, not the mechanism.\n\nLiquid staking again did nothing: SEGLD -0.277%, XEGLD -0.160%, SWTAO -1.66%. Six consecutive weeks with no LSD subscription of any size, through a cumulative +39% price move. Combined with a flat delegator base and a staked ratio that FELL, the picture is consistent: nobody converted this rally into a yield-bearing on-chain position.\n\nTVL METHOD NOTE: LSD and stablecoin figures are on the supply basis per the run #13 rule, USD as context only. All four tokens priced through the third-party feed returned a live price on the first pass with zero retries - the first fully clean pass since the guard was added, so no fallback was needed at any level of the run #22 ordering.\n\nEMERGING LIQUID STAKING \u2014 ADDED AFTER PUBLICATION. The tracked LSD set had been hand-maintained since run #5, with no mechanism to notice a new protocol. Building one (token owner -> delegation stake) found THREE that were never measured: SALSA at 6,451 EGLD across 382 holders, Dinovox VoxEGLD at 1,757, and VestaX at 1,121 across 439 holders \u2014 9,329 EGLD between them, plus JewelSwap which had been labelled in an earlier run and never appeared in a breakdown. That is about 1% of liquid-staking stake, which is precisely why it matters: Hatom and XOXNO have been flat on supply for six weeks, and the only part of this market that is growing was the part nobody was counting. These three are measured at discovery with no prior week to compare against; the sweep runs weekly from run #24."
  },
  "anomalies": [
   {

@@ -689,11 +689,13 @@ export function TokenDefi({ tokenData, defiData }: TokenDefiProps) {
           title="DeFi — Per-Protocol Breakdown"
           subtitle="TVL, transfers, health signal across tracked DeFi protocols"
         >
+          {/* The whole protocol set is ~11 rows and the interesting ones are the
+              SMALL ones - emerging protocols sort to the bottom by TVL, which is
+              exactly where a collapse would hide them. Show them all. */}
           <DataTable
             columns={protocolColumns}
             data={protocolRows}
             defaultSort={{ key: 'tvl_egld', dir: 'desc' }}
-            collapsed={5}
             noun="protocol"
           />
         </CardSection>
