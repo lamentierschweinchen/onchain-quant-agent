@@ -202,9 +202,9 @@
     </div>
     <h1>EGLD ran 18.8% while every L1 peer fell</h1>
     <p class="standfirst">
-      A protocol upgrade eight days out is being priced. The entities holding EGLD
-      are using the bid to reduce exposure: the record OTC overhang halved into the
-      move, and large and mid whales net-sold 474,883 EGLD.
+      A heavily short derivatives book is being squeezed into an unusually broad spot
+      bid, while the OTC desks deliver a record inventory into both. Nine theories,
+      ranked, with what would falsify each.
     </p>
 
     <div class="strip">
@@ -232,6 +232,11 @@
         <div class="lab">Desk overhang</div>
         <div class="val down">133,150</div>
         <div class="sub">was 266,213</div>
+      </div>
+      <div class="cell">
+        <div class="lab">Perp funding</div>
+        <div class="val down">&minus;0.064%</div>
+        <div class="sub">negative on 27 of 32</div>
       </div>
     </div>
   </header>
@@ -438,7 +443,7 @@
 
   <section>
     <div class="eyebrow">Positioning</div>
-    <h2>Everyone except Binance sold</h2>
+    <h2>Who actually bought and sold</h2>
 
     <div class="board">
       <div class="sig s-buy">
@@ -453,23 +458,28 @@
         </span>
         <span class="fig">+419,836</span>
       </div>
-      <div class="sig s-sell">
+      <div class="sig s-buy">
         <span class="stripe"></span>
         <span>
-          <span class="t">Large whales sold</span>
-          <span class="d">17 wallets holding 100K&ndash;1M EGLD, on a prior-tier basis across the
-          76 addresses present in both snapshots.</span>
+          <span class="t">Withdrawal breadth exploded &mdash; 365 wallets took delivery</span>
+          <span class="d">365 distinct non-pipeline wallets pulled 373,182 EGLD off exchanges in 48
+          hours, against <strong>50 wallets and 400,113 EGLD across the whole prior week</strong>. Median
+          withdrawal 49 EGLD; 233 wallets took under 100. A real retail tail, not a few blocks. This is
+          the highest breadth reading in twenty-three runs.</span>
         </span>
-        <span class="fig">&minus;369,811</span>
+        <span class="fig">365</span>
       </div>
-      <div class="sig s-sell">
+      <div class="sig s-buy">
         <span class="stripe"></span>
         <span>
-          <span class="t">Mid whales sold</span>
-          <span class="d">50 wallets holding 10K&ndash;100K EGLD. Combined with the tier above,
-          non-Binance whales net-sold 474,883 EGLD into the move.</span>
+          <span class="t">Correction: the tier figures were exchange plumbing</span>
+          <span class="d">An earlier version of this brief read the whale-tier aggregates as
+          "everyone except Binance sold". That was wrong &mdash; the 100K&ndash;1M tier contains
+          Binance's hot wallet, UPbit, Bybit and both OTC desks. Decomposed: venue wallets
+          &minus;121,264, <strong>genuine non-venue holders +65,773</strong>. Tracked large holders
+          were net buyers.</span>
         </span>
-        <span class="fig">&minus;105,072</span>
+        <span class="fig">+65,773</span>
       </div>
       <div class="sig s-sell">
         <span class="stripe"></span>
@@ -523,30 +533,154 @@
     </div>
   </section>
 
+
+  <section>
+    <div class="eyebrow">Theories, ranked by likelihood</div>
+    <h2>What is moving it, in order of confidence</h2>
+    <p>Each rests on evidence in this report, and each states what would falsify it.</p>
+
+    <div class="board" style="margin-top:26px">
+
+      <div class="sig s-buy">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">1 &nbsp;A crowded short book being squeezed &mdash; the proximate driver</span>
+          <span class="d">The only theory that explains the <em>shape</em>: +17.2% in one session on
+          6.4x spot volume, while inventory left exchanges rather than arriving. Funding is negative
+          on <strong>27 of 32</strong> perp venues (mean &minus;0.0635%, low &minus;0.1961%) &mdash;
+          shorts paying longs to stay short. Open interest is <strong>28.4% of market cap</strong>.
+          <br><br><b>Falsified by</b> open interest rising while funding flips positive (new longs, not
+          covering). <b>Confirmed by</b> open interest falling sharply while price holds.</span>
+        </span>
+        <span class="fig">high</span>
+      </div>
+
+      <div class="sig s-buy">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">2 &nbsp;Genuine broad spot accumulation</span>
+          <span class="d">Revised upward during this analysis. <strong>365 distinct wallets</strong>
+          took 373,182 EGLD off exchanges in 48 hours, against 50 wallets and 400,113 EGLD across the
+          whole prior week. Median withdrawal 49 EGLD; 233 wallets took under 100. Tracked non-venue
+          holders were net buyers of 65,773.
+          <br><br><b>Falsified by</b> breadth collapsing under ~60 recipients next week.
+          <b>Confirmed by</b> breadth holding above ~200 once price stops moving.</span>
+        </span>
+        <span class="fig">high</span>
+      </div>
+
+      <div class="sig s-flat">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">3 &nbsp;Supernova triggered the final leg &mdash; but did not cause the move</span>
+          <span class="d">The catalyst is real and dated: 10 September, epoch 2233, migration window
+          opened 1 September. But EGLD was $2.61 on 17 August and $4.02 before today's session &mdash;
+          <strong>+54% before the window opened</strong>, +73.5% over 30 days. Supernova accelerated a
+          move already three weeks old. That also makes it the clearest risk: a known, dated event is
+          the textbook sell-the-news setup.</span>
+        </span>
+        <span class="fig">accelerant</span>
+      </div>
+
+      <div class="sig s-buy">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">4 &nbsp;Float compression amplifying the squeeze</span>
+          <span class="d">Sellable inventory fell <strong>534,385 EGLD &mdash; 1.74% of circulating
+          supply &mdash; in 48 hours</strong>: exchanges &minus;401,322, desks &minus;133,063. Less
+          borrowable inventory makes a squeeze cheaper to run. Honest caveat: causality runs both ways,
+          since a squeeze itself causes withdrawals. This amplifies, it does not initiate.</span>
+        </span>
+        <span class="fig">mechanism</span>
+      </div>
+
+      <div class="sig s-sell">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">5 &nbsp;The OTC desks distributing into it &mdash; the force that caps it</span>
+          <span class="d">The desks halved and delivered 338,919 EGLD one-way to Bybit, Binance and
+          Gate.io. But <strong>57% of all exchange withdrawals went back into the pipeline</strong>, so
+          the desks were reloading even while draining. This is the supply that meets the squeeze, and
+          the reason the move has a ceiling.</span>
+        </span>
+        <span class="fig">counter-force</span>
+      </div>
+
+      <div class="sig s-flat">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">6 &nbsp;A Korean or venue-specific bid</span>
+          <span class="d">Upbit EGLD/KRW is 10.9% of spot volume &mdash; meaningful, but Binance is
+          19.6% and volume spreads across 78 pairs. UPbit also <em>fed</em> the desks 92,000 EGLD, which
+          is not what a demand centre does.</span>
+        </span>
+        <span class="fig">low</span>
+      </div>
+
+      <div class="sig s-sell">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">7 &nbsp;Sector rotation into layer-1s</span>
+          <span class="d">Falsified. Every peer is flat to negative over the same 24 hours: SOL
+          &minus;0.71%, ETH &minus;0.86%, AVAX &minus;0.93%, ATOM &minus;1.06%, DOT &minus;1.64%, NEAR
+          &minus;3.69%. EGLD moved alone.</span>
+        </span>
+        <span class="fig">falsified</span>
+      </div>
+
+      <div class="sig s-sell">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">8 &nbsp;A fundamental re-rating on network usage</span>
+          <span class="d">Falsified. Staked EGLD &minus;29,433, delegation &minus;30,788, delegator
+          count flat for a twelfth week, both major LSDs shrank, both wrapped stablecoins contracted,
+          and no token issuance has cleared the quality bar in seven weeks.</span>
+        </span>
+        <span class="fig">falsified</span>
+      </div>
+
+      <div class="sig s-flat">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">9 &nbsp;A listing, index inclusion or market-maker mandate</span>
+          <span class="d">Unevidenced. That would show as a discrete inventory build at one venue.
+          Volume is spread across 78 pairs and no single exchange balance carries the signature. Cannot
+          be ruled out from public data, but nothing points to it.</span>
+        </span>
+        <span class="fig">unevidenced</span>
+      </div>
+
+    </div>
+  </section>
+
   <section>
     <div class="eyebrow">What it adds up to</div>
-    <h2>Named, finite supply meeting anonymous demand</h2>
+    <h2>Three things at once, not one</h2>
 
     <div class="verdict">
       <p>
-        The evidence for distribution is unusually consistent. The record OTC overhang halved
-        into the move, with the most recent 24 hours delivering to Bybit, Binance and Gate.io
-        rather than clearing back to UPbit. Large and mid whales net-sold 474,883 EGLD. Staked
-        EGLD, delegation, both major liquid-staking tokens and both wrapped dollars all
-        contracted. There is no identifiable large buyer anywhere in the data.
+        The first version of this brief concluded that holders were selling into the bid. The
+        decomposition above overturns that, and it is worth stating plainly: the whale-tier
+        aggregates that produced it were measuring exchange wallets, not holders.
       </p>
       <p>
-        Two things genuinely cut the other way, and they are not small. Binance moved 420K off
-        exchange float and back into staking custody, reversing a two-week distribution
-        programme. And USH minted for the first time in three weeks, meaning borrowers are
-        opening leveraged positions rather than closing them.
+        What the evidence actually supports is three things happening together. A heavily short
+        derivatives book &mdash; 28.4% of market cap in open interest, funding negative on 27 of 32
+        venues &mdash; is being squeezed, and that is what produced a +17% session on 6.4x spot
+        volume. Underneath it, spot demand is unusually broad: 365 wallets took delivery in 48
+        hours against 50 in the prior week. And into both, the OTC desks are delivering their
+        record inventory, halved from 266,213 to 133,150.
       </p>
       <p>
-        The tension worth holding: the supply being distributed is <strong>identified, named and
-        finite</strong> &mdash; 133,150 EGLD still sits on the desks, and it is now half what it
-        was. The demand absorbing it is <strong>anonymous and unmeasurable</strong> from chain
-        data, because it is arriving at exchange order books. That asymmetry is why this model
-        can describe the selling precisely and can say almost nothing about the buying.
+        The bull and bear cases are therefore about <strong>sequencing, not disagreement about
+        facts</strong>. The squeeze is finite and ends when the short book is closed. The desk
+        supply is finite too &mdash; 133,150 EGLD, and visible. Whether the broad spot bid outlasts
+        both is the open question, and it is the genuinely new thing here: withdrawal breadth has
+        never been this high in twenty-three runs of tracking.
+      </p>
+      <p>
+        The dated risk is Supernova itself. The move is three weeks older than the catalyst, the
+        catalyst is eight days out, and everyone can see the date.
       </p>
     </div>
 
@@ -557,6 +691,8 @@
           <tr><th>Question</th><th>What to watch</th><th>Threshold</th></tr>
         </thead>
         <tbody>
+          <tr class="spot"><td class="name">Squeeze or real bid?</td><td>Perp open interest and funding</td><td>OI falling with price holding = squeeze done; funding turning positive = longs now crowded</td></tr>
+          <tr class="spot"><td class="name">Is the spot bid real?</td><td>Ex-pipeline withdrawal breadth</td><td>Above ~200 recipients after price stops moving</td></tr>
           <tr><td class="name">Is the overhang cleared or reloading?</td><td>Desk inventory</td><td>Below ~60K = delivered; back above ~200K = restaged</td></tr>
           <tr><td class="name">Was Binance's reversal real?</td><td>Custody vs hot wallet</td><td>Custody holding above 3.3M through 10 Sep</td></tr>
           <tr><td class="name">Is the upgrade on schedule?</td><td>Validator versions</td><td>v2.x share rising before 10 Sep</td></tr>

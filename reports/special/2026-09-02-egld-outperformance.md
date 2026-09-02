@@ -155,23 +155,47 @@ The run #9 watch on this wallet carries a pre-registered reading: a move back in
 custody is the constructive branch. It just fired constructive for the first time
 since run #14.
 
-### Whale tiers: everyone except Binance sold
+### Correction: the tier figures were exchange plumbing, not holders
 
-On a prior-tier basis across the 76 addresses present in both snapshots (the run
-#14 boundary guard):
+An earlier version of this report read the whale-tier aggregates as "everyone except
+Binance sold." That was wrong, and the error is instructive: the 100K-1M tier contains
+Binance's hot wallet, UPbit, Bybit and both OTC desks, so the tier delta was measuring
+venue infrastructure, not holders.
 
-| Tier | Wallets | 2026-08-31 | 2026-09-02 | Change |
-|---|---|---|---|---|
-| Mega (>1M) | 2 | 4,077,842 | 4,497,678 | **+419,836 (+10.30%)** |
-| Large (100K–1M) | 17 | 4,959,207 | 4,589,396 | **-369,811 (-7.46%)** |
-| Mid (10K–100K) | 50 | 1,474,936 | 1,369,864 | **-105,072 (-7.12%)** |
+Decomposed across the 76 addresses present in both snapshots:
 
-The entire mega-tier gain **is** the Binance custody transfer. Net that out and
-large and mid whales sold **474,883 EGLD combined** into the move. Gate.io was
-nearly emptied (-82.9%, 9,537 left) and Bybit fell 19.2%.
+| Cohort | Wallets | 48h change |
+|---|---|---|
+| Exchange, desk and router wallets | 14 | **-121,264** |
+| Genuine non-venue holders | 62 | **+65,773** |
 
-Two wallets accumulated: Unknown Whale B (+55,037) and a nonce-0 migration
-destination (+66,525).
+Tracked large holders were net **buyers**. Among non-venue movers above 2,000 EGLD,
+137,483 was accumulated against 72,969 distributed.
+
+### Withdrawal breadth exploded — this is the strongest bullish evidence
+
+Every withdrawal out of a tracked exchange wallet over the 48 hours:
+
+| | Recipients | EGLD |
+|---|---|---|
+| All withdrawals | 377 | 873,098 |
+| To the OTC pipeline | 12 | 499,916 (57%) |
+| **Ex-pipeline** | **365** | **373,182** |
+
+For comparison, run #23 recorded **50 ex-pipeline recipients taking 400,113 EGLD across
+a full week**. This is 365 recipients taking almost the same amount **in 48 hours** — a
+seven-fold increase in breadth.
+
+The size distribution is a genuine retail tail, not a handful of blocks:
+
+| Size band | Wallets | EGLD |
+|---|---|---|
+| 10K+ | 8 | 198,804 |
+| 1K-10K | 42 | 138,836 |
+| 100-1K | 82 | 29,453 |
+| Under 100 | 233 | 6,089 |
+
+Median withdrawal: **49 EGLD**. Largest: 55,037 to Unknown Whale B.
 
 ### The identifiable bid is still exactly zero
 
@@ -194,40 +218,145 @@ liquid-staking instrument on the chain currently taking subscriptions.
 
 ---
 
+## Theories, ranked by likelihood
+
+Each rests on evidence in this report, and each states what would falsify it.
+
+### 1. A crowded short book being squeezed — the proximate driver
+
+**Confidence: high.** This is the only theory that explains the *shape* of the move:
++17.2% in a single session on volume 4x the prior day, while spot inventory was
+leaving exchanges rather than arriving.
+
+| Evidence | Reading |
+|---|---|
+| Funding negative on **27 of 32** perp venues | Shorts are paying longs to hold |
+| Mean funding **-0.0635%**, most negative -0.1961% | Crowded, and paying up |
+| Open interest **$41.1M = 28.4% of market cap** | Unusually large derivatives book |
+| Perp volume **$128.9M = 6.4x** spot volume | The move is happening in derivatives |
+
+Negative funding means the perpetual trades below spot: short demand exceeds long
+demand, and shorts are subsidising longs to stay in the trade. Into a +21% move that
+is a forced-covering setup, and covering is self-reinforcing.
+
+*Falsifies it:* open interest rising while funding flips positive — that would be new
+longs, not shorts covering. *Confirms it:* open interest falling sharply while price
+holds, the signature of a book being closed out.
+
+### 2. Genuine broad spot accumulation
+
+**Confidence: high**, and revised upward during this analysis. **365 distinct wallets**
+took 373,182 EGLD off exchanges in 48 hours, against 50 wallets and 400,113 EGLD across
+the whole of the prior week. Median withdrawal 49 EGLD, with 233 wallets taking under
+100 — a real retail tail rather than a few blocks. Tracked non-venue holders were net
+buyers of 65,773 EGLD.
+
+*Falsifies it:* breadth collapsing back under ~60 recipients next week, which would
+make this a two-day event tied to the price. *Confirms it:* breadth holding above ~200
+recipients once the price stops moving.
+
+### 3. Supernova as the trigger for the final leg — but not the cause of the move
+
+**Confidence: high as an accelerant, low as the origin.** The dated catalyst is real:
+10 September, epoch 2233, and the migration window opened 1 September, the day the
+final leg began.
+
+But the trend is three weeks older than the catalyst window. EGLD was $2.61 on 17
+August and $4.02 on 2 September before today's session — **+54% before the window
+opened at all**, and +73.5% over 30 days. Supernova is the narrative that accelerated
+a move already underway, not its origin.
+
+This also makes it the clearest risk: a known, dated event is the textbook setup for
+selling the news.
+
+*Falsifies it:* price continuing to trend after 10 September. *Confirms it:* a sharp
+reversal into or immediately after activation.
+
+### 4. Float compression amplifying the squeeze
+
+**Confidence: medium-high as a mechanism, low as a cause.** Sellable inventory fell
+**534,385 EGLD — 1.74% of circulating supply — in 48 hours**: exchanges -401,322 and
+desks -133,063. Binance moved 420K into staking custody and Gate.io emptied 82.9%.
+Less borrowable inventory makes a squeeze cheaper to run and harder to fade.
+
+The honest caveat is that causality runs both ways: a squeeze itself causes withdrawals,
+as holders pull collateral and take delivery. This amplifies, it does not initiate.
+
+### 5. The OTC desks distributing into it — the force that caps it
+
+**Confidence: high that it is happening, but it is a counter-force, not a driver.** The
+desks halved and delivered 338,919 EGLD one-way to Bybit, Binance and Gate.io. Note the
+qualifier the breadth data adds: **57% of all exchange withdrawals went back into the
+pipeline**, so the desks were being reloaded even while draining. This is the supply
+that meets the squeeze, and the reason the move has a ceiling.
+
+### 6. A Korean or venue-specific bid
+
+**Confidence: low.** Upbit's EGLD/KRW pair is 10.9% of spot volume — meaningful, but
+Binance is 19.6% and the volume is spread across 78 pairs. UPbit also *fed* the desks
+92,000 EGLD in the window, which is not what a demand centre does. No Korean-premium
+story survives this evidence.
+
+### 7. Sector rotation into layer-1s
+
+**Falsified.** Every L1 peer is flat to negative over the same 24 hours: SOL -0.71%,
+ETH -0.86%, AVAX -0.93%, ATOM -1.06%, DOT -1.64%, NEAR -3.69%. EGLD moved alone.
+
+### 8. A fundamental re-rating on network usage
+
+**Falsified.** Staked EGLD fell 29,433, delegation fell 30,788, the delegator count is
+flat for a twelfth week, both major liquid-staking tokens shrank, both wrapped
+stablecoins contracted, and no token issuance has cleared the quality bar in seven
+weeks. Nothing in usage supports a re-rating.
+
+### 9. A listing, index inclusion or market-maker mandate
+
+**Unevidenced.** That would show as a discrete inventory build at one venue. Instead the
+volume is spread across 78 pairs and no single exchange balance shows the signature.
+Cannot be ruled out from public data, but nothing points to it.
+
+---
+
 ## What this adds up to
 
-A protocol upgrade eight days out is being priced, and the entities holding EGLD
-are using the bid to reduce exposure.
+The first version of this report concluded that holders were selling into the bid. The
+decomposition above overturns that, and it is worth stating plainly: the whale-tier
+aggregates that produced it were measuring exchange wallets, not holders.
 
-The evidence for the second half is unusually consistent: the record OTC overhang
-halved into the move, with the most recent 24 hours delivering to Bybit, Binance
-and Gate.io rather than clearing back to UPbit; large and mid whales net-sold
-474,883 EGLD; staked EGLD, delegation, both major LSDs and both wrapped dollars
-all contracted; and there is no identifiable large buyer anywhere in the data.
+What the evidence actually supports is three things happening at once. A heavily short
+derivatives book — 28.4% of market cap in open interest, funding negative on 27 of 32
+venues — is being squeezed, and that is what produced a +17% session on 6.4x spot
+volume. Underneath it, genuine spot demand is unusually broad: 365 wallets took delivery
+in 48 hours against 50 in the prior week. And into both, the OTC desks are delivering
+their record inventory, halved from 266,213 to 133,150.
 
-Two things genuinely cut the other way, and they are not small. Binance moved
-420K off exchange float back into staking custody — reversing the two-week
-distribution programme, and firing the constructive branch of a watch standing
-since run #9. And USH minted for the first time in three weeks, meaning borrowers
-are opening leveraged positions rather than closing them.
+The bull and bear cases are therefore about **sequencing, not disagreement about facts**.
+The squeeze is finite and ends when the short book is closed. The desk supply is
+finite too — 133,150 EGLD, and visible. Whether the broad spot bid outlasts both is the
+open question, and it is the one thing here that is genuinely new: withdrawal breadth
+has never been this high in twenty-three runs of tracking.
 
-The tension to hold: the supply being distributed is **identified, named and
-finite** — 133,150 EGLD still sits on the desks, and it is now half what it was.
-The demand absorbing it is **anonymous and unmeasurable** from on-chain data,
-because it is arriving at exchange order books. That asymmetry is why this model
-can describe the selling precisely and can say almost nothing about the buying.
+Two constructive signals reinforce it. Binance moved 420K off exchange float into
+staking custody, reversing the two-week distribution programme run #23 documented. And
+USH minted for the first time in three weeks — borrowers opening leverage, not closing
+it.
+
+The dated risk is Supernova itself. The move is three weeks older than the catalyst, the
+catalyst is eight days out, and everyone can see the date.
 
 ### What would settle it
 
 | Question | What to watch | Threshold |
 |---|---|---|
+| Squeeze or real bid? | Perp open interest and funding | OI falling with price holding = squeeze done; funding turning positive = longs now crowded |
+| Is the spot bid real? | Ex-pipeline withdrawal breadth | Above ~200 recipients after the price stops moving |
 | Is the overhang cleared or reloading? | Desk inventory | Below ~60K = delivered; back above ~200K = restaged |
-| Was Binance's reversal real? | Custody vs hot | Custody holding above 3.3M through 10 Sep |
-| Is the upgrade on schedule? | Validator versions | v2.x share before 10 Sep |
-| Is demand real or positioning? | Price after activation | Holding $4.50+ through the 24-minute pause |
+| Was Binance's reversal real? | Custody vs hot wallet | Custody holding above 3.3M through 10 Sep |
+| Is the upgrade on schedule? | Validator versions | v2.x share rising before 10 Sep |
+| Sell the news? | Price through activation | Holding $4.50+ after the 24-minute pause |
 
 ---
 
 *Ad-hoc report, outside the weekly cycle. Figures are 48-hour deltas against the
-run #23 snapshot (2026-08-31) unless stated. All EGLD amounts human-readable. All
-times UTC.*
+run #23 snapshot (2026-08-31) unless stated. Derivatives data is point-in-time from
+CoinGecko. All EGLD amounts human-readable. All times UTC.*
