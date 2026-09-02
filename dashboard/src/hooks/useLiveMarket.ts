@@ -3,17 +3,15 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 /**
  * Live market state for the pump tracker.
  *
- * Fetched client-side rather than through a serverless proxy on purpose: both
- * upstreams send `access-control-allow-origin: *`, and CoinGecko's free tier is
- * rate-limited per IP. Calling from each visitor's own browser spreads the limit
- * across readers instead of funnelling every visit through one server IP, which
- * is what would actually break if this page found an audience.
+ * Price and derivatives come through /api/market, an edge function, because
+ * CoinGecko does NOT send CORS headers on /coins/markets or /derivatives — a
+ * browser fetch fails outright. Proxying also lets the edge cache the response
+ * for 60s, so CoinGecko sees one call a minute however many people are reading.
  *
- * Five requests per refresh: one market snapshot, one derivatives sweep, one
- * chain economics call, and one balance call per OTC desk.
+ * Chain data is fetched straight from the MultiversX API, which does send
+ * permissive CORS and has no comparable rate limit.
  */
 
-const CG = 'https://api.coingecko.com/api/v3'
 const MX = 'https://api.multiversx.com'
 
 /** The two wallets that fill large private orders on this chain. Their stock of
@@ -27,18 +25,6 @@ export const DESKS: Array<{ address: string; label: string }> = [
     address: 'erd1z7fnqf4mjknsx289t9qf9kv5yr2fts7uv8ssmuknq7546f8e6ceq2nm63r',
     label: 'OTC Distribution Wallet',
   },
-]
-
-const PEER_IDS = [
-  'elrond-erd-2',
-  'bitcoin',
-  'ethereum',
-  'solana',
-  'polkadot',
-  'avalanche-2',
-  'cosmos',
-  'near',
-  'algorand',
 ]
 
 export interface Peer {
@@ -95,17 +81,20 @@ function median(xs: number[]): number {
 }
 
 async function load(signal: AbortSignal): Promise<LiveMarket> {
-  const [markets, derivatives, economics, ...deskAccounts] = await Promise.all([
-    getJson(
-      `${CG}/coins/markets?vs_currency=usd&ids=${PEER_IDS.join(',')}&price_change_percentage=24h,7d,30d`,
-      signal,
-    ),
-    getJson(`${CG}/derivatives?include_tickers=unexpired`, signal),
+  const [proxied, economics, ...deskAccounts] = await Promise.all([
+    getJson('/api/market', signal),
     getJson(`${MX}/economics`, signal),
     ...DESKS.map((d) => getJson(`${MX}/accounts/${d.address}`, signal)),
   ])
 
-  const rows = (markets as Array<Record<string, unknown>>) ?? []
+  const payload = proxied as {
+    markets?: Array<Record<string, unknown>>
+    venues?: Array<Record<string, unknown>>
+    error?: string
+  }
+  if (payload.error) throw new Error(payload.error)
+
+  const rows = payload.markets ?? []
   const egld = rows.find((r) => String(r.symbol).toLowerCase() === 'egld')
   if (!egld) throw new Error('EGLD not present in the market response')
 
@@ -122,15 +111,12 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
   const change24h = Number(egld.price_change_percentage_24h ?? 0)
   const marketCap = Number(egld.market_cap ?? 0)
 
-  const venues: PerpVenue[] = ((derivatives as Array<Record<string, unknown>>) ?? [])
-    .filter((d) => String(d.symbol ?? '').toUpperCase().startsWith('EGLD'))
-    .map((d) => ({
-      market: String(d.market ?? '?'),
-      openInterest: Number(d.open_interest ?? 0),
-      volume24h: Number(d.volume_24h ?? 0),
-      funding: d.funding_rate == null ? null : Number(d.funding_rate),
-    }))
-    .sort((a, b) => b.openInterest - a.openInterest)
+  const venues: PerpVenue[] = (payload.venues ?? []).map((d) => ({
+    market: String(d.market ?? '?'),
+    openInterest: Number(d.open_interest ?? 0),
+    volume24h: Number(d.volume_24h ?? 0),
+    funding: d.funding_rate == null ? null : Number(d.funding_rate),
+  }))
 
   const fundings = venues
     .map((v) => v.funding)

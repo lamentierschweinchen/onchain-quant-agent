@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLiveMarket } from '../hooks/useLiveMarket'
 import type { LiveMarket } from '../hooks/useLiveMarket'
 import { PageTabs } from '../components/PageTabs'
+import { MarketHistory } from '../components/MarketHistory'
 import { formatEgldBare, formatUsd, formatNumber } from '../lib/formatters'
 
 /* -------------------------------------------------------------------------
@@ -253,6 +254,8 @@ export function PumpPage() {
               <Signal label="Which side is leveraged?" {...leverage(data)} />
               <Signal label="Supply waiting to sell" {...overhang(data)} />
             </div>
+
+            <MarketHistory />
 
             {/* detail */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
