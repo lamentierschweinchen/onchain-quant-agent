@@ -1,159 +1,294 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLiveMarket } from '../hooks/useLiveMarket'
 import type { LiveMarket } from '../hooks/useLiveMarket'
 import { PageTabs } from '../components/PageTabs'
-import { MarketHistory } from '../components/MarketHistory'
+import { MarketHistory, useHistory } from '../components/MarketHistory'
 import { formatEgldBare, formatUsd, formatNumber } from '../lib/formatters'
+import {
+  decoupling,
+  leverage,
+  overhang,
+  shortCostPerDay,
+  TONE_TEXT,
+  TONE_BG,
+} from '../lib/pumpSignals'
+import type { Signal } from '../lib/pumpSignals'
 
-/* -------------------------------------------------------------------------
-   Three read-outs that are not price, because price is the one thing every
-   other site already shows. Each is a named state with an explicit threshold,
-   so a reader can see why it says what it says.
-   ------------------------------------------------------------------------- */
+const REFRESH_MS = 60_000
 
-type Tone = 'up' | 'down' | 'flat'
-
-function decoupling(d: LiveMarket): { state: string; tone: Tone; detail: string } {
-  const gap = d.decouplingPp
-  if (gap > 8)
-    return {
-      state: 'Moving alone',
-      tone: 'up',
-      detail: `${gap >= 0 ? '+' : ''}${gap.toFixed(1)}pp vs the median layer-1 peer — this is specific to MultiversX, not a market move`,
-    }
-  if (gap < -8)
-    return {
-      state: 'Lagging badly',
-      tone: 'down',
-      detail: `${gap.toFixed(1)}pp vs the median peer`,
-    }
-  return {
-    state: 'Moving with the market',
-    tone: 'flat',
-    detail: `${gap >= 0 ? '+' : ''}${gap.toFixed(1)}pp vs the median peer — inside the normal band`,
-  }
-}
-
-function leverage(d: LiveMarket): { state: string; tone: Tone; detail: string } {
-  const share = d.oiShareOfMcap
-  const negShare = d.fundingVenues ? d.fundingNegative / d.fundingVenues : 0
-  const heavy = share > 20
-  if (negShare > 0.6)
-    return {
-      state: heavy ? 'Shorts crowded, heavily' : 'Shorts crowded',
-      tone: 'up',
-      detail: `${d.fundingNegative} of ${d.fundingVenues} venues have short sellers paying longs. Open interest is ${share.toFixed(1)}% of market cap${heavy ? ' — above 20% a squeeze moves price hard' : ''}`,
-    }
-  if (negShare < 0.4)
-    return {
-      state: heavy ? 'Longs crowded, heavily' : 'Longs crowded',
-      tone: 'down',
-      detail: `Only ${d.fundingNegative} of ${d.fundingVenues} venues show shorts paying. Longs are the crowded side, which cuts the other way. Open interest ${share.toFixed(1)}% of market cap`,
-    }
-  return {
-    state: 'Balanced',
-    tone: 'flat',
-    detail: `${d.fundingNegative} of ${d.fundingVenues} venues negative. Open interest ${share.toFixed(1)}% of market cap`,
-  }
-}
-
-function overhang(d: LiveMarket): { state: string; tone: Tone; detail: string } {
-  const t = d.deskTotal
-  if (t > 200_000)
-    return {
-      state: 'Supply staged',
-      tone: 'down',
-      detail: `${formatEgldBare(t)} EGLD sitting on the private trading desks, waiting to be sold`,
-    }
-  if (t < 60_000)
-    return {
-      state: 'Overhang cleared',
-      tone: 'up',
-      detail: `Only ${formatEgldBare(t)} EGLD left on the desks — the known selling pressure is largely spent`,
-    }
-  return {
-    state: 'Working down',
-    tone: 'flat',
-    detail: `${formatEgldBare(t)} EGLD on the desks, between the 60K cleared mark and the 200K staged mark`,
-  }
-}
-
-const TONE: Record<Tone, string> = {
-  up: 'text-up',
-  down: 'text-down',
-  flat: 'text-text-secondary',
-}
-const DOT: Record<Tone, string> = {
-  up: 'bg-up',
-  down: 'bg-down',
-  flat: 'bg-text-muted',
-}
-
-function Signal({
-  label,
-  state,
-  tone,
-  detail,
-}: {
-  label: string
-  state: string
-  tone: Tone
-  detail: string
-}) {
-  return (
-    <div className="card p-4">
-      <div className="eyebrow">{label}</div>
-      <div className="mt-2 flex items-center gap-2">
-        <span className={`w-2 h-2 rounded-full shrink-0 ${DOT[tone]}`} aria-hidden="true" />
-        <span className={`text-[17px] font-semibold ${TONE[tone]}`}>{state}</span>
-      </div>
-      <p className="mt-1.5 text-[12px] text-text-muted leading-relaxed">{detail}</p>
-    </div>
-  )
-}
-
-function Stat({
-  label,
-  value,
-  sub,
-  tone,
-}: {
-  label: string
-  value: string
-  sub?: string
-  tone?: Tone
-}) {
-  return (
-    <div className="card p-3.5">
-      <div className="eyebrow">{label}</div>
-      <div
-        className={`font-mono tabular text-[22px] font-medium leading-none mt-1.5 ${tone ? TONE[tone] : 'text-text-primary'}`}
-      >
-        {value}
-      </div>
-      {sub && <div className="font-mono text-[10.5px] text-text-muted mt-1">{sub}</div>}
-    </div>
-  )
-}
+/* ---------------------------------------------------------------- helpers */
 
 function pct(n: number): string {
   return `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`
 }
 
-function ago(ts: number, now: number): string {
-  const s = Math.max(0, Math.round((now - ts) / 1000))
-  if (s < 60) return `${s}s ago`
-  return `${Math.round(s / 60)}m ago`
+function utc(ts: number): string {
+  return new Date(ts).toISOString().slice(11, 19) + ' UTC'
 }
 
+/** A figure that tints once, briefly, when its value actually changes. */
+function Live({
+  value,
+  children,
+  className = '',
+}: {
+  value: number | string
+  children: React.ReactNode
+  className?: string
+}) {
+  const prev = useRef(value)
+  const [flash, setFlash] = useState<'up' | 'down' | null>(null)
+
+  useEffect(() => {
+    if (prev.current === value) return
+    const rose =
+      typeof value === 'number' && typeof prev.current === 'number'
+        ? value > prev.current
+        : true
+    prev.current = value
+    setFlash(rose ? 'up' : 'down')
+    const id = setTimeout(() => setFlash(null), 700)
+    return () => clearTimeout(id)
+  }, [value])
+
+  return (
+    <span
+      className={`${className} rounded px-1 -mx-1 transition-colors duration-700 motion-reduce:transition-none ${
+        flash === 'up' ? 'bg-up/20' : flash === 'down' ? 'bg-down/20' : 'bg-transparent'
+      }`}
+    >
+      {children}
+    </span>
+  )
+}
+
+/** Fills over the refresh interval, so "live" is something you can see. */
+function RefreshBar({ fetchedAt, now }: { fetchedAt: number; now: number }) {
+  const frac = Math.min(1, Math.max(0, (now - fetchedAt) / REFRESH_MS))
+  return (
+    <div className="h-px w-full bg-border-subtle" aria-hidden="true">
+      <div
+        className="h-px bg-accent-cyan/70 transition-[width] duration-1000 ease-linear motion-reduce:transition-none"
+        style={{ width: `${frac * 100}%` }}
+      />
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------ desk gauge */
+
+function DeskGauge({ data, peak }: { data: LiveMarket; peak: number }) {
+  const total = data.deskTotal
+  const scale = Math.max(peak, total)
+  const drained = Math.max(0, peak - total)
+  return (
+    <div>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="eyebrow">Staged on the trading desks</span>
+        <span className="font-mono text-[10px] text-text-muted">
+          peak {formatEgldBare(peak)}
+        </span>
+      </div>
+      <div className="mt-2 flex items-baseline gap-2">
+        <Live value={Math.round(total)} className="font-mono tabular text-[34px] font-semibold leading-none text-text-primary">
+          {formatEgldBare(total)}
+        </Live>
+        <span className="font-mono text-[12px] text-text-muted">EGLD</span>
+      </div>
+      <div className="mt-3 h-3 w-full bg-bg-elevated flex" role="img"
+           aria-label={`${Math.round(total)} EGLD on the desks, from a peak of ${Math.round(peak)}`}>
+        {data.deskBreakdown.map((d, i) => (
+          <div
+            key={d.label}
+            title={`${d.label}: ${formatEgldBare(d.egld)} EGLD`}
+            className={i === 0 ? 'bg-accent-cyan/80' : 'bg-accent-cyan/45'}
+            style={{ width: `${(d.egld / scale) * 100}%` }}
+          />
+        ))}
+      </div>
+      <div className="mt-2 font-mono text-[11px] text-down">
+        −{formatEgldBare(drained)} left the desks since the peak
+      </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------- since you opened strip */
+
+interface Snapshot {
+  price: number
+  deskTotal: number
+  openInterest: number
+  at: number
+}
+
+function useSessionAnchor(data: LiveMarket | null): Snapshot | null {
+  const [anchor, setAnchor] = useState<Snapshot | null>(() => {
+    try {
+      const raw = sessionStorage.getItem('pump-anchor')
+      return raw ? (JSON.parse(raw) as Snapshot) : null
+    } catch {
+      return null
+    }
+  })
+  useEffect(() => {
+    if (!data || anchor) return
+    const snap: Snapshot = {
+      price: data.price,
+      deskTotal: data.deskTotal,
+      openInterest: data.openInterest,
+      at: Date.now(),
+    }
+    setAnchor(snap)
+    try {
+      sessionStorage.setItem('pump-anchor', JSON.stringify(snap))
+    } catch {
+      /* private mode — the strip just won't persist across reloads */
+    }
+  }, [data, anchor])
+  return anchor
+}
+
+function SinceStrip({ data, anchor, now }: { data: LiveMarket; anchor: Snapshot; now: number }) {
+  const mins = Math.max(0, Math.round((now - anchor.at) / 60000))
+  if (mins < 1) return null
+  const dp = data.price - anchor.price
+  const dd = data.deskTotal - anchor.deskTotal
+  const doi = data.openInterest - anchor.openInterest
+  const item = (label: string, text: string, tone: string) => (
+    <span className="whitespace-nowrap">
+      <span className="text-text-faint">{label} </span>
+      <span className={`${tone} font-medium`}>{text}</span>
+    </span>
+  )
+  return (
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[11px] text-text-muted">
+      <span className="text-text-faint uppercase tracking-widest text-[9.5px]">
+        Since you opened this page · {mins}m
+      </span>
+      {item('price', `${dp >= 0 ? '+' : '−'}$${Math.abs(dp).toFixed(3)}`, dp >= 0 ? 'text-up' : 'text-down')}
+      {item(
+        'desks',
+        `${dd <= 0 ? '−' : '+'}${formatEgldBare(Math.abs(dd))} EGLD`,
+        dd <= 0 ? 'text-down' : 'text-up',
+      )}
+      {item('leverage', `${doi >= 0 ? '+' : '−'}${formatUsd(Math.abs(doi))}`, 'text-text-secondary')}
+    </div>
+  )
+}
+
+/* -------------------------------------------------------------- fragments */
+
+function VenueDots({ data }: { data: LiveMarket }) {
+  return (
+    <div>
+      <div className="flex flex-wrap gap-[3px]" role="img"
+           aria-label={`${data.fundingNegative} of ${data.fundingVenues} venues charge short sellers`}>
+        {data.venues.map((v) => (
+          <span
+            key={v.market}
+            title={`${v.market}: ${v.funding == null ? 'no funding data' : `${v.funding.toFixed(4)}%`}`}
+            className={`w-2 h-2 rounded-[1px] ${
+              v.funding == null
+                ? 'bg-bg-elevated'
+                : v.funding < 0
+                  ? 'bg-accent-cyan'
+                  : 'bg-severity-medium/70'
+            }`}
+          />
+        ))}
+      </div>
+      <div className="mt-2 font-mono text-[11px] text-text-muted">
+        {data.fundingNegative} of {data.fundingVenues} venues charge short sellers
+      </div>
+    </div>
+  )
+}
+
+function AloneStrip({ data }: { data: LiveMarket }) {
+  const all = [{ symbol: 'EGLD', change24h: data.change24h, me: true },
+    ...data.peers.map((p) => ({ symbol: p.symbol, change24h: p.change24h, me: false }))]
+  const lo = Math.min(-6, ...all.map((p) => p.change24h))
+  const hi = Math.max(6, ...all.map((p) => p.change24h))
+  const at = (v: number) => ((v - lo) / (hi - lo)) * 100
+  return (
+    <div>
+      <div className="eyebrow">Today against every layer-1 peer</div>
+      <div className="relative h-11 mt-3">
+        <div className="absolute inset-x-0 top-5 h-px bg-border" />
+        <div className="absolute top-3 w-px h-4 bg-border-strong" style={{ left: `${at(0)}%` }} />
+        {all.filter((p) => !p.me).map((p) => (
+          <div key={p.symbol} title={`${p.symbol} ${pct(p.change24h)}`}
+               className="absolute top-3.5 w-px h-3 bg-text-muted"
+               style={{ left: `${at(p.change24h)}%` }} />
+        ))}
+        <div className="absolute top-1 flex flex-col items-center -translate-x-1/2"
+             style={{ left: `${at(data.change24h)}%` }}>
+          <span className="font-mono text-[10px] font-bold text-accent-cyan whitespace-nowrap">
+            EGLD {pct(data.change24h)}
+          </span>
+          <span className="w-px h-5 bg-accent-cyan mt-0.5" />
+        </div>
+      </div>
+      <div className="flex justify-between font-mono text-[9.5px] text-text-faint">
+        <span>{lo.toFixed(0)}%</span>
+        <span>the other eight sit here</span>
+        <span>+{hi.toFixed(0)}%</span>
+      </div>
+    </div>
+  )
+}
+
+function Disclosure({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <details className="card group">
+      <summary className="px-4 py-3 cursor-pointer list-none flex items-center justify-between gap-3 text-[12px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60 focus-visible:ring-inset">
+        <span>{title}</span>
+        <span className="font-mono text-[10px] text-text-muted">
+          <span className="group-open:hidden">show +</span>
+          <span className="hidden group-open:inline">hide −</span>
+        </span>
+      </summary>
+      <div className="px-4 pb-4">{children}</div>
+    </details>
+  )
+}
+
+/* ------------------------------------------------------------------ page */
+
 export function PumpPage() {
-  const { data, error, loading, refresh } = useLiveMarket(60_000)
+  const { data, error, loading, refresh } = useLiveMarket(REFRESH_MS)
+  const { hist } = useHistory()
   const [now, setNow] = useState(() => Date.now())
+  const anchor = useSessionAnchor(data)
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(id)
   }, [])
+
+  // Remember the previous state name per signal so thresholds get hysteresis
+  // instead of flipping every refresh when a value sits on a boundary.
+  const prevStates = useRef<{ dec?: string; lev?: string; ovh?: string }>({})
+  const peak = useMemo(
+    () => Math.max(266213, ...(hist?.points.map((p) => p.desks) ?? [0])),
+    [hist],
+  )
+
+  const signals = useMemo(() => {
+    if (!data) return null
+    const dec = decoupling(data, prevStates.current.dec)
+    const lev = leverage(data, prevStates.current.lev)
+    const ovh = overhang(data, peak, prevStates.current.ovh)
+    prevStates.current = {
+      dec: dec.state.startsWith('Moving alone') ? 'alone' : dec.state.startsWith('Lagging') ? 'lagging' : 'with',
+      lev: lev.state.startsWith('Shorts') ? 'shorts' : lev.state.startsWith('Longs') ? 'longs' : 'balanced',
+      ovh: ovh.state.startsWith('Supply') ? 'staged' : ovh.state.startsWith('Desks nearly') ? 'cleared' : 'falling',
+    }
+    return { dec, lev, ovh }
+  }, [data, peak])
+
+  const cost = data ? shortCostPerDay(data) : null
 
   return (
     <div className="min-h-screen bg-bg text-text-primary">
@@ -162,26 +297,25 @@ export function PumpPage() {
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-6 bg-accent-cyan rounded-sm" />
             <div className="flex flex-col leading-tight">
-              <span className="text-[14px] font-semibold tracking-tight">
-                EGLD Pump Tracker
-              </span>
+              <span className="text-[14px] font-semibold tracking-tight">EGLD Pump Tracker</span>
               <span className="text-[9.5px] font-mono uppercase tracking-[0.14em] text-text-muted">
-                Live · refreshes every 60s
+                Live · every 60s
               </span>
             </div>
           </div>
           <div className="flex-1" />
           <PageTabs active="pump" />
         </div>
+        {data && <RefreshBar fetchedAt={data.fetchedAt} now={now} />}
       </header>
 
-      <main className="max-w-[1100px] mx-auto px-6 py-6">
+      <main className="max-w-[1080px] mx-auto px-6 py-6">
         {loading && !data && (
           <div className="grid gap-3">
             {[0, 1, 2].map((i) => (
               <div key={i} className="card p-6 animate-pulse">
-                <div className="h-3 w-28 bg-bg-elevated rounded" />
-                <div className="h-7 w-44 bg-bg-elevated rounded mt-3" />
+                <div className="h-3 w-32 bg-bg-elevated rounded" />
+                <div className="h-8 w-52 bg-bg-elevated rounded mt-3" />
               </div>
             ))}
           </div>
@@ -191,212 +325,166 @@ export function PumpPage() {
           <div className="card p-6">
             <p className="text-down font-medium">Could not load live data</p>
             <p className="text-text-muted text-[13px] font-mono mt-1">{error}</p>
-            <button
-              type="button"
-              onClick={refresh}
-              className="mt-4 px-3 py-1.5 rounded border border-accent-cyan/30 bg-accent-cyan/10 text-accent-cyan text-[11px] font-mono uppercase tracking-wider hover:bg-accent-cyan/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60"
-            >
+            <button type="button" onClick={refresh}
+              className="mt-4 px-3 py-1.5 rounded border border-accent-cyan/30 bg-accent-cyan/10 text-accent-cyan text-[11px] font-mono uppercase tracking-wider hover:bg-accent-cyan/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60">
               Try again
             </button>
           </div>
         )}
 
-        {data && (
-          <div className="space-y-5">
+        {data && signals && (
+          <div className="space-y-4">
             {error && (
               <p className="text-[11px] font-mono text-severity-medium">
-                Live refresh failed ({error}). Showing the last good reading from{' '}
-                {ago(data.fetchedAt, now)}.
+                Refresh failed ({error}). Showing the last good reading.
               </p>
             )}
 
-            {/* headline numbers */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              <Stat
-                label="Price"
-                value={`$${data.price.toFixed(2)}`}
-                sub={`$${data.low24h.toFixed(2)}–$${data.high24h.toFixed(2)} 24h`}
-              />
-              <Stat
-                label="24 hour"
-                value={pct(data.change24h)}
-                tone={data.change24h >= 0 ? 'up' : 'down'}
-              />
-              {data.change7d != null && (
-                <Stat
-                  label="7 day"
-                  value={pct(data.change7d)}
-                  tone={data.change7d >= 0 ? 'up' : 'down'}
-                />
-              )}
-              {data.change30d != null && (
-                <Stat
-                  label="30 day"
-                  value={pct(data.change30d)}
-                  tone={data.change30d >= 0 ? 'up' : 'down'}
-                />
-              )}
-              <Stat
-                label="Market cap"
-                value={formatUsd(data.marketCap)}
-                sub={`vol ${formatUsd(data.volume24h)}`}
-              />
-              <Stat
-                label="Volume / cap"
-                value={`${((100 * data.volume24h) / data.marketCap).toFixed(1)}%`}
-                sub="turnover"
-              />
-            </div>
+            {/* ---- TIER 0: the sentence, then the two numbers that matter ---- */}
+            <section className="card p-5">
+              <p className="text-[19px] leading-snug font-medium text-text-primary max-w-[62ch]">
+                EGLD is{' '}
+                <span className={signals.dec.tone === 'notable' ? 'text-accent-cyan' : ''}>
+                  {signals.dec.clause}
+                </span>
+                ,{' '}
+                <span className={TONE_TEXT[signals.lev.tone]}>{signals.lev.clause}</span>, and{' '}
+                <span className={TONE_TEXT[signals.ovh.tone]}>{signals.ovh.clause}</span>.
+              </p>
 
-            {/* the three signals */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <Signal label="Is it moving alone?" {...decoupling(data)} />
-              <Signal label="Which side is leveraged?" {...leverage(data)} />
-              <Signal label="Supply waiting to sell" {...overhang(data)} />
-            </div>
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <div className="eyebrow">Price</div>
+                  <div className="mt-2 flex items-baseline gap-3 flex-wrap">
+                    <Live value={data.price} className="font-mono tabular text-[38px] font-semibold leading-none">
+                      ${data.price.toFixed(2)}
+                    </Live>
+                    <Live
+                      value={data.change24h}
+                      className={`font-mono tabular text-[18px] font-semibold ${data.change24h >= 0 ? 'text-up' : 'text-down'}`}
+                    >
+                      {pct(data.change24h)}
+                    </Live>
+                  </div>
+                  <div className="mt-2 font-mono text-[11px] text-text-muted">
+                    ${data.low24h.toFixed(2)}–${data.high24h.toFixed(2)} today · data as of{' '}
+                    {utc(data.fetchedAt)}
+                  </div>
+                </div>
+                <DeskGauge data={data} peak={peak} />
+              </div>
 
+              {anchor && (
+                <div className="mt-5 pt-4 border-t border-border-subtle">
+                  <SinceStrip data={data} anchor={anchor} now={now} />
+                </div>
+              )}
+            </section>
+
+            {/* ---- what the leverage costs, in money ---- */}
+            <section className="card p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <div className="eyebrow">What betting against it costs, per day</div>
+                {cost != null ? (
+                  <>
+                    <Live value={Math.round(cost)} className="block mt-2 font-mono tabular text-[32px] font-semibold text-accent-cyan leading-none">
+                      {formatUsd(cost)}
+                    </Live>
+                    <p className="mt-2 text-[12px] text-text-muted leading-relaxed max-w-[46ch]">
+                      {formatUsd(data.openInterest)} of leverage outstanding ×{' '}
+                      {data.fundingMean?.toFixed(4)}% × 3 charges a day. Paid by the side betting
+                      on a fall, to the side betting on a rise. An estimate: venues differ on
+                      interval.
+                    </p>
+                  </>
+                ) : (
+                  <p className="mt-2 text-[13px] text-text-muted">No funding data right now.</p>
+                )}
+              </div>
+              <VenueDots data={data} />
+            </section>
+
+            {/* ---- TIER 1: the series ---- */}
             <MarketHistory />
 
-            {/* detail */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              <section className="card overflow-hidden">
-                <header className="px-4 py-2.5 border-b border-border bg-bg-elevated">
-                  <h2 className="text-[12px] font-semibold">24 hour change vs peers</h2>
-                </header>
-                <div className="p-4 space-y-1.5">
-                  {[
-                    { symbol: 'EGLD', change24h: data.change24h, me: true },
-                    ...data.peers.map((p) => ({ ...p, me: false })),
-                  ].map((p) => {
-                    const span = Math.max(
-                      12,
-                      ...[data.change24h, ...data.peers.map((x) => x.change24h)].map(Math.abs),
-                    )
-                    const w = (Math.abs(p.change24h) / span) * 50
-                    const positive = p.change24h >= 0
-                    return (
-                      <div key={p.symbol} className="grid grid-cols-[56px_1fr_62px] items-center gap-2">
-                        <span
-                          className={`font-mono text-[11.5px] ${p.me ? 'text-accent-cyan font-bold' : 'text-text-secondary'}`}
-                        >
-                          {p.symbol}
-                        </span>
-                        <span className="relative h-4 bg-bg-elevated">
-                          <span className="absolute inset-y-0 w-px bg-border-strong" style={{ left: '50%' }} />
-                          <span
-                            className={`absolute inset-y-0 ${p.me ? 'bg-accent-cyan' : positive ? 'bg-up/40' : 'bg-down/40'}`}
-                            style={
-                              positive
-                                ? { left: '50%', width: `${w}%` }
-                                : { right: '50%', width: `${w}%` }
-                            }
-                          />
-                        </span>
-                        <span
-                          className={`font-mono tabular text-[11.5px] text-right ${p.me ? 'text-accent-cyan font-bold' : 'text-text-secondary'}`}
-                        >
-                          {pct(p.change24h)}
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </section>
+            <section className="card p-5">
+              <AloneStrip data={data} />
+            </section>
 
-              <section className="card overflow-hidden">
-                <header className="px-4 py-2.5 border-b border-border bg-bg-elevated">
-                  <h2 className="text-[12px] font-semibold">Leverage by venue</h2>
-                  <p className="text-[10px] text-text-muted mt-0.5">
-                    Negative funding means short sellers are paying to keep their bet open
-                  </p>
-                </header>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-[12px] tabular">
-                    <thead className="bg-bg-soft">
-                      <tr className="text-left">
-                        <th className="px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-text-muted">Venue</th>
-                        <th className="px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-text-muted text-right">Open interest</th>
-                        <th className="px-3 py-2 font-mono text-[9.5px] uppercase tracking-wider text-text-muted text-right">Funding</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.venues.slice(0, 8).map((v) => (
-                        <tr key={v.market} className="border-t border-border-subtle">
-                          <td className="px-3 py-1.5 text-text-secondary">{v.market}</td>
-                          <td className="px-3 py-1.5 text-right text-text-primary">
-                            {formatUsd(v.openInterest)}
-                          </td>
-                          <td
-                            className={`px-3 py-1.5 text-right ${v.funding == null ? 'text-text-faint' : v.funding < 0 ? 'text-up' : 'text-down'}`}
-                          >
-                            {v.funding == null ? '—' : `${v.funding.toFixed(4)}%`}
-                          </td>
-                        </tr>
+            {/* ---- TIER 2: evidence, folded away ---- */}
+            <Disclosure title="Why each reading says what it says">
+              <div className="grid gap-3 sm:grid-cols-3 pt-1">
+                {([signals.dec, signals.lev, signals.ovh] as Signal[]).map((s) => (
+                  <div key={s.state}>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`w-1.5 h-1.5 rounded-full ${TONE_BG[s.tone]}`} />
+                      <span className={`text-[12.5px] font-semibold ${TONE_TEXT[s.tone]}`}>
+                        {s.state}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-[12px] text-text-muted leading-relaxed">{s.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </Disclosure>
+
+            <Disclosure title={`Leverage by venue — all ${data.venues.length}`}>
+              <div className="overflow-x-auto">
+                <table className="w-full text-[12px] tabular">
+                  <thead>
+                    <tr className="text-left">
+                      {['Venue', 'Open interest', 'Funding'].map((h, i) => (
+                        <th key={h} className={`py-2 font-mono text-[9.5px] uppercase tracking-wider text-text-muted ${i ? 'text-right' : ''}`}>
+                          {h}
+                        </th>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            </div>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.venues.map((v) => (
+                      <tr key={v.market} className="border-t border-border-subtle">
+                        <td className="py-1.5 text-text-secondary">{v.market}</td>
+                        <td className="py-1.5 text-right text-text-primary">{formatUsd(v.openInterest)}</td>
+                        <td className={`py-1.5 text-right ${v.funding == null ? 'text-text-faint' : v.funding < 0 ? 'text-accent-cyan' : 'text-severity-medium'}`}>
+                          {v.funding == null ? '—' : `${v.funding.toFixed(4)}%`}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Disclosure>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <Stat
-                label="Open interest"
-                value={formatUsd(data.openInterest)}
-                sub={`${data.oiShareOfMcap.toFixed(1)}% of market cap`}
-                tone={data.oiShareOfMcap > 20 ? 'down' : undefined}
-              />
-              <Stat
-                label="Leveraged volume"
-                value={formatUsd(data.perpVolume)}
-                sub={`${(data.perpVolume / data.volume24h).toFixed(1)}× spot volume`}
-              />
-              <Stat
-                label="Staked"
-                value={`${formatNumber(data.stakedEgld)} EGLD`}
-                sub={`${(100 * data.stakedRatio).toFixed(2)}% of supply locked`}
-              />
-            </div>
-
-            <section className="card overflow-hidden">
-              <header className="px-4 py-2.5 border-b border-border bg-bg-elevated">
-                <h2 className="text-[12px] font-semibold">
-                  Private trading desks — supply staged for sale
-                </h2>
-                <p className="text-[10px] text-text-muted mt-0.5">
-                  These two wallets fill large orders off the order book. Published nowhere
-                  else.
-                </p>
-              </header>
-              <div className="p-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Disclosure title="The two desk wallets">
+              <div className="grid gap-3 sm:grid-cols-2 pt-1">
                 {data.deskBreakdown.map((d) => (
                   <div key={d.label}>
                     <div className="eyebrow">{d.label}</div>
-                    <div className="font-mono tabular text-[19px] mt-1">
-                      {formatEgldBare(d.egld)}
-                    </div>
+                    <div className="font-mono tabular text-[18px] mt-1">{formatEgldBare(d.egld)} EGLD</div>
                   </div>
                 ))}
-                <div>
-                  <div className="eyebrow text-accent-cyan/80">Combined</div>
-                  <div className="font-mono tabular text-[19px] mt-1 text-accent-cyan">
-                    {formatEgldBare(data.deskTotal)}
-                  </div>
-                </div>
               </div>
-            </section>
+              <p className="mt-3 text-[11.5px] text-text-muted leading-relaxed max-w-[74ch]">
+                Both are <em>labelled</em> rather than confirmed: they were identified by tracing
+                repeated large transfers between exchange wallets and these addresses over
+                twenty-three weeks. A falling balance means EGLD left the wallet — it may have
+                been sold, moved to an exchange, or moved to another wallet of the same operator.
+                This page does not trace the destination.
+              </p>
+            </Disclosure>
 
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-[10.5px] font-mono text-text-faint">
-              <span>updated {ago(data.fetchedAt, now)}</span>
-              <button
-                type="button"
-                onClick={refresh}
-                className="rounded px-2 py-1 -ml-2 uppercase tracking-wider text-accent-cyan/80 hover:text-accent-cyan hover:bg-accent-cyan/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60"
-              >
-                Refresh now
+            <div className="font-mono text-[10.5px] text-text-faint leading-relaxed border-t border-border pt-4">
+              Mcap {formatUsd(data.marketCap)} · spot vol {formatUsd(data.volume24h)} · leveraged vol{' '}
+              {formatUsd(data.perpVolume)} · 7d {data.change7d != null ? pct(data.change7d) : '—'} · 30d{' '}
+              {data.change30d != null ? pct(data.change30d) : '—'} · staked{' '}
+              {formatNumber(data.stakedEgld)} EGLD ({(100 * data.stakedRatio).toFixed(1)}%)
+              <br />
+              Price and leverage from CoinGecko, chain data from the MultiversX API.
+              Observational, not investment advice.
+              <button type="button" onClick={refresh}
+                className="ml-3 rounded px-2 py-0.5 uppercase tracking-wider text-accent-cyan/80 hover:text-accent-cyan hover:bg-accent-cyan/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan/60">
+                refresh now
               </button>
-              <span>price and leverage: CoinGecko · chain data: MultiversX API</span>
-              <span>Observations, not advice.</span>
             </div>
           </div>
         )}

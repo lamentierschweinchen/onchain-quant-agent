@@ -14,7 +14,8 @@ import { formatUsd } from '../lib/formatters'
 export interface HistoryPoint {
   t: string
   price: number
-  oi: number
+  /** Null on points recorded before derivatives were tracked. */
+  oi: number | null
   oiShare: number | null
   funding: number | null
   desks: number
@@ -28,28 +29,28 @@ interface History {
 
 const VERDICTS: Record<string, { title: string; detail: string; tone: string }> = {
   'up-down': {
-    title: 'Squeeze firing',
+    title: 'Positions closing as price rises',
     detail:
-      'Price rising while leveraged positions close. Short sellers are buying back, which is what actually accelerates a move.',
-    tone: 'text-up',
+      'Price is up over the window and the amount of leverage outstanding has fallen, which means traders are closing bets rather than opening them.',
+    tone: 'text-accent-cyan',
   },
   'up-up': {
-    title: 'Pressure building',
+    title: 'Positions building as price rises',
     detail:
-      'Price rising and leveraged positions growing. Sellers are adding rather than capitulating, so the pressure has not been released yet.',
+      'Price is up over the window and leverage outstanding has grown. Traders are adding bets rather than closing them, so nothing has been forced to unwind yet.',
     tone: 'text-severity-medium',
   },
   'down-down': {
-    title: 'Unwinding',
+    title: 'Positions closing as price falls',
     detail:
-      'Price falling and positions closing. Leverage is leaving the market in both directions.',
+      'Price is down over the window and leverage outstanding has fallen. Leverage is leaving the market.',
     tone: 'text-text-secondary',
   },
   'down-up': {
-    title: 'Sellers piling in',
+    title: 'Positions building as price falls',
     detail:
-      'Price falling and leveraged positions growing. New sellers are pressing the move.',
-    tone: 'text-down',
+      'Price is down over the window and leverage outstanding has grown. Traders are adding bets into the fall.',
+    tone: 'text-severity-medium',
   },
 }
 
@@ -116,7 +117,7 @@ function Panel({
   )
 }
 
-export function MarketHistory() {
+export function useHistory() {
   const [hist, setHist] = useState<History | null>(null)
   const [missing, setMissing] = useState(false)
 
@@ -157,6 +158,12 @@ export function MarketHistory() {
     }
   }, [])
 
+  return { hist, missing }
+}
+
+export function MarketHistory() {
+  const { hist, missing } = useHistory()
+
   if (missing) {
     return (
       <section className="card p-4">
@@ -175,8 +182,11 @@ export function MarketHistory() {
   const pts = hist.points
   const first = pts[0]
   const last = pts[pts.length - 1]
+  const withOi = pts.filter((p): p is HistoryPoint & { oi: number } => p.oi != null)
+  const oiFirst = withOi[0]
+  const oiLast = withOi[withOi.length - 1]
   const priceUp = last.price >= first.price
-  const oiUp = last.oi >= first.oi
+  const oiUp = oiLast && oiFirst ? oiLast.oi >= oiFirst.oi : false
   const verdict = VERDICTS[`${priceUp ? 'up' : 'down'}-${oiUp ? 'up' : 'down'}`]
 
   const fundings = pts.map((p) => p.funding).filter((f): f is number => f != null)
@@ -187,7 +197,8 @@ export function MarketHistory() {
       <header className="px-4 py-2.5 border-b border-border bg-bg-elevated flex flex-wrap items-baseline justify-between gap-2">
         <div>
           <h2 className="text-[12px] font-semibold">
-            Is the squeeze firing, or still building?
+            {/* the answer is the headline; the question lives in the detail */}
+            What the leverage is doing
           </h2>
           <p className="text-[10px] text-text-muted mt-0.5">
             Price against open interest. {pts.length} readings over{' '}
@@ -212,10 +223,10 @@ export function MarketHistory() {
           </Panel>
           <Panel
             label="Open interest"
-            latest={formatUsd(last.oi)}
-            sub={`${last.oiShare != null ? `${last.oiShare.toFixed(1)}% of market cap · ` : ''}from ${formatUsd(first.oi)}`}
+            latest={oiLast ? formatUsd(oiLast.oi) : '—'}
+            sub={oiFirst && oiLast ? `${oiLast.oiShare != null ? `${oiLast.oiShare.toFixed(1)}% of market cap · ` : ''}from ${formatUsd(oiFirst.oi)}` : undefined}
           >
-            <Spark values={pts.map((p) => p.oi)} color={oiUp ? '#f0a020' : '#34d196'} />
+            <Spark values={withOi.map((p) => p.oi)} color={oiUp ? '#f0a020' : '#23f7dd'} />
           </Panel>
           <Panel
             label="Funding rate"
