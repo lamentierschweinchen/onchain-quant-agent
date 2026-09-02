@@ -122,14 +122,36 @@ export function MarketHistory() {
 
   useEffect(() => {
     let cancelled = false
-    fetch('/market-history.json')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d: History | null) => {
-        if (cancelled) return
-        if (d && Array.isArray(d.points) && d.points.length) setHist(d)
-        else setMissing(true)
-      })
-      .catch(() => !cancelled && setMissing(true))
+
+    // An hourly GitHub Action commits new readings to the repo. Reading them
+    // from raw.githubusercontent means a new point appears without redeploying
+    // the site; the copy bundled at build time is the fallback when that is
+    // unreachable (rate limit, offline, or a fork without the workflow).
+    const RAW =
+      'https://raw.githubusercontent.com/lamentierschweinchen/onchain-quant-agent/main/dashboard/public/market-history.json'
+
+    const pick = (d: unknown): History | null => {
+      const h = d as History | null
+      return h && Array.isArray(h.points) && h.points.length ? h : null
+    }
+
+    ;(async () => {
+      for (const url of [RAW, '/market-history.json']) {
+        try {
+          const res = await fetch(url, { cache: 'no-cache' })
+          if (!res.ok) continue
+          const parsed = pick(await res.json())
+          if (parsed && !cancelled) {
+            setHist(parsed)
+            return
+          }
+        } catch {
+          /* try the next source */
+        }
+      }
+      if (!cancelled) setMissing(true)
+    })()
+
     return () => {
       cancelled = true
     }
