@@ -2,7 +2,8 @@
 
 **Generated**: 2026-09-02 18:07 UTC · ad-hoc, outside the weekly cycle
 **Baseline**: the run #23 weekly snapshot, 2026-08-31 (48h prior)
-**Price**: $4.66 · +18.84% (24h) · +37.3% (7d) · +21.2% since the run #23 report
+**Price**: $5.14 · +29.8% (24h) · +51.9% (7d) · +88.6% (30d)
+**Revised**: 2026-09-02 22:28 UTC — second pass, four hours after the first
 
 ---
 
@@ -218,145 +219,152 @@ liquid-staking instrument on the chain currently taking subscriptions.
 
 ---
 
-## Theories, ranked by likelihood
+## Update at 22:28 UTC — the tests resolved, and one reverses the ranking
 
-Each rests on evidence in this report, and each states what would falsify it.
+Four hours after the first pass the price is $5.14, up another 8.9%. Three
+falsifiers were registered in the first version. All three have now resolved, and
+the most important one did not resolve the way I expected.
 
-### 1. A crowded short book being squeezed — the proximate driver
+| Test | Registered threshold | Result |
+|---|---|---|
+| Squeeze or real bid | OI falling with price holding = squeeze done; OI rising with funding positive = new longs | **Neither.** OI +29.5%, funding stayed negative and deepened |
+| Is the spot bid real | Above ~200 ex-pipeline recipients | **Confirmed.** 359 recipients, 489,452 EGLD |
+| Overhang cleared or restaged | Below ~60K delivered; above ~200K restaged | **Neither.** 130,894 and nearly stopped moving |
 
-**Confidence: high.** This is the only theory that explains the *shape* of the move:
-+17.2% in a single session on volume 4x the prior day, while spot inventory was
-leaving exchanges rather than arriving.
+### The squeeze has not happened — the short book grew into the rally
 
-| Evidence | Reading |
-|---|---|
-| Funding negative on **27 of 32** perp venues | Shorts are paying longs to hold |
-| Mean funding **-0.0635%**, most negative -0.1961% | Crowded, and paying up |
-| Open interest **$41.1M = 28.4% of market cap** | Unusually large derivatives book |
-| Perp volume **$128.9M = 6.4x** spot volume | The move is happening in derivatives |
+This is the finding that changes the ranking.
 
-Negative funding means the perpetual trades below spot: short demand exceeds long
-demand, and shorts are subsidising longs to stay in the trade. Into a +21% move that
-is a forced-covering setup, and covering is self-reinforcing.
+| | 18:07 | 22:28 |
+|---|---|---|
+| Open interest | $41.1M | **$53.3M (+29.5%)** |
+| OI as share of market cap | 28.4% | **33.8%** |
+| Mean funding | −0.0635% | **−0.0728%** |
+| Venues with negative funding | 27 of 32 | 27 of 32 |
+| Binance funding | −0.0924% | **−0.1250%** |
 
-*Falsifies it:* open interest rising while funding flips positive — that would be new
-longs, not shorts covering. *Confirms it:* open interest falling sharply while price
-holds, the signature of a book being closed out.
+Price rose 8.9% over the same window, so notional OI would have risen 8.9% on
+mark-to-market alone. It rose 29.5%, which is roughly **+19% real contract growth**.
 
-### 2. Genuine broad spot accumulation
+Shorts are not covering. They are being *added*, and paying an increasing rate to
+stay short into a rising market. My first pass called the squeeze the proximate
+driver of the move. That was wrong: the squeeze fuel is larger now, at a higher
+price, than when I flagged it. It is a pending amplifier, not the explanation.
 
-**Confidence: high**, and revised upward during this analysis. **365 distinct wallets**
-took 373,182 EGLD off exchanges in 48 hours, against 50 wallets and 400,113 EGLD across
-the whole of the prior week. Median withdrawal 49 EGLD, with 233 wallets taking under
-100 — a real retail tail rather than a few blocks. Tracked non-venue holders were net
-buyers of 65,773 EGLD.
+### The spot bid is what is actually driving it
 
-*Falsifies it:* breadth collapsing back under ~60 recipients next week, which would
-make this a two-day event tied to the price. *Confirms it:* breadth holding above ~200
-recipients once the price stops moving.
+| | 18:07 | 22:28 |
+|---|---|---|
+| Ex-pipeline recipients (48h) | 365 | 359 |
+| Ex-pipeline EGLD | 373,182 | **489,452** |
+| Share of withdrawals to the OTC pipeline | 57% | **51%** |
 
-### 3. Supernova as the trigger for the final leg — but not the cause of the move
+A further 116,270 EGLD left exchanges to non-pipeline wallets in 4.3 hours, and the
+pipeline's share of withdrawals *fell*. Breadth is holding far above the 200-recipient
+threshold. This is the load-bearing evidence now.
 
-**Confidence: high as an accelerant, low as the origin.** The dated catalyst is real:
-10 September, epoch 2233, and the migration window opened 1 September, the day the
-final leg began.
+### The supply that was capping it has nearly stopped
 
-But the trend is three weeks older than the catalyst window. EGLD was $2.61 on 17
-August and $4.02 on 2 September before today's session — **+54% before the window
-opened at all**, and +73.5% over 30 days. Supernova is the narrative that accelerated
-a move already underway, not its origin.
+Desk inventory fell only 2,256 EGLD in 4.3 hours, against 133,063 over the prior two
+days. Binance's staking custody is **unchanged to the EGLD** at 3,398,618 — parked, not
+distributing. The identifiable-bid wallet is still frozen at 1,099,059.3223 for a fourth
+week.
 
-This also makes it the clearest risk: a known, dated event is the textbook setup for
-selling the news.
-
-*Falsifies it:* price continuing to trend after 10 September. *Confirms it:* a sharp
-reversal into or immediately after activation.
-
-### 4. Float compression amplifying the squeeze
-
-**Confidence: medium-high as a mechanism, low as a cause.** Sellable inventory fell
-**534,385 EGLD — 1.74% of circulating supply — in 48 hours**: exchanges -401,322 and
-desks -133,063. Binance moved 420K into staking custody and Gate.io emptied 82.9%.
-Less borrowable inventory makes a squeeze cheaper to run and harder to fade.
-
-The honest caveat is that causality runs both ways: a squeeze itself causes withdrawals,
-as holders pull collateral and take delivery. This amplifies, it does not initiate.
-
-### 5. The OTC desks distributing into it — the force that caps it
-
-**Confidence: high that it is happening, but it is a counter-force, not a driver.** The
-desks halved and delivered 338,919 EGLD one-way to Bybit, Binance and Gate.io. Note the
-qualifier the breadth data adds: **57% of all exchange withdrawals went back into the
-pipeline**, so the desks were being reloaded even while draining. This is the supply
-that meets the squeeze, and the reason the move has a ceiling.
-
-### 6. A Korean or venue-specific bid
-
-**Confidence: low.** Upbit's EGLD/KRW pair is 10.9% of spot volume — meaningful, but
-Binance is 19.6% and the volume is spread across 78 pairs. UPbit also *fed* the desks
-92,000 EGLD in the window, which is not what a demand centre does. No Korean-premium
-story survives this evidence.
-
-### 7. Sector rotation into layer-1s
-
-**Falsified.** Every L1 peer is flat to negative over the same 24 hours: SOL -0.71%,
-ETH -0.86%, AVAX -0.93%, ATOM -1.06%, DOT -1.64%, NEAR -3.69%. EGLD moved alone.
-
-### 8. A fundamental re-rating on network usage
-
-**Falsified.** Staked EGLD fell 29,433, delegation fell 30,788, the delegator count is
-flat for a twelfth week, both major liquid-staking tokens shrank, both wrapped
-stablecoins contracted, and no token issuance has cleared the quality bar in seven
-weeks. Nothing in usage supports a re-rating.
-
-### 9. A listing, index inclusion or market-maker mandate
-
-**Unevidenced.** That would show as a discrete inventory build at one venue. Instead the
-volume is spread across 78 pairs and no single exchange balance shows the signature.
-Cannot be ruled out from public data, but nothing points to it.
+Nothing has changed on the participation side: staked EGLD is down 30,723 since 31
+August and still falling. DEX volume rose another 25% to $393,798. USH minted a further
+0.44%.
 
 ---
 
-## What this adds up to
+## Theories, ranked by likelihood — revised
 
-The first version of this report concluded that holders were selling into the bid. The
-decomposition above overturns that, and it is worth stating plainly: the whale-tier
-aggregates that produced it were measuring exchange wallets, not holders.
+The reordering is the point. Evidence moved theory 2 to the top and reframed theory 1.
 
-What the evidence actually supports is three things happening at once. A heavily short
-derivatives book — 28.4% of market cap in open interest, funding negative on 27 of 32
-venues — is being squeezed, and that is what produced a +17% session on 6.4x spot
-volume. Underneath it, genuine spot demand is unusually broad: 365 wallets took delivery
-in 48 hours against 50 in the prior week. And into both, the OTC desks are delivering
-their record inventory, halved from 266,213 to 133,150.
+### 1. Genuine broad spot accumulation — now the primary driver
 
-The bull and bear cases are therefore about **sequencing, not disagreement about facts**.
-The squeeze is finite and ends when the short book is closed. The desk supply is
-finite too — 133,150 EGLD, and visible. Whether the broad spot bid outlasts both is the
-open question, and it is the one thing here that is genuinely new: withdrawal breadth
-has never been this high in twenty-three runs of tracking.
+**Confidence: high, promoted from second.** 359 distinct wallets have taken 489,452 EGLD
+off exchanges in 48 hours, against 50 wallets and 400,113 EGLD across the whole of the
+prior week. The pipeline's share of withdrawals is falling, so a growing proportion goes
+to genuine holders rather than OTC infrastructure. Median withdrawal 49 EGLD; 233 wallets
+under 100. Highest breadth reading in twenty-three runs, and it strengthened between the
+two passes.
 
-Two constructive signals reinforce it. Binance moved 420K off exchange float into
-staking custody, reversing the two-week distribution programme run #23 documented. And
-USH minted for the first time in three weeks — borrowers opening leverage, not closing
-it.
+*Falsifies it:* breadth dropping below ~150 recipients once price stops moving.
 
-The dated risk is Supernova itself. The move is three weeks older than the catalyst, the
-catalyst is eight days out, and everyone can see the date.
+### 2. A crowded short book — a pending amplifier, not the cause
+
+**Confidence: high that it exists, but reframed.** Open interest is 33.8% of market cap
+with funding negative on 27 of 32 venues. Shorts added roughly 19% in real contract terms
+*into* a 9% rally, paying up to −0.137% per interval.
+
+This is not what a discharged squeeze looks like. It is a larger unexploded charge at a
+higher price. It amplifies whatever the spot bid does next, in either direction — and at
+a third of market cap it is a fragile structure both ways.
+
+*Falsifies it:* funding turning positive, which would mean longs have become the crowded
+side.
+
+### 3. Supernova as the trigger for the final leg — unchanged
+
+**Confidence: high as accelerant, low as origin.** EGLD was $2.61 on 17 August: +97%
+before this session, and +88.6% over 30 days. The catalyst is eight days out and dated,
+which is exactly what makes it the clearest reversal risk.
+
+### 4. Float compression — still operating
+
+**Confidence: medium-high as a mechanism.** Sellable inventory has fallen through both
+passes: desks 266,213 → 130,894, Binance custody holding 420K off exchange float, Gate.io
+emptied 82.9%. Causality still runs both ways.
+
+### 5. OTC desks distributing — the cap is nearly exhausted
+
+**Downgraded.** The desks have delivered 135,319 EGLD since 31 August but only 2,256 in
+the last four hours. Either the inventory is nearly worked off or delivery has paused.
+Either way the force that was capping the move has stopped applying pressure, with
+130,894 left.
+
+### 6–9. Unchanged
+
+Korean/venue-specific bid: **low** — Upbit is 10.9% of volume and also fed the desks.
+Sector rotation: **falsified** — every L1 peer is negative over 24h except ALGO.
+Fundamental re-rating: **falsified** — staking still falling, delegators flat, LSDs flat.
+Listing or index inclusion: **unevidenced** — volume spread across 78 pairs.
+
+---
+
+## What this adds up to now
+
+The first pass had the causation backwards. I read a heavily short derivatives book as
+the engine of the move; the second pass shows the book *growing* into the rally, which
+means shorts are the ones being run over rather than the ones doing the running.
+
+What is actually driving it is the least glamorous reading available: people are buying
+spot and taking it off exchanges, in numbers this model has not recorded before. 359
+wallets, 489,452 EGLD, and the share going to genuine holders rather than OTC plumbing
+is rising, not falling.
+
+That reframes the risk rather than removing it. A short book at 33.8% of market cap is
+unstable in both directions. If the spot bid persists, the shorts are fuel. If it
+falters — and a dated catalyst eight days out is the obvious trigger — the same
+leverage runs the other way, into a market where the visible supply cushion has been
+halved and the one identifiable large buyer has not moved in four weeks.
+
+The honest position: the bid is real and measurable, the leverage is real and measurable,
+and which resolves first is not something this data can tell you.
 
 ### What would settle it
 
 | Question | What to watch | Threshold |
 |---|---|---|
-| Squeeze or real bid? | Perp open interest and funding | OI falling with price holding = squeeze done; funding turning positive = longs now crowded |
-| Is the spot bid real? | Ex-pipeline withdrawal breadth | Above ~200 recipients after the price stops moving |
-| Is the overhang cleared or reloading? | Desk inventory | Below ~60K = delivered; back above ~200K = restaged |
-| Was Binance's reversal real? | Custody vs hot wallet | Custody holding above 3.3M through 10 Sep |
-| Is the upgrade on schedule? | Validator versions | v2.x share rising before 10 Sep |
-| Sell the news? | Price through activation | Holding $4.50+ after the 24-minute pause |
+| Does the spot bid persist? | Ex-pipeline breadth | Above ~150 recipients once price stops moving |
+| Which side is crowded? | Funding sign | Turning positive = longs now crowded, squeeze fuel gone |
+| Is the leverage unwinding? | Open interest | A sharp OI drop with price holding = the squeeze finally fired |
+| Is the overhang finished? | Desk inventory | Below ~60K = delivered; back above ~200K = restaged |
+| Sell the news? | Price through 10 Sep | Holding $4.50+ after the 24-minute activation pause |
 
 ---
 
-*Ad-hoc report, outside the weekly cycle. Figures are 48-hour deltas against the
-run #23 snapshot (2026-08-31) unless stated. Derivatives data is point-in-time from
-CoinGecko. All EGLD amounts human-readable. All times UTC.*
+*Ad-hoc report, outside the weekly cycle. Two passes: 2026-09-02 18:07 and 22:28 UTC.
+On-chain figures are 48-hour deltas against the run #23 snapshot (2026-08-31) unless
+stated. Derivatives data is point-in-time from CoinGecko. All EGLD amounts
+human-readable. All times UTC.*
