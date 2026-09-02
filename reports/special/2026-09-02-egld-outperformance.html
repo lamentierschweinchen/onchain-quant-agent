@@ -1,0 +1,577 @@
+<title>EGLD Outperformance Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  /* MultiversX design language: accent teal, neutral-gray grounds, JetBrains Mono
+     for figures. Dark-committed by brand, so every colour is painted explicitly
+     and nothing relies on the host ground. */
+  :root {
+    --ground:      #0a0a0a;
+    --raised:      #141414;
+    --raised-2:    #1b1b1c;
+    --line:        #252527;
+    --line-soft:   #1d1d1f;
+    --ink:         #f2f4f4;
+    --ink-2:       #a8adad;
+    --ink-3:       #6f7474;
+    --ink-4:       #4a4e4e;
+    --accent:      #23f7dd;
+    --sell:        #f4525a;
+    --buy:         #34d196;
+    --warn:        #f0a020;
+
+    --sans: 'Roobert PRO', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --w: 1080px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--w); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- masthead ---------- */
+  .masthead { border-bottom: 1px solid var(--line); padding: 40px 0 26px; }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent); display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+  }
+  .kicker .sep { color: var(--ink-4); }
+  .kicker .muted { color: var(--ink-3); }
+  h1 {
+    font-size: clamp(34px, 5.2vw, 56px);
+    line-height: 1.04; letter-spacing: -.025em; font-weight: 700;
+    margin: 18px 0 0; text-wrap: balance; max-width: 17ch;
+  }
+  .standfirst {
+    margin: 16px 0 0; max-width: 62ch;
+    font-size: 17px; line-height: 1.55; color: var(--ink-2);
+  }
+
+  /* ---------- price strip ---------- */
+  .strip {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px; background: var(--line-soft);
+    border: 1px solid var(--line); margin: 30px 0 0;
+  }
+  .cell { background: var(--raised); padding: 14px 16px; }
+  .cell .lab {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .cell .val {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: 23px; font-weight: 500; margin-top: 5px; letter-spacing: -.02em;
+  }
+  .cell .sub { font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+  .up { color: var(--buy); } .down { color: var(--sell); } .tealed { color: var(--accent); }
+
+  /* ---------- sections ---------- */
+  section { padding: 52px 0 0; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink-3);
+    padding-bottom: 10px; border-bottom: 1px solid var(--line); margin-bottom: 26px;
+  }
+  h2 {
+    font-size: 25px; font-weight: 600; letter-spacing: -.018em;
+    margin: 0 0 12px; text-wrap: balance;
+  }
+  h3 {
+    font-size: 15px; font-weight: 600; margin: 30px 0 10px;
+    letter-spacing: -.005em;
+  }
+  p { margin: 0 0 14px; max-width: 68ch; color: var(--ink-2); }
+  p strong { color: var(--ink); font-weight: 600; }
+  .lede { color: var(--ink); font-size: 16.5px; }
+
+  /* ---------- peer bars ---------- */
+  .bars { display: flex; flex-direction: column; gap: 7px; margin: 22px 0 6px; }
+  .bar { display: grid; grid-template-columns: 64px 1fr 74px; align-items: center; gap: 12px; }
+  .bar .nm { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+  .bar.hero .nm { color: var(--accent); font-weight: 700; }
+  .track { position: relative; height: 22px; background: var(--raised); border: 1px solid var(--line-soft); }
+  .track .zero { position: absolute; top: -1px; bottom: -1px; width: 1px; background: var(--ink-4); }
+  .fill { position: absolute; top: 0; bottom: 0; }
+  .fill.pos { background: rgba(52,209,150,.42); }
+  .fill.neg { background: rgba(244,82,90,.42); }
+  .bar.hero .fill.pos { background: var(--accent); }
+  .bar .pct {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: 12.5px; text-align: right; color: var(--ink-2);
+  }
+  .bar.hero .pct { color: var(--accent); font-weight: 700; }
+
+  /* ---------- tables ---------- */
+  .scroll { overflow-x: auto; margin: 20px 0 6px; border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 480px; }
+  thead th {
+    background: var(--raised-2); text-align: left; padding: 9px 14px;
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 500;
+    border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); color: var(--ink-2); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.spot td { background: rgba(35,247,221,.05); color: var(--ink); }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .nowrap { white-space: nowrap; }
+  td.name { color: var(--ink); }
+
+  /* ---------- signal board ---------- */
+  .board { display: grid; gap: 1px; background: var(--line-soft); border: 1px solid var(--line); margin: 22px 0 6px; }
+  .sig { background: var(--raised); padding: 15px 18px; display: grid; grid-template-columns: 8px 1fr auto; gap: 16px; align-items: start; }
+  .stripe { width: 3px; height: 100%; min-height: 34px; border-radius: 1px; }
+  .sig.s-sell .stripe { background: var(--sell); }
+  .sig.s-buy  .stripe { background: var(--buy); }
+  .sig.s-flat .stripe { background: var(--ink-4); }
+  .sig .t { font-weight: 600; color: var(--ink); font-size: 14px; }
+  .sig .d { color: var(--ink-3); font-size: 13px; margin-top: 3px; max-width: 60ch; }
+  .sig .fig { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 15px; text-align: right; white-space: nowrap; }
+  .sig.s-sell .fig { color: var(--sell); }
+  .sig.s-buy  .fig { color: var(--buy); }
+  .sig.s-flat .fig { color: var(--ink-3); }
+
+  /* ---------- drain figure ---------- */
+  .drain { border: 1px solid var(--line); background: var(--raised); padding: 26px; margin: 24px 0 6px; }
+  .drain-head { display: flex; flex-wrap: wrap; gap: 26px; align-items: baseline; justify-content: space-between; }
+  .drain-num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 42px; font-weight: 500; letter-spacing: -.03em; color: var(--sell); line-height: 1; }
+  .drain-lab { font-family: var(--mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3); }
+  .dbars { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .dbar { display: grid; grid-template-columns: 96px 1fr 96px; gap: 14px; align-items: center; }
+  .dbar .dl { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); letter-spacing: .06em; }
+  .dtrack { height: 26px; background: var(--raised-2); position: relative; }
+  .dfill { position: absolute; left: 0; top: 0; bottom: 0; }
+  .dfill.was { background: rgba(244,82,90,.30); }
+  .dfill.now { background: var(--accent); opacity: .85; }
+  .dbar .dv { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px; text-align: right; }
+
+  /* ---------- countdown ---------- */
+  .fork { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center;
+          border: 1px solid var(--line); background: var(--raised); padding: 22px 24px; margin: 22px 0 6px; }
+  .fork .days { font-family: var(--mono); font-size: 46px; font-weight: 700; color: var(--accent); line-height: 1; letter-spacing: -.03em; }
+  .fork .dl { font-family: var(--mono); font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3); margin-top: 6px; }
+  .fork p { margin: 0; }
+
+  .note {
+    border-left: 2px solid var(--warn); padding: 2px 0 2px 16px; margin: 22px 0;
+    color: var(--ink-2); font-size: 14px;
+  }
+  .note b { color: var(--warn); font-weight: 600; }
+
+  .verdict { border: 1px solid var(--accent); background: rgba(35,247,221,.04); padding: 26px 28px; margin: 26px 0 6px; }
+  .verdict p:last-child { margin-bottom: 0; }
+  .verdict p { max-width: 66ch; }
+
+  footer {
+    margin-top: 60px; border-top: 1px solid var(--line); padding: 22px 0 56px;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-4); line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 18px; }
+    .bar { grid-template-columns: 54px 1fr 62px; gap: 8px; }
+    .dbar { grid-template-columns: 72px 1fr 76px; gap: 10px; }
+    .sig { grid-template-columns: 3px 1fr; }
+    .sig .fig { grid-column: 2; text-align: left; }
+    .fork { grid-template-columns: 1fr; gap: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">
+      <span>Special report</span><span class="sep">/</span>
+      <span class="muted">Outside the weekly cycle</span><span class="sep">/</span>
+      <span class="muted">2 Sep 2026 · 18:07 UTC</span>
+    </div>
+    <h1>EGLD ran 18.8% while every L1 peer fell</h1>
+    <p class="standfirst">
+      A protocol upgrade eight days out is being priced. The entities holding EGLD
+      are using the bid to reduce exposure: the record OTC overhang halved into the
+      move, and large and mid whales net-sold 474,883 EGLD.
+    </p>
+
+    <div class="strip">
+      <div class="cell">
+        <div class="lab">EGLD</div>
+        <div class="val">$4.66</div>
+        <div class="sub up">+18.84% 24h</div>
+      </div>
+      <div class="cell">
+        <div class="lab">7 day</div>
+        <div class="val up">+37.3%</div>
+        <div class="sub">since 26 Aug</div>
+      </div>
+      <div class="cell">
+        <div class="lab">Gap vs BTC</div>
+        <div class="val tealed">+18.6pp</div>
+        <div class="sub">BTC +0.24%</div>
+      </div>
+      <div class="cell">
+        <div class="lab">Volume / mcap</div>
+        <div class="val">17.6%</div>
+        <div class="sub">$25.1M on $143M</div>
+      </div>
+      <div class="cell">
+        <div class="lab">Desk overhang</div>
+        <div class="val down">133,150</div>
+        <div class="sub">was 266,213</div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">The claim, corrected</div>
+    <h2>Not #1 overall &mdash; but first among assets that actually trade</h2>
+    <p class="lede">
+      EGLD ranks <strong>#7 of 487</strong> coins by 24-hour performance. The six above
+      it are memecoins and illiquid tokens, two of which barely trade at all: A7A5 posted
+      +19.67% on <strong>zero</strong> recorded volume, AIX on $0.3M.
+    </p>
+    <p>
+      Filter to assets with at least $100M of market cap <em>and</em> $20M of real volume
+      and EGLD is <strong>#3 of 17</strong>, behind two memecoins. Among established
+      layer&#8209;1 protocol tokens it is first, and it is not close.
+    </p>
+
+    <div class="bars" role="img" aria-label="24-hour price change: EGLD +18.84%, ALGO +4.90%, BTC +0.24%, SOL -0.71%, ETH -0.86%, AVAX -0.93%, ATOM -1.06%, DOT -1.64%, NEAR -3.69%">
+      <div class="bar hero">
+        <span class="nm">EGLD</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill pos" style="left:16%;width:75.4%"></span></span>
+        <span class="pct">+18.84%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">ALGO</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill pos" style="left:16%;width:19.6%"></span></span>
+        <span class="pct">+4.90%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">BTC</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill pos" style="left:16%;width:1.0%"></span></span>
+        <span class="pct">+0.24%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">SOL</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill neg" style="left:13.2%;width:2.8%"></span></span>
+        <span class="pct">&minus;0.71%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">ETH</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill neg" style="left:12.6%;width:3.4%"></span></span>
+        <span class="pct">&minus;0.86%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">AVAX</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill neg" style="left:12.3%;width:3.7%"></span></span>
+        <span class="pct">&minus;0.93%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">ATOM</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill neg" style="left:11.8%;width:4.2%"></span></span>
+        <span class="pct">&minus;1.06%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">DOT</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill neg" style="left:9.4%;width:6.6%"></span></span>
+        <span class="pct">&minus;1.64%</span>
+      </div>
+      <div class="bar">
+        <span class="nm">NEAR</span>
+        <span class="track"><span class="zero" style="left:16%"></span><span class="fill neg" style="left:1.2%;width:14.8%"></span></span>
+        <span class="pct">&minus;3.69%</span>
+      </div>
+    </div>
+    <p>
+      This is the cleanest EGLD-specific decoupling in twenty-three runs of tracking &mdash;
+      stronger than the +15.93% against a flat tape recorded in run #16, and the opposite
+      of run #22's +30.43%, which was pure market beta.
+    </p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Contributing factor</div>
+    <h2>Supernova activates on 10 September</h2>
+
+    <div class="fork">
+      <div>
+        <div class="days">8</div>
+        <div class="dl">days to epoch 2233</div>
+      </div>
+      <p>
+        Block time drops from <strong>6 seconds to 600 milliseconds</strong>. Intra-shard
+        finality falls below 250ms, cross-shard settlement from ~18s to ~2.4s. Activation
+        requires mainnet to stop accepting new pool transactions for about
+        <strong>24 minutes</strong>, after which queued transactions resume.
+      </p>
+    </div>
+
+    <p>
+      The node migration window opened on <strong>1 September</strong> &mdash; the day this
+      move began. It is the only specific catalyst identifiable, and no token-economic
+      change accompanies it: no supply, staking or fee changes were announced.
+    </p>
+
+    <div class="note">
+      <b>A caveat on the catalyst.</b> Scanning the node fleet for Supernova-capable
+      software &mdash; a full sweep of 1,566 observers and a 2,100-validator sample &mdash;
+      returned <strong>no nodes on the v2.x branch</strong> that carries the Supernova code.
+      92.8&ndash;98% sit on v1.11.11.0, the newest pre-Supernova tag. Stated as a question,
+      not a conclusion: the release notes do not say which tag mainnet requires, so the
+      production build may be a v1.11.x tag this scan cannot distinguish. Worth resolving
+      before treating 10 September as certain.
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Contributing factor</div>
+    <h2>The chain data does not corroborate a demand story</h2>
+    <p>
+      Every participation instrument moved the wrong way for a demand-led rally. These are
+      48-hour changes measured against the run #23 snapshot of 31 August.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Instrument</th><th class="num">48h change</th><th>Reading</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Staked EGLD</td><td class="num down">&minus;29,433</td><td>Unstaking into strength</td></tr>
+          <tr><td class="name">Staked ratio</td><td class="num down">&minus;0.128pp</td><td>47.297%, falling</td></tr>
+          <tr><td class="name">Delegated total</td><td class="num down">&minus;30,788</td><td>Falling</td></tr>
+          <tr><td class="name">Delegator count</td><td class="num">&minus;58</td><td>Flat, as for twelve weeks</td></tr>
+          <tr><td class="name">SEGLD supply</td><td class="num down">&minus;0.36%</td><td>No subscription</td></tr>
+          <tr><td class="name">XEGLD supply</td><td class="num down">&minus;0.11%</td><td>No subscription</td></tr>
+          <tr><td class="name">SWTAO supply</td><td class="num down">&minus;1.31%</td><td>Redemption</td></tr>
+          <tr><td class="name">USDC supply</td><td class="num down">&minus;0.51%</td><td>Dollars leaving</td></tr>
+          <tr><td class="name">USDT supply</td><td class="num down">&minus;0.20%</td><td>Dollars leaving</td></tr>
+          <tr class="spot"><td class="name">USH supply</td><td class="num up">+1.03%</td><td>First mint in three weeks &mdash; leverage returning</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Trading activity genuinely rose: DEX volume went $234K&nbsp;&rarr;&nbsp;$316K, and
+      <strong>+11.5% measured in EGLD rather than dollars</strong>, so it is not purely the
+      price. Pool depth rose 17.3% and turnover went 10.51%&nbsp;&rarr;&nbsp;12.11%. But that
+      measures people trading, not people holding.
+    </p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Positioning</div>
+    <h2>The record supply overhang is being delivered into the strength</h2>
+    <p class="lede">
+      Run #23 closed with the largest staged supply position ever recorded and an open
+      question about whether it would drain. It is draining, and both desks halved almost
+      symmetrically.
+    </p>
+
+    <div class="drain">
+      <div class="drain-head">
+        <div>
+          <div class="drain-num">&minus;133,063</div>
+          <div class="drain-lab" style="margin-top:8px">EGLD off the desks in 48 hours</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--ink-3);text-align:right">
+          266,213&nbsp;&rarr;&nbsp;133,150<br>a 50.0% drawdown
+        </div>
+      </div>
+      <div class="dbars">
+        <div class="dbar">
+          <span class="dl">31 Aug</span>
+          <span class="dtrack"><span class="dfill was" style="width:100%"></span></span>
+          <span class="dv down">266,213</span>
+        </div>
+        <div class="dbar">
+          <span class="dl">2 Sep</span>
+          <span class="dtrack"><span class="dfill now" style="width:50%"></span></span>
+          <span class="dv tealed">133,150</span>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      Over the 48 hours the desks moved <strong>640,200 EGLD out</strong> against 423,917 in
+      &mdash; 47% of it circular, leaving <strong>338,919 of genuine one-way movement</strong>.
+      Resolved two hops out to venue:
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Venue</th><th class="num">Desk &rarr; venue</th><th class="num">Venue &rarr; desk</th><th class="num">Net</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">UPbit</td><td class="num">232,827</td><td class="num">92,000</td><td class="num up">+140,827</td></tr>
+          <tr><td class="name">Binance.com</td><td class="num">124,552</td><td class="num">83,187</td><td class="num up">+41,365</td></tr>
+          <tr><td class="name">Gate.io</td><td class="num">28,568</td><td class="num">0</td><td class="num up">+28,568</td></tr>
+          <tr><td class="name">Bybit</td><td class="num">146,498</td><td class="num">126,093</td><td class="num up">+20,404</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>The most recent 24 hours look different from the 48, and worse.</strong> UPbit
+      flipped from net receiver to net source, feeding 92,000 back into the desks, while the
+      desks delivered to Bybit (+24,936), Binance.com (+21,842) and Gate.io (+16,395). The
+      first day cleared inventory back to UPbit; the second day resumed pushing it onto order
+      books.
+    </p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Positioning</div>
+    <h2>Everyone except Binance sold</h2>
+
+    <div class="board">
+      <div class="sig s-buy">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">Binance moved 420K off exchange float</span>
+          <span class="d">Hot wallet 951,271&nbsp;&rarr;&nbsp;434,997 while staking custody rose
+          2,978,782&nbsp;&rarr;&nbsp;3,398,618. This reverses the two-week programme run #23
+          documented, where custody drained into the hot wallet to feed the OTC desks. The
+          constructive branch of a watch standing since run #9 just fired for the first time
+          since run #14.</span>
+        </span>
+        <span class="fig">+419,836</span>
+      </div>
+      <div class="sig s-sell">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">Large whales sold</span>
+          <span class="d">17 wallets holding 100K&ndash;1M EGLD, on a prior-tier basis across the
+          76 addresses present in both snapshots.</span>
+        </span>
+        <span class="fig">&minus;369,811</span>
+      </div>
+      <div class="sig s-sell">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">Mid whales sold</span>
+          <span class="d">50 wallets holding 10K&ndash;100K EGLD. Combined with the tier above,
+          non-Binance whales net-sold 474,883 EGLD into the move.</span>
+        </span>
+        <span class="fig">&minus;105,072</span>
+      </div>
+      <div class="sig s-sell">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">Gate.io nearly emptied</span>
+          <span class="d">Down 82.9% to 9,537 EGLD, while simultaneously receiving 28,568 from
+          the desks. Bybit fell 19.2%.</span>
+        </span>
+        <span class="fig">&minus;46,214</span>
+      </div>
+      <div class="sig s-flat">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">The identifiable bid is still exactly zero</span>
+          <span class="d">The Mega Whale absorber &mdash; the one large buyer this model can name
+          &mdash; is unchanged to four decimal places for a fourth consecutive week. There is no
+          traceable large buyer behind this move.</span>
+        </span>
+        <span class="fig">0.0000</span>
+      </div>
+      <div class="sig s-buy">
+        <span class="stripe"></span>
+        <span>
+          <span class="t">Two wallets accumulated</span>
+          <span class="d">Unknown Whale B took +55,037 and a nonce&#8209;0 migration destination
+          +66,525 &mdash; the only sizeable non-exchange accumulation in the set.</span>
+        </span>
+        <span class="fig">+121,562</span>
+      </div>
+    </div>
+
+    <h3>Emerging liquid staking is the one growth story</h3>
+    <p>
+      While the established liquid-staking tokens shrank, the newest one grew. VoxEGLD &mdash;
+      a protocol that was not being tracked at all until two days ago &mdash; added 5.3% of
+      supply and 31% more holders in 48 hours. It is tiny, but it is the only liquid-staking
+      instrument on the chain currently taking subscriptions.
+    </p>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Protocol</th><th class="num">Supply 31 Aug</th><th class="num">Supply 2 Sep</th><th class="num">Holders</th></tr>
+        </thead>
+        <tbody>
+          <tr class="spot"><td class="name">Dinovox VoxEGLD</td><td class="num">1,748</td><td class="num up">1,841</td><td class="num up">78 &rarr; 102</td></tr>
+          <tr><td class="name">SALSA</td><td class="num">5,080</td><td class="num">5,071</td><td class="num">382 &rarr; 383</td></tr>
+          <tr><td class="name">VestaX</td><td class="num">802</td><td class="num">802</td><td class="num">439</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">What it adds up to</div>
+    <h2>Named, finite supply meeting anonymous demand</h2>
+
+    <div class="verdict">
+      <p>
+        The evidence for distribution is unusually consistent. The record OTC overhang halved
+        into the move, with the most recent 24 hours delivering to Bybit, Binance and Gate.io
+        rather than clearing back to UPbit. Large and mid whales net-sold 474,883 EGLD. Staked
+        EGLD, delegation, both major liquid-staking tokens and both wrapped dollars all
+        contracted. There is no identifiable large buyer anywhere in the data.
+      </p>
+      <p>
+        Two things genuinely cut the other way, and they are not small. Binance moved 420K off
+        exchange float and back into staking custody, reversing a two-week distribution
+        programme. And USH minted for the first time in three weeks, meaning borrowers are
+        opening leveraged positions rather than closing them.
+      </p>
+      <p>
+        The tension worth holding: the supply being distributed is <strong>identified, named and
+        finite</strong> &mdash; 133,150 EGLD still sits on the desks, and it is now half what it
+        was. The demand absorbing it is <strong>anonymous and unmeasurable</strong> from chain
+        data, because it is arriving at exchange order books. That asymmetry is why this model
+        can describe the selling precisely and can say almost nothing about the buying.
+      </p>
+    </div>
+
+    <h3>What would settle it</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Question</th><th>What to watch</th><th>Threshold</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Is the overhang cleared or reloading?</td><td>Desk inventory</td><td>Below ~60K = delivered; back above ~200K = restaged</td></tr>
+          <tr><td class="name">Was Binance's reversal real?</td><td>Custody vs hot wallet</td><td>Custody holding above 3.3M through 10 Sep</td></tr>
+          <tr><td class="name">Is the upgrade on schedule?</td><td>Validator versions</td><td>v2.x share rising before 10 Sep</td></tr>
+          <tr><td class="name">Is demand real or positioning?</td><td>Price after activation</td><td>Holding $4.50+ through the 24-minute pause</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Ad-hoc report, outside the weekly cycle &middot; figures are 48-hour deltas against the
+    run #23 snapshot of 2026-08-31 unless stated &middot; EGLD amounts human-readable &middot;
+    all times UTC<br>
+    Sources: MultiversX API, CoinGecko markets, mx-chain-go releases &middot; generated by the
+    onchain quant agent
+  </footer>
+
+</div>
