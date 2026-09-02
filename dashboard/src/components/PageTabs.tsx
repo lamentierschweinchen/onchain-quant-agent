@@ -1,11 +1,12 @@
 import { PageLink } from '../hooks/useRoute'
 
 interface PageTabsProps {
-  active: 'home' | 'code'
+  active: 'home' | 'code' | 'pump'
 }
 
-const TABS: Array<{ id: 'home' | 'code'; to: string; label: string }> = [
+const TABS: Array<{ id: 'home' | 'code' | 'pump'; to: string; label: string }> = [
   { id: 'home', to: '/', label: 'Onchain' },
+  { id: 'pump', to: '/pump', label: 'Pump' },
   { id: 'code', to: '/code', label: 'Code' },
 ]
 

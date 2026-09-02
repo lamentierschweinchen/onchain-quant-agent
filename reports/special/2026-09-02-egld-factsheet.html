@@ -1,0 +1,281 @@
+<title>EGLD Factsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  /* MultiversX palette: teal accent, neutral-gray grounds, mono for every figure.
+     Dark-committed by brand, so all colours are painted explicitly. */
+  :root{
+    --ground:#0a0a0a; --raised:#141414; --raised2:#1a1a1b;
+    --line:#262628; --line2:#1e1e20;
+    --ink:#f2f4f4; --ink2:#a6abab; --ink3:#6d7272; --ink4:#474b4b;
+    --accent:#23f7dd; --up:#34d196; --down:#f4525a; --warn:#f0a020;
+    --sans:'Roobert PRO','Archivo',ui-sans-serif,system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px 64px}
+
+  /* header */
+  header{padding:30px 0 18px;border-bottom:2px solid var(--accent)}
+  .top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px}
+  h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0}
+  .stamp{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+         text-transform:uppercase;color:var(--ink3)}
+  .sub{margin:8px 0 0;color:var(--ink2);font-size:14px;max-width:74ch}
+
+  /* hero numbers */
+  .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+        gap:1px;background:var(--line2);border:1px solid var(--line);margin-top:20px}
+  .h{background:var(--raised);padding:13px 14px}
+  .h .k{font-family:var(--mono);font-size:9px;letter-spacing:.13em;
+        text-transform:uppercase;color:var(--ink3)}
+  .h .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:24px;
+        font-weight:500;letter-spacing:-.02em;margin-top:4px;line-height:1.1}
+  .h .n{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:3px}
+  .big .v{font-size:30px;color:var(--accent)}
+  .up{color:var(--up)} .down{color:var(--down)} .tl{color:var(--accent)}
+
+  /* blocks */
+  h2{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+     color:var(--accent);margin:38px 0 0;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .note{color:var(--ink2);font-size:13.5px;margin:14px 0 0;max-width:74ch}
+  .note b{color:var(--ink);font-weight:600}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:14px}
+  .sc{overflow-x:auto;border:1px solid var(--line);margin-top:14px}
+  .sc table{margin:0;min-width:440px}
+  th{background:var(--raised2);text-align:left;padding:8px 12px;font-family:var(--mono);
+     font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);
+     font-weight:500;border-bottom:1px solid var(--line);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line2);color:var(--ink2);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  td.name{color:var(--ink);font-weight:500}
+  tr.hi td{background:rgba(35,247,221,.055);color:var(--ink)}
+
+  /* peer bars */
+  .peers{border:1px solid var(--line);margin-top:14px}
+  .pr{display:grid;grid-template-columns:58px 1fr 66px;align-items:center;gap:10px;
+      padding:6px 12px;border-bottom:1px solid var(--line2)}
+  .pr:last-child{border-bottom:none}
+  .pr .s{font-family:var(--mono);font-size:11.5px;color:var(--ink2)}
+  .pr.me .s{color:var(--accent);font-weight:700}
+  .tk{position:relative;height:16px;background:var(--raised2)}
+  .z{position:absolute;top:0;bottom:0;width:1px;background:var(--ink4);left:14%}
+  .f{position:absolute;top:0;bottom:0}
+  .f.p{background:rgba(52,209,150,.4)} .f.n{background:rgba(244,82,90,.4)}
+  .pr.me .f.p{background:var(--accent)}
+  .pr .q{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:11.5px;
+         text-align:right;color:var(--ink2)}
+  .pr.me .q{color:var(--accent);font-weight:700}
+
+  /* driver cards */
+  .drv{display:grid;gap:1px;background:var(--line2);border:1px solid var(--line);margin-top:14px}
+  .d{background:var(--raised);padding:14px 16px;display:grid;
+     grid-template-columns:26px 1fr auto;gap:14px;align-items:start}
+  .d .r{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--ink4);line-height:1.2}
+  .d .t{font-weight:600;color:var(--ink);font-size:14px}
+  .d .x{color:var(--ink3);font-size:12.5px;margin-top:3px;max-width:66ch}
+  .d .g{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+        padding:2px 7px;border-radius:2px;white-space:nowrap;align-self:center}
+  .g.a{color:var(--up);background:rgba(52,209,150,.13);border:1px solid rgba(52,209,150,.3)}
+  .g.b{color:var(--warn);background:rgba(240,160,32,.12);border:1px solid rgba(240,160,32,.3)}
+  .g.c{color:var(--ink3);background:var(--raised2);border:1px solid var(--line)}
+  .g.d{color:var(--down);background:rgba(244,82,90,.12);border:1px solid rgba(244,82,90,.3)}
+
+  /* glossary */
+  .gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:1px;background:var(--line2);border:1px solid var(--line);margin-top:14px}
+  .gi{background:var(--raised);padding:12px 14px}
+  .gi .w{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.04em}
+  .gi .m{color:var(--ink3);font-size:12.5px;margin-top:3px}
+
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+         font-family:var(--mono);font-size:10.5px;color:var(--ink4);line-height:1.7}
+
+  @media(max-width:600px){
+    .pr{grid-template-columns:46px 1fr 58px;gap:7px}
+    .d{grid-template-columns:22px 1fr;gap:10px}
+    .d .g{grid-column:2;justify-self:start;margin-top:6px}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="top">
+    <h1>EGLD &mdash; 24 hour factsheet</h1>
+    <span class="stamp">2 Sep 2026 &middot; 22:41 UTC</span>
+  </div>
+  <p class="sub">
+    MultiversX's token is up 29.5% in a day and 88.8% in a month, alone among layer&#8209;1
+    blockchains. Below: the figures, the drivers ranked, and the levels that would change
+    the read. Terms are defined at the foot.
+  </p>
+</header>
+
+<div class="hero">
+  <div class="h big"><div class="k">Price</div><div class="v">$5.14</div><div class="n">range $3.98&ndash;5.18</div></div>
+  <div class="h"><div class="k">24 hour</div><div class="v up">+29.5%</div><div class="n">BTC +0.05%</div></div>
+  <div class="h"><div class="k">7 day</div><div class="v up">+52.0%</div><div class="n">&nbsp;</div></div>
+  <div class="h"><div class="k">30 day</div><div class="v up">+88.8%</div><div class="n">from $2.71</div></div>
+  <div class="h"><div class="k">Market cap</div><div class="v">$158M</div><div class="n">rank #196</div></div>
+  <div class="h"><div class="k">24h volume</div><div class="v">$34.7M</div><div class="n">22% of mcap</div></div>
+</div>
+
+<h2>Rank</h2>
+<table>
+  <tr><td class="name">Among all 487 tracked coins</td><td class="n tl">#3</td><td>the two above are memecoins</td></tr>
+  <tr><td class="name">Among 108 coins with real size and volume</td><td class="n tl">#2</td><td>&ge;$100M cap and &ge;$20M daily volume</td></tr>
+  <tr><td class="name">Among established layer-1 tokens</td><td class="n tl">#1</td><td>by 24.5 percentage points</td></tr>
+</table>
+
+<h2>24 hour move vs peers</h2>
+<div class="peers" role="img" aria-label="24-hour change: EGLD +30.2%, ALGO +5.7%, SOL +0.2%, DOT +0.1%, BTC +0.0%, ATOM -0.4%, AVAX -0.4%, NEAR -0.8%, ETH -1.0%">
+  <div class="pr me"><span class="s">EGLD</span><span class="tk"><span class="z"></span><span class="f p" style="left:14%;width:81%"></span></span><span class="q">+30.2%</span></div>
+  <div class="pr"><span class="s">ALGO</span><span class="tk"><span class="z"></span><span class="f p" style="left:14%;width:15.2%"></span></span><span class="q">+5.7%</span></div>
+  <div class="pr"><span class="s">SOL</span><span class="tk"><span class="z"></span><span class="f p" style="left:14%;width:0.5%"></span></span><span class="q">+0.2%</span></div>
+  <div class="pr"><span class="s">DOT</span><span class="tk"><span class="z"></span><span class="f p" style="left:14%;width:0.2%"></span></span><span class="q">+0.1%</span></div>
+  <div class="pr"><span class="s">BTC</span><span class="tk"><span class="z"></span><span class="f p" style="left:14%;width:0.2%"></span></span><span class="q">+0.0%</span></div>
+  <div class="pr"><span class="s">ATOM</span><span class="tk"><span class="z"></span><span class="f n" style="left:12.9%;width:1.1%"></span></span><span class="q">&minus;0.4%</span></div>
+  <div class="pr"><span class="s">AVAX</span><span class="tk"><span class="z"></span><span class="f n" style="left:12.9%;width:1.1%"></span></span><span class="q">&minus;0.4%</span></div>
+  <div class="pr"><span class="s">NEAR</span><span class="tk"><span class="z"></span><span class="f n" style="left:12%;width:2%"></span></span><span class="q">&minus;0.8%</span></div>
+  <div class="pr"><span class="s">ETH</span><span class="tk"><span class="z"></span><span class="f n" style="left:11.4%;width:2.6%"></span></span><span class="q">&minus;1.0%</span></div>
+</div>
+<p class="note">No layer-1 peer moved. This is specific to MultiversX, not a sector move.</p>
+
+<h2>Derivatives &mdash; the leverage is unusually large and positioned against the move</h2>
+<div class="sc"><table>
+  <tr><th>Measure</th><th class="n">Now</th><th class="n">4h earlier</th><th>Meaning</th></tr>
+  <tr class="hi"><td class="name">Open interest</td><td class="n">$53.6M</td><td class="n">$41.1M</td><td>Total money in leveraged bets. Up 30% while price rose 9% &mdash; roughly 19% genuine new positions</td></tr>
+  <tr class="hi"><td class="name">As share of market cap</td><td class="n down">34.0%</td><td class="n">28.4%</td><td>Very high. Above ~20% a market is fragile in both directions</td></tr>
+  <tr><td class="name">Average funding rate</td><td class="n down">&minus;0.078%</td><td class="n">&minus;0.064%</td><td>Negative means short sellers are paying holders of long positions</td></tr>
+  <tr><td class="name">Venues with negative funding</td><td class="n">27 of 32</td><td class="n">27 of 32</td><td>Betting against the move is near-universal, and got more expensive</td></tr>
+  <tr><td class="name">Leveraged volume</td><td class="n">$195M</td><td class="n">$192M</td><td>5.6&times; the $34.7M traded in actual coins</td></tr>
+</table></div>
+<p class="note">
+  <b>Short sellers are adding, not covering.</b> A rally usually forces bets against it to
+  close. Here the opposite happened: positions against the move grew ~19% and are paying a
+  rising fee to stay open. The pressure has not been released &mdash; it has built.
+</p>
+
+<h2>On-chain &mdash; who moved coins, since 31 August</h2>
+<div class="sc"><table>
+  <tr><th>Measure</th><th class="n">Figure</th><th>Meaning</th></tr>
+  <tr class="hi"><td class="name">Wallets taking coins off exchanges</td><td class="n up">359</td><td>vs <b>50 in the whole previous week</b>. Median withdrawal 49 EGLD; 233 wallets took under 100</td></tr>
+  <tr class="hi"><td class="name">Value withdrawn to those wallets</td><td class="n up">489,452</td><td>EGLD. Up 116,270 in the last four hours alone</td></tr>
+  <tr><td class="name">Share of withdrawals to trading desks</td><td class="n">51%</td><td>Down from 57%. A rising share is going to ordinary holders</td></tr>
+  <tr><td class="name">Coins held by OTC desks</td><td class="n down">130,894</td><td>From 266,213. These desks sell large blocks; their stock halved into the rally</td></tr>
+  <tr><td class="name">&hellip;change in the last four hours</td><td class="n">&minus;2,256</td><td>Delivery has nearly stopped. The main source of selling has run down</td></tr>
+  <tr><td class="name">Binance exchange wallet</td><td class="n down">&minus;516,274</td><td>Moved out of the wallet coins are sold from</td></tr>
+  <tr><td class="name">Binance staking vault</td><td class="n up">+419,836</td><td>Moved into long-term storage instead. Unchanged for four hours</td></tr>
+  <tr><td class="name">Coins locked in staking</td><td class="n down">&minus;30,723</td><td>Falling. Nobody is locking coins up to earn yield on this move</td></tr>
+  <tr><td class="name">Largest known buyer wallet</td><td class="n">0</td><td>Has not moved a single coin in four weeks</td></tr>
+</table></div>
+
+<h2>What is driving it &mdash; ranked</h2>
+<div class="drv">
+  <div class="d">
+    <span class="r">1</span>
+    <span>
+      <span class="t">Broad buying of the actual coin</span>
+      <span class="x">359 separate wallets pulled 489,452 EGLD off exchanges in 48 hours, against 50
+      wallets the previous week. The size spread &mdash; median 49 coins, most wallets under 100 &mdash;
+      says many small buyers, not one large one. Strongest evidence in the data.</span>
+    </span>
+    <span class="g a">high</span>
+  </div>
+  <div class="d">
+    <span class="r">2</span>
+    <span>
+      <span class="t">A large bet against the move that has not yet been forced to close</span>
+      <span class="x">Leveraged positions equal 34% of the token's entire market value, and 27 of 32
+      venues show short sellers paying to hold. If they are forced to buy back, that accelerates the
+      move sharply. If buying stops, the same leverage works in reverse.</span>
+    </span>
+    <span class="g b">high, unresolved</span>
+  </div>
+  <div class="d">
+    <span class="r">3</span>
+    <span>
+      <span class="t">The Supernova network upgrade on 10 September</span>
+      <span class="x">Block times drop from 6 seconds to 0.6 seconds. Eight days away. It is the only
+      dated catalyst &mdash; but the price was already up 97% before this session, so it accelerated a
+      move that started three weeks earlier rather than causing it.</span>
+    </span>
+    <span class="g b">accelerant</span>
+  </div>
+  <div class="d">
+    <span class="r">4</span>
+    <span>
+      <span class="t">Less coin available to sell</span>
+      <span class="x">534,385 EGLD &mdash; 1.7% of all coins in circulation &mdash; left exchanges and
+      trading desks in 48 hours. Thinner available supply makes a price move go further. Note this is
+      partly an effect of the rally, not only a cause.</span>
+    </span>
+    <span class="g c">amplifier</span>
+  </div>
+  <div class="d">
+    <span class="r">5</span>
+    <span>
+      <span class="t">Trading desks selling into it &mdash; nearly finished</span>
+      <span class="x">They delivered 135,319 EGLD since 31 August but only 2,256 in the last four
+      hours. The main brake on the price has largely stopped applying.</span>
+    </span>
+    <span class="g d">fading</span>
+  </div>
+  <div class="d">
+    <span class="r">6</span>
+    <span>
+      <span class="t">Ruled out</span>
+      <span class="x"><b>Sector rotation</b> &mdash; every layer-1 peer is flat or down.
+      <b>Network growth</b> &mdash; staking, delegation and DeFi deposits all shrank.
+      <b>A new listing or index inclusion</b> &mdash; volume is spread across 78 trading pairs with no
+      single venue showing the signature.</span>
+    </span>
+    <span class="g d">falsified</span>
+  </div>
+</div>
+
+<h2>What would change the read</h2>
+<div class="sc"><table>
+  <tr><th>Watch</th><th>Bullish</th><th>Bearish</th></tr>
+  <tr><td class="name">Wallets withdrawing from exchanges</td><td>Stays above 150 once price settles</td><td>Falls under 150 &mdash; the buying was momentum only</td></tr>
+  <tr><td class="name">Funding rate</td><td>Stays negative &mdash; shorts still trapped</td><td>Turns positive &mdash; leverage is now crowded long</td></tr>
+  <tr><td class="name">Open interest</td><td>Sharp fall with price holding &mdash; shorts closed out</td><td>Keeps climbing above 34% of market cap</td></tr>
+  <tr><td class="name">OTC desk holdings</td><td>Below 60,000 &mdash; the overhang is gone</td><td>Back above 200,000 &mdash; more supply staged</td></tr>
+  <tr><td class="name">Price through 10 September</td><td>Holds above $4.50 after the upgrade</td><td>Falls on activation &mdash; classic sell-the-news</td></tr>
+</table></div>
+
+<h2>Bottom line</h2>
+<p class="note">
+  Real, broad buying of the coin is doing the work, and it is the widest participation in
+  twenty-three weeks of tracking. Sitting on top of it is a leveraged bet against the move worth
+  a third of the token's market value that has <b>not</b> yet been forced to unwind. That makes
+  the next move larger in whichever direction it goes. The dated risk is the upgrade itself on
+  10 September: the rally is three weeks older than the catalyst, and everyone can see the date.
+</p>
+
+<h2>Terms</h2>
+<div class="gl">
+  <div class="gi"><div class="w">Open interest</div><div class="m">Total value of leveraged bets currently open. High relative to market cap means a small price move forces large buying or selling.</div></div>
+  <div class="gi"><div class="w">Funding rate</div><div class="m">Periodic fee between the two sides of a leveraged trade. Negative means those betting on a fall are paying those betting on a rise.</div></div>
+  <div class="gi"><div class="w">OTC desk</div><div class="m">A wallet that fills large orders privately rather than on an exchange order book. Its stock of coins is supply waiting to be sold.</div></div>
+  <div class="gi"><div class="w">Withdrawal breadth</div><div class="m">How many separate wallets took coins off exchanges. Many small withdrawals suggests broad demand; few large ones suggests one buyer.</div></div>
+  <div class="gi"><div class="w">Staking</div><div class="m">Locking coins to help secure the network in exchange for yield. Locked coins cannot be sold quickly.</div></div>
+  <div class="gi"><div class="w">Supernova</div><div class="m">MultiversX protocol upgrade activating 10 September, cutting block time from 6 seconds to 0.6 seconds.</div></div>
+</div>
+
+<footer>
+  Price, volume, open interest and funding: CoinGecko, 2 Sep 2026 22:41 UTC &middot;
+  on-chain figures: MultiversX API, 48-hour change against the 31 August baseline &middot;
+  derivatives figures are point-in-time snapshots, not a continuous series<br>
+  Not investment advice. Figures are observations, not forecasts.
+</footer>
+
+</div>
