@@ -3,6 +3,8 @@ import { useLiveMarket } from '../hooks/useLiveMarket'
 import type { LiveMarket } from '../hooks/useLiveMarket'
 import { PageTabs } from '../components/PageTabs'
 import { MarketHistory, useHistory } from '../components/MarketHistory'
+import { BigPicture } from '../components/BigPicture'
+import { PeerBars } from '../components/PeerBars'
 import { formatEgldBare, formatUsd, formatNumber } from '../lib/formatters'
 import {
   decoupling,
@@ -205,40 +207,6 @@ function VenueDots({ data }: { data: LiveMarket }) {
   )
 }
 
-function AloneStrip({ data }: { data: LiveMarket }) {
-  const all = [{ symbol: 'EGLD', change24h: data.change24h, me: true },
-    ...data.peers.map((p) => ({ symbol: p.symbol, change24h: p.change24h, me: false }))]
-  const lo = Math.min(-6, ...all.map((p) => p.change24h))
-  const hi = Math.max(6, ...all.map((p) => p.change24h))
-  const at = (v: number) => ((v - lo) / (hi - lo)) * 100
-  return (
-    <div>
-      <div className="eyebrow">Today against every layer-1 peer</div>
-      <div className="relative h-11 mt-3">
-        <div className="absolute inset-x-0 top-5 h-px bg-border" />
-        <div className="absolute top-3 w-px h-4 bg-border-strong" style={{ left: `${at(0)}%` }} />
-        {all.filter((p) => !p.me).map((p) => (
-          <div key={p.symbol} title={`${p.symbol} ${pct(p.change24h)}`}
-               className="absolute top-3.5 w-px h-3 bg-text-muted"
-               style={{ left: `${at(p.change24h)}%` }} />
-        ))}
-        <div className="absolute top-1 flex flex-col items-center -translate-x-1/2"
-             style={{ left: `${at(data.change24h)}%` }}>
-          <span className="font-mono text-[10px] font-bold text-accent-cyan whitespace-nowrap">
-            EGLD {pct(data.change24h)}
-          </span>
-          <span className="w-px h-5 bg-accent-cyan mt-0.5" />
-        </div>
-      </div>
-      <div className="flex justify-between font-mono text-[9.5px] text-text-faint">
-        <span>{lo.toFixed(0)}%</span>
-        <span>the other eight sit here</span>
-        <span>+{hi.toFixed(0)}%</span>
-      </div>
-    </div>
-  )
-}
-
 function Disclosure({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <details className="card group">
@@ -334,9 +302,11 @@ export function PumpPage() {
 
         {data && signals && (
           <div className="space-y-4">
-            {error && (
+            {(error || data.degraded) && (
               <p className="text-[11px] font-mono text-severity-medium">
-                Refresh failed ({error}). Showing the last good reading.
+                {error
+                  ? `Refresh failed (${error}). Showing the last good reading, from ${utc(data.fetchedAt)}.`
+                  : 'The price source is rate-limiting, so 24h high/low and the 7d/30d changes are unavailable this minute. Everything else is live.'}
               </p>
             )}
 
@@ -367,8 +337,10 @@ export function PumpPage() {
                     </Live>
                   </div>
                   <div className="mt-2 font-mono text-[11px] text-text-muted">
-                    ${data.low24h.toFixed(2)}–${data.high24h.toFixed(2)} today · data as of{' '}
-                    {utc(data.fetchedAt)}
+                    {data.low24h != null && data.high24h != null && (
+                      <>${data.low24h.toFixed(2)}–${data.high24h.toFixed(2)} today · </>
+                    )}
+                    data as of {utc(data.fetchedAt)}
                   </div>
                 </div>
                 <DeskGauge data={data} peak={peak} />
@@ -404,11 +376,13 @@ export function PumpPage() {
               <VenueDots data={data} />
             </section>
 
-            {/* ---- TIER 1: the series ---- */}
+            {/* ---- TIER 1: context, then the live series ---- */}
+            <BigPicture livePrice={data.price} />
+
             <MarketHistory />
 
             <section className="card p-5">
-              <AloneStrip data={data} />
+              <PeerBars data={data} />
             </section>
 
             {/* ---- TIER 2: evidence, folded away ---- */}

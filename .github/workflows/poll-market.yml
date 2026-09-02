@@ -1,6 +1,7 @@
 name: Poll EGLD market
 
-# Appends one reading an hour to dashboard/public/market-history.json.
+# Appends one reading an hour to dashboard/public/market-history.json, and
+# refreshes the long-range price snapshot in dashboard/public/price-history.json.
 #
 # The tracker's live tiles refresh themselves in the browser, but the HISTORY
 # series only grows when something records a reading. This is that something.
@@ -37,15 +38,23 @@ jobs:
       - name: Take a reading
         run: python3 scripts/poll_market.py
 
-      - name: Commit if the file changed
+      # The "bigger picture" panel's fallback, for when CoinGecko rate-limits
+      # the live proxy. A year of daily closes barely moves, so a failure here
+      # is not worth failing the run over — the previous snapshot stays valid.
+      - name: Refresh the long-range price snapshot
+        continue-on-error: true
+        run: python3 scripts/poll_price_history.py
+
+      - name: Commit if anything changed
         run: |
-          if git diff --quiet -- dashboard/public/market-history.json; then
+          FILES="dashboard/public/market-history.json dashboard/public/price-history.json"
+          if git diff --quiet -- $FILES; then
             echo "No change — upstream had nothing new."
             exit 0
           fi
           git config user.name  "egld-pump-tracker[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dashboard/public/market-history.json
+          git add $FILES
           git commit -m "Market reading $(date -u '+%Y-%m-%d %H:%M UTC')"
           # Another run may have landed while this one was fetching.
           git pull --rebase --autostash origin main

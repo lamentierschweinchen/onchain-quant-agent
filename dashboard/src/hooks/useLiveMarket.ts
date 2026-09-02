@@ -46,8 +46,9 @@ export interface LiveMarket {
   change24h: number
   change7d: number | null
   change30d: number | null
-  high24h: number
-  low24h: number
+  /** Null when the proxy is serving its reduced fallback. */
+  high24h: number | null
+  low24h: number | null
   marketCap: number
   volume24h: number
   peers: Peer[]
@@ -65,6 +66,31 @@ export interface LiveMarket {
   stakedEgld: number
   stakedRatio: number
   fetchedAt: number
+  /** Set when the proxy fell back to its cheaper endpoint and some fields are absent. */
+  degraded?: string | null
+}
+
+/** Last good snapshot, so a cold load during a rate limit is not a blank page. */
+const CACHE_KEY = 'pump-last-good'
+
+function readCache(): LiveMarket | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const d = JSON.parse(raw) as LiveMarket
+    // Anything older than a day is more misleading than useful.
+    return Date.now() - d.fetchedAt < 86_400_000 ? d : null
+  } catch {
+    return null
+  }
+}
+
+function writeCache(d: LiveMarket): void {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(d))
+  } catch {
+    /* private mode or quota — the cache is an optimisation, not a requirement */
+  }
 }
 
 async function getJson(url: string, signal: AbortSignal): Promise<unknown> {
@@ -90,6 +116,7 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
   const payload = proxied as {
     markets?: Array<Record<string, unknown>>
     venues?: Array<Record<string, unknown>>
+    degraded?: string | null
     error?: string
   }
   if (payload.error) throw new Error(payload.error)
@@ -139,8 +166,8 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
     change30d: egld.price_change_percentage_30d_in_currency == null
       ? null
       : Number(egld.price_change_percentage_30d_in_currency),
-    high24h: Number(egld.high_24h ?? 0),
-    low24h: Number(egld.low_24h ?? 0),
+    high24h: egld.high_24h == null ? null : Number(egld.high_24h),
+    low24h: egld.low_24h == null ? null : Number(egld.low_24h),
     marketCap,
     volume24h: Number(egld.total_volume ?? 0),
     peers,
@@ -161,11 +188,14 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
       ? Number(econ.staked) / Number(econ.circulatingSupply)
       : 0,
     fetchedAt: Date.now(),
+    degraded: payload.degraded ?? null,
   }
 }
 
 export function useLiveMarket(refreshMs = 60_000) {
-  const [data, setData] = useState<LiveMarket | null>(null)
+  // Hydrate from the last good reading so the page has real numbers on screen
+  // immediately, including when the upstream is rate-limiting a cold visitor.
+  const [data, setData] = useState<LiveMarket | null>(readCache)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const abortRef = useRef<AbortController | null>(null)
@@ -177,6 +207,7 @@ export function useLiveMarket(refreshMs = 60_000) {
     try {
       const next = await load(ctrl.signal)
       setData(next)
+      writeCache(next)
       setError(null)
     } catch (e) {
       if ((e as Error).name === 'AbortError') return

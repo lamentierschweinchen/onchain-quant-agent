@@ -472,3 +472,39 @@ table.terminal-table tbody tr:hover td {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Pump tracker motion.
+
+   The reduced-motion block above already neutralises all of this with
+   !important, so these need no individual guards.
+   --------------------------------------------------------------------------- */
+
+/* Traces the price line on once, left to right, when a range is first drawn.
+   Requires pathLength="1" on the <path> itself (an SVG attribute, not a CSS
+   property), which normalises the dash maths for any path length. */
+.draw-in {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-in 1100ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+@keyframes draw-in {
+  to { stroke-dashoffset: 0; }
+}
+
+/* The current-price dot on a live chart: a slow halo so the eye can find "now"
+   without the page flickering. */
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.75; r: 4; }
+  50%      { opacity: 0.25; r: 9; }
+}
+
+/* Bars grow from the zero line rather than appearing at full width. */
+@keyframes bar-in {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}

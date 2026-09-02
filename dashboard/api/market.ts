@@ -31,6 +31,51 @@ const PEER_IDS = [
 
 export const config = { runtime: 'edge' }
 
+/**
+ * /coins/markets is the richer endpoint but also the one CoinGecko rate-limits
+ * first. /simple/price costs far less and still carries price, market cap,
+ * volume and the 24h change — everything the verdict sentence and the peer bars
+ * need. Reshaped into the same rows so the client cannot tell the difference
+ * apart from the fields that are genuinely absent (24h high/low, 7d, 30d).
+ */
+async function fallbackMarkets(): Promise<Array<Record<string, unknown>> | null> {
+  const res = await fetch(
+    `${CG}/simple/price?ids=${PEER_IDS}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`,
+    { headers: { accept: 'application/json' } },
+  )
+  if (!res.ok) return null
+  const raw = (await res.json()) as Record<string, Record<string, number>>
+
+  const NAMES: Record<string, [string, string]> = {
+    'elrond-erd-2': ['egld', 'MultiversX'],
+    bitcoin: ['btc', 'Bitcoin'],
+    ethereum: ['eth', 'Ethereum'],
+    solana: ['sol', 'Solana'],
+    polkadot: ['dot', 'Polkadot'],
+    'avalanche-2': ['avax', 'Avalanche'],
+    cosmos: ['atom', 'Cosmos Hub'],
+    near: ['near', 'NEAR Protocol'],
+    algorand: ['algo', 'Algorand'],
+  }
+
+  const rows = Object.entries(raw).map(([id, v]) => ({
+    id,
+    symbol: NAMES[id]?.[0] ?? id,
+    name: NAMES[id]?.[1] ?? id,
+    current_price: v.usd,
+    market_cap: v.usd_market_cap,
+    total_volume: v.usd_24h_vol,
+    price_change_percentage_24h: v.usd_24h_change,
+    // Absent from this endpoint. Null rather than zero: the client renders a
+    // dash for these, and a zero would read as a real measurement.
+    high_24h: null,
+    low_24h: null,
+    price_change_percentage_7d_in_currency: null,
+    price_change_percentage_30d_in_currency: null,
+  }))
+  return rows.length ? rows : null
+}
+
 export default async function handler(): Promise<Response> {
   try {
     const [marketsRes, derivsRes] = await Promise.all([
@@ -43,27 +88,36 @@ export default async function handler(): Promise<Response> {
       }),
     ])
 
-    if (!marketsRes.ok || !derivsRes.ok) {
+    // Degrade rather than die. Losing the derivatives leg costs the funding and
+    // leverage readings; losing the rich markets leg costs 24h high/low and the
+    // 7d/30d changes. Either is far better than the blank "could not load"
+    // page the reader used to get whenever the free tier rate-limited.
+    let markets: Array<Record<string, unknown>> | null = marketsRes.ok
+      ? ((await marketsRes.json()) as Array<Record<string, unknown>>)
+      : null
+    let degraded: string | null = null
+
+    if (!markets?.length) {
+      markets = await fallbackMarkets()
+      degraded = markets ? 'reduced' : null
+    }
+
+    if (!markets?.length) {
       return Response.json(
         {
-          error: `upstream ${marketsRes.status}/${derivsRes.status}`,
-          hint:
-            marketsRes.status === 429 || derivsRes.status === 429
-              ? 'CoinGecko rate limit — the cached copy will serve until it clears'
-              : undefined,
+          error: `upstream ${marketsRes.status}`,
+          hint: marketsRes.status === 429 ? 'CoinGecko rate limit — try again in a minute' : undefined,
         },
-        // Let the edge keep serving the previous good copy rather than blanking.
         { status: 503, headers: { 'cache-control': 's-maxage=15' } },
       )
     }
 
-    const [markets, derivatives] = await Promise.all([
-      marketsRes.json(),
-      derivsRes.json(),
-    ])
+    const derivatives = derivsRes.ok
+      ? ((await derivsRes.json()) as Array<Record<string, unknown>>)
+      : []
 
     // Only EGLD perps matter here, and the full derivatives payload is large.
-    const venues = (derivatives as Array<Record<string, unknown>>)
+    const venues = derivatives
       .filter((d) => String(d.symbol ?? '').toUpperCase().startsWith('EGLD'))
       .map((d) => ({
         market: String(d.market ?? '?'),
@@ -74,12 +128,15 @@ export default async function handler(): Promise<Response> {
       .sort((a, b) => b.open_interest - a.open_interest)
 
     return Response.json(
-      { markets, venues, fetchedAt: new Date().toISOString() },
+      { markets, venues, degraded, fetchedAt: new Date().toISOString() },
       {
         headers: {
           // One upstream call a minute regardless of traffic; serve the stale
-          // copy for up to five minutes while the refresh happens behind it.
-          'cache-control': 's-maxage=60, stale-while-revalidate=300',
+          // copy for up to five minutes while the refresh happens behind it. A
+          // degraded response gets a shorter TTL so the full one returns sooner.
+          'cache-control': degraded
+            ? 's-maxage=30, stale-while-revalidate=300'
+            : 's-maxage=60, stale-while-revalidate=300',
         },
       },
     )

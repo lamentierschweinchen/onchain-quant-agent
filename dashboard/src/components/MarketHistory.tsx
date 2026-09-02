@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { formatUsd } from '../lib/formatters'
+import { TimeChart } from './TimeChart'
+import type { Series } from './TimeChart'
 
 /**
  * Price against open interest over time — the pair that separates a squeeze
@@ -52,69 +54,6 @@ const VERDICTS: Record<string, { title: string; detail: string; tone: string }> 
       'Price is down over the window and leverage outstanding has grown. Traders are adding bets into the fall.',
     tone: 'text-severity-medium',
   },
-}
-
-function Spark({
-  values,
-  color,
-  zero = false,
-  height = 46,
-}: {
-  values: number[]
-  color: string
-  /** Draw a baseline at zero — for series that cross it, like funding. */
-  zero?: boolean
-  height?: number
-}) {
-  if (values.length < 2) return null
-  const W = 260
-  const lo = Math.min(...values, zero ? 0 : Math.min(...values))
-  const hi = Math.max(...values, zero ? 0 : Math.max(...values))
-  const span = hi - lo || 1
-  const x = (i: number) => (i / (values.length - 1)) * W
-  const y = (v: number) => height - ((v - lo) / span) * (height - 6) - 3
-  const d = values.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')
-  const area = `${d} L${W},${height} L0,${height} Z`
-  return (
-    <svg
-      viewBox={`0 0 ${W} ${height}`}
-      preserveAspectRatio="none"
-      className="w-full"
-      style={{ height }}
-      aria-hidden="true"
-    >
-      {zero && lo < 0 && hi > 0 && (
-        <line x1="0" x2={W} y1={y(0)} y2={y(0)} stroke="currentColor" strokeWidth="1"
-              className="text-border-strong" strokeDasharray="2 3" />
-      )}
-      <path d={area} fill={color} opacity="0.12" />
-      <path d={d} fill="none" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
-      <circle cx={x(values.length - 1)} cy={y(values[values.length - 1])} r="2.6" fill={color} />
-    </svg>
-  )
-}
-
-function Panel({
-  label,
-  latest,
-  sub,
-  children,
-}: {
-  label: string
-  latest: string
-  sub?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="card p-3.5">
-      <div className="flex items-baseline justify-between gap-3">
-        <span className="eyebrow">{label}</span>
-        <span className="font-mono tabular text-[13px] text-text-primary">{latest}</span>
-      </div>
-      <div className="mt-2">{children}</div>
-      {sub && <div className="font-mono text-[10px] text-text-muted mt-1.5">{sub}</div>}
-    </div>
-  )
 }
 
 export function useHistory() {
@@ -191,6 +130,7 @@ export function MarketHistory() {
 
   const fundings = pts.map((p) => p.funding).filter((f): f is number => f != null)
   const hours = (new Date(last.t).getTime() - new Date(first.t).getTime()) / 3_600_000
+  const times = pts.map((p) => new Date(p.t).getTime())
 
   return (
     <section className="card overflow-hidden">
@@ -213,34 +153,56 @@ export function MarketHistory() {
           {verdict.detail}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <Panel
-            label="Price"
-            latest={`$${last.price.toFixed(2)}`}
-            sub={`from $${first.price.toFixed(2)}`}
-          >
-            <Spark values={pts.map((p) => p.price)} color="#23f7dd" />
-          </Panel>
-          <Panel
-            label="Open interest"
-            latest={oiLast ? formatUsd(oiLast.oi) : '—'}
-            sub={oiFirst && oiLast ? `${oiLast.oiShare != null ? `${oiLast.oiShare.toFixed(1)}% of market cap · ` : ''}from ${formatUsd(oiFirst.oi)}` : undefined}
-          >
-            <Spark values={withOi.map((p) => p.oi)} color={oiUp ? '#f0a020' : '#23f7dd'} />
-          </Panel>
-          <Panel
-            label="Funding rate"
-            latest={last.funding != null ? `${last.funding.toFixed(4)}%` : '—'}
-            sub={
-              fundings.length > 1
-                ? last.funding != null && fundings[0] != null && last.funding < fundings[0]
-                  ? 'getting more negative — shorts paying more'
-                  : 'less negative — short pressure easing'
-                : undefined
-            }
-          >
-            <Spark values={fundings} color="#f4525a" zero />
-          </Panel>
+        <div className="space-y-5">
+          <TimeChart
+            times={times}
+            height={150}
+            series={[
+              {
+                key: 'price',
+                label: 'price',
+                color: '#23f7dd',
+                area: true,
+                values: pts.map((p) => p.price),
+                format: (v) => `$${v.toFixed(2)}`,
+              },
+              {
+                key: 'oi',
+                label: 'leverage outstanding',
+                color: '#f0a020',
+                axis: 'right',
+                values: pts.map((p) => p.oi),
+                format: (v) => formatUsd(v),
+              },
+            ] satisfies Series[]}
+          />
+
+          {fundings.length > 1 && (
+            <div className="border-t border-border-subtle pt-4">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="eyebrow">Funding rate — which side pays</span>
+                <span className="font-mono text-[10px] text-text-muted">
+                  below the line, short sellers pay
+                </span>
+              </div>
+              <div className="mt-1">
+                <TimeChart
+                  times={times}
+                  height={92}
+                  zeroLine
+                  series={[
+                    {
+                      key: 'funding',
+                      label: 'funding',
+                      color: '#f4525a',
+                      values: pts.map((p) => p.funding),
+                      format: (v) => `${v.toFixed(4)}%`,
+                    },
+                  ] satisfies Series[]}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="text-[11px] text-text-muted leading-relaxed max-w-[74ch] border-t border-border-subtle pt-3">
