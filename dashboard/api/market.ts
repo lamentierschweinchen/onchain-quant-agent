@@ -1,18 +1,19 @@
 /**
- * Server-side proxy for the CoinGecko calls the pump tracker needs.
+ * Server-side proxy for the CoinGecko calls the pump tracker cannot make itself.
  *
- * Two reasons this cannot be done from the browser:
+ * CORRECTION, verified from a real browser: an earlier version of this comment
+ * claimed /coins/markets and /derivatives send no CORS headers. Only
+ * /derivatives actually fails from a browser — /coins/markets, /simple/price and
+ * /coins/{id}/market_chart all send `access-control-allow-origin: *` and are now
+ * fetched client-side.
  *
- *  1. CORS. CoinGecko sends `access-control-allow-origin: *` on some endpoints
- *     (/simple/price) but NOT on /coins/markets or /derivatives, which are the
- *     two this page actually needs. A client-side fetch fails outright.
- *  2. Rate limits. The free tier is limited per IP. Fetching here and caching at
- *     the edge means CoinGecko sees one request a minute no matter how many
- *     people load the page — which is the behaviour that matters if it finds an
- *     audience.
- *
- * MultiversX's own API does send permissive CORS, so chain data is still fetched
- * directly by the browser and is not proxied here.
+ * That matters because of the second constraint, which is the real one: the free
+ * tier rate-limits per IP, and Vercel's edge addresses are shared across its
+ * customers, so this function is 429ed far more often than any single visitor
+ * would be. Proxying everything through here meant one rate limit killed the page
+ * for everyone. So the browser calls what it can, and this endpoint exists for
+ * /derivatives plus as a cached backup — with the hourly committed snapshot in
+ * dashboard/public/derivatives-snapshot.json behind it.
  */
 
 const CG = 'https://api.coingecko.com/api/v3'

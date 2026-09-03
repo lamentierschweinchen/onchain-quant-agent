@@ -7,8 +7,10 @@
  * of history every minute or serving stale prices, so they get their own edge
  * cache with an hour-long TTL.
  *
- * Proxied for the same reason as /api/market: CoinGecko does not send CORS
- * headers on /coins/{id}/market_chart, so the browser cannot call it directly.
+ * The client calls CoinGecko directly first — /coins/{id}/market_chart does send
+ * `access-control-allow-origin: *`, contrary to what an earlier comment here
+ * claimed. This endpoint is the second try, useful because its edge cache serves
+ * visitors whose own IP is being rate-limited.
  */
 
 const CG = 'https://api.coingecko.com/api/v3'

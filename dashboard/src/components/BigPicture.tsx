@@ -33,25 +33,50 @@ function useChart() {
   useEffect(() => {
     let cancelled = false
 
-    // Three sources, freshest first:
-    //   /api/chart          — live proxy, but CoinGecko rate-limits its free tier
-    //   raw.githubusercontent — the hourly workflow's snapshot, no redeploy needed
-    //   /price-history.json — the copy bundled at build time, always present
-    // A year of daily closes barely moves, so a snapshot is a perfectly good
-    // fallback. Before this the panel simply vanished on a 429.
-    const SOURCES = [
+    // CoinGecko is called from the browser first, for the same reason the live
+    // tiles are: its free tier rate-limits per IP, and the edge proxy runs on
+    // Vercel's shared addresses, so the proxy is 429ed far more often than any
+    // individual visitor would be. The proxy is the second try, and a committed
+    // snapshot the third — a year of daily closes barely moves, so a snapshot is
+    // a perfectly good last resort. Before this the panel vanished on a 429.
+    const CG = 'https://api.coingecko.com/api/v3/coins/elrond-erd-2/market_chart'
+    const SOURCES: Array<string | [string, string]> = [
+      [`${CG}?vs_currency=usd&days=365&interval=daily`, `${CG}?vs_currency=usd&days=30`],
       '/api/chart',
       'https://raw.githubusercontent.com/lamentierschweinchen/onchain-quant-agent/main/dashboard/public/price-history.json',
       '/price-history.json',
     ]
 
+    const thin = (pairs: Pair[], target: number): Pair[] => {
+      if (pairs.length <= target) return pairs
+      const step = pairs.length / target
+      const out = Array.from({ length: target }, (_, i) => pairs[Math.floor(i * step)])
+      if (out[out.length - 1][0] !== pairs[pairs.length - 1][0]) out.push(pairs[pairs.length - 1])
+      return out
+    }
+
     ;(async () => {
       let best = null as Chart | null
-      for (const url of SOURCES) {
+      for (const src of SOURCES) {
         try {
-          const res = await fetch(url, { cache: 'no-cache' })
-          if (!res.ok) continue
-          const d = (await res.json()) as Chart
+          let d: Chart
+          if (Array.isArray(src)) {
+            // Direct: two calls, same shape the proxy would have returned.
+            const [yr, mo] = await Promise.all(
+              src.map((u) =>
+                fetch(u).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+              ),
+            )
+            d = {
+              year: yr?.prices ? thin(yr.prices as Pair[], 400) : [],
+              month: mo?.prices ? thin(mo.prices as Pair[], 360) : [],
+              fetchedAt: new Date().toISOString(),
+            }
+          } else {
+            const res = await fetch(src, { cache: 'no-cache' })
+            if (!res.ok) continue
+            d = (await res.json()) as Chart
+          }
           const year = Array.isArray(d.year) ? d.year : []
           const month = Array.isArray(d.month) ? d.month : []
           if (!year.length && !month.length) continue

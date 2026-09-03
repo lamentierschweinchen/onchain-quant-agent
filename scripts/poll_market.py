@@ -21,6 +21,12 @@ from datetime import datetime, timezone
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(REPO, "dashboard", "public", "market-history.json")
+# The per-venue derivatives list, as a fallback for the dashboard. /derivatives
+# cannot be fetched from a browser, and the edge proxy that fetches it for the
+# page runs on Vercel's shared IPs, which CoinGecko's free tier rate-limits as a
+# single caller. This runner has its own IP and calls once an hour, so a snapshot
+# committed here keeps funding and leverage on screen when the proxy is 429ed.
+VENUES_OUT = os.path.join(REPO, "dashboard", "public", "derivatives-snapshot.json")
 MAX_POINTS = 720  # 30 days at hourly
 
 CG = "https://api.coingecko.com/api/v3"
@@ -47,6 +53,39 @@ def get(url, tries=4):
     raise RuntimeError("unreachable")
 
 
+def write_venue_snapshot(venues):
+    """Mirror the shape /api/market returns, so the client can swap them freely."""
+    rows = sorted(
+        (
+            {
+                "market": str(d.get("market") or "?"),
+                "open_interest": float(d.get("open_interest") or 0),
+                "volume_24h": float(d.get("volume_24h") or 0),
+                "funding_rate": None if d.get("funding_rate") is None else float(d["funding_rate"]),
+            }
+            for d in venues
+        ),
+        key=lambda r: -r["open_interest"],
+    )
+    if not rows:
+        return
+    os.makedirs(os.path.dirname(VENUES_OUT), exist_ok=True)
+    with open(VENUES_OUT, "w") as f:
+        json.dump(
+            {
+                "fetchedAt": datetime.now(timezone.utc)
+                .isoformat(timespec="seconds")
+                .replace("+00:00", "Z"),
+                "note": "Hourly EGLD perpetual-futures snapshot. Fallback for the "
+                        "pump tracker when the live proxy is rate-limited.",
+                "venues": rows,
+            },
+            f,
+            indent=1,
+        )
+    print(f"wrote derivatives-snapshot.json: {len(rows)} venues")
+
+
 def reading():
     mk = get(f"{CG}/coins/markets?" + urllib.parse.urlencode({
         "vs_currency": "usd", "ids": "elrond-erd-2",
@@ -60,6 +99,8 @@ def reading():
     oi = sum(d.get("open_interest") or 0 for d in venues)
     pvol = sum(d.get("volume_24h") or 0 for d in venues)
     fr = [d.get("funding_rate") for d in venues if d.get("funding_rate") is not None]
+
+    write_venue_snapshot(venues)
 
     econ = get(f"{MX}/economics")
     time.sleep(0.4)

@@ -302,12 +302,28 @@ export function PumpPage() {
 
         {data && signals && (
           <div className="space-y-4">
-            {(error || data.degraded) && (
-              <p className="text-[11px] font-mono text-severity-medium">
-                {error
-                  ? `Refresh failed (${error}). Showing the last good reading, from ${utc(data.fetchedAt)}.`
-                  : 'The price source is rate-limiting, so 24h high/low and the 7d/30d changes are unavailable this minute. Everything else is live.'}
-              </p>
+            {(error || data.degraded || data.venuesAsOf) && (
+              <div className="text-[11px] font-mono text-severity-medium space-y-1">
+                {error && (
+                  <p>
+                    Refresh failed ({error}). Showing the last good reading, from{' '}
+                    {utc(data.fetchedAt)}.
+                  </p>
+                )}
+                {!error && data.degraded && (
+                  <p>
+                    The price source is rate-limiting, so 24h high/low and the 7d/30d changes
+                    are unavailable. Price, peers and chain data are live.
+                  </p>
+                )}
+                {data.venuesAsOf && (
+                  <p>
+                    Funding and leverage are from the hourly snapshot taken{' '}
+                    {data.venuesAsOf.slice(11, 16)} UTC — the live derivatives feed is
+                    rate-limiting. Price, peers and desk balances are live.
+                  </p>
+                )}
+              </div>
             )}
 
             {/* ---- TIER 0: the sentence, then the two numbers that matter ---- */}
