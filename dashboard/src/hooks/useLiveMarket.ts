@@ -16,7 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
  * scales on a free tier.
  *
  * /derivatives is the exception: it genuinely fails from a browser, so it still
- * goes through the proxy, with a committed hourly snapshot behind it for when
+ * goes through the proxy, with a committed periodic snapshot behind it for when
  * the proxy is rate-limited.
  *
  * Chain data comes straight from the MultiversX API, which has permissive CORS
@@ -38,7 +38,7 @@ const PEER_IDS = [
   'algorand',
 ].join(',')
 
-/** Committed by the hourly workflow, so funding survives a rate-limited proxy. */
+/** Committed by the scheduled workflow, so funding survives a rate-limited proxy. */
 const VENUE_SNAPSHOTS = [
   'https://raw.githubusercontent.com/lamentierschweinchen/onchain-quant-agent/main/dashboard/public/derivatives-snapshot.json',
   '/derivatives-snapshot.json',
@@ -46,6 +46,19 @@ const VENUE_SNAPSHOTS = [
 
 /** The two wallets that fill large private orders on this chain. Their stock of
  *  EGLD is supply staged for sale, and it is not published anywhere else. */
+/**
+ * The wallet that refills the desks. Found on 3 Sep 2026 by asking where a
+ * 150,000 EGLD inbound transfer came from, after the history series showed the
+ * desk balance jumping 36K -> 169K in ten hours — a swing no inventory being
+ * sold down could make. It has sent the desks 302,000 EGLD in three days and
+ * still holds over a million, which is why this page no longer describes the
+ * desk balance as supply running out.
+ */
+export const RESERVOIR = {
+  address: 'erd1fcxu3f0hlxyvnp7zvuqmf34zf5w782tst6vuqhm4dwq4ayjspdaqce0q49',
+  label: 'Desk reservoir',
+}
+
 export const DESKS: Array<{ address: string; label: string }> = [
   {
     address: 'erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5',
@@ -93,6 +106,8 @@ export interface LiveMarket {
   venues: PerpVenue[]
   deskTotal: number
   deskBreakdown: Array<{ label: string; egld: number }>
+  /** EGLD held by the wallet that refills the desks. */
+  reservoirEgld: number
   stakedEgld: number
   stakedRatio: number
   fetchedAt: number
@@ -178,11 +193,12 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
   ).catch(() => null)
   const proxy = getJson('/api/market', signal).catch(() => null)
 
-  const [direct, proxied, economics, ...deskAccounts] = await Promise.all([
+  const [direct, proxied, economics, ...accounts] = await Promise.all([
     directMarkets,
     proxy,
     getJson(`${MX}/economics`, signal),
     ...DESKS.map((d) => getJson(`${MX}/accounts/${d.address}`, signal)),
+    getJson(`${MX}/accounts/${RESERVOIR.address}`, signal),
   ])
 
   const payload = (proxied ?? {}) as {
@@ -254,10 +270,18 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
   const fundings = venues.map((v) => v.funding).filter((f): f is number => f != null)
   const openInterest = venues.reduce((s, v) => s + v.openInterest, 0)
 
+  const balanceOf = (acc: unknown): number => {
+    const raw = (acc as { balance?: string } | null)?.balance
+    // Defaulting a missing balance to 0 would silently understate the desks and
+    // read as a drain that never happened, so an absent field is NaN, not zero.
+    return raw == null ? NaN : Number(raw) / 1e18
+  }
+  const deskAccounts = accounts.slice(0, DESKS.length)
   const deskBreakdown = deskAccounts.map((acc, i) => ({
     label: DESKS[i].label,
-    egld: Number((acc as { balance?: string }).balance ?? '0') / 1e18,
+    egld: balanceOf(acc),
   }))
+  const reservoirEgld = balanceOf(accounts[DESKS.length])
 
   const econ = economics as Record<string, number>
 
@@ -287,6 +311,7 @@ async function load(signal: AbortSignal): Promise<LiveMarket> {
     venues,
     deskTotal: deskBreakdown.reduce((s, d) => s + d.egld, 0),
     deskBreakdown,
+    reservoirEgld,
     stakedEgld: Number(econ.staked ?? 0),
     stakedRatio: econ.circulatingSupply ? Number(econ.staked) / Number(econ.circulatingSupply) : 0,
     fetchedAt: Date.now(),

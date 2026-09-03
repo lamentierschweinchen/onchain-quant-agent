@@ -97,36 +97,70 @@ export function leverage(d: LiveMarket, prev?: string): Signal {
 }
 
 /**
- * Deliberately says "left the desk", not "was sold". The balance falling means
- * EGLD moved out of two labelled addresses — it may have gone to an exchange, to
- * a buyer, or to another wallet of the same operator. Tracing the destination is
- * a separate job and this page has not done it.
+ * WHAT THIS NO LONGER CLAIMS, and why.
+ *
+ * Until 3 Sep 2026 this read the desk balance falling from its peak as supply
+ * being worked off — "down from 266,213" implied an inventory heading toward
+ * exhaustion. That was wrong, and the history series is what exposed it: the
+ * balance swung 36K -> 79K -> 169K in ten hours, which nothing being sold down
+ * can do. Tracing the inbound transfers found a wallet that had sent the desks
+ * 302,000 EGLD in three days and still holds over a million.
+ *
+ * So the desk balance is a working float, not a stock. It falling means EGLD
+ * moved out; it says nothing about how much is left to come, because what is
+ * behind it is larger than anything the desks have held. The signal now reports
+ * the float and the reserve behind it, and no longer offers a peak to count
+ * down from.
+ *
+ * It still says "left the desks", not "was sold": the outflows go to dozens of
+ * distinct addresses and this page does not trace their destinations.
  */
-export function overhang(d: LiveMarket, peak: number, prev?: string): Signal {
+export function overhang(d: LiveMarket, prev?: string): Signal {
   const t = d.deskTotal
-  const staged = withHysteresis(t, { enter: 200_000, exit: 180_000 }, prev === 'staged')
-  const cleared = withHysteresis(-t, { enter: -60_000, exit: -68_000 }, prev === 'cleared')
-  const drained = peak > 0 ? peak - t : 0
+  const res = d.reservoirEgld
+  const hasReserve = Number.isFinite(res) && res > 0
+  const backing = hasReserve ? res / Math.max(t, 1) : 0
 
-  if (staged)
+  const loaded = withHysteresis(t, { enter: 200_000, exit: 180_000 }, prev === 'staged')
+  const thin = withHysteresis(-t, { enter: -60_000, exit: -68_000 }, prev === 'cleared')
+
+  const reserveClause = hasReserve
+    ? `, with ${Math.round(res).toLocaleString()} EGLD behind them in the wallet that refills them`
+    : ''
+
+  if (loaded)
     return {
-      state: 'Supply staged on the desks',
+      state: 'Desks carrying a large float',
       tone: 'watch',
-      clause: `${Math.round(t).toLocaleString()} EGLD is sitting on the trading desks`,
-      detail: `${Math.round(t).toLocaleString()} EGLD held by the two wallets that fill large private orders. A rising balance means more is being positioned there.`,
+      clause: `${Math.round(t).toLocaleString()} EGLD is sitting on the trading desks${reserveClause}`,
+      detail: `${Math.round(t).toLocaleString()} EGLD held by the two wallets that fill large private orders${
+        hasReserve
+          ? `, and ${Math.round(res).toLocaleString()} EGLD in the wallet that restocks them — ${backing.toFixed(1)}x the float`
+          : ''
+      }. A rising balance means more has been positioned there.`,
     }
-  if (cleared)
+
+  if (thin)
     return {
-      state: 'Desks nearly empty',
+      state: 'Desk float running low',
       tone: 'notable',
-      clause: `the desks are nearly empty at ${Math.round(t).toLocaleString()} EGLD`,
-      detail: `Only ${Math.round(t).toLocaleString()} EGLD left on the desks, down ${Math.round(drained).toLocaleString()} from the ${Math.round(peak).toLocaleString()} peak.`,
+      clause: `the desks are down to ${Math.round(t).toLocaleString()} EGLD${reserveClause}`,
+      detail: `Only ${Math.round(t).toLocaleString()} EGLD left on the desks${
+        hasReserve
+          ? `, though the wallet that refills them still holds ${Math.round(res).toLocaleString()} EGLD, so a low float is not the same as supply running out`
+          : ''
+      }.`,
     }
+
   return {
-    state: 'Desk balance falling',
+    state: 'Desks being restocked as they empty',
     tone: 'flat',
-    clause: `${Math.round(t).toLocaleString()} EGLD is still staged on the desks, down from ${Math.round(peak).toLocaleString()}`,
-    detail: `${Math.round(t).toLocaleString()} EGLD on the desks, ${Math.round(drained).toLocaleString()} lower than the ${Math.round(peak).toLocaleString()} peak. Where it went is not traced here.`,
+    clause: `${Math.round(t).toLocaleString()} EGLD is staged on the desks${reserveClause}`,
+    detail: `${Math.round(t).toLocaleString()} EGLD on the desks${
+      hasReserve
+        ? `, backed by ${Math.round(res).toLocaleString()} EGLD in the wallet that refills them — ${backing.toFixed(1)}x the float`
+        : ''
+    }. The balance is a float that is topped up as it empties, not a stock being sold down, so its level says nothing about how much supply remains. Where the outflows go is not traced here.`,
   }
 }
 

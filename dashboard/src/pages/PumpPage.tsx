@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLiveMarket } from '../hooks/useLiveMarket'
 import type { LiveMarket } from '../hooks/useLiveMarket'
 import { PageTabs } from '../components/PageTabs'
-import { MarketHistory, useHistory } from '../components/MarketHistory'
+import { MarketHistory } from '../components/MarketHistory'
 import { BigPicture } from '../components/BigPicture'
 import { PeerBars } from '../components/PeerBars'
 import { VenuePanel } from '../components/VenuePanel'
@@ -81,19 +81,30 @@ function RefreshBar({ fetchedAt, now }: { fetchedAt: number; now: number }) {
 
 /* ------------------------------------------------------------ desk gauge */
 
-function DeskGauge({ data, peak }: { data: LiveMarket; peak: number }) {
+/**
+ * The gauge used to scale the float against its all-time peak and print "X left
+ * the desks since the peak", which framed a working float as an inventory
+ * counting down to empty. It is not one — see the note on `overhang` in
+ * pumpSignals. It now scales against the reserve that refills the desks, which
+ * is the comparison that actually bounds what could still arrive.
+ */
+function DeskGauge({ data }: { data: LiveMarket }) {
   const [hovered, setHovered] = useState<number | null>(null)
   const total = data.deskTotal
-  const scale = Math.max(peak, total)
-  const drained = Math.max(0, peak - total)
+  const res = data.reservoirEgld
+  const hasReserve = Number.isFinite(res) && res > 0
+  const scale = hasReserve ? total + res : Math.max(total, 1)
   const shown = hovered != null ? data.deskBreakdown[hovered] : null
+
   return (
     <div>
       <div className="flex items-baseline justify-between gap-3">
         <span className="eyebrow">Staged on the trading desks</span>
-        <span className="font-mono text-[10px] text-text-muted">
-          peak {formatEgldBare(peak)}
-        </span>
+        {hasReserve && (
+          <span className="font-mono text-[10px] text-text-muted">
+            {formatEgldBare(res)} in reserve
+          </span>
+        )}
       </div>
       <div className="mt-2 flex items-baseline gap-2">
         <Live value={Math.round(total)} className="font-mono tabular text-[34px] font-semibold leading-none text-text-primary">
@@ -101,9 +112,11 @@ function DeskGauge({ data, peak }: { data: LiveMarket; peak: number }) {
         </Live>
         <span className="font-mono text-[12px] text-text-muted">EGLD</span>
       </div>
+
+      {/* Float on the left, the reserve behind it on the right, same scale. */}
       <div className="mt-3 h-3.5 w-full bg-bg-elevated flex gap-px"
            onMouseLeave={() => setHovered(null)} role="img"
-           aria-label={`${Math.round(total)} EGLD on the desks, from a peak of ${Math.round(peak)}`}>
+           aria-label={`${Math.round(total)} EGLD on the desks, with ${Math.round(res)} EGLD in the wallet that refills them`}>
         {data.deskBreakdown.map((d, i) => (
           <button
             key={d.label}
@@ -118,16 +131,27 @@ function DeskGauge({ data, peak }: { data: LiveMarket; peak: number }) {
             } ${hovered != null && hovered !== i ? 'opacity-35' : 'opacity-100'}`}
           />
         ))}
+        {hasReserve && (
+          <div
+            title={`Reservoir: ${formatEgldBare(res)} EGLD`}
+            style={{ width: `${(res / scale) * 100}%` }}
+            className="h-full bg-accent-cyan/15 border-l border-accent-cyan/30"
+          />
+        )}
       </div>
+
       <div className="mt-2 font-mono text-[11px] min-h-[16px]">
         {shown ? (
           <span className="text-text-secondary">
             {shown.label} <span className="text-text-primary">{formatEgldBare(shown.egld)} EGLD</span>
-            <span className="text-text-faint"> · {((shown.egld / total) * 100).toFixed(0)}% of the total</span>
+            <span className="text-text-faint"> · {((shown.egld / total) * 100).toFixed(0)}% of the float</span>
           </span>
-        ) : (
-          <span className="text-down">−{formatEgldBare(drained)} left the desks since the peak</span>
-        )}
+        ) : hasReserve ? (
+          <span className="text-text-muted">
+            refilled from a wallet holding{' '}
+            <span className="text-text-secondary">{(res / Math.max(total, 1)).toFixed(1)}x</span> this float
+          </span>
+        ) : null}
       </div>
     </div>
   )
@@ -218,7 +242,6 @@ function Disclosure({ title, children }: { title: string; children: React.ReactN
 
 export function PumpPage() {
   const { data, error, loading, refresh } = useLiveMarket(REFRESH_MS)
-  const { hist } = useHistory()
   const [now, setNow] = useState(() => Date.now())
   const anchor = useSessionAnchor(data)
 
@@ -230,23 +253,19 @@ export function PumpPage() {
   // Remember the previous state name per signal so thresholds get hysteresis
   // instead of flipping every refresh when a value sits on a boundary.
   const prevStates = useRef<{ dec?: string; lev?: string; ovh?: string }>({})
-  const peak = useMemo(
-    () => Math.max(266213, ...(hist?.points.map((p) => p.desks) ?? [0])),
-    [hist],
-  )
 
   const signals = useMemo(() => {
     if (!data) return null
     const dec = decoupling(data, prevStates.current.dec)
     const lev = leverage(data, prevStates.current.lev)
-    const ovh = overhang(data, peak, prevStates.current.ovh)
+    const ovh = overhang(data, prevStates.current.ovh)
     prevStates.current = {
       dec: dec.state.startsWith('Moving alone') ? 'alone' : dec.state.startsWith('Lagging') ? 'lagging' : 'with',
       lev: lev.state.startsWith('Shorts') ? 'shorts' : lev.state.startsWith('Longs') ? 'longs' : 'balanced',
-      ovh: ovh.state.startsWith('Supply') ? 'staged' : ovh.state.startsWith('Desks nearly') ? 'cleared' : 'falling',
+      ovh: ovh.state.startsWith('Desks carrying') ? 'staged' : ovh.state.startsWith('Desk float') ? 'cleared' : 'restocked',
     }
     return { dec, lev, ovh }
-  }, [data, peak])
+  }, [data])
 
   const cost = data ? shortCostPerDay(data) : null
 
@@ -351,7 +370,7 @@ export function PumpPage() {
                     data as of {utc(data.fetchedAt)}
                   </div>
                 </div>
-                <DeskGauge data={data} peak={peak} />
+                <DeskGauge data={data} />
               </div>
 
               {anchor && (
@@ -454,12 +473,23 @@ export function PumpPage() {
                   </div>
                 ))}
               </div>
+              {Number.isFinite(data.reservoirEgld) && data.reservoirEgld > 0 && (
+                <div className="mt-4 pt-3 border-t border-border-subtle">
+                  <div className="eyebrow">The wallet that refills them</div>
+                  <div className="font-mono tabular text-[18px] mt-1">
+                    {formatEgldBare(data.reservoirEgld)} EGLD
+                  </div>
+                </div>
+              )}
               <p className="mt-3 text-[11.5px] text-text-muted leading-relaxed max-w-[74ch]">
-                Both are <em>labelled</em> rather than confirmed: they were identified by tracing
-                repeated large transfers between exchange wallets and these addresses over
-                twenty-three weeks. A falling balance means EGLD left the wallet — it may have
-                been sold, moved to an exchange, or moved to another wallet of the same operator.
-                This page does not trace the destination.
+                The two desks are <em>labelled</em> rather than confirmed: they were identified by
+                tracing repeated large transfers between exchange wallets and these addresses over
+                twenty-three weeks. The third wallet was found on 3 September 2026 by asking where
+                a 150,000 EGLD inbound transfer came from — it had sent the desks 302,000 EGLD in
+                three days. That is why this page treats the desk balance as a float that gets
+                topped up, not as an inventory being sold down: its level does not bound how much
+                supply is still to come. A falling balance means EGLD left the wallet, to dozens of
+                distinct addresses. This page does not trace the destinations.
               </p>
             </Disclosure>
 

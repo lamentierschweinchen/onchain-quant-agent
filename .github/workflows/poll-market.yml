@@ -9,9 +9,15 @@ name: Poll EGLD market
 # The page reads the file straight from raw.githubusercontent.com, so a commit
 # here is enough — no redeploy is needed for new points to appear.
 #
-# Caveats worth knowing: GitHub's scheduled runs are best-effort and can be
-# delayed by tens of minutes under load, and GitHub disables cron on repos with
-# no pushes for 60 days. Neither matters much for an hourly series.
+# OBSERVED CADENCE, 2-3 Sep 2026: this cron is set to hourly and GitHub actually
+# delivered it roughly every 4-5 hours (gaps of 4.1, 5.5, 4.8 and 4.1 hours over
+# the first night). GitHub's scheduled runs are best-effort and deprioritised
+# under load, and there is no way to buy priority for a public repo. So treat
+# "hourly" as a ceiling, not a promise. The dashboard already draws unsampled
+# stretches as dashed rather than interpolating them, which is why this is a
+# resolution limit rather than a correctness problem.
+#
+# Also: GitHub disables cron on repos with no pushes for 60 days.
 
 on:
   schedule:

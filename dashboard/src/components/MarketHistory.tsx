@@ -63,7 +63,8 @@ export function useHistory() {
   useEffect(() => {
     let cancelled = false
 
-    // An hourly GitHub Action commits new readings to the repo. Reading them
+    // A scheduled GitHub Action commits new readings to the repo. It asks for
+    // hourly and GitHub delivers roughly every 4-5 hours in practice. Reading them
     // from raw.githubusercontent means a new point appears without redeploying
     // the site; the copy bundled at build time is the fallback when that is
     // unreachable (rate limit, offline, or a fork without the workflow).
