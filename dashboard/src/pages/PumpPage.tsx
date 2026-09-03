@@ -5,6 +5,8 @@ import { PageTabs } from '../components/PageTabs'
 import { MarketHistory, useHistory } from '../components/MarketHistory'
 import { BigPicture } from '../components/BigPicture'
 import { PeerBars } from '../components/PeerBars'
+import { VenuePanel } from '../components/VenuePanel'
+import { EventTape } from '../components/EventTape'
 import { formatEgldBare, formatUsd, formatNumber } from '../lib/formatters'
 import {
   decoupling,
@@ -80,9 +82,11 @@ function RefreshBar({ fetchedAt, now }: { fetchedAt: number; now: number }) {
 /* ------------------------------------------------------------ desk gauge */
 
 function DeskGauge({ data, peak }: { data: LiveMarket; peak: number }) {
+  const [hovered, setHovered] = useState<number | null>(null)
   const total = data.deskTotal
   const scale = Math.max(peak, total)
   const drained = Math.max(0, peak - total)
+  const shown = hovered != null ? data.deskBreakdown[hovered] : null
   return (
     <div>
       <div className="flex items-baseline justify-between gap-3">
@@ -97,19 +101,33 @@ function DeskGauge({ data, peak }: { data: LiveMarket; peak: number }) {
         </Live>
         <span className="font-mono text-[12px] text-text-muted">EGLD</span>
       </div>
-      <div className="mt-3 h-3 w-full bg-bg-elevated flex" role="img"
+      <div className="mt-3 h-3.5 w-full bg-bg-elevated flex gap-px"
+           onMouseLeave={() => setHovered(null)} role="img"
            aria-label={`${Math.round(total)} EGLD on the desks, from a peak of ${Math.round(peak)}`}>
         {data.deskBreakdown.map((d, i) => (
-          <div
+          <button
             key={d.label}
-            title={`${d.label}: ${formatEgldBare(d.egld)} EGLD`}
-            className={i === 0 ? 'bg-accent-cyan/80' : 'bg-accent-cyan/45'}
+            type="button"
+            aria-label={`${d.label}: ${formatEgldBare(d.egld)} EGLD`}
+            onMouseEnter={() => setHovered(i)}
+            onFocus={() => setHovered(i)}
+            onBlur={() => setHovered(null)}
             style={{ width: `${(d.egld / scale) * 100}%` }}
+            className={`h-full transition-opacity duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent-cyan ${
+              i === 0 ? 'bg-accent-cyan' : 'bg-accent-cyan/55'
+            } ${hovered != null && hovered !== i ? 'opacity-35' : 'opacity-100'}`}
           />
         ))}
       </div>
-      <div className="mt-2 font-mono text-[11px] text-down">
-        −{formatEgldBare(drained)} left the desks since the peak
+      <div className="mt-2 font-mono text-[11px] min-h-[16px]">
+        {shown ? (
+          <span className="text-text-secondary">
+            {shown.label} <span className="text-text-primary">{formatEgldBare(shown.egld)} EGLD</span>
+            <span className="text-text-faint"> · {((shown.egld / total) * 100).toFixed(0)}% of the total</span>
+          </span>
+        ) : (
+          <span className="text-down">−{formatEgldBare(drained)} left the desks since the peak</span>
+        )}
       </div>
     </div>
   )
@@ -180,32 +198,6 @@ function SinceStrip({ data, anchor, now }: { data: LiveMarket; anchor: Snapshot;
 }
 
 /* -------------------------------------------------------------- fragments */
-
-function VenueDots({ data }: { data: LiveMarket }) {
-  return (
-    <div>
-      <div className="flex flex-wrap gap-[3px]" role="img"
-           aria-label={`${data.fundingNegative} of ${data.fundingVenues} venues charge short sellers`}>
-        {data.venues.map((v) => (
-          <span
-            key={v.market}
-            title={`${v.market}: ${v.funding == null ? 'no funding data' : `${v.funding.toFixed(4)}%`}`}
-            className={`w-2 h-2 rounded-[1px] ${
-              v.funding == null
-                ? 'bg-bg-elevated'
-                : v.funding < 0
-                  ? 'bg-accent-cyan'
-                  : 'bg-severity-medium/70'
-            }`}
-          />
-        ))}
-      </div>
-      <div className="mt-2 font-mono text-[11px] text-text-muted">
-        {data.fundingNegative} of {data.fundingVenues} venues charge short sellers
-      </div>
-    </div>
-  )
-}
 
 function Disclosure({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -370,7 +362,7 @@ export function PumpPage() {
             </section>
 
             {/* ---- what the leverage costs, in money ---- */}
-            <section className="card p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section className="card p-5 space-y-5">
               <div>
                 <div className="eyebrow">What betting against it costs, per day</div>
                 {cost != null ? (
@@ -389,7 +381,11 @@ export function PumpPage() {
                   <p className="mt-2 text-[13px] text-text-muted">No funding data right now.</p>
                 )}
               </div>
-              <VenueDots data={data} />
+              <div className="pt-1 border-t border-border-subtle">
+                <div className="pt-4">
+                  <VenuePanel data={data} />
+                </div>
+              </div>
             </section>
 
             {/* ---- TIER 1: context, then the live series ---- */}
@@ -399,6 +395,10 @@ export function PumpPage() {
 
             <section className="card p-5">
               <PeerBars data={data} />
+            </section>
+
+            <section className="card p-5">
+              <EventTape data={data} />
             </section>
 
             {/* ---- TIER 2: evidence, folded away ---- */}
