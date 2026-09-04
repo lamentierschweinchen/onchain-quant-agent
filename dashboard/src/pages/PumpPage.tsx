@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLiveMarket } from '../hooks/useLiveMarket'
 import type { LiveMarket } from '../hooks/useLiveMarket'
 import { PageTabs } from '../components/PageTabs'
-import { MarketHistory } from '../components/MarketHistory'
+import { MarketHistory, useHistory } from '../components/MarketHistory'
 import { BigPicture } from '../components/BigPicture'
 import { PeerBars } from '../components/PeerBars'
 import { VenuePanel } from '../components/VenuePanel'
@@ -13,12 +13,16 @@ import {
   leverage,
   overhang,
   shortCostPerDay,
+  fundingAnnualPct,
+  MATERIAL_FUNDING,
   TONE_TEXT,
   TONE_BG,
 } from '../lib/pumpSignals'
 import type { Signal } from '../lib/pumpSignals'
 
 const REFRESH_MS = 60_000
+
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -205,18 +209,27 @@ function SinceStrip({ data, anchor, now }: { data: LiveMarket; anchor: Snapshot;
       <span className={`${tone} font-medium`}>{text}</span>
     </span>
   )
+  // A signed zero reads as a measurement of nothing. Below the resolution of the
+  // figure being printed, say "unchanged" and drop the direction colour.
+  const moved = (v: number, floor: number) => Math.abs(v) >= floor
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[11px] text-text-muted">
       <span className="text-text-faint uppercase tracking-widest text-[9.5px]">
         Since you opened this page · {mins}m
       </span>
-      {item('price', `${dp >= 0 ? '+' : '−'}$${Math.abs(dp).toFixed(3)}`, dp >= 0 ? 'text-up' : 'text-down')}
-      {item(
-        'desks',
-        `${dd <= 0 ? '−' : '+'}${formatEgldBare(Math.abs(dd))} EGLD`,
-        dd <= 0 ? 'text-down' : 'text-up',
-      )}
-      {item('leverage', `${doi >= 0 ? '+' : '−'}${formatUsd(Math.abs(doi))}`, 'text-text-secondary')}
+      {moved(dp, 0.001)
+        ? item('price', `${dp > 0 ? '+' : '−'}$${Math.abs(dp).toFixed(3)}`, dp > 0 ? 'text-up' : 'text-down')
+        : item('price', 'unchanged', 'text-text-faint')}
+      {moved(dd, 1)
+        ? item(
+            'desks',
+            `${dd < 0 ? '−' : '+'}${formatEgldBare(Math.abs(dd))} EGLD`,
+            dd < 0 ? 'text-down' : 'text-up',
+          )
+        : item('desks', 'unchanged', 'text-text-faint')}
+      {moved(doi, 1000)
+        ? item('leverage', `${doi > 0 ? '+' : '−'}${formatUsd(Math.abs(doi))}`, 'text-text-secondary')
+        : item('leverage', 'unchanged', 'text-text-faint')}
     </div>
   )
 }
@@ -242,6 +255,7 @@ function Disclosure({ title, children }: { title: string; children: React.ReactN
 
 export function PumpPage() {
   const { data, error, loading, refresh } = useLiveMarket(REFRESH_MS)
+  const { hist } = useHistory()
   const [now, setNow] = useState(() => Date.now())
   const anchor = useSessionAnchor(data)
 
@@ -261,13 +275,29 @@ export function PumpPage() {
     const ovh = overhang(data, prevStates.current.ovh)
     prevStates.current = {
       dec: dec.state.startsWith('Moving alone') ? 'alone' : dec.state.startsWith('Lagging') ? 'lagging' : 'with',
-      lev: lev.state.startsWith('Shorts') ? 'shorts' : lev.state.startsWith('Longs') ? 'longs' : 'balanced',
+      lev: lev.state.startsWith('Shorts') ? 'shorts' : lev.state.startsWith('Buyers') ? 'longs' : 'balanced',
       ovh: ovh.state.startsWith('Desks carrying') ? 'staged' : ovh.state.startsWith('Desk float') ? 'cleared' : 'restocked',
     }
     return { dec, lev, ovh }
   }, [data])
 
   const cost = data ? shortCostPerDay(data) : null
+  const annual = data ? fundingAnnualPct(data) : null
+  const costMaterial = Math.abs(data?.fundingMean ?? 0) >= MATERIAL_FUNDING.exit
+
+  // The highest daily carry in the recorded series, so the quiet state has
+  // something true to be quiet against rather than just a small number.
+  const peakCost = useMemo(() => {
+    let best: { value: number; when: string } | null = null
+    for (const p of hist?.points ?? []) {
+      if (p.oi == null || p.funding == null) continue
+      const v = Math.abs(p.oi * (p.funding / 100) * 3)
+      if (!best || v > best.value) {
+        best = { value: v, when: `${p.t.slice(8, 10)} ${MONTH_NAMES[Number(p.t.slice(5, 7)) - 1]}` }
+      }
+    }
+    return best && best.value > 1000 ? best : null
+  }, [hist])
 
   return (
     <div className="min-h-screen bg-bg text-text-primary">
@@ -383,18 +413,50 @@ export function PumpPage() {
             {/* ---- what the leverage costs, in money ---- */}
             <section className="card p-5 space-y-5">
               <div>
-                <div className="eyebrow">What betting against it costs, per day</div>
+                <div className="eyebrow">
+                  {costMaterial
+                    ? 'What the crowded side pays to hold on, per day'
+                    : 'What holding leverage costs, per day'}
+                </div>
                 {cost != null ? (
                   <>
-                    <Live value={Math.round(cost)} className="block mt-2 font-mono tabular text-[32px] font-semibold text-accent-cyan leading-none">
+                    {/* A 32px accent figure is a claim that the number matters.
+                        It did at $196K; at $2.3K against $49M of leverage it is
+                        noise, and giving noise the same weight as signal is how
+                        a tracker teaches people to ignore it. */}
+                    <Live
+                      value={Math.round(cost)}
+                      className={`inline-block mt-2 font-mono tabular leading-none ${
+                        costMaterial
+                          ? 'text-[32px] font-semibold text-accent-cyan'
+                          : 'text-[22px] font-medium text-text-secondary'
+                      }`}
+                    >
                       {formatUsd(cost)}
                     </Live>
-                    <p className="mt-2 text-[12px] text-text-muted leading-relaxed max-w-[46ch]">
+                    <p className="mt-2 text-[12px] text-text-muted leading-relaxed max-w-[52ch]">
                       {formatUsd(data.openInterest)} of leverage outstanding ×{' '}
-                      {data.fundingMean?.toFixed(4)}% × 3 charges a day. Paid by the side betting
-                      on a fall, to the side betting on a rise. An estimate: venues differ on
-                      interval.
+                      {data.fundingMean?.toFixed(4)}% × 3 charges a day
+                      {annual != null && (
+                        <>
+                          , a carry of{' '}
+                          <span className={costMaterial ? 'text-text-secondary' : ''}>
+                            {Math.abs(annual).toFixed(1)}% a year
+                          </span>
+                        </>
+                      )}
+                      . An estimate: venues differ on interval.
                     </p>
+                    {!costMaterial && peakCost && (
+                      <p className="mt-2 text-[12px] text-text-secondary leading-relaxed max-w-[52ch]">
+                        Close enough to zero that nobody is being forced out of a position. For
+                        contrast, on {peakCost.when} this was{' '}
+                        <span className="font-mono text-accent-cyan">
+                          {formatUsd(peakCost.value)}
+                        </span>{' '}
+                        a day.
+                      </p>
+                    )}
                   </>
                 ) : (
                   <p className="mt-2 text-[13px] text-text-muted">No funding data right now.</p>

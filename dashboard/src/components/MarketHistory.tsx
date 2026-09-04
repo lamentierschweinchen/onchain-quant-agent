@@ -120,17 +120,33 @@ export function MarketHistory() {
   if (!hist) return null
 
   const pts = hist.points
-  const first = pts[0]
   const last = pts[pts.length - 1]
-  const withOi = pts.filter((p): p is HistoryPoint & { oi: number } => p.oi != null)
+
+  // The verdict reads a TRAILING window, not the whole series. Comparing the
+  // first reading to the last means the window grows forever and the state gets
+  // less responsive every day: on 4 Sep it still said "positions building" while
+  // open interest had fallen 45% from its peak two days earlier, because the
+  // comparison reached all the way back to the first reading. A day is long
+  // enough to be a trend and short enough to still be news.
+  const WINDOW_H = 24
+  const cutoff = new Date(last.t).getTime() - WINDOW_H * 3_600_000
+  const recent = pts.filter((p) => new Date(p.t).getTime() >= cutoff)
+  const window = recent.length >= 2 ? recent : pts.slice(-2)
+  const first = window[0]
+
+  const withOi = window.filter((p): p is HistoryPoint & { oi: number } => p.oi != null)
   const oiFirst = withOi[0]
   const oiLast = withOi[withOi.length - 1]
   const priceUp = last.price >= first.price
   const oiUp = oiLast && oiFirst ? oiLast.oi >= oiFirst.oi : false
   const verdict = VERDICTS[`${priceUp ? 'up' : 'down'}-${oiUp ? 'up' : 'down'}`]
+  const windowH = (new Date(last.t).getTime() - new Date(first.t).getTime()) / 3_600_000
 
   const fundings = pts.map((p) => p.funding).filter((f): f is number => f != null)
-  const hours = (new Date(last.t).getTime() - new Date(first.t).getTime()) / 3_600_000
+  // Full span of the chart. Must read pts[0], not `first` — `first` is now the
+  // start of the 24h verdict window, and reusing it made the header claim the
+  // whole series covered 23.8h when it covered 4.8 days.
+  const hours = (new Date(last.t).getTime() - new Date(pts[0].t).getTime()) / 3_600_000
   const times = pts.map((p) => new Date(p.t).getTime())
 
   return (
@@ -142,8 +158,9 @@ export function MarketHistory() {
             What the leverage is doing
           </h2>
           <p className="text-[10px] text-text-muted mt-0.5">
-            Price against open interest. {pts.length} readings over{' '}
-            {hours < 24 ? `${hours.toFixed(1)}h` : `${(hours / 24).toFixed(1)} days`}
+            Chart shows all {pts.length} readings over{' '}
+            {hours < 24 ? `${hours.toFixed(1)}h` : `${(hours / 24).toFixed(1)} days`}; the reading
+            on the right covers the last {windowH.toFixed(0)}h
           </p>
         </div>
         <span className={`text-[13px] font-semibold ${verdict.tone}`}>{verdict.title}</span>
@@ -151,6 +168,7 @@ export function MarketHistory() {
 
       <div className="p-4 space-y-4">
         <p className="text-[12.5px] text-text-secondary leading-relaxed max-w-[74ch]">
+          <span className="text-text-muted">Over the last {windowH.toFixed(0)} hours: </span>
           {verdict.detail}
         </p>
 

@@ -68,31 +68,58 @@ export function decoupling(d: LiveMarket, prev?: string): Signal {
   }
 }
 
+/**
+ * Which side is crowded, and whether that costs enough to matter.
+ *
+ * The first version keyed only on the SIGN of funding across venues. That was
+ * right while the book was lopsided and wrong the moment it normalised: on
+ * 4 Sep 2026, 30 of 32 venues had positive funding, so the page announced that
+ * "traders betting on it are paying to hold that bet" — while the mean rate was
+ * +0.00012% per 8h, a carry of 0.1% a year, costing $2.3K a day against $49M of
+ * leverage. True by sign, meaningless in size. A crowded side only matters if
+ * holding that side is expensive, so magnitude now gates the claim.
+ */
 export function leverage(d: LiveMarket, prev?: string): Signal {
   const negShare = d.fundingVenues ? d.fundingNegative / d.fundingVenues : 0
   const heavy = d.oiShareOfMcap > 20
-  const shortsCrowded = withHysteresis(negShare, { enter: 0.6, exit: 0.5 }, prev === 'shorts')
-  const longsCrowded = withHysteresis(1 - negShare, { enter: 0.6, exit: 0.5 }, prev === 'longs')
+  const mean = d.fundingMean
+  const annual = fundingAnnualPct(d)
+
+  const material = withHysteresis(
+    Math.abs(mean ?? 0),
+    MATERIAL_FUNDING,
+    prev === 'shorts' || prev === 'longs',
+  )
+  const shortsCrowded = material && withHysteresis(negShare, { enter: 0.6, exit: 0.5 }, prev === 'shorts')
+  const longsCrowded = material && withHysteresis(1 - negShare, { enter: 0.6, exit: 0.5 }, prev === 'longs')
+
+  const carry = annual == null ? '' : ` — about ${Math.abs(annual).toFixed(0)}% a year`
 
   if (shortsCrowded)
     return {
       state: 'Shorts are paying to stay short',
       tone: heavy ? 'watch' : 'notable',
       clause: 'traders betting against it are paying to hold that bet',
-      detail: `${d.fundingNegative} of ${d.fundingVenues} venues charge short sellers a fee paid to the other side. Leverage outstanding is ${d.oiShareOfMcap.toFixed(0)}% of market cap${heavy ? ', which is high enough that a forced unwind moves price hard in whichever direction it goes' : ''}.`,
+      detail: `${d.fundingNegative} of ${d.fundingVenues} venues charge short sellers a fee paid to the other side, at a mean of ${mean?.toFixed(4)}% every eight hours${carry}. Leverage outstanding is ${d.oiShareOfMcap.toFixed(0)}% of market cap${heavy ? ', high enough that a forced unwind moves price hard in whichever direction it goes' : ''}.`,
     }
+
   if (longsCrowded)
     return {
-      state: 'Longs are paying to stay long',
+      state: 'Buyers are paying to stay long',
       tone: heavy ? 'watch' : 'notable',
       clause: 'traders betting on it are paying to hold that bet',
-      detail: `Only ${d.fundingNegative} of ${d.fundingVenues} venues charge shorts, so the fee is running the other way. Leverage outstanding is ${d.oiShareOfMcap.toFixed(0)}% of market cap.`,
+      detail: `Only ${d.fundingNegative} of ${d.fundingVenues} venues charge shorts, so the fee runs the other way, at a mean of ${mean?.toFixed(4)}% every eight hours${carry}. Leverage outstanding is ${d.oiShareOfMcap.toFixed(0)}% of market cap.`,
     }
+
+  // Either the book is balanced, or it is lopsided but costs nothing to hold.
+  const lopsided = negShare > 0.6 || negShare < 0.4
   return {
-    state: 'Neither side is crowded',
+    state: lopsided ? 'One-sided, but nearly free to hold' : 'Neither side is crowded',
     tone: 'flat',
-    clause: 'leverage is balanced between both sides',
-    detail: `${d.fundingNegative} of ${d.fundingVenues} venues charge shorts. Leverage outstanding is ${d.oiShareOfMcap.toFixed(0)}% of market cap.`,
+    clause: 'holding leverage costs almost nothing either way',
+    detail: lopsided
+      ? `${d.fundingNegative} of ${d.fundingVenues} venues charge short sellers, so the book still leans one way, but at ${mean?.toFixed(4)}% every eight hours${carry} it costs almost nothing to sit on either side. A lopsided book only forces anyone's hand when holding it is expensive.`
+      : `${d.fundingNegative} of ${d.fundingVenues} venues charge short sellers, and the mean rate of ${mean?.toFixed(4)}% every eight hours${carry} is close enough to zero that neither side is under pressure. Leverage outstanding is ${d.oiShareOfMcap.toFixed(0)}% of market cap.`,
   }
 }
 
@@ -171,6 +198,21 @@ export function overhang(d: LiveMarket, prev?: string): Signal {
  * notional they report — but it turns "-0.087% mean funding" into a number a
  * non-trader can hold, and the arithmetic is shown so it can be checked.
  */
+/**
+ * Funding as an annual carry rate, which is the only form in which its size is
+ * legible. "-0.0964%" and "+0.00012%" look like the same kind of number; -106%
+ * and +0.1% a year do not.
+ */
+export function fundingAnnualPct(d: LiveMarket): number | null {
+  return d.fundingMean == null ? null : d.fundingMean * 3 * 365
+}
+
+/**
+ * Below this, the crowded side is paying so little that saying it "pays to hold
+ * that bet" is true but empty. 0.01% per 8h is about 11% a year.
+ */
+export const MATERIAL_FUNDING = { enter: 0.01, exit: 0.007 }
+
 export function shortCostPerDay(d: LiveMarket): number | null {
   if (d.fundingMean == null) return null
   return Math.abs(d.openInterest * (d.fundingMean / 100) * 3)
