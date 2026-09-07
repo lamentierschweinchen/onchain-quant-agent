@@ -17,6 +17,7 @@ import json, sys, os
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
 HRP = "erd"
+CURRENT_RUN = 24
 
 def _polymod(values):
     gen = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3]
@@ -67,6 +68,34 @@ def collect_addresses():
             yield "previous.json:watch_addresses", w.get("address", ""), w.get("label", "?")[:60]
         for a in prev.get("top_accounts", []):
             yield "previous.json:top_accounts", a.get("address", ""), a.get("label", "?")
+
+    # run #23 rec #6: the collector hardcodes addresses too. Run #23 shipped an
+    # invalid Binance hot wallet directly in collect_run23.py, got HTTP 400, and
+    # printed "0 outbound recipients >=10K" - which would have resolved a
+    # pre-committed test on fabricated evidence. Grep every erd1 literal out of
+    # scripts/*.py and check it the same way.
+    import glob, re
+    # A full MultiversX bech32 address is exactly 62 characters. Anything
+    # shorter in source is a deliberate prefix or a truncated label in a print
+    # statement, not an address the collector will query, so only full-length
+    # literals are checked. Scripts from earlier runs are frozen artifacts:
+    # only the current run's collector and the unversioned shared scripts are
+    # live enough for a failure here to matter.
+    lit = re.compile(r"\berd1[0-9a-z]{58}\b")
+    runnum = re.compile(r"run(\d+)")
+    for path in sorted(glob.glob(os.path.join(REPO, "scripts", "*.py"))):
+        base = os.path.basename(path)
+        if base == "validate_addresses.py":
+            continue  # its docstring quotes known-bad addresses on purpose
+        m = runnum.search(base)
+        if m and int(m.group(1)) < CURRENT_RUN:
+            continue
+        try:
+            src = open(path, encoding="utf-8").read()
+        except Exception:
+            continue
+        for a in dict.fromkeys(lit.findall(src)):
+            yield f"scripts/{base}", a, "hardcoded literal"
 
 def main():
     bad, total, seen = [], 0, set()

@@ -256,6 +256,8 @@ export interface OtcPipeline {
   /** Keyed by run label, e.g. { run19: 301498, run20: 604086 } */
   gross_series_egld_7d?: Record<string, number>
   net_one_way_series_egld_7d?: Record<string, number>
+  /** End-of-week desk inventory per run — the stock behind the delivery flow. */
+  desk_inventory_series_egld?: Record<string, number>
   circularity_series_pct?: Record<string, number>
   peak_window_renetted?: NettedWindow
   backfilled_windows?: NettedWindow[]

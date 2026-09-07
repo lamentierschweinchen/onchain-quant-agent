@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-08-31",
+    "last_updated": "2026-09-07",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -590,6 +590,14 @@
       "category": "defi",
       "subcategory": "fees",
       "notes": "JEXchange protocol fee collection wallet."
+    },
+    "erd1qqqqqqqqqqqqqpgq360nakqgsp5zkmguptucpjy6n4n3du7e5snsd2swzq": {
+      "name": "JEXchange: live aggregator (re-derived run #24)",
+      "category": "defi",
+      "subcategory": "dex_aggregator",
+      "notes": "Re-derived by tracing the JEXchange fees contract's inbound leg back to its callers, after the previously tracked aggregator returned 0 transfers for four consecutive runs while the fees contract reported thousands. 11,802 transfers in 7 days. Four further routers sit behind it at 4,375, 3,018, 3,648, 1,477 transfers.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
     }
   },
   "defi_xoxno": {
@@ -1388,6 +1396,126 @@
       "notes": "Zero-balance pass-through forwarding 16,167 EGLD from the OTC desks to Binance.com in the 2026-08-24..2026-08-31 window. Confirmed non-absorbing by the run #23 terminal scan.",
       "first_seen": "2026-08-31",
       "discovered_run": 23
+    },
+    "erd16hjr2z5fuc54auc8sthh4xj8gk6nwrucpw3mfmwum8ahs6uugfxqe46rk9": {
+      "name": "Bybit->OTC Desk Feeder (run #24)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 25,999 EGLD from Bybit into the OTC desk complex in the 2026-08-31..2026-09-07 window.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd16mfw6433k00zzr9ts30ltz89v47lh2qu2wua0xr9dv82d6qudtpqulyht5": {
+      "name": "Bybit->OTC Desk Feeder (run #24)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 25,631 EGLD from Bybit into the OTC desk complex in the 2026-08-31..2026-09-07 window.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1k6f0vtghqrwkp7jsud0t4mdynyarhwjj6djq8v4f0m77l3r43gxs6h0sdh": {
+      "name": "Bybit->OTC Desk Feeder (run #24)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 22,581 EGLD from Bybit into the OTC desk complex in the 2026-08-31..2026-09-07 window.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd15rxyftv8v6kngycnwwq54reuhffryg6f9mlu5jwyf3rwm23lnlcqphym3n": {
+      "name": "Bybit->OTC Desk Feeder (run #24)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 20,928 EGLD from Bybit into the OTC desk complex in the 2026-08-31..2026-09-07 window.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1k49yyaap4ecz9jxwm4t66zdxcw0htk4ffndqpdkp50wr9cu6fs3q44yfl0": {
+      "name": "Binance.com->OTC Desk Feeder (run #24)",
+      "category": "router",
+      "subcategory": "otc_feeder",
+      "notes": "Zero-balance pass-through carrying 15,467 EGLD from Binance.com into the OTC desk complex in the 2026-08-31..2026-09-07 window.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1l4wf0fug6zpz389mrj5z8q9cx5prvrrs30uxpjd6eadnr7280d8qd85pnq": {
+      "name": "OTC Desk->Bybit Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 31,411 EGLD from the OTC desks to Bybit in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1r957p3k5lnhvl208zgtugx0ee72p8zacmnx32f7ty95pcjavpxaqcmt69q": {
+      "name": "OTC Desk->Bybit Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 22,581 EGLD from the OTC desks to Bybit in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd165fvqwhc5j574h0kcu2s82zfaptd7qkcgyx0vgt6m9mvs5ytfgcq4qlctp": {
+      "name": "OTC Desk->Unknown Whale I (active) Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 21,904 EGLD from the OTC desks to Unknown Whale I (active) in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1dp9v6qxdd5g03zrvxudyqw64kjvjnf6rx98u6yg2c5t5zarsgmvse7m7nl": {
+      "name": "OTC Desk->Bybit Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 19,830 EGLD from the OTC desks to Bybit in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd102tre9kuhkthukvmq58lzt70d8qwxdupaahsxxu89sqh2slc0vcs7ytsxq": {
+      "name": "OTC Desk->Gate.io Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 19,275 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1xalmznlxmyg0nttygl4da2l9z7vqk8u3z9nw7enngacq05ruaa5qs4w98u": {
+      "name": "OTC Desk->Gate.io Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 17,371 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd19dnulr2p03r57vp7tv6f2tqspeunwmshaa0s30v8vuj6waennj3qgvlamh": {
+      "name": "OTC Desk->Gate.io Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 17,347 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1rjkvjatu8js0aegc4m2mxu9f3655ldazgjku6qsrwv6d929y7trqqwfx0c": {
+      "name": "OTC Desk->Gate.io Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 16,963 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd10f38t4mcv62na4a65an3fp3q2t0e79hxk8reedr8asurq7qr633q9xydck": {
+      "name": "OTC Desk->Gate.io Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 16,595 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
+    },
+    "erd1ktcvmyd6u6k664stv6ktch270c0wry26nffmc64vslnqxc2qjyfszdta6f": {
+      "name": "OTC Desk->Gate.io Router (run #24)",
+      "category": "router",
+      "subcategory": "otc_router",
+      "notes": "Zero-balance pass-through forwarding 15,256 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
     }
   },
   "unknown_whales": {
@@ -1514,6 +1642,16 @@
       "notes": "Issues VEGLD-2b9319 (VestaXStakedEGLD) with auto-compounding. 1,121 EGLD staked, 802 supply, 439 holders at discovery - the widest holder base of the untracked three. Receipt token(s): VEGLD-2b9319.",
       "first_seen": "2026-08-31",
       "discovered_run": 23
+    }
+  },
+  "whales": {
+    "erd1tx933j8r57smz7s7c6y4p4nzx9np968gpt66escfym3908k3zcqqcde3y8": {
+      "name": "Unknown whale - ex-pipeline withdrawal recipient, Binance hot-funded (run #24)",
+      "category": "whale",
+      "subcategory": "accumulator_candidate",
+      "notes": "Took 101,664 EGLD off exchanges outside the OTC pipeline in the 2026-08-31..2026-09-07 window, the second-largest ex-pipeline recipient, and separately received 68,732 EGLD directly from the Binance.com hot wallet. Its size is why this week's withdrawal-breadth reading is concentration rather than dispersal.",
+      "first_seen": "2026-09-07",
+      "discovered_run": 24
     }
   }
 }

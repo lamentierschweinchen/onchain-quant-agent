@@ -83,7 +83,10 @@ def audit_report(report_path: Path, collected_path: Path | None, previous_path: 
     tses = R.get("trend_indicators", {}).get("token_supply_events", [])
     exec_summary_text = " ".join(f.get("finding", "") for f in R.get("executive_summary", []))
     for tse in tses:
-        chg = abs(tse.get("change_pct", 0))
+        chg_raw = tse.get("change_pct")
+        if chg_raw is None:
+            continue  # first_measurement events carry no WoW by construction
+        chg = abs(chg_raw)
         if chg > 5:  # significant supply event
             tid = tse["identifier"]
             tname = tse.get("name", "?")

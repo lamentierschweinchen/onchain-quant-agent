@@ -1,0 +1,186 @@
+{
+ "generated_at": "2026-09-07T17:29:16.240200Z",
+ "method": "token owner -> delegation stake (SC-to-SC delegate calls are smart-contract results and invisible to /transactions)",
+ "tokens_examined": 331,
+ "contract_owners_verified": 48,
+ "liquid_staking_protocols": [
+  {
+   "address": "erd1qqqqqqqqqqqqqpgq4gzfcw7kmkjy8zsf04ce6dl0auhtzjx078sslvrf4e",
+   "known_label": "Hatom: Liquid Staking",
+   "tracked": true,
+   "owner_of_contract": "erd1cc2yw3reulhshp3x73q2wye0pq8f4a3xz3pt7xj79phv9wm978ssu99pvt",
+   "deployed_at": 1688588706,
+   "staked_egld": 851763.893686392,
+   "delegation_contracts": 37,
+   "receipt_tokens": [
+    {
+     "identifier": "SEGLD-3ad2d0",
+     "name": "StakedEGLD",
+     "supply": "687831",
+     "holders": 1392,
+     "price_usd": 5.567362283573033,
+     "market_cap_usd": 3829403.7605444524,
+     "description": "sEGLD is a digital token representing EGLD staked on nodes via the Hatom Liquid Staking Protocol. By combining the initial deposit with staking rewards, sEGLD allows users to earn staking rewards while also benefiting from DeFi yields. The value of sEGLD is pegged to EGLD and increases in value following an exchange rate.",
+     "website": "https://hatom.com/"
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgq6uzdzy54wnesfnlaycxwymrn9texlnmyah0ssrfvk6",
+   "known_label": "XOXNO: EGLD Liquid Staking",
+   "tracked": true,
+   "owner_of_contract": "erd1x45vnu7shhecfz0v03qqfmy8srndch50cdx7m763p743tzlwah0sgzewlm",
+   "deployed_at": 1735937532,
+   "staked_egld": 253611.01411635737,
+   "delegation_contracts": 110,
+   "receipt_tokens": [
+    {
+     "identifier": "XEGLD-e413ed",
+     "name": "StakedEGLD",
+     "supply": "225375",
+     "holders": 475,
+     "price_usd": 5.100572019298375,
+     "market_cap_usd": 1149541.9159801947,
+     "description": "xEGLD is a liquid staking derivative (LSD) token of EGLD, seamlessly integrated throughout the XOXNO protocol. By depositing EGLD into XOXNO, you receive xEGLD in return\u2014enabling you to earn staking rewards while retaining the freedom to engage with DeFi opportunities. Pegged to EGLD, xEGLD\u2019s value grows in line with staking accrual, offering a flexible and powerful way to maximize yield without sacrificing liquidity across the XOXNO ecosystem.",
+     "website": "https://xoxno.com"
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgqaqxztq0y764dnet95jwtse5u5zkg92sfacts6h9su3",
+   "known_label": "SALSA: Liquid Staking",
+   "tracked": true,
+   "owner_of_contract": "erd1salsavmx35a4q30wyqsjhhqcy4dngj4jf35qmtaynzxksm4factsa6wrl0",
+   "deployed_at": 1683534876,
+   "staked_egld": 6431.013390085017,
+   "delegation_contracts": 6,
+   "receipt_tokens": [
+    {
+     "identifier": "LEGLD-d74da9",
+     "name": "LiquidEGLD",
+     "supply": "5058",
+     "holders": 382,
+     "price_usd": 5.808165439345816,
+     "market_cap_usd": 29376.23735600453,
+     "description": "This is the Liquid EGLD token of SALSA - Staking Agency Liquid Staking Algorithm.",
+     "website": "https://liquid.staking.agency"
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgql6v06snr0jtg9gesuvsre83f6rvqr0wr8ltsjgfta3",
+   "known_label": "Dinovox: VoxEGLD Liquid Staking",
+   "tracked": true,
+   "owner_of_contract": "erd17excqng4mar8xxuum6dx8k0r4rwz3d2vv2nc2gn9as28whjm8ltsv3jn47",
+   "deployed_at": 1784629314,
+   "staked_egld": 1895.0739019807484,
+   "delegation_contracts": 2,
+   "receipt_tokens": [
+    {
+     "identifier": "VOXEGLD-5872e5",
+     "name": "VoxEGLD",
+     "supply": "1884",
+     "holders": 115,
+     "price_usd": 4.6190793682740034,
+     "market_cap_usd": 8700.775169856572,
+     "description": "VoxEGLD is an interest-bearing liquid staking token representing EGLD staked via Dinovox. It auto-compounds staking rewards into its value while remaining fully composable across DeFi protocols.",
+     "website": "https://www.dinovox.com/"
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgqx6833qjac6uqztgsa8jhlztexucke0hrdfys6wd7qt",
+   "known_label": "JewelSwap: Liquid Staking",
+   "tracked": true,
+   "owner_of_contract": "erd1yd9ncw6fh62ses6xrnptqdwg462dx7w3evtzrhp87klaja08k56s5t6aqp",
+   "deployed_at": 1687426836,
+   "staked_egld": 1798.5885537590923,
+   "delegation_contracts": 17,
+   "receipt_tokens": [
+    {
+     "identifier": "JWLEGLD-023462",
+     "name": "JewelEGLD",
+     "supply": "25073",
+     "holders": 554,
+     "price_usd": null,
+     "market_cap_usd": null,
+     "description": "JWLEGLD is a stablecoin pegged to EGLD and minted with EGLD 1:1. Brought to you by JewelSwap.",
+     "website": "https://www.jewelswap.io/"
+    },
+    {
+     "identifier": "SJWLEGLD-ba8c52",
+     "name": "StakedJewelEGLD",
+     "supply": "8111",
+     "holders": 402,
+     "price_usd": null,
+     "market_cap_usd": null,
+     "description": "SJWLEGLD is staked JWLEGLD. Brought to you by JewelSwap.",
+     "website": "https://www.jewelswap.io/"
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgqawus4zu5w2frmhh9rscjqnu9x6msfjya2d2sfw7tsn",
+   "known_label": "VestaX Finance: Liquid Staking",
+   "tracked": true,
+   "owner_of_contract": "erd1vj40fxw0yah34mmdxly7l28w097ju6hf8pczpcdxs05n2vyx8hcspyxm2c",
+   "deployed_at": 1671732300,
+   "staked_egld": 1121.362402476542,
+   "delegation_contracts": 1,
+   "receipt_tokens": [
+    {
+     "identifier": "VEGLD-2b9319",
+     "name": "VestaXStakedEGLD",
+     "supply": "802",
+     "holders": 437,
+     "price_usd": null,
+     "market_cap_usd": null,
+     "description": "VestaX.Finance\u2122 - Liquid stake your idle EGLD and enjoy attractive staking APY with auto-compounding. Receive vEGLD for mint, trade, swap, LP pools, farm, invest, reinvest, and stake.",
+     "website": "https://vestax.finance"
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgq29rlfpkrrlsrs7tdfplyn0dpmrtxd5pvgcws7xt80a",
+   "known_label": null,
+   "tracked": false,
+   "owner_of_contract": "erd19tk834szapn2c40klx3cpv7s6ppw4yqvjnusmk4gawz093wngcwsrc2q8a",
+   "deployed_at": 1687917246,
+   "staked_egld": 2.0,
+   "delegation_contracts": 1,
+   "receipt_tokens": [
+    {
+     "identifier": "SEGLD-163cce",
+     "name": "StakedEGLD",
+     "supply": "2",
+     "holders": 2,
+     "price_usd": null,
+     "market_cap_usd": null,
+     "description": null,
+     "website": null
+    }
+   ]
+  },
+  {
+   "address": "erd1qqqqqqqqqqqqqpgqf775v5fslvukuxpy99fd6ln2cq4x7wp6gcwsdqs2tw",
+   "known_label": null,
+   "tracked": false,
+   "owner_of_contract": "erd19tk834szapn2c40klx3cpv7s6ppw4yqvjnusmk4gawz093wngcwsrc2q8a",
+   "deployed_at": 1688151486,
+   "staked_egld": 1.0,
+   "delegation_contracts": 1,
+   "receipt_tokens": [
+    {
+     "identifier": "SEGLD-f8a82e",
+     "name": "StakedEGLD",
+     "supply": "1",
+     "holders": 2,
+     "price_usd": null,
+     "market_cap_usd": null,
+     "description": null,
+     "website": null
+    }
+   ]
+  }
+ ]
+}

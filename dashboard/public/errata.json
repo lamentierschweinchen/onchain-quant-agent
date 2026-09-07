@@ -1,5 +1,5 @@
 {
-  "generated_from": 23,
+  "generated_from": 24,
   "claims": [
     {
       "claim": "The direct-node unwind: ~215,000 EGLD left direct-node staking over three weeks, 'the largest unexplained structural flow tracked'.",
@@ -110,6 +110,34 @@
         "2026-08-31"
       ],
       "withdrawn_in_date": "2026-08-31"
+    },
+    {
+      "claim": "Two consecutive USH burns into a rising price make CDP debt repayment a behaviour rather than an oddity.",
+      "asserted_in_runs": [
+        22,
+        23
+      ],
+      "withdrawn_in_run": 24,
+      "reason": "USH MINTED +5.23% this week (29,447 tokens), reversing both burns and taking the supply above where the sequence started. A pattern called at two observations lasted one more week.",
+      "replacement": "The run #16 framing stands unmodified: CDP leverage returns on large up-weeks. The two burns were repayment through a moderate rally (+6.4% and flat weeks); a +17.0% week brought borrowing back immediately. The general lesson is the one run #21 already wrote down - two observations are not a behaviour, and naming one costs a withdrawal later.",
+      "asserted_in_dates": [
+        "2026-08-24",
+        "2026-08-31"
+      ],
+      "withdrawn_in_date": "2026-09-07"
+    },
+    {
+      "claim": "Desk inventory has stepped to a new level - a candidate regime shift in the pipeline's operating scale.",
+      "asserted_in_runs": [
+        23
+      ],
+      "withdrawn_in_run": 24,
+      "reason": "Inventory fell 266,213 -> 96,114 within one week, so the level did not hold. Run #23 flagged it as a CANDIDATE and explicitly declined to promote it under the two-week rule, which is why this is a candidate being rejected rather than a published claim being withdrawn.",
+      "replacement": "The 266,213 was a one-week staging peak inside wave #3, and the wave's true scale is the feed-to-drain figure of 878,809 EGLD. The two-week promotion rule earned its keep and stays.",
+      "asserted_in_dates": [
+        "2026-08-31"
+      ],
+      "withdrawn_in_date": "2026-09-07"
     }
   ]
 }

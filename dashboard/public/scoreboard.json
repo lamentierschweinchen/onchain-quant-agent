@@ -1,14 +1,14 @@
 {
-  "generated_from": 23,
+  "generated_from": 24,
   "totals": {
-    "tests": 27,
-    "resolved": 20,
+    "tests": 33,
+    "resolved": 26,
     "open": 7,
-    "as_predicted": 14,
+    "as_predicted": 20,
     "against": 1,
     "inconclusive": 3,
     "withdrawn": 2,
-    "hit_rate_pct": 70
+    "hit_rate_pct": 76.92307692307692
   },
   "runs": [
     {
@@ -46,9 +46,175 @@
       "withdrawn": 0,
       "hit_rate_pct": 87.5,
       "open_after": 7
+    },
+    {
+      "run": 24,
+      "date": "2026-09-07",
+      "registered": 6,
+      "resolved": 6,
+      "as_predicted": 6,
+      "against": 0,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 100,
+      "open_after": 7
     }
   ],
   "tests": [
+    {
+      "id": "wave4-restart",
+      "registered_in_run": 24,
+      "claim": "The OTC distribution programme is continuous - wave #3's delivery is followed by another feed rather than by a quiet period.",
+      "threshold": "UPbit tranche into the desks above ~200,000 next week = the programme is continuous and wave #4 has started; tranche below ~50,000 with desk inventory still under ~120,000 = wave #3 is complete and the pipeline goes quiet as it did for two weeks after run #17; 50,000-200,000 = a reduced feed, re-measure without concluding",
+      "branches": [
+        {
+          "condition": "UPbit tranche > 200,000",
+          "reading": "continuous programme; wave #4 under way and supply overhang is structural"
+        },
+        {
+          "condition": "tranche < 50,000 and desks < 120,000",
+          "reading": "wave #3 complete; the pipeline goes quiet"
+        },
+        {
+          "condition": "tranche 50,000-200,000",
+          "reading": "reduced feed; re-measure"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "tranche series 14,000 / 297,000 / 460,000 / 462,000; desks 96,114 after delivering 536,459 one-way",
+      "resolution": null,
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
+    },
+    {
+      "id": "unidentified-bid-persistence",
+      "registered_in_run": 24,
+      "claim": "The bid that absorbed a record 536,459 EGLD delivery is real off-chain demand rather than a squeeze into thin order books.",
+      "threshold": "price holding above ~$4.20 next week with no new delivery = the bid is real and off-exchange, and the model needs an instrument it does not currently have; price below ~$3.90 = this week was a squeeze into thin books and the delivery was the whole story; $3.90-$4.20 = inconclusive, carry",
+      "branches": [
+        {
+          "condition": "price > $4.20",
+          "reading": "real off-chain demand; build an exchange-side instrument"
+        },
+        {
+          "condition": "price < $3.90",
+          "reading": "squeeze into thin books; the delivery was the story"
+        },
+        {
+          "condition": "$3.90-$4.20",
+          "reading": "inconclusive; carry the test"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "EGLD $4.48 (+16.97%) absorbing 536,459 EGLD of delivery, with every tracked demand instrument flat or negative except ex-pipeline withdrawal breadth",
+      "resolution": null,
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
+    },
+    {
+      "id": "staked-ratio-downtrend",
+      "registered_in_run": 24,
+      "claim": "The falling staked ratio is a genuine downtrend in the security budget rather than unbonding-cycle noise.",
+      "threshold": "staked ratio below 46.80% within three weeks = a real downtrend that a rising price is not arresting, and it becomes a first-order network-health finding; back above 47.60% = unbonding-cycle noise around a flat base; 46.80-47.60% = still inside the band, carry",
+      "branches": [
+        {
+          "condition": "staked ratio < 46.80%",
+          "reading": "genuine downtrend in the security budget"
+        },
+        {
+          "condition": "staked ratio > 47.60%",
+          "reading": "unbonding-cycle noise; drop it"
+        },
+        {
+          "condition": "46.80-47.60%",
+          "reading": "inside the band; carry"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "47.13% (-0.291pp), an archive low; staked -66,071, delegation -103,019, unbonding queue 208,125 EGLD from 537 wallets",
+      "resolution": null,
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
+    },
+    {
+      "id": "breadth-concentration",
+      "registered_in_run": 24,
+      "claim": "Ex-pipeline withdrawal breadth measures genuine dispersal rather than a handful of large wallets.",
+      "threshold": "ex-pipeline value above ~300,000 EGLD with the top two recipients taking less than 50% of it = genuine dispersal and the instrument stands as written; top two above 60% again = the instrument is tracking a few large wallets and a concentration-adjusted version replaces it; 50-60% = carry unchanged",
+      "branches": [
+        {
+          "condition": "top two < 50% of ex-pipeline value",
+          "reading": "genuine dispersal; instrument stands"
+        },
+        {
+          "condition": "top two > 60%",
+          "reading": "the instrument tracks a few wallets; replace it with a concentration-adjusted version"
+        },
+        {
+          "condition": "top two 50-60%",
+          "reading": "carry unchanged"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "55 recipients / 497,647 EGLD, top two = 42% of value, one of them funded directly by the Binance hot wallet",
+      "resolution": null,
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
+    },
+    {
+      "id": "dollar-base-fourth-contraction",
+      "registered_in_run": 24,
+      "claim": "The wrapped-dollar base is a leading de-risking signal that belongs in the executive summary each week.",
+      "threshold": "a FOURTH consecutive combined USDC+USDT contraction = a leading de-risking signal, promote it to the executive summary permanently; any week of combined expansion = the three-week run was a redemption cycle and it returns to the DeFi section",
+      "branches": [
+        {
+          "condition": "fourth consecutive combined contraction",
+          "reading": "leading de-risking signal; permanent executive-summary line"
+        },
+        {
+          "condition": "combined expansion",
+          "reading": "redemption cycle; demote to the DeFi section"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "three consecutive contractions: USDC -1.65%, USDT -2.39%, ~$220K cumulative, all into rising prices",
+      "resolution": null,
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
+    },
+    {
+      "id": "jexchange-address-live",
+      "registered_in_run": 24,
+      "claim": "The re-derived JEXchange aggregator is the live contract and the four-run data gap was an address problem, not a halted protocol.",
+      "threshold": "the re-derived router at erd1qqqqqqqqqqqq... reporting more than ~1,000 transfers next week = the address is correct and JEXchange is restored to the breakdown as an active venue; zero or near-zero = the fees-contract caller trace found a transient contract and the derivation must be redone from a different anchor",
+      "branches": [
+        {
+          "condition": "re-derived router > 1,000 transfers/week",
+          "reading": "address correct; JEXchange restored as an active venue"
+        },
+        {
+          "condition": "near zero",
+          "reading": "transient contract; re-derive from a different anchor"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "old aggregator 0 transfers for a fourth run; re-derived router 11,802 transfers in 7 days, four further contracts behind it at 4,375, 3,018, 3,648, 1,477",
+      "resolution": null,
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
+    },
     {
       "id": "desk-inventory-drain",
       "registered_in_run": 23,
@@ -68,13 +234,13 @@
           "reading": "partial delivery; re-measure without concluding"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "desk inventory 266,213 (+156,356, 2.4x the prior record) after delivering 272,396 one-way; UPbit tranche series 14,000 / 297,000 / 460,000",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 24,
+      "measured_value": "desk inventory 266,213 -> 96,114 (-64%), well below the 120,000 branch, after delivering a record 536,459 EGLD one-way; wave #3 netted feed-to-drain 878,809",
+      "resolution": "The sub-120,000 branch fires cleanly and its registered reading follows: wave #3 is the largest distribution wave in tracking by a factor of more than two (878,809 EGLD one-way against 409,680 for the run #17 peak). The record inventory was staged supply, not a new operating level - which also REJECTS the candidate regime shift run #23 flagged on the same number, and vindicates the two-week promotion rule that stopped it being published as one. The weekly delivery figure of 536,459 is itself a record, 31% past run #17.",
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
     },
     {
       "id": "binance-desk-feed-standing",
@@ -95,13 +261,13 @@
           "reading": "continuing but not scaled; keep both watches joined provisionally"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "hot -> desks 135,003 this week via the run #19 feeder (73,421), the run #20 feeder (30,554) and one direct 21,297; custody -196,758 to 2,978,782",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 24,
+      "measured_value": "Binance.com hot -> known OTC feeders and routers 97,390 EGLD inside a page-capped 4.4-day window (a LOWER bound); Binance-labelled feeders delivered 200,046 into the desks; custody REVERSED +372,434 to 3,351,216 on 900,000 out / 1,272,434 back",
+      "resolution": "The >50,000 branch fires, so Binance's participation is a standing programme rather than one-off routing - and the flow-based specification is what made that answerable. Run #22 wrote this test on the hot wallet's BALANCE and it failed; run #23 re-specified it on the flow after the failure; this run it resolves on the first attempt. One correction to the registered reading: the branch said a standing programme means 'the custody drawdown is scheduled supply', but custody GREW +372,434 this week while the feed continued. The feed is real and the custody link is not - the funding comes out of ordinary hot-wallet flow, not out of the custody balance. The two watches stay joined, on the flow rather than on the balance.",
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
     },
     {
       "id": "fourth-deregistration",
@@ -145,13 +311,13 @@
           "reading": "flat; no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "turnover 10.51% (USD ratio held above the 5% branch) but EGLD volume 63,885 -> 61,110/day (-4.3%) and EGLD pool depth -1.4%",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 24,
+      "measured_value": "EGLD-denominated volume 61,110 -> 44,557 per day (-27.1%), below the 60,000 branch; USD turnover 10.51% -> 8.17%; EGLD pool depth -6.1%",
+      "resolution": "The 'USD turnover tracks price' branch fires. In the largest up-week in the archive the venue processed LESS EGLD than the week before, which settles the question run #22 raised and run #23 pre-registered: the turnover ratio held for two months because both of its terms scale with the EGLD price, not because more EGLD changed hands. The constructive 'the bid is returning' reading carried since run #22 is withdrawn, and xExchange throughput is reported in EGLD as the primary series from here.",
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
     },
     {
       "id": "withdrawal-breadth-broadening",
@@ -168,13 +334,13 @@
           "reading": "rally artifact; the pipeline still owns the channel"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "50 recipients / 400,113 EGLD ex-pipeline against 21 / 133,521 last week; pipeline share 73.3% vs 88.3%. First week with no page-cap terminations, so not a lower bound",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 24,
+      "measured_value": "55 distinct ex-pipeline recipients took 497,647 EGLD off exchanges (bar: >40 and >300,000), pipeline share 77.5%, zero page-cap terminations",
+      "resolution": "The broadening branch fires on both terms. The registered reading - 'the strongest bid evidence the model has' - is accepted with a qualification the test could not pre-specify: two recipients account for 42% of the value, and one of them is the wallet that received 68,732 EGLD directly from the Binance hot wallet, which makes it pipeline-adjacent plumbing rather than independent accumulation. The COUNT broadened genuinely; the VALUE did not disperse. A concentration-adjusted version is registered below.",
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
     },
     {
       "id": "compound-rate-drift",
@@ -191,13 +357,13 @@
           "reading": "stabilised; the decline was a level shift, not a trend"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "57.51% (333 vs 246), fourth consecutive decline, lowest of ten; institutional tier sold 3 of 6 claims for a second week",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 24,
+      "measured_value": "62.05% (381 redelegate vs 233 claim), against a 57.0% cut - the highest of eleven readings and a reversal of four consecutive declines",
+      "resolution": "The 'stabilised' branch fires and the contiguous-branch rule introduced in run #23 does its job: this is the first of three consecutive attempts at this question to resolve on the data rather than on a specification defect. The four-week decline was a level shift, not a drift toward monetising yield, and the compound rate does NOT become a standing bearish indicator. The timing sharpens it: the reversal happened in the week the OTC pipeline delivered a record 536,459 EGLD, so the people already staking compounded harder while the supply arrived from somewhere else entirely.",
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
     },
     {
       "id": "stablecoin-base-contraction",
@@ -214,13 +380,13 @@
           "reading": "plumbing noise; drop it"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "USDC -0.90% (69,658 tokens), USDT -1.31%; ~$77K combined during a +6.39% price week",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 24,
+      "measured_value": "USDC -1.65% (127,200 tokens) and USDT -2.39% - a third consecutive combined contraction, about $140K this week and $220K over the three",
+      "resolution": "The promotion branch fires. Three consecutive weeks of combined contraction, every one into a rising price, is not redemption timing; the on-chain dollar base is now reported as a de-risking instrument alongside USH. The contrast within the same week makes the point: USH MINTED +5.23% while the dollar base shrank - leverage up, cash base down, which is a specific and coherent picture rather than two unrelated plumbing moves.",
+      "seen_in_run": 24,
+      "seen_in_date": "2026-09-07"
     },
     {
       "id": "unbond-withdrawal",

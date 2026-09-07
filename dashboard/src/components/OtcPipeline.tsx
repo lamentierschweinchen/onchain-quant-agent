@@ -20,6 +20,7 @@ interface SeriesPoint {
   label: string
   gross: number | null
   net: number | null
+  inventory: number | null
 }
 
 function runNumber(key: string): number {
@@ -30,6 +31,7 @@ function runNumber(key: string): number {
 function buildSeries(data: OtcPipelineData): SeriesPoint[] {
   const gross = data.gross_series_egld_7d ?? {}
   const net = data.net_one_way_series_egld_7d ?? {}
+  const inventory = data.desk_inventory_series_egld ?? {}
   const runs = new Map<number, SeriesPoint>()
 
   for (const [key, value] of Object.entries(gross)) {
@@ -41,6 +43,7 @@ function buildSeries(data: OtcPipelineData): SeriesPoint[] {
       label: `#${run}`,
       gross: value,
       net: null,
+      inventory: null,
     })
   }
   for (const [key, value] of Object.entries(net)) {
@@ -48,7 +51,33 @@ function buildSeries(data: OtcPipelineData): SeriesPoint[] {
     if (!run) continue
     const existing = runs.get(run)
     if (existing) existing.net = value
-    else runs.set(run, { key, run, label: `#${run}`, gross: null, net: value })
+    else
+      runs.set(run, {
+        key,
+        run,
+        label: `#${run}`,
+        gross: null,
+        net: value,
+        inventory: null,
+      })
+  }
+  // Inventory is a STOCK, not a flow: it is what the desks were still holding
+  // at the end of that week, and reading it against the delivery bars is the
+  // only way to see whether a wave is ahead of the reader or behind them.
+  for (const [key, value] of Object.entries(inventory)) {
+    const run = runNumber(key)
+    if (!run) continue
+    const existing = runs.get(run)
+    if (existing) existing.inventory = value
+    else
+      runs.set(run, {
+        key,
+        run,
+        label: `#${run}`,
+        gross: null,
+        net: null,
+        inventory: value,
+      })
   }
 
   return Array.from(runs.values()).sort((a, b) => a.run - b.run)
@@ -149,7 +178,7 @@ function SeriesChart({
   const innerW = W - PAD.left - PAD.right
   const innerH = H - PAD.top - PAD.bottom
   const max = Math.max(
-    ...series.map((p) => Math.max(p.gross ?? 0, p.net ?? 0)),
+    ...series.map((p) => Math.max(p.gross ?? 0, p.net ?? 0, p.inventory ?? 0)),
     1,
   )
   // Round the scale up to a clean tick.
@@ -262,6 +291,45 @@ function SeriesChart({
         )
       })}
 
+      {/* desk inventory - the stock line over the delivery bars */}
+      {(() => {
+        const pts = series
+          .map((p, i) => ({ p, i }))
+          .filter((x) => x.p.inventory != null)
+        if (pts.length < 2) return null
+        const d = pts
+          .map(
+            (x, k) =>
+              `${k === 0 ? 'M' : 'L'}${xCenter(x.i)},${y(x.p.inventory as number)}`,
+          )
+          .join(' ')
+        return (
+          <g>
+            <path
+              d={d}
+              fill="none"
+              stroke="var(--color-text-primary)"
+              strokeWidth={1.5}
+              strokeDasharray="4 3"
+              opacity={0.75}
+            />
+            {pts.map((x) => (
+              <circle
+                key={`inv-${x.p.key}`}
+                cx={xCenter(x.i)}
+                cy={y(x.p.inventory as number)}
+                r={3}
+                fill="var(--color-bg-elevated)"
+                stroke="var(--color-text-primary)"
+                strokeWidth={1.5}
+              >
+                <title>{`Run #${x.p.run} desk inventory at week end: ${formatEgldBare(x.p.inventory as number)} EGLD`}</title>
+              </circle>
+            ))}
+          </g>
+        )
+      })()}
+
       {/* wave bracket */}
       {wave && waveFirstIdx >= 0 && waveLastIdx >= 0 && (
         <g>
@@ -335,6 +403,11 @@ export function OtcPipeline({ data, reportDate }: Props) {
     data.desk_balance_egld != null && data.previous_desk_balance_egld != null
       ? data.desk_balance_egld - data.previous_desk_balance_egld
       : null
+
+  // The bars are flow, the dashed line is stock. A week where the line RISES
+  // while the bars are positive means the pipeline staged faster than it
+  // delivered - the delivery leg is still ahead of the reader.
+  const hasInventory = series.some((p) => p.inventory != null)
 
   const venues = (data.venue_netting ?? [])
     .slice()
@@ -428,7 +501,9 @@ export function OtcPipeline({ data, reportDate }: Props) {
           <div className="bg-bg-elevated border border-border rounded p-3">
             <div className="flex items-baseline justify-between gap-3 mb-1">
               <span className="text-[10px] text-text-muted uppercase tracking-widest">
-                Net one-way per week vs gross
+                {hasInventory
+                  ? 'Delivered per week vs what stayed staged'
+                  : 'Net one-way per week vs gross'}
               </span>
               <span className="flex items-center gap-3 text-[9.5px] font-mono text-text-muted">
                 <span className="flex items-center gap-1.5">
@@ -448,6 +523,15 @@ export function OtcPipeline({ data, reportDate }: Props) {
                   />
                   net one-way
                 </span>
+                {hasInventory && (
+                  <span className="flex items-center gap-1.5">
+                    <span
+                      className="inline-block w-4 h-0 border-t-[1.5px] border-dashed"
+                      style={{ borderColor: 'var(--color-text-primary)' }}
+                    />
+                    desk inventory
+                  </span>
+                )}
               </span>
             </div>
             <SeriesChart
