@@ -5275,8 +5275,7 @@
         ],
         "endpoints_that_failed": [
           "/tokens/WTAO-3ec9c0: HTTP 404 - kept in the recheck list as a known-bad control, not a live dependency",
-          "Binance.com hot wallet outbound: page-capped at 1,000 txs covering 4.4 of 7 days, so the 97,390 hot-to-feeder figure is a lower bound",
-          "16 provider unDelegate scans terminated on a page cap even after the deep re-scan"
+          "NONE beyond the known-bad control. The two truncation caveats this report first published were both resolved: the Binance hot wallet was re-queried in per-day slices (the figure trebled), and the 16 page-capped provider scans were already re-paged at 30 pages in the same run."
         ],
         "api_quirks_discovered": [
           "A STORAGE CHANGE CAN MANUFACTURE A HEADLINE. Run #23 started storing the FULL /providers list (including locked == 0 entries) in previous.json - the right fix for a real bug. This run, summing num_delegators across the stored list and comparing it to the current locked>0 total produced a -28,141 delegator collapse that is entirely an artifact of the basis change. Any WoW comparison that spans a snapshot-schema change must be recomputed on a common basis, and the assembler now filters previous.json to locked > 0 explicitly.",
@@ -5287,10 +5286,15 @@
           "A CONTRACT THAT READS ZERO WHILE ITS NEIGHBOURS DO NOT IS AN ADDRESS PROBLEM. The JEXchange aggregator returned 0 transfers for four consecutive runs while its own fees contract reported thousands. Tracing the fees contract's inbound callers found a live router doing 11,802 transfers a week plus four more behind it. Same failure mode as WTAO-3ec9c0, and the same fix: suspect the identifier before the protocol."
         ],
         "data_gaps": [
-          "The Binance.com hot wallet is too busy for a 1,000-tx budget - 4.4 days of coverage. Raise its cap or query it by day.",
+          "RESOLVED IN-RUN: the Binance.com hot wallet fills a 1,000-tx budget in 4.4 days. Re-queried in per-calendar-day slices, hot-to-pipeline is 255,442 EGLD against the 112,126 the truncated scan reported - a 2.3x undercount on a figure that resolves a pre-committed test. Daily slicing is now the method for any wallet above ~200 txs/day.",
           "23,647 EGLD of desk outbound and 1,140 of inbound remain unattributed to a venue after two hops.",
-          "343,872 EGLD arrived at the desks from routers whose parent venue is not resolved - the largest single unattributed feeder moved 196,492 EGLD.",
+          "233,266 EGLD arrived at the desks from routers whose parent venue is not resolved - the largest single unattributed feeder moved 196,492 EGLD.",
           "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation, open since run #18, still flagged rather than guessed."
+        ],
+        "post_publication_reconciliation": [
+          "THE BINANCE HOT-TO-PIPELINE FIGURE WAS A 2.3x UNDERCOUNT AND IT RESOLVED A PRE-COMMITTED TEST. The main pass filled a 1,000-transaction budget in 4.4 of 7 days on the busiest wallet. Re-queried in per-calendar-day slices (scripts/followup_run24.py, 1,305 txs, zero day-slices capped, deduped by txHash): 255,442 EGLD to known OTC feeders and routers against 112,126 from the truncated scan. The test outcome is unchanged - it cleared 50,000 either way - but the magnitude is now 48% of everything the desks delivered one-way, which is a materially different claim about Binance's role.",
+          "ONE OF THE THREE PUBLISHED 'FAILED SOURCES' WAS A FALSE CAVEAT. The report listed 16 page-capped provider scans as a truncation. They were the SHALLOW first pass; all 16 were re-paged at 30 pages in the same run and the largest deep result is 765 txs against a 1,500 cap. Nothing was missing. Lesson: a page-cap log entry is not a data gap if a later pass superseded it - reconcile the cap log against the re-scan list before publishing it.",
+          "ATTRIBUTION SHIFTS IF THE LABEL SET CHANGES BETWEEN ASSEMBLY PASSES. Re-running the assembler after update_data added 17 new router labels moved 110,573 EGLD from 'Unattributed' into Bybit and Binance feeders and raised the main-pass hot figure from 97,390 to 112,126. Same data, better labels. Freeze the label set at the start of a run, or re-run every stage after any known-addresses change - never mix."
         ]
       },
       "analysis_insights": {

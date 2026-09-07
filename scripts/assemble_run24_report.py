@@ -71,6 +71,20 @@ for t in (D.get("binance_hot_out") or []):
 HOT_TO_PIPE=sum(hot_to_pipe.values())
 hot_cap=[x for x in (D.get("_pagecap_terminations") or []) if x.get("tag")=="binance_hot_out"]
 HOT_COVER=hot_cap[0]["coverage_days"] if hot_cap else 7.0
+HOT_MAIN=HOT_TO_PIPE
+# FOLLOWUP RECOVERY: the main pass filled a 1,000-tx budget in 4.4 of 7 days on the
+# busiest hot wallet. scripts/followup_run24.py re-queries the three wallets in
+# per-calendar-day slices so each fits the budget, and dedupes by txHash. Where
+# that file exists it supersedes the truncated figure.
+import os as _os
+_fu_path=f"{REPO}/data/collected/followup_{RD}.json"
+FU=json.load(open(_fu_path)) if _os.path.exists(_fu_path) else None
+if FU:
+    hot_to_pipe={}
+    for _a,_v in FU["by_recipient"].items():
+        hot_to_pipe[_a]=_v
+    HOT_TO_PIPE=FU["hot_to_pipeline_egld"]
+    HOT_COVER=7.0
 # every desk feeder by parent venue, this week
 feeders_in={}
 for a,rec in D["desk_inbound_paged"].items():
@@ -83,8 +97,11 @@ for a,rec in D["desk_inbound_paged"].items():
         feeders_in[p]=feeders_in.get(p,0)+v
 O["feeders_in"]=feeders_in
 O["hot_to_pipe"]={"total_egld":HOT_TO_PIPE,"coverage_days":HOT_COVER,
-                  "by_recipient":{LABELS.get(k,k[:14]):v for k,v in
-                                  sorted(hot_to_pipe.items(),key=lambda x:-x[1])}}
+                  "main_pass_egld":HOT_MAIN,
+                  "recovered":bool(FU),
+                  "by_recipient":(FU["by_recipient"] if FU else
+                                  {LABELS.get(k,k[:14]):v for k,v in
+                                   sorted(hot_to_pipe.items(),key=lambda x:-x[1])})}
 json.dump(O,open("/tmp/run24w/derived.json","w"),indent=1,default=str)
 
 LF=next((r for r in zsc["with_activity_this_week"] if r["provider"]=="ledgerbyfigment"), {})
@@ -96,15 +113,16 @@ R["metadata"]={"report_date":RD,"period_start":"2026-08-31","period_end":RD,
   "egld_price_usd":price,"btc_price_usd":M["btc"],"eth_price_usd":M["eth"],
   "run_number":24,"data_sources_ok":status["ok"],
   "data_sources_failed":status["failed"]+[
-    "/tokens/WTAO-3ec9c0: HTTP 404 - confirmed dead identifier, kept in the pre-flight recheck list as a known-bad control",
-    "Binance.com hot wallet outbound: page-capped at 1,000 txs covering "
-    f"{HOT_COVER} of 7 days, so the {f(HOT_TO_PIPE)} EGLD hot-to-pipeline figure is a LOWER BOUND",
-    "16 provider contracts filled the 6-page unDelegate budget and were re-scanned at 30 pages (rec #10); "
-    "the queue figure is now a near-complete scan rather than a lower bound, but 16 deep scans still terminated on the cap"],
+    "/tokens/WTAO-3ec9c0: HTTP 404 - confirmed dead identifier, kept in the pre-flight recheck list as a known-bad control. Nothing is missing: the live token WTAO-4f5363 was queried and priced this run"],
   "data_sources_recovered":[
     "/tokens/WTAO-4f5363 - the correct WrappedTAO identifier, dead in the collector from run #13 to #23, queried and priced this run",
     "/accounts/{Binance.com hot} - run #23's invalid bech32 constant replaced with the three checksummed wallets; now covered by the pre-flight validator",
-    "/accounts/{unbond wallet}/delegation - HTTP 429 last run, clean on the first pass this run with exponential backoff in place"]}
+    "/accounts/{unbond wallet}/delegation - HTTP 429 last run, clean on the first pass this run with exponential backoff in place",
+    (f"/accounts/{{Binance.com hot}}/transactions - the main pass filled a 1,000-tx budget in {hot_cap[0]['coverage_days'] if hot_cap else 4.4} of 7 days. "
+     f"Re-queried in per-calendar-day slices (followup_{RD}.json, {FU['total_txs_scanned']:,} txs, zero day-slices capped): "
+     f"hot-to-pipeline is {f(HOT_TO_PIPE)} EGLD, not the {f(HOT_MAIN)} the truncated scan showed" if FU else
+     "/accounts/{Binance.com hot}/transactions - truncated, not recovered"),
+    "all-provider unDelegate scan - the 16 contracts that filled the 6-page first pass were re-paged at 30 pages in the same run and the largest deep result is 765 txs against a 1,500 cap, so the unbonding queue figure is NOT truncated. Run #24's first publication carried this as a failed source in error"]}
 
 R["executive_summary"]=[
  {"category":"whale","severity":"critical","finding":
@@ -112,7 +130,7 @@ R["executive_summary"]=[
  {"category":"network","severity":"high","finding":
   f"EGLD ROSE {pc:+.2f}% TO ${price:.2f} INTO THE LARGEST DELIVERY WEEK ON RECORD, AND AGAIN WITHOUT THE MAJORS. BTC {M['btc_wow']:+.2f}%, ETH {M['eth_wow']:+.2f}% - both effectively flat, so by the run #16 rule this is an EGLD-specific move for a second consecutive week. z={z['price']['z']:+.2f}sigma. Nothing on the participation side corroborates it: staked EGLD {M['staked_chg']:+,.0f}, the staked ratio FELL {100*(M['sr']-M['sr_prev']):+.3f}pp to {100*M['sr']:.2f}%, delegation TVL {f(sk['delta_locked'])}, and DEX volume in EGLD terms fell {100*(bid['dexvol_egld']-bid['prev_dexvol_egld'])/bid['prev_dexvol_egld']:+.1f}% to {f(bid['dexvol_egld'])} EGLD/day. A price that absorbed half a million EGLD of desk supply and still rose 17% is the week's central fact, and the bid behind it is not visible in any instrument this model has."},
  {"category":"whale","severity":"high","finding":
-  f"THE BINANCE FEED IS A STANDING PROGRAMME - AND THE CUSTODY DRAWDOWN REVERSED IN THE SAME WEEK. The Binance.com hot wallet sent {f(HOT_TO_PIPE)} EGLD to known OTC desk feeders in a page-capped {HOT_COVER}-day window, clearing the 50,000 flow threshold run #23 registered after a balance threshold failed on the same question. Binance-labelled feeders delivered {f(feeders_in.get('Binance',0))} EGLD into the desks. But staking custody REVERSED: +{f(cust['delta'])} to {f(cust['balance'])} after two weeks of drawdown totalling -497K, on 900,000 out to the hot wallet against 1,272,434 back. Binance funded the pipeline and refilled custody at the same time, which means the custody balance is a poor supply proxy on its own - the flow trace is the instrument."},
+  f"THE BINANCE FEED IS A STANDING PROGRAMME AT FIVE TIMES ITS THRESHOLD - AND THE CUSTODY DRAWDOWN REVERSED IN THE SAME WEEK. The Binance.com hot wallet sent {f(HOT_TO_PIPE)} EGLD to known OTC desk feeders and routers over the full seven days, clearing the 50,000 flow threshold run #23 registered after a balance threshold failed on the same question. (The main collector pass saw only {f(HOT_MAIN)} of it: the wallet fills a 1,000-transaction budget in 4.4 days, so the window was re-queried in per-day slices.) Binance-labelled feeders delivered {f(feeders_in.get('Binance',0))} EGLD into the desks. But staking custody REVERSED: +{f(cust['delta'])} to {f(cust['balance'])} after two weeks of drawdown totalling -497K, on 900,000 out to the hot wallet against 1,272,434 back. Binance funded the pipeline and refilled custody at the same time, which means the custody balance is a poor supply proxy on its own - the flow trace is the instrument."},
  {"category":"whale","severity":"high","finding":
   f"THE DELIVERY SURFACE IS NOW THREE VENUES DEEP ON BOTH SIDES. Feed: UPbit {f(feeders_in.get('UPbit',0))}, Bybit feeders {f(feeders_in.get('Bybit',0))}, Binance feeders {f(feeders_in.get('Binance',0))}. Delivery: Bybit took {f(venue(otc['out_by_venue'],'Bybit'))} gross and fed back {f(venue(otc['in_by_venue'],'Bybit'))}, Binance.com {f(venue(otc['out_by_venue'],'Binance.com'))} against {f(venue(otc['in_by_venue'],'Binance.com'))}, Gate.io {f(venue(otc['out_by_venue'],'Gate.io'))} against {f(venue(otc['in_by_venue'],'Gate.io'))}. Gross throughput {f(otc['gross_out'])} out / {f(otc['gross_in'])} in at {otc['circ_pct']:.0f}% circularity - the highest gross ever recorded, past run #17's 1,284,688. When a venue appears on both legs it is running inventory, not taking delivery; the net figures are the ones that mean anything."},
  {"category":"staking","severity":"high","finding":
@@ -170,7 +188,7 @@ def entity_interp(e):
     if n=="Binance":
         return (f"{v:+,.0f} across {e['wallets_count']} wallets, and the net is meaningless without the decomposition. "
                 f"Internally: staking custody sent 900,000 to the hot wallet and took 1,272,434 back, so CUSTODY ROSE +{f(cust['delta'])} to {f(cust['balance'])} while the hot complex fell {f(cust['hot_entity_balance']-cust['hot_entity_previous'])}. "
-                f"Externally the hot wallet pushed {f(HOT_TO_PIPE)} EGLD into known OTC feeders in {HOT_COVER} days of covered window, and Binance-labelled feeders delivered {f(feeders_in.get('Binance',0))} into the desks. "
+                f"Externally the hot wallet pushed {f(HOT_TO_PIPE)} EGLD into known OTC feeders and routers over the week, and Binance-labelled feeders delivered {f(feeders_in.get('Binance',0))} into the desks. "
                 f"Two weeks of custody drawdown reversed while the feed continued - funding the pipeline and refilling custody are not the same decision, and this week Binance did both.")
     if n=="UPbit":
         return (f"{v:+,.0f} ({e['pct']:+.1f}%) with {f(otc['upbit_feed'])} EGLD sent to its own desk in the same window - the LOADING leg, not customer withdrawal (run #16 rule). "
@@ -283,7 +301,7 @@ R["whale_intelligence"]={
   f"WHERE IT WENT. Two-hop resolution: Binance.com +{f(venue(otc['net_by_venue'],'Binance.com'))}, Bybit +{f(venue(otc['net_by_venue'],'Bybit'))}, Gate.io +{f(venue(otc['net_by_venue'],'Gate.io'))}, Unknown Whale I +{f(venue(otc['net_by_venue'],'Unknown Whale I (active)'))} (operator inventory, netted out of the demand read since run #21). "
   f"{f(otc['unresolved_out'])} EGLD of outbound remains unattributed. Every named destination is an exchange deposit path, so this is the run #17 signature at twice the run #17 scale: supply arriving at order books, not dispersing to holders.\n\n"
   f"WHERE IT CAME FROM. The feed side is no longer one venue. UPbit sent {f(feeders_in.get('UPbit',0))} EGLD directly, Bybit-labelled feeders {f(feeders_in.get('Bybit',0))}, Binance-labelled feeders {f(feeders_in.get('Binance',0))}, with {f(feeders_in.get('Unattributed',0))} arriving through routers whose parent venue is not yet resolved. "
-  f"The Binance leg is now demonstrably a standing programme: the hot wallet sent {f(HOT_TO_PIPE)} EGLD to known feeders inside a {HOT_COVER}-day covered window, clearing the 50,000 flow threshold run #23 pre-registered. "
+  f"The Binance leg is now demonstrably a standing programme: the hot wallet sent {f(HOT_TO_PIPE)} EGLD to known feeders and routers across the full week - {f(HOT_TO_PIPE/otc['net_one_way']*100)}% of everything the desks delivered one-way - clearing the 50,000 flow threshold run #23 pre-registered by a factor of five. "
   f"What did NOT continue is the custody drawdown - Binance Staking custody rose +{f(cust['delta'])} to {f(cust['balance'])} after -497K over the prior two weeks. Custody is being refilled while the hot wallet feeds the desks, which is why run #23's balance-based version of this test failed and its flow-based replacement worked.\n\n"
   f"TIERS - READ THE NETTED VERSION. Raw, the {O['tiers_basis']}-address common basis shows mega {O['tiers']['mega']['net_change_egld']:+,.0f} and large {O['tiers']['large']['net_change_egld']:+,.0f}, which is almost entirely reclassification: UPbit crossed UP into the mega tier at {f(cur_top.get('erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5',0))} and both OTC desks crossed DOWN out of the large tier as they emptied. "
   f"Holding every wallet in its PRIOR tier (the run #14 boundary guard) gives mega {tiers_fixed['mega']['net_change_egld']:+,.0f}, large {tiers_fixed['large']['net_change_egld']:+,.0f}, mid {tiers_fixed['mid']['net_change_egld']:+,.0f}. "

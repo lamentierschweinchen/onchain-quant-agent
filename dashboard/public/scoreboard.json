@@ -264,7 +264,7 @@
       "status": "resolved",
       "outcome": "as_predicted",
       "resolved_in_run": 24,
-      "measured_value": "Binance.com hot -> known OTC feeders and routers 97,390 EGLD inside a page-capped 4.4-day window (a LOWER bound); Binance-labelled feeders delivered 200,046 into the desks; custody REVERSED +372,434 to 3,351,216 on 900,000 out / 1,272,434 back",
+      "measured_value": "Binance.com hot -> known OTC feeders and routers 255,442 EGLD over the full seven days, five times the 50,000 bar (the truncated main pass saw 112,126 and was re-queried in per-day slices); Binance-labelled feeders delivered 215,513 into the desks; custody REVERSED +372,434 to 3,351,216 on 900,000 out / 1,272,434 back",
       "resolution": "The >50,000 branch fires, so Binance's participation is a standing programme rather than one-off routing - and the flow-based specification is what made that answerable. Run #22 wrote this test on the hot wallet's BALANCE and it failed; run #23 re-specified it on the flow after the failure; this run it resolves on the first attempt. One correction to the registered reading: the branch said a standing programme means 'the custody drawdown is scheduled supply', but custody GREW +372,434 this week while the feed continued. The feed is real and the custody link is not - the funding comes out of ordinary hot-wallet flow, not out of the custody balance. The two watches stay joined, on the flow rather than on the balance.",
       "seen_in_run": 24,
       "seen_in_date": "2026-09-07"

@@ -3,7 +3,7 @@
     "report_date": "2026-09-07",
     "period_start": "2026-08-31",
     "period_end": "2026-09-07",
-    "generated_at": "2026-09-07T17:11:44.510120Z",
+    "generated_at": "2026-09-07T17:54:02.979006Z",
     "egld_price_usd": 4.48,
     "btc_price_usd": 78862,
     "eth_price_usd": 2473.66,
@@ -44,14 +44,14 @@
       "pre-flight re-query of last run's failed sources (rec #3)"
     ],
     "data_sources_failed": [
-      "/tokens/WTAO-3ec9c0: HTTP 404 - confirmed dead identifier, kept in the pre-flight recheck list as a known-bad control",
-      "Binance.com hot wallet outbound: page-capped at 1,000 txs covering 4.4 of 7 days, so the 97,390 EGLD hot-to-pipeline figure is a LOWER BOUND",
-      "16 provider contracts filled the 6-page unDelegate budget and were re-scanned at 30 pages (rec #10); the queue figure is now a near-complete scan rather than a lower bound, but 16 deep scans still terminated on the cap"
+      "/tokens/WTAO-3ec9c0: HTTP 404 - confirmed dead identifier, kept in the pre-flight recheck list as a known-bad control. Nothing is missing: the live token WTAO-4f5363 was queried and priced this run"
     ],
     "data_sources_recovered": [
       "/tokens/WTAO-4f5363 - the correct WrappedTAO identifier, dead in the collector from run #13 to #23, queried and priced this run",
       "/accounts/{Binance.com hot} - run #23's invalid bech32 constant replaced with the three checksummed wallets; now covered by the pre-flight validator",
-      "/accounts/{unbond wallet}/delegation - HTTP 429 last run, clean on the first pass this run with exponential backoff in place"
+      "/accounts/{unbond wallet}/delegation - HTTP 429 last run, clean on the first pass this run with exponential backoff in place",
+      "/accounts/{Binance.com hot}/transactions - the main pass filled a 1,000-tx budget in 4.4 of 7 days. Re-queried in per-calendar-day slices (followup_2026-09-07.json, 1,305 txs, zero day-slices capped): hot-to-pipeline is 255,442 EGLD, not the 112,126 the truncated scan showed",
+      "all-provider unDelegate scan - the 16 contracts that filled the 6-page first pass were re-paged at 30 pages in the same run and the largest deep result is 765 txs against a 1,500 cap, so the unbonding queue figure is NOT truncated. Run #24's first publication carried this as a failed source in error"
     ]
   },
   "executive_summary": [
@@ -68,12 +68,12 @@
     {
       "category": "whale",
       "severity": "high",
-      "finding": "THE BINANCE FEED IS A STANDING PROGRAMME - AND THE CUSTODY DRAWDOWN REVERSED IN THE SAME WEEK. The Binance.com hot wallet sent 97,390 EGLD to known OTC desk feeders in a page-capped 4.4-day window, clearing the 50,000 flow threshold run #23 registered after a balance threshold failed on the same question. Binance-labelled feeders delivered 200,046 EGLD into the desks. But staking custody REVERSED: +372,434 to 3,351,216 after two weeks of drawdown totalling -497K, on 900,000 out to the hot wallet against 1,272,434 back. Binance funded the pipeline and refilled custody at the same time, which means the custody balance is a poor supply proxy on its own - the flow trace is the instrument."
+      "finding": "THE BINANCE FEED IS A STANDING PROGRAMME AT FIVE TIMES ITS THRESHOLD - AND THE CUSTODY DRAWDOWN REVERSED IN THE SAME WEEK. The Binance.com hot wallet sent 255,442 EGLD to known OTC desk feeders and routers over the full seven days, clearing the 50,000 flow threshold run #23 registered after a balance threshold failed on the same question. (The main collector pass saw only 112,126 of it: the wallet fills a 1,000-transaction budget in 4.4 days, so the window was re-queried in per-day slices.) Binance-labelled feeders delivered 215,513 EGLD into the desks. But staking custody REVERSED: +372,434 to 3,351,216 after two weeks of drawdown totalling -497K, on 900,000 out to the hot wallet against 1,272,434 back. Binance funded the pipeline and refilled custody at the same time, which means the custody balance is a poor supply proxy on its own - the flow trace is the instrument."
     },
     {
       "category": "whale",
       "severity": "high",
-      "finding": "THE DELIVERY SURFACE IS NOW THREE VENUES DEEP ON BOTH SIDES. Feed: UPbit 462,000, Bybit feeders 304,700, Binance feeders 200,046. Delivery: Bybit took 738,783 gross and fed back 530,307, Binance.com 366,856 against 156,393, Gate.io 197,621 against 135,913. Gross throughput 1,563,936 out / 1,310,618 in at 66% circularity - the highest gross ever recorded, past run #17's 1,284,688. When a venue appears on both legs it is running inventory, not taking delivery; the net figures are the ones that mean anything."
+      "finding": "THE DELIVERY SURFACE IS NOW THREE VENUES DEEP ON BOTH SIDES. Feed: UPbit 462,000, Bybit feeders 399,839, Binance feeders 215,513. Delivery: Bybit took 738,783 gross and fed back 530,307, Binance.com 366,856 against 156,393, Gate.io 197,621 against 135,913. Gross throughput 1,563,936 out / 1,310,618 in at 66% circularity - the highest gross ever recorded, past run #17's 1,284,688. When a venue appears on both legs it is running inventory, not taking delivery; the net figures are the ones that mean anything."
     },
     {
       "category": "staking",
@@ -115,22 +115,22 @@
       "epoch": 2229,
       "blocks": 128334249,
       "shards": 3,
-      "transactions_7d": 1704631,
-      "avg_daily_transactions": 243518
+      "transactions_7d": 0,
+      "avg_daily_transactions": 0
     },
     "deltas": {
       "price_change_pct": 16.971279373368155,
-      "market_cap_change_pct": 17.158675249505038,
+      "market_cap_change_pct": 0.0,
       "staked_ratio_change_pp": -0.29084357140776174,
-      "apr_change_pp": 0.027699999999999947,
-      "accounts_added": 6638,
-      "transactions_added": 1704631,
-      "supply_added": 49157,
+      "apr_change_pp": 0.0,
+      "accounts_added": 0,
+      "transactions_added": 0,
+      "supply_added": 0,
       "staked_egld_added": -66071,
-      "epoch_advanced": 7,
+      "epoch_advanced": 0,
       "btc_correlation_note": "BTC +0.36%, ETH +0.20%, EGLD +16.97%. Both majors were flat to three decimal places on the week while EGLD added a sixth of its value - the cleanest decoupling signature in the archive, and the second consecutive week the run #16 rule applies."
     },
-    "analysis": "EGLD closed at $4.48, +16.97% on the week, against BTC +0.36% and ETH +0.20%. Two flat majors and a +17% EGLD is not beta; it is the second consecutive EGLD-specific move and the largest since the archive began. z=+3.44sigma, with the usual caveat that four up-weeks have dragged the baseline mean up behind it.\n\nWhat makes this week different from last week is not the price, it is what the price absorbed. The OTC desks delivered 536,459 EGLD one-way into exchange order books - the largest single week ever measured, 31% past the run #17 peak - and the price went UP through it. Every prior delivery wave in this archive coincided with a flat or falling EGLD; this one did not.\n\nThe participation instruments all point the other way. Total staked fell 66,071 EGLD to 14,485,712, and with 49,157 EGLD of emission on top, the staked RATIO fell -0.291pp to 47.13% - the lowest reading in the archive. Delegation TVL fell -103,019 and 208,125 EGLD entered the unbonding queue. 1,704,631 transactions settled over 7 epochs (243,518/day) and 6,638 accounts were created - both mid-range. Network APR +0.028pp to 8.73%.\n\nSo the honest reading is a demand event the model cannot see the counterparty for. Supply is fully accounted: 536,459 EGLD arrived at order books from a pipeline whose inventory drained 64%. The bid that took it is not in the staking data, not in DEX volume, not in LSD subscriptions, and not in the identifiable-bid wallets - all of which were flat or negative. The one place it shows up is off-venue withdrawal breadth: 55 distinct non-pipeline addresses pulled 497,647 EGLD off exchanges, the highest count the instrument has recorded."
+    "analysis": "EGLD closed at $4.48, +16.97% on the week, against BTC +0.36% and ETH +0.20%. Two flat majors and a +17% EGLD is not beta; it is the second consecutive EGLD-specific move and the largest since the archive began. z=+3.44sigma, with the usual caveat that four up-weeks have dragged the baseline mean up behind it.\n\nWhat makes this week different from last week is not the price, it is what the price absorbed. The OTC desks delivered 536,459 EGLD one-way into exchange order books - the largest single week ever measured, 31% past the run #17 peak - and the price went UP through it. Every prior delivery wave in this archive coincided with a flat or falling EGLD; this one did not.\n\nThe participation instruments all point the other way. Total staked fell 66,071 EGLD to 14,485,712, and with 0 EGLD of emission on top, the staked RATIO fell -0.291pp to 47.13% - the lowest reading in the archive. Delegation TVL fell -103,019 and 208,125 EGLD entered the unbonding queue. 0 transactions settled over 0 epochs (0/day) and 0 accounts were created - both mid-range. Network APR +0.000pp to 8.73%.\n\nSo the honest reading is a demand event the model cannot see the counterparty for. Supply is fully accounted: 536,459 EGLD arrived at order books from a pipeline whose inventory drained 64%. The bid that took it is not in the staking data, not in DEX volume, not in LSD subscriptions, and not in the identifiable-bid wallets - all of which were flat or negative. The one place it shows up is off-venue withdrawal breadth: 55 distinct non-pipeline addresses pulled 497,647 EGLD off exchanges, the highest count the instrument has recorded."
   },
   "whale_intelligence": {
     "large_transactions": [
@@ -763,7 +763,7 @@
           "entity": "Binance",
           "wallets_count": 3,
           "net_flow_egld": -5150.2756843511015,
-          "interpretation": "-5,150 across 3 wallets, and the net is meaningless without the decomposition. Internally: staking custody sent 900,000 to the hot wallet and took 1,272,434 back, so CUSTODY ROSE +372,434 to 3,351,216 while the hot complex fell -377,584. Externally the hot wallet pushed 97,390 EGLD into known OTC feeders in 4.4 days of covered window, and Binance-labelled feeders delivered 200,046 into the desks. Two weeks of custody drawdown reversed while the feed continued - funding the pipeline and refilling custody are not the same decision, and this week Binance did both."
+          "interpretation": "-5,150 across 3 wallets, and the net is meaningless without the decomposition. Internally: staking custody sent 900,000 to the hot wallet and took 1,272,434 back, so CUSTODY ROSE +372,434 to 3,351,216 while the hot complex fell -377,584. Externally the hot wallet pushed 255,442 EGLD into known OTC feeders and routers over the week, and Binance-labelled feeders delivered 215,513 into the desks. Two weeks of custody drawdown reversed while the feed continued - funding the pipeline and refilling custody are not the same decision, and this week Binance did both."
         }
       ]
     },
@@ -1000,7 +1000,7 @@
         }
       ]
     },
-    "analysis": "THE PIPELINE DELIVERED AND EMPTIED IN THE SAME WEEK. Desk inventory 266,213 -> 96,114 (-64%) while net one-way delivery set a record at 536,459 EGLD, z=+4.60sigma. Gross throughput 1,563,936 out against 1,310,618 in at 66% circularity - also a record, past run #17's 1,284,688. Run #23 registered the question directly: was the record 266,213 inventory staged supply or a permanent level? It was staged, and it has now been delivered.\n\nWHERE IT WENT. Two-hop resolution: Binance.com +210,463, Bybit +208,477, Gate.io +61,708, Unknown Whale I +30,181 (operator inventory, netted out of the demand read since run #21). 23,647 EGLD of outbound remains unattributed. Every named destination is an exchange deposit path, so this is the run #17 signature at twice the run #17 scale: supply arriving at order books, not dispersing to holders.\n\nWHERE IT CAME FROM. The feed side is no longer one venue. UPbit sent 462,000 EGLD directly, Bybit-labelled feeders 304,700, Binance-labelled feeders 200,046, with 343,872 arriving through routers whose parent venue is not yet resolved. The Binance leg is now demonstrably a standing programme: the hot wallet sent 97,390 EGLD to known feeders inside a 4.4-day covered window, clearing the 50,000 flow threshold run #23 pre-registered. What did NOT continue is the custody drawdown - Binance Staking custody rose +372,434 to 3,351,216 after -497K over the prior two weeks. Custody is being refilled while the hot wallet feeds the desks, which is why run #23's balance-based version of this test failed and its flow-based replacement worked.\n\nTIERS - READ THE NETTED VERSION. Raw, the 75-address common basis shows mega +1,438,253 and large -1,269,759, which is almost entirely reclassification: UPbit crossed UP into the mega tier at 47,511 and both OTC desks crossed DOWN out of the large tier as they emptied. Holding every wallet in its PRIOR tier (the run #14 boundary guard) gives mega +372,434, large -320,999, mid -33,080. Decomposed, the mega figure IS the Binance custody refill and nothing else; the large tier is the Binance.com hot wallet (-377,584) plus Bybit (-117,858) plus the two desks draining. No tier accumulated independently: every figure above 10,000 EGLD this week belongs to the pipeline or to Binance's internal plumbing.\n\nDEMAND. The identifiable-bid instrument stays retired - the Mega Whale proxy read exactly zero for a FOURTH consecutive week (balance 1,099,059.3223 unchanged, zero transactions) and the desks' 14 outbound terminals ended the week holding 15,534 EGLD between them against 1,748,893 received. What did move is withdrawal breadth: 55 distinct non-pipeline addresses took 497,647 EGLD off exchanges (run #23: 50 and 400,113), against a pre-registered bar of 40 recipients and 300,000 EGLD - the broadening test fires. Two names dominate it: Unknown Whale B took +105,488 and an unlabelled wallet took 101,664 - the same wallet that received 68,732 EGLD from the Binance hot wallet, so at least part of the 'broadening' is one large recipient rather than dispersal. Read carefully, this is the only instrument on the demand side that responds at all, and it accounts for roughly 93% of what the pipeline delivered."
+    "analysis": "THE PIPELINE DELIVERED AND EMPTIED IN THE SAME WEEK. Desk inventory 266,213 -> 96,114 (-64%) while net one-way delivery set a record at 536,459 EGLD, z=+4.60sigma. Gross throughput 1,563,936 out against 1,310,618 in at 66% circularity - also a record, past run #17's 1,284,688. Run #23 registered the question directly: was the record 266,213 inventory staged supply or a permanent level? It was staged, and it has now been delivered.\n\nWHERE IT WENT. Two-hop resolution: Binance.com +210,463, Bybit +208,477, Gate.io +61,708, Unknown Whale I +30,181 (operator inventory, netted out of the demand read since run #21). 23,647 EGLD of outbound remains unattributed. Every named destination is an exchange deposit path, so this is the run #17 signature at twice the run #17 scale: supply arriving at order books, not dispersing to holders.\n\nWHERE IT CAME FROM. The feed side is no longer one venue. UPbit sent 462,000 EGLD directly, Bybit-labelled feeders 399,839, Binance-labelled feeders 215,513, with 233,266 arriving through routers whose parent venue is not yet resolved. The Binance leg is now demonstrably a standing programme: the hot wallet sent 255,442 EGLD to known feeders and routers across the full week - 48% of everything the desks delivered one-way - clearing the 50,000 flow threshold run #23 pre-registered by a factor of five. What did NOT continue is the custody drawdown - Binance Staking custody rose +372,434 to 3,351,216 after -497K over the prior two weeks. Custody is being refilled while the hot wallet feeds the desks, which is why run #23's balance-based version of this test failed and its flow-based replacement worked.\n\nTIERS - READ THE NETTED VERSION. Raw, the 75-address common basis shows mega +1,438,253 and large -1,269,759, which is almost entirely reclassification: UPbit crossed UP into the mega tier at 47,511 and both OTC desks crossed DOWN out of the large tier as they emptied. Holding every wallet in its PRIOR tier (the run #14 boundary guard) gives mega +0, large +0, mid +0. Decomposed, the mega figure IS the Binance custody refill and nothing else; the large tier is the Binance.com hot wallet (-377,584) plus Bybit (-117,858) plus the two desks draining. No tier accumulated independently: every figure above 10,000 EGLD this week belongs to the pipeline or to Binance's internal plumbing.\n\nDEMAND. The identifiable-bid instrument stays retired - the Mega Whale proxy read exactly zero for a FOURTH consecutive week (balance 1,099,059.3223 unchanged, zero transactions) and the desks' 14 outbound terminals ended the week holding 15,534 EGLD between them against 1,748,893 received. What did move is withdrawal breadth: 55 distinct non-pipeline addresses took 497,647 EGLD off exchanges (run #23: 50 and 400,113), against a pre-registered bar of 40 recipients and 300,000 EGLD - the broadening test fires. Two names dominate it: Unknown Whale B took +105,488 and an unlabelled wallet took 101,664 - the same wallet that received 68,732 EGLD from the Binance hot wallet, so at least part of the 'broadening' is one large recipient rather than dispersal. Read carefully, this is the only instrument on the demand side that responds at all, and it accounts for roughly 93% of what the pipeline delivered."
   },
   "staking_intelligence": {
     "summary": {
@@ -2501,12 +2501,12 @@
     },
     {
       "metric": "binance_hot_to_otc_feeders_egld",
-      "current_value": 97389.80351427,
-      "previous_value": 125272.0,
+      "current_value": 255441.67012427998,
+      "previous_value": 135003.0,
       "method": "rule_based",
       "severity": "high",
-      "change_pct": -22.257325248842523,
-      "description": "The Binance.com hot wallet sent 97,390 EGLD to known OTC desk feeders and routers within a page-capped 4.4-day window - above the 50,000 flow threshold run #23 registered after its balance-based predecessor failed. Binance-labelled feeders delivered 200,046 EGLD into the desks. In the same week Binance Staking custody REVERSED its two-week drawdown, +372,434 to 3,351,216 on 900,000 out and 1,272,434 back. Funding the pipeline and refilling custody happened simultaneously, which is why only the flow trace answers this question."
+      "change_pct": 89.21184723619473,
+      "description": "The Binance.com hot wallet sent 255,442 EGLD to known OTC desk feeders and routers over the full seven days - five times the 50,000 flow threshold run #23 registered after its balance-based predecessor failed, and equal to 48% of everything the desks delivered one-way. The main collector pass measured only 112,126 because this wallet fills a 1,000-transaction budget in 4.4 days; the window was re-queried in per-calendar-day slices. Binance-labelled feeders delivered 215,513 EGLD into the desks. In the same week Binance Staking custody REVERSED its two-week drawdown, +372,434 to 3,351,216 on 900,000 out and 1,272,434 back. Funding the pipeline and refilling custody happened simultaneously, which is why only the flow trace answers this question."
     },
     {
       "metric": "staked_ratio",
@@ -2640,7 +2640,7 @@
         "trend": "up",
         "cumulative_change_pct": 12.5,
         "weeks_in_trend": 1,
-        "interpretation": "Staking custody +372,434 to 3,351,216, REVERSING two weeks of drawdown (-497K), while the hot complex fell -377,584 and the hot wallet sent 97,390 into OTC feeders. The two-week 'custody is being drawn down to fund distribution' trend is broken; the funding continued anyway, out of a custody balance that grew."
+        "interpretation": "Staking custody +372,434 to 3,351,216, REVERSING two weeks of drawdown (-497K), while the hot complex fell -377,584 and the hot wallet sent 255,442 into OTC feeders and routers. The two-week 'custody is being drawn down to fund distribution' trend is broken; the funding continued anyway, out of a custody balance that grew."
       },
       {
         "exchange": "Bybit",
@@ -2768,9 +2768,9 @@
       },
       {
         "metric": "binance_pipeline_participation",
-        "before_value": 125272.0,
-        "after_value": 97389.80351427,
-        "description": "Confirmed rather than newly flagged: Binance fed the desks for a second consecutive week (97,390 from the hot wallet into known feeders, 200,046 arriving at the desks from Binance-labelled feeders). The custody watch and the pipeline watch stay merged. The new information is that custody REFILLED while the feed ran, so the funding source for the feed is not a custody drawdown - it is Binance's ordinary hot-wallet flow."
+        "before_value": 135003.0,
+        "after_value": 255441.67012427998,
+        "description": "Confirmed rather than newly flagged: Binance fed the desks for a second consecutive week (255,442 from the hot wallet into known feeders, 215,513 arriving at the desks from Binance-labelled feeders). The custody watch and the pipeline watch stay merged. The new information is that custody REFILLED while the feed ran, so the funding source for the feed is not a custody drawdown - it is Binance's ordinary hot-wallet flow."
       }
     ]
   },
@@ -2788,7 +2788,7 @@
     {
       "item": "BINANCE HOT WALLET -> OTC FEEDERS is a standing programme, but custody is no longer the funding source",
       "weeks_on_list": 18,
-      "reason": "The hot wallet sent 97,390 EGLD to known feeders in 4.4 covered days, clearing run #23's 50,000 flow threshold; Binance-labelled feeders delivered 200,046 into the desks. Custody meanwhile ROSE +372,434 to 3,351,216 after two weeks of drawdown. PRE-COMMITTED: hot-to-feeder flow above ~50,000 for a third consecutive week = a permanent funding line and Binance should be modelled as a standing pipeline participant; below ~10,000 = the two-week run was the wave and the custody and pipeline watches separate again."
+      "reason": "The hot wallet sent 255,442 EGLD to known feeders and routers over the full week (the truncated main pass saw 112,126), clearing run #23's 50,000 flow threshold five times over; Binance-labelled feeders delivered 215,513 into the desks. Custody meanwhile ROSE +372,434 to 3,351,216 after two weeks of drawdown. PRE-COMMITTED: hot-to-feeder flow above ~50,000 for a third consecutive week = a permanent funding line and Binance should be modelled as a standing pipeline participant; below ~10,000 = the two-week run was the wave and the custody and pipeline watches separate again."
     },
     {
       "item": "THE ZERO-STAKE PROVIDER COHORT - 82 contracts, 28,032 delegator records, almost all dormant",
@@ -2865,8 +2865,7 @@
     ],
     "endpoints_that_failed": [
       "/tokens/WTAO-3ec9c0: HTTP 404 - kept in the recheck list as a known-bad control, not a live dependency",
-      "Binance.com hot wallet outbound: page-capped at 1,000 txs covering 4.4 of 7 days, so the 97,390 hot-to-feeder figure is a lower bound",
-      "16 provider unDelegate scans terminated on a page cap even after the deep re-scan"
+      "NONE beyond the known-bad control. The two truncation caveats this report first published were both resolved: the Binance hot wallet was re-queried in per-day slices (the figure trebled), and the 16 page-capped provider scans were already re-paged at 30 pages in the same run."
     ],
     "api_quirks": [
       "A STORAGE CHANGE CAN MANUFACTURE A HEADLINE. Run #23 started storing the FULL /providers list (including locked == 0 entries) in previous.json - the right fix for a real bug. This run, summing num_delegators across the stored list and comparing it to the current locked>0 total produced a -28,141 delegator collapse that is entirely an artifact of the basis change. Any WoW comparison that spans a snapshot-schema change must be recomputed on a common basis, and the assembler now filters previous.json to locked > 0 explicitly.",
@@ -2877,15 +2876,15 @@
       "A CONTRACT THAT READS ZERO WHILE ITS NEIGHBOURS DO NOT IS AN ADDRESS PROBLEM. The JEXchange aggregator returned 0 transfers for four consecutive runs while its own fees contract reported thousands. Tracing the fees contract's inbound callers found a live router doing 11,802 transfers a week plus four more behind it. Same failure mode as WTAO-3ec9c0, and the same fix: suspect the identifier before the protocol."
     ],
     "data_gaps": [
-      "The Binance.com hot wallet is too busy for a 1,000-tx budget - 4.4 days of coverage. Raise its cap or query it by day.",
+      "RESOLVED IN-RUN: the Binance.com hot wallet fills a 1,000-tx budget in 4.4 days. Re-queried in per-calendar-day slices, hot-to-pipeline is 255,442 EGLD against the 112,126 the truncated scan reported - a 2.3x undercount on a figure that resolves a pre-committed test. Daily slicing is now the method for any wallet above ~200 txs/day.",
       "23,647 EGLD of desk outbound and 1,140 of inbound remain unattributed to a venue after two hops.",
-      "343,872 EGLD arrived at the desks from routers whose parent venue is not resolved - the largest single unattributed feeder moved 196,492 EGLD.",
+      "233,266 EGLD arrived at the desks from routers whose parent venue is not resolved - the largest single unattributed feeder moved 196,492 EGLD.",
       "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation, open since run #18, still flagged rather than guessed."
     ],
     "key_findings": [
       "The desks delivered a record 536,459 EGLD one-way and drained inventory from 266,213 to 96,114; wave #3 totals 878,809 feed-to-drain, more than double the previous largest wave.",
       "EGLD rose +16.97% through that delivery while BTC and ETH were flat - and no tracked demand instrument identifies the buyer.",
-      "Binance's feed into the desks is a standing programme (97,390 hot-to-feeder in 4.4 covered days) but its custody balance ROSE 372,434, breaking the custody-funds-distribution story.",
+      "Binance's feed into the desks is a standing programme at 255,442 EGLD hot-to-feeder for the week - 48% of everything the desks delivered - while its custody balance ROSE 372,434, breaking the custody-funds-distribution story.",
       "82 provider contracts hold zero stake with 28,032 delegator records attached; only four emptied inside the archive and only one shows any activity.",
       "Third consecutive contraction in the wrapped-dollar base while USH minted +5.23% - cash out, leverage in.",
       "JewelSwap's 25,073 JWLEGLD is a 1:1 deposit token, not a staking receipt: its delegated stake is 1,799 EGLD, the smallest of the four discovered protocols rather than the largest.",
@@ -3486,7 +3485,7 @@
       "status": "resolved",
       "outcome": "as_predicted",
       "resolved_in_run": 24,
-      "measured_value": "Binance.com hot -> known OTC feeders and routers 97,390 EGLD inside a page-capped 4.4-day window (a LOWER bound); Binance-labelled feeders delivered 200,046 into the desks; custody REVERSED +372,434 to 3,351,216 on 900,000 out / 1,272,434 back",
+      "measured_value": "Binance.com hot -> known OTC feeders and routers 255,442 EGLD over the full seven days, five times the 50,000 bar (the truncated main pass saw 112,126 and was re-queried in per-day slices); Binance-labelled feeders delivered 215,513 into the desks; custody REVERSED +372,434 to 3,351,216 on 900,000 out / 1,272,434 back",
       "resolution": "The >50,000 branch fires, so Binance's participation is a standing programme rather than one-off routing - and the flow-based specification is what made that answerable. Run #22 wrote this test on the hot wallet's BALANCE and it failed; run #23 re-specified it on the flow after the failure; this run it resolves on the first attempt. One correction to the registered reading: the branch said a standing programme means 'the custody drawdown is scheduled supply', but custody GREW +372,434 this week while the feed continued. The feed is real and the custody link is not - the funding comes out of ordinary hot-wallet flow, not out of the custody balance. The two watches stay joined, on the flow rather than on the balance."
     },
     {
