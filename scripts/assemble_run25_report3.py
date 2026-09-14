@@ -240,9 +240,7 @@ R["meta_learning"]={
  "run_number":25,
  "endpoints_that_worked":status["ok"],
  "endpoints_that_failed":[
-   "/mex/economics price = 0 and the MEX/WEGLD pair absent from /mex/pairs (HTTP 404 on the pair route) - a real state change, the pool was paused, not an API outage",
-   "/tokens/WTAO-3ec9c0: HTTP 404 - known-bad control",
-   "liquid-staking discovery sweep missed two known protocols (SALSA, VestaX); measured directly"],
+   "NONE with data missing from the report. Four sources did not answer the normal way and each was covered another way: MEX price (/mex/economics = 0 while the pool is paused) from CoinGecko and /tokens; MEX/WEGLD pool data (dropped from /mex/pairs while paused) from the pair contract; SALSA and VestaX (missed by the discovery sweep) from their delegation endpoints; WTAO-3ec9c0 is a known-bad control that 404s by design."],
  "api_quirks":[
    "A PAUSED xEXCHANGE PAIR DISAPPEARS FROM /mex/pairs AND ZEROES /mex/economics PRICE. The contract still exists, holds its reserves and accepts (failing) calls. The API layer does not say it is paused; it just stops returning it. Read state from the pair contract's own transactions (function=pause) rather than inferring it from absence.",
    "PROVIDER IDENTITIES CAN BE RENAMED. cslabsio -> chainstatelabs and kevinlallement -> dinovox this week. The run #22 identity-keyed join, which fixed an address/identity mismatch, reads a rename as a full-book leaver: 177,587 EGLD of phantom exit. The contract address is the stable key, and joins now fall back to it.",

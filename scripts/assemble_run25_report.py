@@ -83,13 +83,16 @@ R={}
 R["metadata"]={"report_date":RD,"period_start":"2026-09-07","period_end":RD,
   "generated_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
   "egld_price_usd":price,"btc_price_usd":M["btc"],"eth_price_usd":M["eth"],
-  "run_number":25,"data_sources_ok":status["ok"],
-  "data_sources_failed":status["failed"]+[
-    "/mex/economics price: returns 0 since the MEX/WEGLD pair was paused on 2026-09-13; MEX is priced from CoinGecko this run, with the MultiversX /tokens print reported alongside",
-    "/mex/pairs: the MEX/WEGLD pair (last week the #2 deepest pool at $442,977) is no longer listed and /mex/pairs/MEX-455c57/WEGLD-bd4d79 returns HTTP 404",
-    "/tokens/WTAO-3ec9c0: HTTP 404 - known-bad identifier kept as a control; the live WTAO-4f5363 was priced",
-    "liquid-staking discovery sweep: did not surface SALSA or VestaX this week although both still stake (6,420 and 1,121 EGLD, measured directly) - the candidate-token list is not stable week to week"],
+  "run_number":25,
+  # Run #23 rule: a source is only "failed" if the report ships without its data. None of this
+  # run's four candidates qualifies, so they are recorded where their data actually came from.
+  "data_sources_ok":status["ok"]+[
+    "/tokens/WTAO-3ec9c0: HTTP 404 as expected - a known-bad identifier kept in the pre-flight recheck as a control; the live WrappedTAO (WTAO-4f5363) was priced"],
+  "data_sources_failed":status["failed"],
   "data_sources_recovered":[
+    "MEX price: /mex/economics returns $0 because the MEX/WEGLD pool is paused, not because the endpoint is down (no resume call as of the report). Priced from CoinGecko instead, with the MultiversX /tokens quote alongside; the onchain pool price returns when the pools resume",
+    "MEX/WEGLD pool data: /mex/pairs drops paused pools (the pair route returns 404). Reserves (191B MEX, 141,281 WEGLD), the pause call and all 223 pool transactions were read directly from the pair contract",
+    "SALSA and VestaX liquid staking: this week's discovery sweep did not list them, so their delegated stake (6,420 and 1,121 EGLD) was measured directly from each contract's delegation endpoint",
     "desk wave-window legs (OTC Distribution Wallet, both directions): HTTP 429 on the main pass while the reward-behaviour scan ran concurrently; re-paged by a follow-up pass and the four-week hub trace rebuilt from the recovered legs",
     "delegator reward behaviour: the concurrent first pass sampled only 4 of 8 providers under rate limiting; re-run alone, 8 of 8, zero 429s",
     "/accounts/{Binance.com hot}/transactions - queried in per-calendar-day slices in the main pass (run #24 rec #3), 772 outbound txs, zero day-slices capped"]}
