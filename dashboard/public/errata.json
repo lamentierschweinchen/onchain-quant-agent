@@ -1,5 +1,5 @@
 {
-  "generated_from": 24,
+  "generated_from": 25,
   "claims": [
     {
       "claim": "The direct-node unwind: ~215,000 EGLD left direct-node staking over three weeks, 'the largest unexplained structural flow tracked'.",
@@ -138,6 +138,45 @@
         "2026-08-31"
       ],
       "withdrawn_in_date": "2026-09-07"
+    },
+    {
+      "claim": "The on-chain wrapped-dollar base is a de-risking instrument, promoted after three consecutive contractions.",
+      "asserted_in_runs": [
+        24
+      ],
+      "withdrawn_in_run": 25,
+      "reason": "Combined USDC+USDT expanded +1.71% the following week, the branch run #24 itself registered as a demotion.",
+      "replacement": "The three-week contraction was a redemption cycle. USDC and USDT are reported separately in the DeFi section, since they diverged by 15pp this week.",
+      "asserted_in_dates": [
+        "2026-09-07"
+      ],
+      "withdrawn_in_date": "2026-09-14"
+    },
+    {
+      "claim": "The 196,492 EGLD desk feeder with no parent venue probably represents a fifth feeding venue.",
+      "asserted_in_runs": [
+        24
+      ],
+      "withdrawn_in_run": 25,
+      "reason": "Two hops back it received 367,351 EGLD from Bybit and 112,212 from Gate.io over the wave.",
+      "replacement": "The feed side is UPbit, Binance, Bybit and Gate.io - the same four venues the desks deliver into.",
+      "asserted_in_dates": [
+        "2026-09-07"
+      ],
+      "withdrawn_in_date": "2026-09-14"
+    },
+    {
+      "claim": "A record OTC delivery absorbed into a +17% price rise means demand the model cannot see.",
+      "asserted_in_runs": [
+        24
+      ],
+      "withdrawn_in_run": 25,
+      "reason": "The first exchange-side measurement puts that delivery at 2.1% of the week's CEX spot volume.",
+      "replacement": "Most of the absorbing bid was ordinary market turnover. The open question is whether a persistent ~2% net offer moves price relative to BTC, registered as delivery-price-relevance.",
+      "asserted_in_dates": [
+        "2026-09-07"
+      ],
+      "withdrawn_in_date": "2026-09-14"
     }
   ]
 }

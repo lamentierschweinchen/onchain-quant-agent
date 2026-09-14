@@ -5619,6 +5619,406 @@
         "KEEP THE EMERGING-LSD SWEEP AND ADD HOLDER COUNTS TO THE SERIES. VoxEGLD grew supply 7.7% and holders from 78 to 113 while every established LSD sat still. Holders is the leading indicator on a base this small, and it is one field.",
         "CHECK WHETHER THE TWO FEE-REVERSED PROVIDERS RECOVER ANY STAKE. egldstakingprovider went 100% -> 50% and procryptostaking 100% -> 35%, both with APR restored, and both still lost book and users this week. A second week of losses would make 'capital does not come back' a measured asymmetry rather than one observation."
       ]
+    },
+    {
+      "date": "2026-09-14",
+      "run_number": 25,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "/mex/farms",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x42",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "wave extended window netting (Aug 17 - Sep 14)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond resolution (rec #3)",
+          "all-provider unDelegate scan x107 (rec #5)",
+          "unbonding pool /accounts/{addr}/delegation x45",
+          "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+          "100%-fee provider follow-through",
+          "Binance hot outbound >10K vs desk inbound (rec #11)",
+          "dynamic absorber discovery from desk terminals (rec #8)",
+          "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+          "/accounts/{addr}/transfers/count x12",
+          "JEXchange router 7d transfer counts (run #24 rec #6)",
+          "unattributed feeder two-hop back-trace (run #24 rec #5)",
+          "coingecko tickers depth=true (exchange-side depth, run #24 rec #2)",
+          "coingecko market_chart 14d (aggregate spot volume)",
+          "/tokens/{id} x19 (dataApi re-fetch + list recovery)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+          "deregistered-provider delegator series (rec #9)",
+          "JEXchange aggregator re-derivation (rec #11)",
+          "pre-flight re-query of last run's failed sources (rec #3)"
+        ],
+        "endpoints_that_failed": [
+          "/mex/economics price = 0 and the MEX/WEGLD pair absent from /mex/pairs (HTTP 404 on the pair route) - a real state change, the pool was paused, not an API outage",
+          "/tokens/WTAO-3ec9c0: HTTP 404 - known-bad control",
+          "liquid-staking discovery sweep missed two known protocols (SALSA, VestaX); measured directly"
+        ],
+        "api_quirks_discovered": [
+          "A PAUSED xEXCHANGE PAIR DISAPPEARS FROM /mex/pairs AND ZEROES /mex/economics PRICE. The contract still exists, holds its reserves and accepts (failing) calls. The API layer does not say it is paused; it just stops returning it. Read state from the pair contract's own transactions (function=pause) rather than inferring it from absence.",
+          "PROVIDER IDENTITIES CAN BE RENAMED. cslabsio -> chainstatelabs and kevinlallement -> dinovox this week. The run #22 identity-keyed join, which fixed an address/identity mismatch, reads a rename as a full-book leaver: 177,587 EGLD of phantom exit. The contract address is the stable key, and joins now fall back to it.",
+          "CONCURRENT SCRIPTS SHARE ONE RATE LIMIT. Running delegator_behavior.py alongside the collector produced HTTP 429 on the OTC Distribution Wallet's wave-window scan (inbound returned 0, outbound cut at 400) and cut the reward sample to 4 of 8 providers without any error in the output file. paged_txs recorded the collector's failures as errors, so they were recoverable, but delegator_behavior.py has no equivalent guard. Run API-heavy scripts sequentially.",
+          "THE LIQUID-STAKING SWEEP IS NOT MONOTONE. Its candidate tokens come from search and ranked-list pages, and LEGLD and VEGLD fell out of that set this week while their contracts still stake. A discovery pass must seed from last week's finds.",
+          "COINGECKO /coins/{id}/tickers?depth=true RETURNS cost_to_move_up_usd / cost_to_move_down_usd PER VENUE (\u00b12% depth). /market_chart?interval=daily total_volumes gives rolling 24h volume per day. Together they are the first exchange-side instrument in the pipeline: 7d spot volume and venue depth."
+        ],
+        "data_gaps": [
+          "The reason for the MEX/WEGLD pause is not on-chain. The model records the call, sender, reserves and failed calls.",
+          "Withdraw amounts on provider contracts are not decoded (withdraw carries no amount argument), so the matured-queue attribution of the staked drop rests on timing and call counts.",
+          "31,154 EGLD of desk outbound remains unattributed after two hops.",
+          "Order-book depth is one snapshot with no prior; trend claims wait a week.",
+          "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "READING VENUE STATE FROM THE CONTRACT. /mex/economics returning MEX at $0 looked like an API outage; the pair contract's own transaction list showed a `pause` call with a timestamp, a sender and 172 failed calls after it. The headline of the week came from refusing to treat an absent row as missing data.",
+          "THE FIRST EXCHANGE-SIDE INSTRUMENT paid off in its first run: CoinGecko per-venue depth and 7d spot volume put the record delivery at ~2% of turnover and withdrew run #24's 'invisible bid' framing.",
+          "DAY-SLICED BINANCE HOT-WALLET SCAN in the main pass: 772 txs, zero capped slices, no follow-up needed.",
+          "TWO-HOP BACK-TRACE OF FEEDERS resolved run #24's largest unattributed feeder in one pass (Bybit + Gate.io).",
+          "PAGED ERROR RECORDING made the 429 damage recoverable: the collector logged two failed wave legs as errors, and followup_run25.py re-paged them and rebuilt the four-week trace.",
+          "CROSS-CHECKING IMPLAUSIBLE NUMBERS BEFORE WRITING: a 177,587 EGLD provider exit (identity rename), a +44% Hatom Lending move (HMEX priced off a frozen pool) and a 46.8% compound rate from 4 providers (rate-limited sample) were all caught before publication."
+        ],
+        "what_needs_improvement": [
+          "RUNNING delegator_behavior.py CONCURRENTLY WITH THE COLLECTOR tripped the shared rate limit. It damaged the wave trace and silently halved the reward sample. Scripts must run sequentially, and delegator_behavior.py needs the paged_txs error guard.",
+          "THE LIQUID-STAKING SWEEP DROPPED TWO KNOWN PROTOCOLS. Discovery must seed from last week's finds.",
+          "IDENTITY-KEYED PROVIDER JOINS break on renames. The collector still joins on identity; only the assembler falls back to address.",
+          "WITHDRAW AMOUNTS ARE NOT DECODED, so the staked-ratio attribution rests on timing.",
+          "THE BILATERAL INVERSE RULE has been partly mechanical all along: dollar collateral rises in EGLD terms when EGLD falls. The behavioural test is the HEGLD leg, and it failed this week."
+        ],
+        "surprising_findings": [
+          "xExchange paused its #2 deepest pool, and MEX went UP ~7.5x the next day rather than down.",
+          "HMEX supply rose 672% in the pause week: MEX went into Hatom rather than out through the pool.",
+          "The compound rate fell from the series high to the series low in one week (62.05% -> 49.44%), and none of the retail claims were sold.",
+          "Staked EGLD fell 156,538 while delegation TVL rose 35,617.",
+          "USDT supply -12.8% and USDC +2.7% in the same week."
+        ]
+      },
+      "methodology_changes": [
+        "JOIN PROVIDERS ON THE CONTRACT ADDRESS. Identities are mutable; a rename posed as a 177,587 EGLD exit.",
+        "READ VENUE STATE FROM THE CONTRACT, NOT FROM API ABSENCE. A paused pair vanishes from /mex/pairs; the pause call is on the pair's own transaction list.",
+        "PUT PIPELINE FLOWS IN MARKET SCALE. Report net one-way delivery as a share of 7d CEX spot volume alongside venue \u00b12% depth.",
+        "EXCLUDE AN UNPRICED H-TOKEN FROM LENDING TVL WHEN ITS UNDERLYING HAS NO ON-CHAIN PRICE. HMEX alone added +44pp to Hatom Lending in EGLD terms.",
+        "READ THE BILATERAL INVERSE RULE ON THE HEGLD LEG. Dollar- and BTC-denominated collateral rises in EGLD terms whenever EGLD falls; only EGLD-market supply tests depositor behaviour.",
+        "RUN API-HEAVY SCRIPTS SEQUENTIALLY; SEED DISCOVERY SWEEPS FROM LAST WEEK."
+      ],
+      "new_addresses_discovered": [
+        "erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2 - xExchange MEX/WEGLD pair, PAUSED 2026-09-13 16:43 UTC (added under defi_xexchange)",
+        "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97 - xExchange router owner/admin, sent the pause (added under defi_xexchange)",
+        "erd1ytpenkzjucgq7mxu4l6u8v72vfxxlux2237925glajhs4dj3u8asue9arn - relabelled Bybit/Gate.io->OTC Desk Feeder after a two-hop back-trace",
+        "Four secondary JEXchange routers added under defi_jexchange; new desk feeder/router wallets >15K EGLD labelled from this week's hub trace",
+        "Provider identity renames (not new addresses): cslabsio -> chainstatelabs (erd1...phllllsndz99p), kevinlallement -> dinovox (erd1...dlllllszljs2d)"
+      ],
+      "action_items_completed": [
+        "RESOLVE WAVE #4 - resolved as predicted: UPbit tranche 372,000, the programme is continuous.",
+        "BUILD OR SOURCE AN EXCHANGE-SIDE DEMAND INSTRUMENT - done, crude and third-party: CoinGecko per-venue \u00b12% depth and 7d spot volume, published in the demand-instruments section as the exchange order book. It reframed last week's headline in its first run.",
+        "QUERY THE BINANCE HOT WALLET BY DAY - done in the main pass: 7 day-slices x 3 wallets, 772 outbound txs, zero capped; hot-to-pipeline 218,264.",
+        "ADD A RECENCY QUALIFIER TO THE DEREGISTRATION DETECTOR - done: transitions from locked > 0 in the prior stored snapshot, zero this week. Building it surfaced the identity-rename trap.",
+        "ATTRIBUTE THE UNATTRIBUTED FEEDERS - done: two-hop back-trace of the 8 largest unlabelled feeders; the 196,492/214,978 EGLD feeder resolves to Bybit and Gate.io.",
+        "RE-QUERY THE JEXCHANGE ROUTER AND PROMOTE IT - done: five routers in the collector, 9,968 transfers/7d on the main one, test resolved as predicted.",
+        "MEASURE WHETHER THE DESK-EMPTY STATE COINCIDES WITH A RETRACEMENT - done: desks near empty and EGLD -7.6% after a ~$5.17 intra-week peak, but delivery did not stop, so the pairing is not clean; replaced by the delivery-price-relevance test.",
+        "KEEP THE EMERGING-LSD SWEEP WITH HOLDERS - done, and it exposed that the sweep drops known protocols; holders recorded (VoxEGLD 128, LEGLD 378, VEGLD 435, JWLEGLD 552).",
+        "CHECK THE FEE-REVERSED PROVIDERS - done: second week of losses (-3,345 and -1,607); the asymmetry is measured."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.84,
+          2.69,
+          2.68,
+          2.76,
+          3.6,
+          3.83,
+          4.48,
+          4.14
+        ],
+        "dex_volume_24h_usd": [
+          75362.7807729906,
+          38628.36089504676,
+          40594.726618154826,
+          53782.67067584162,
+          229987.6668827292,
+          234053.12987894475,
+          199616.7116502968,
+          397448.7353661145
+        ],
+        "dex_volume_24h_egld": [
+          61110,
+          44557,
+          96002
+        ],
+        "staked_egld": [
+          14493315,
+          14470102,
+          14468060,
+          14514338,
+          14548017,
+          14551783,
+          14485712,
+          14329174
+        ],
+        "mex_price_usd": [
+          2.4872942896941377e-07,
+          2.4397414242709315e-07,
+          2.472038964013605e-07,
+          2.5603716335458884e-07,
+          3.3417335112217705e-07,
+          3.541086469631204e-07,
+          3.97703098880543e-07,
+          1.8164036583951485e-06
+        ],
+        "total_delegators": [
+          174341,
+          174325,
+          174330,
+          174353,
+          173042,
+          172935,
+          172862,
+          172600
+        ],
+        "staked_ratio": [
+          0.4761527653318647,
+          0.4746278437166162,
+          0.4737995781734133,
+          0.4745535960231805,
+          0.4748923642763583,
+          0.474254493214429,
+          0.47134605750035136,
+          0.4655083730551601
+        ],
+        "exchange_net_flow_egld": [
+          166977.62919204682,
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469,
+          -191939.71816979814,
+          31862.435230013914,
+          117969.59074411914
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          313173,
+          301498,
+          604086,
+          222532,
+          767206,
+          709850,
+          1563936,
+          893299
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109,
+          272396,
+          536459,
+          401353
+        ],
+        "otc_desk_inventory_egld": [
+          266213,
+          96114,
+          56596
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+          "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+          "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179,
+          "2026-08-31..2026-09-07 (run #24, weekly frame - a RECORD, and inside the wave)": 536459,
+          "2026-08-17..2026-09-07 (WAVE #3 netted feed-to-drain, three frames - the correct measure)": 878809,
+          "2026-09-07..2026-09-14 (run #25, weekly frame, wave #4)": 401353,
+          "2026-08-17..2026-09-14 (waves #3+#4 netted as one window, four frames)": 1336721
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1,
+          "run23": 61.6,
+          "run24": 65.7,
+          "run25": 55.1
+        },
+        "dex_turnover_ratio_pct": [
+          4.061,
+          2.141,
+          2.235,
+          2.928,
+          10.832,
+          10.511,
+          8.166,
+          20.862
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0,
+          0,
+          5747.7,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          3357100.6221337724,
+          3357100.6221337724,
+          3357100.6221337724,
+          3475540.385133772,
+          3175540.3850837722,
+          2978782.2380337724,
+          3351216.1019337727,
+          3493534.6849337723
+        ],
+        "reward_compound_pct": [
+          58.81,
+          62.25,
+          59.54,
+          59.07,
+          57.03,
+          57.51,
+          62.05,
+          49.44
+        ],
+        "delegation_total_locked_egld": [
+          11114380,
+          11034013,
+          10967589,
+          10864570,
+          10900187
+        ],
+        "usdt_supply": [
+          549884,
+          552292,
+          545052,
+          532035,
+          463905
+        ],
+        "usdc_supply": [
+          7706364,
+          7579164,
+          7786216
+        ],
+        "unbonding_queue_undelegated_egld_7d": [
+          151443,
+          208125,
+          73351
+        ],
+        "withdrawal_breadth_ex_pipeline_egld": [
+          400113,
+          497647,
+          397124
+        ],
+        "cex_spot_volume_7d_egld": [
+          17545263
+        ],
+        "otc_delivery_share_of_spot_pct": [
+          2.29
+        ],
+        "binance_bybit_bid_depth_2pct_usd": [
+          124993
+        ],
+        "hmex_supply": [
+          24959314779646.0
+        ],
+        "pre_committed_tests_resolved": [
+          7,
+          5,
+          8,
+          6,
+          6
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          42.9,
+          80.0,
+          87.5,
+          100.0,
+          66.7
+        ],
+        "pre_committed_tests_open": [
+          6,
+          8,
+          7,
+          7,
+          5
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Contract-state event timeline - the MEX/WEGLD pause against price and deposits",
+          "motivation": "This run's headline is a venue-level state change: a pool paused at a known timestamp, followed within a day by a 7.5x MEX move, an 8x HMEX mint and 172 failed calls. The dashboard has no way to show an event with a timestamp next to the series it moved, so the causal ordering (pause at 16:43, last swap at 16:39, price spike the next day) is only in prose.",
+          "suggested_visualization": "a time-axis strip with an annotated vertical marker for the pause tx, the MEX daily price line on one axis and HMEX supply on another, plus a small panel of the pair's reserves and failed-call count",
+          "data_already_available": true,
+          "data_source": "token_activity.xexchange.mex_pair_event (new field this run) plus a CoinGecko MEX market_chart stored in the collected snapshot",
+          "priority": "high"
+        },
+        {
+          "title": "Pipeline in market scale - delivery as a share of CEX turnover and depth",
+          "motivation": "The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their \u00b12% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
+          "suggested_visualization": "a second y-axis or a small-multiple under the OTC bars plotting net one-way as % of 7d spot volume, plus a per-venue depth tile row (Binance, Bybit, Gate) with bid vs ask \u00b12% bars",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.demand_instruments.exchange_orderbook (new field this run); history starts run #25",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Feed-side attribution - who fills the desks, not just who they deliver to",
+          "status": "pending",
+          "note": "Data is now published (otc_pipeline.feed_by_parent_venue and otc_pipeline.feeder_backtrace), so the blocker named in run #24 is gone. Not built this run; the finding that the feed side is the same four venues as the delivery side makes the paired-bar version the right one."
+        },
+        {
+          "title": "Demand-instrument scorecard - show the model's blind spot as a row of empties",
+          "status": "pending",
+          "note": "Still worth building, but its framing changes: one tile (exchange order book) now has a live reading, so the strip is no longer a row of empties. It should wait a week so the order-book tile has a WoW direction."
+        },
+        {
+          "title": "Provider lifecycle strip",
+          "status": "deprioritized",
+          "note": "Zero transitions for two weeks and the cohort is mostly archaeology. Identity renames are the more useful lifecycle event now; revisit if the fourth-deregistration test fires."
+        },
+        {
+          "title": "Errata linkage from the withdrawn claim to its replacement",
+          "status": "pending",
+          "note": "Two claims are withdrawn this run (the dollar-base promotion and the fifth-venue guess), which strengthens the case slightly. Still queued behind the feed-side panel."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "Putting the pipeline in market scale. For five weeks the report has measured supply to the EGLD and treated the week's price as its counterpart. The first exchange-side reading shows the desks' record 536,459 EGLD delivery was 2.1% of that week's CEX spot volume, and this week's 401,353 was 2.3%. The 'invisible bid' of run #24 was mostly ordinary turnover. The pipeline still matters, because it is persistent, one-directional and aimed at two venues, but its weekly total cannot be read against the weekly price as if nothing else traded. The MEX pause is the bigger event; this is the bigger correction to the model.",
+        "actions_completed_count": 9,
+        "actions_attempted_count": 9,
+        "what_would_2x_next_week": "Decode the xExchange admin wallet's recent calls across ALL pairs and the MEX pair's state, so the pause is read as part of a pattern or as a one-off; and turn the one-snapshot order-book reading into a WoW series for Binance and Bybit, the pipeline's two delivery venues. Those two change what the report can say about the two biggest open questions: why MEX has no on-chain price, and whether the desks' supply moves EGLD.",
+        "pre_committed_test_for_next_run": "MEX PAIR: still paused at run #27 = structural; resumed with MEX < 8.2e-07 = squeeze incident. DELIVERY-PRICE-RELEVANCE: delivery >300,000 and EGLD more than 5pp behind BTC = price-relevant supply. COMPOUND: <52% = regime switch; >=55% = one-week reaction. STAKED RATIO: <46.30% by run #27 = exits continuing."
+      },
+      "recommendations_for_next_run": [
+        "RESOLVE THE MEX PAIR STATE. Query erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 for resume/setState calls and successful removeLiquidity; scan the router owner erd1ss6u80ruas2p... for pause calls on OTHER pairs this window; track HMEX supply and MEX on CoinGecko vs /tokens.",
+        "BUILD THE ORDER-BOOK SERIES. Store this week's per-venue \u00b12% depth and 7d spot volume in previous.json and report the WoW change for Binance and Bybit, the two delivery venues.",
+        "SEED THE LIQUID-STAKING SWEEP FROM LAST WEEK'S PROTOCOLS so a known LSD cannot drop out of the table.",
+        "ADD A 429 GUARD TO delegator_behavior.py (error-vs-empty distinction plus exponential backoff) and run it after the collector, never alongside.",
+        "DECODE WITHDRAW AMOUNTS for the staked-ratio attribution: the SC results of withdraw calls carry the EGLD returned, via /transactions/{hash} or /transfers. That turns the matured-queue timing argument into a measurement.",
+        "RESOLVE THE COMPOUND-REGIME AND DELIVERY-PRICE-RELEVANCE TESTS - both are one-week tests with partitioned branches.",
+        "JOIN PROVIDERS ON ADDRESS IN THE COLLECTOR ITSELF, not just in the assembler, and log identity renames as an event list."
+      ]
     }
   ]
 }

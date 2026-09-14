@@ -1,14 +1,14 @@
 {
-  "generated_from": 24,
+  "generated_from": 25,
   "totals": {
-    "tests": 33,
-    "resolved": 26,
-    "open": 7,
-    "as_predicted": 20,
-    "against": 1,
-    "inconclusive": 3,
+    "tests": 37,
+    "resolved": 32,
+    "open": 5,
+    "as_predicted": 24,
+    "against": 2,
+    "inconclusive": 4,
     "withdrawn": 2,
-    "hit_rate_pct": 76.92307692307692
+    "hit_rate_pct": 75
   },
   "runs": [
     {
@@ -58,9 +58,129 @@
       "withdrawn": 0,
       "hit_rate_pct": 100,
       "open_after": 7
+    },
+    {
+      "run": 25,
+      "date": "2026-09-14",
+      "registered": 4,
+      "resolved": 6,
+      "as_predicted": 4,
+      "against": 1,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 66.66666666666667,
+      "open_after": 5
     }
   ],
   "tests": [
+    {
+      "id": "mex-pair-resume",
+      "registered_in_run": 25,
+      "claim": "The MEX/WEGLD pause is a structural move of MEX price discovery off-chain rather than a temporary incident.",
+      "threshold": "by run #27 (two weeks): pair still paused or delisted = structural; pair resumed with MEX under ~8.2e-07 (2x the pre-pause 4.08e-07) = an incident that caused a liquidity-freeze squeeze; pair resumed with MEX at or above 8.2e-07 = an incident whose repricing stuck",
+      "branches": [
+        {
+          "condition": "still paused or delisted at run #27",
+          "reading": "structural: MEX price discovery has left the chain"
+        },
+        {
+          "condition": "resumed and MEX < 8.2e-07",
+          "reading": "incident; the spike was a squeeze on frozen liquidity"
+        },
+        {
+          "condition": "resumed and MEX >= 8.2e-07",
+          "reading": "incident; the repricing held after liquidity returned"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "paused 2026-09-13 16:43 UTC; MEX 1.82e-06 on CoinGecko (+357% WoW); HMEX supply +672%",
+      "resolution": null,
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
+    },
+    {
+      "id": "delivery-price-relevance",
+      "registered_in_run": 25,
+      "claim": "The OTC pipeline's delivery is large enough to move EGLD's price relative to the market, despite being ~2% of CEX spot volume.",
+      "threshold": "next week, with net one-way delivery above 300,000 EGLD: EGLD underperforming BTC by more than 5pp = delivery is price-relevant; EGLD within 5pp of BTC or outperforming = delivery is absorbed by ordinary turnover and is not a price signal on its own; delivery under 300,000 = not evaluable, re-register",
+      "branches": [
+        {
+          "condition": "delivery > 300,000 and EGLD - BTC < -5pp",
+          "reading": "price-relevant supply"
+        },
+        {
+          "condition": "delivery > 300,000 and EGLD - BTC >= -5pp",
+          "reading": "absorbed by turnover; not a standalone price signal"
+        },
+        {
+          "condition": "delivery <= 300,000",
+          "reading": "not evaluable; re-register"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "this week: delivery 401,353 (2.3% of spot), EGLD - BTC = -7.08pp; last week delivery 536,459 (2.1%), EGLD - BTC = +16.61pp",
+      "resolution": null,
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
+    },
+    {
+      "id": "compound-regime",
+      "registered_in_run": 25,
+      "claim": "The compound rate's fall below 50% is a switch to taking yield in cash, not a one-week reaction to the price reversal.",
+      "threshold": "next week's function-level compound rate below 52% = a regime switch; 55% or above = a one-week reaction; 52-55% = carry without concluding",
+      "branches": [
+        {
+          "condition": "compound < 52%",
+          "reading": "regime switch to cash yield"
+        },
+        {
+          "condition": "compound >= 55%",
+          "reading": "one-week reaction"
+        },
+        {
+          "condition": "52% <= compound < 55%",
+          "reading": "carry"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "49.44% (263 vs 269), from 62.05%",
+      "resolution": null,
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
+    },
+    {
+      "id": "staked-ratio-floor",
+      "registered_in_run": 25,
+      "claim": "Exits from staking continue beyond the queue that matured this week.",
+      "threshold": "staked ratio below 46.30% by run #27 = exits continuing; 46.30-46.80% = settled at a lower level; above 46.80% = this week's drop was one matured queue",
+      "branches": [
+        {
+          "condition": "ratio < 46.30%",
+          "reading": "exits continuing"
+        },
+        {
+          "condition": "46.30% <= ratio <= 46.80%",
+          "reading": "settled lower"
+        },
+        {
+          "condition": "ratio > 46.80%",
+          "reading": "one matured queue"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "46.55%; new unDelegations 73,351 EGLD from 248 wallets",
+      "resolution": null,
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
+    },
     {
       "id": "wave4-restart",
       "registered_in_run": 24,
@@ -80,13 +200,13 @@
           "reading": "reduced feed; re-measure"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "tranche series 14,000 / 297,000 / 460,000 / 462,000; desks 96,114 after delivering 536,459 one-way",
-      "resolution": null,
-      "seen_in_run": 24,
-      "seen_in_date": "2026-09-07"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 25,
+      "measured_value": "UPbit tranche 372,000 EGLD (bar: >200,000); net one-way 401,353; desks 96,114 -> 56,596",
+      "resolution": "The continuous-programme branch fires. The feed did not stop after wave #3's record delivery: a fourth consecutive tranche above 290,000 arrived and the desks delivered 401,353 one-way on top of it. Waves #3 and #4 are best read as one programme, which netted as a single Aug 17 - Sep 14 window has delivered 1,336,721 EGLD. The registered reading, that the supply overhang is structural, stands. The new exchange-side scale adds a qualification: that overhang is about 2% of weekly CEX spot volume.",
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
     },
     {
       "id": "unidentified-bid-persistence",
@@ -107,13 +227,13 @@
           "reading": "inconclusive; carry the test"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "EGLD $4.48 (+16.97%) absorbing 536,459 EGLD of delivery, with every tracked demand instrument flat or negative except ex-pipeline withdrawal breadth",
-      "resolution": null,
-      "seen_in_run": 24,
-      "seen_in_date": "2026-09-07"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 25,
+      "measured_value": "EGLD $4.14 at the snapshot, inside the $3.90-$4.20 band; the 'no new delivery' condition also failed (401,353 delivered); intra-week CoinGecko daily high about $5.17",
+      "resolution": "The middle branch fires and the test cannot resolve, for two reasons. The price landed in the undefined band, and the premise failed: the test assumed a quiet pipeline and got another 400,000 EGLD delivery. The question is replaced rather than carried. The exchange-side instrument that run #24 said the model lacked now exists, and it shows the 'invisible bid' was mostly the ordinary market. Last week's record delivery was 2.1% of CEX spot volume. A new test on whether delivery moves price relative to BTC is registered below.",
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
     },
     {
       "id": "staked-ratio-downtrend",
@@ -134,13 +254,13 @@
           "reading": "inside the band; carry"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "47.13% (-0.291pp), an archive low; staked -66,071, delegation -103,019, unbonding queue 208,125 EGLD from 537 wallets",
-      "resolution": null,
-      "seen_in_run": 24,
-      "seen_in_date": "2026-09-07"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 25,
+      "measured_value": "staked ratio 46.55% in week 1 of 3 (bar: <46.80%); staked -156,538, delegation TVL +35,617, residual -192,155, new unDelegations 73,351 (from 208,125)",
+      "resolution": "The genuine-downtrend branch fires in its first week, and the security budget is at an archive low. Per the run #24 rule, here is the part of the registered reading the data contradicts. 'A rising price is not arresting it' has no test this week because the price fell. And the mechanism looks like matured exits from earlier weeks rather than a fresh wave: delegation TVL rose and new unDelegations fell by two-thirds. The level finding stands. Whether the downtrend continues is a separate question, registered below with a lower bar.",
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
     },
     {
       "id": "breadth-concentration",
@@ -161,13 +281,13 @@
           "reading": "carry unchanged"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "55 recipients / 497,647 EGLD, top two = 42% of value, one of them funded directly by the Binance hot wallet",
-      "resolution": null,
-      "seen_in_run": 24,
-      "seen_in_date": "2026-09-07"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 25,
+      "measured_value": "ex-pipeline 397,124 EGLD across 47 recipients, top two 31.9% of value (bar: <50%)",
+      "resolution": "The genuine-dispersal branch fires on both terms: value above 300,000 and the top two under half of it. The instrument stands as written and no concentration-adjusted replacement is needed. The largest recipient is again the Binance hot-funded unlabelled whale, and at 17% of value it does not dominate.",
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
     },
     {
       "id": "dollar-base-fourth-contraction",
@@ -184,13 +304,13 @@
           "reading": "redemption cycle; demote to the DeFi section"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "three consecutive contractions: USDC -1.65%, USDT -2.39%, ~$220K cumulative, all into rising prices",
-      "resolution": null,
-      "seen_in_run": 24,
-      "seen_in_date": "2026-09-07"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 25,
+      "measured_value": "combined USDC+USDT +1.71% (USDC +2.73%, USDT -12.81%)",
+      "resolution": "The expansion branch fires, against the claim. Three weeks of contraction was a redemption cycle, not a leading de-risking signal, and the dollar base returns to the DeFi section. Run #24 promoted it after three observations, and the promotion is withdrawn after one more, the same pattern run #24 itself withdrew on USH. Within the week the two stablecoins diverged sharply (USDT -12.8%, USDC +2.7%), so a combined series hides more than it shows.",
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
     },
     {
       "id": "jexchange-address-live",
@@ -207,13 +327,13 @@
           "reading": "transient contract; re-derive from a different anchor"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "old aggregator 0 transfers for a fourth run; re-derived router 11,802 transfers in 7 days, four further contracts behind it at 4,375, 3,018, 3,648, 1,477",
-      "resolution": null,
-      "seen_in_run": 24,
-      "seen_in_date": "2026-09-07"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 25,
+      "measured_value": "re-derived router 9,968 transfers in 7 days (bar: >1,000); routers 2-5 at 3,680, 2,927, 2,110, 882; old aggregator 0",
+      "resolution": "Address correct: the four-run data gap was a stale identifier, not a halted protocol. The router set is now in the collector and known-addresses.",
+      "seen_in_run": 25,
+      "seen_in_date": "2026-09-14"
     },
     {
       "id": "desk-inventory-drain",

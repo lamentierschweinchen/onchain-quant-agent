@@ -36,7 +36,7 @@ EXEMPT_KEYS = {
 
 # Real on-chain function names a quant reader needs; not leaks.
 ALLOWED = {
-    "unDelegate", "unDelegated", "unDelegations", "reDelegateRewards",
+    "removeLiquidity", "setState", "unDelegate", "unDelegated", "unDelegations", "reDelegateRewards",
     "reDelegate", "claimRewards", "removeNodes", "unBondNodes",
     "unStakeNodes", "withdraw", "delegate", "xExchange", "xMoney",
     "xPortal", "dataApi",
