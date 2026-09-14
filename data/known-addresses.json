@@ -245,7 +245,31 @@
       "name": "xExchange: MEX/WEGLD pair (PAUSED 2026-09-13)",
       "category": "defi",
       "subcategory": "dex_pair",
-      "notes": "Paused 2026-09-13 16:43 UTC (tx b0decfa361def3e21753a1a1f59df1f3a09f7e256a6332e366ba9d4e5f2a8253) by the router owner; dropped from /mex/pairs; 191B MEX + 141,281 WEGLD reserves; 172 failed txs in the week.",
+      "notes": "Paused 2026-09-13 16:43 UTC (tx b0decfa361def3e21753a1a1f59df1f3a09f7e256a6332e366ba9d4e5f2a8253) by the router owner; dropped from /mex/pairs; 191B MEX + 141,281 WEGLD reserves; 172 failed txs in the week. Paused to contain Hatom's MEX money market incident; Hatom expects MEX/EGLD, MEX/USH, MEX/USDC to resume by ~2026-09-16.",
+      "first_seen": "2026-09-14",
+      "discovered_run": 25
+    },
+    "erd1qqqqqqqqqqqqqpgqsytkvnexypp7argk02l0rasnj57sxa542jpshkl7df": {
+      "name": "xExchange: Compose Tasks contract",
+      "category": "defi",
+      "subcategory": "dex_router",
+      "notes": "Owned by the xExchange router owner. Incident wallet A bought 220B MEX through it on 2026-09-13.",
+      "first_seen": "2026-09-14",
+      "discovered_run": 25
+    },
+    "erd1qqqqqqqqqqqqqpgqv0c22xku4vd5ugfh0u53tqufmdkqx5nv2jps8vsccx": {
+      "name": "xExchange: MEX/USDC pair (PAUSED 2026-09-13)",
+      "category": "defi",
+      "subcategory": "dex_pair",
+      "notes": "Paused by the router owner at ts 1789326572 (tx 3a9dd0096d3707e2e0dda3017016fe06ef21d9d86a3731090eee7c718f7eb6c6) during Hatom's MEX money market incident.",
+      "first_seen": "2026-09-14",
+      "discovered_run": 25
+    },
+    "erd1qqqqqqqqqqqqqpgqyghvzwv9qyzq95vwhvk4tafg945r8hcf2jps0x7me7": {
+      "name": "xExchange: MEX/USH pair (PAUSED 2026-09-13)",
+      "category": "defi",
+      "subcategory": "dex_pair",
+      "notes": "Paused by the router owner at ts 1789326395 (tx fbb8cc4b1768a38b444cb6b6e82d6dbeaedf7c0606b242862164d2d290311ac0) during Hatom's MEX money market incident.",
       "first_seen": "2026-09-14",
       "discovered_run": 25
     }
@@ -1740,6 +1764,22 @@
       "notes": "Took 101,664 EGLD off exchanges outside the OTC pipeline in the 2026-08-31..2026-09-07 window, the second-largest ex-pipeline recipient, and separately received 68,732 EGLD directly from the Binance.com hot wallet. Its size is why this week's withdrawal-breadth reading is concentration rather than dispersal.",
       "first_seen": "2026-09-07",
       "discovered_run": 24
+    },
+    "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq": {
+      "name": "Hatom MEX incident wallet A (2026-09-13)",
+      "category": "whale",
+      "subcategory": "incident",
+      "notes": "Deposited 322.4B MEX into Hatom's MEX money market and borrowed 73,600 EGLD in 11 draws (15:23-16:37 UTC Sep 13); bought 220.3B MEX via xExchange compose-tasks for 85,200 EGLD. Hatom calls it a MEX money market incident; recovery plan to unwind (statement 2026-09-14).",
+      "first_seen": "2026-09-14",
+      "discovered_run": 25
+    },
+    "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk": {
+      "name": "Hatom MEX incident wallet B (2026-09-13)",
+      "category": "whale",
+      "subcategory": "incident",
+      "notes": "Deposited 2.3B MEX into Hatom's MEX market and borrowed 552 EGLD in the same window as wallet A.",
+      "first_seen": "2026-09-14",
+      "discovered_run": 25
     }
   }
 }

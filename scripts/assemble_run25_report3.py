@@ -14,6 +14,15 @@ M=O["macro"]; otc=O["otc"]; wave=otc["wave"]; ex=O["exch"]
 cust=O["custody"]; bid=O["bid"]; br=O["breadth"]; sk=O["staking"]; tk=O["tokens"]
 xx=O["xexchange"]; df=O["defi"]; z=O["z"]; ub=O["unbond"]; absb=O["absorbers"]
 zsc=O["zero_stake_cohort"]; em=O["emerging_lsd"]; MEXE=O["mex_event"]
+from datetime import datetime as _DT, timezone as _TZ
+INC=MEXE.get("incident") or {}
+WA=INC["wallets"]["A"]; WB=INC["wallets"]["B"]
+PZ={p["pair"]:p for p in INC["pauses"]}
+def HM(t): return _DT.fromtimestamp(t,tz=_TZ.utc).strftime("%H:%M")
+BORROW_FIRST=HM(WA["borrows"][0]["ts"]); BORROW_LAST=HM(WA["borrows"][-1]["ts"])
+MEX_CIRC=float(D["mex_economics"]["circulatingSupply"])
+HATOM_URL=INC["statement"]["source"]
+
 HOT=O["hot_to_pipe"]; FEED=O["feeders_in"]; BOOK=O["orderbook"]; FB=O["feeder_backtrace"]
 price=M["price"]; pc=M["price_chg"]; econ=D["economics"]
 cvc=beh["aggregates"]["compound_vs_claim_at_function_level"]
@@ -38,13 +47,13 @@ R["anomalies"]=[
  {"metric":"mex_price_usd","current_value":xx["mex_price"],"previous_value":xx["prev_mex_price"],
   "method":"z_score","severity":"critical","average_value":z["mex"]["mean"],"stddev":z["mex"]["stddev"],"z_score":zz("mex"),
   "change_pct":xx["mex_wow"],
-  "description":f"MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko ({xx['prev_mex_price']:.2e} -> {xx['mex_price']:.2e}), z={zz('mex'):+.1f}sigma - the largest standardised move on any tracked series. The move STARTED before the MEX/WEGLD pool was paused (1.7x by 15:00 UTC, about 4x by 16:00, pause at 16:43 by the xExchange router owner), peaked near 7.5x that evening and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at {MEXE['mex_price_tokens_api']:.2e}. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see."},
+  "description":f"MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko ({xx['prev_mex_price']:.2e} -> {xx['mex_price']:.2e}), z={zz('mex'):+.1f}sigma - the largest standardised move on any tracked series. The move STARTED before the MEX/WEGLD pool was paused (1.7x by 15:00 UTC, about 4x by 16:00, pause at 16:43 by the xExchange router owner), peaked near 7.5x that evening and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at {MEXE['mex_price_tokens_api']:.2e}. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see. The move ran alongside Hatom's MEX money market incident, in which one wallet bought {f(WA['mex_bought']/1e9,0)}B MEX on xExchange and deposited {f(WA['mex_deposited']/1e9,0)}B as collateral."},
  {"metric":"xexchange_mex_wegld_pair_state","current_value":0,"previous_value":MEXE["prev_pair_tvl_usd"],
   "method":"rule_based","severity":"critical","change_pct":-100.0,
-  "description":f"The #2 deepest pool on xExchange (${f(MEXE['prev_pair_tvl_usd'])} last week) is paused and has been dropped from /mex/pairs. It holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD. 172 transactions have failed against it in the week, 116 of them removeLiquidity, so LPs are trying and failing to withdraw. This is the first venue-level state change in the archive, as opposed to a flow."},
+  "description":f"The #2 deepest pool on xExchange (${f(MEXE['prev_pair_tvl_usd'])} last week) is paused and has been dropped from /mex/pairs. It holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD. 172 transactions have failed against it in the week, 116 of them removeLiquidity, so LPs are trying and failing to withdraw. It is one of three MEX pools the xExchange router owner paused on Sep 13 (MEX/USH {HM(PZ['MEX/USH']['ts'])}, MEX/USDC {HM(PZ['MEX/USDC']['ts'])} UTC) to contain Hatom's MEX money market incident; Hatom expects all three to resume by Wednesday. It is also the first venue-level state change in the archive, as opposed to a flow."},
  {"metric":"hatom_hmex_supply","current_value":MEXE["hmex_supply"],"previous_value":MEXE["hmex_prev_supply"],
   "method":"rule_based","severity":"high","change_pct":ht["HMEX-df6df7"]["supply_pct"],
-  "description":f"HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}% ({f(MEXE['hmex_prev_supply']/1e12,2)}T -> {f(MEXE['hmex_supply']/1e12,2)}T): MEX was deposited into Hatom's MEX money market in size in the pause week. HMEX market cap went from ${f(ht['HMEX-df6df7']['prev_mcap'])} to ${f(ht['HMEX-df6df7']['mcap'])} and would have lifted Hatom Lending's EGLD TVL {df['hatom_lending_egld_pct']:+.0f}% if left in. The breakdown reports lending ex-HMEX ({df['hatom_lending_ex_hmex_egld_pct']:+.2f}%)."},
+  "description":f"HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}% ({f(MEXE['hmex_prev_supply']/1e12,2)}T -> {f(MEXE['hmex_supply']/1e12,2)}T): one wallet deposited {f(WA['mex_deposited']/1e9,0)}B MEX into Hatom's MEX market on Sep 13 and borrowed {f(WA['egld_borrowed'])} EGLD against it, in what Hatom calls a MEX money market incident. HMEX market cap went from ${f(ht['HMEX-df6df7']['prev_mcap'])} to ${f(ht['HMEX-df6df7']['mcap'])} and would have lifted Hatom Lending's EGLD TVL {df['hatom_lending_egld_pct']:+.0f}% if left in. The breakdown reports lending ex-HMEX ({df['hatom_lending_ex_hmex_egld_pct']:+.2f}%)."},
  {"metric":"reward_compound_pct","current_value":cvc["compound_pct_of_reward_decisions"],"previous_value":62.05,
   "method":"z_score","severity":"high","average_value":z["compound"]["mean"],"stddev":z["compound"]["stddev"],"z_score":zz("compound"),
   "change_pct":100*(cvc["compound_pct_of_reward_decisions"]-62.05)/62.05,
@@ -96,7 +105,7 @@ R["trend_indicators"]={
   {"identifier":"HMEX-df6df7","name":"HMEX","event":"mint",
    "supply_previous":str(int(MEXE["hmex_prev_supply"])),"supply_current":str(int(MEXE["hmex_supply"])),
    "change_pct":ht["HMEX-df6df7"]["supply_pct"],
-   "description":f"HMEX minted {ht['HMEX-df6df7']['supply_pct']:+.0f}%: MEX deposited into Hatom in the week the MEX/WEGLD pool was paused."},
+   "description":f"HMEX minted {ht['HMEX-df6df7']['supply_pct']:+.0f}%: {f(WA['mex_deposited']/1e9,0)}B MEX deposited by one wallet during Hatom's MEX money market incident, collateral for {f(WA['egld_borrowed'])} EGLD of borrowing that Hatom says its recovery plan will unwind."},
   {"identifier":"USDT-f8c08c","name":"USDT","event":"burn",
    "supply_previous":str(int(usdt["prev"])),"supply_current":str(int(usdt["supply"])),"change_pct":usdt["pct"],
    "description":f"{f(usdt['prev']-usdt['supply'])} USDT redeemed ({usdt['pct']:+.2f}%), the largest weekly move in the tracked series."},
@@ -109,7 +118,7 @@ R["trend_indicators"]={
    "description":f"USH {tk['lsd']['USH-111e09']['pct']:+.2f}%, a second consecutive mint, below the 5% threshold."},
   {"identifier":"HEGLD-d61095","name":"HEGLD","event":"burn",
    "supply_previous":None,"supply_current":None,"change_pct":ht["HEGLD-d61095"]["supply_pct"],
-   "description":f"HEGLD supply {ht['HEGLD-d61095']['supply_pct']:+.2f}%: EGLD depositors withdrew from Hatom as EGLD fell. This is the behavioural leg the inverse rule should be read on; this week it moved with price, not against it."}],
+   "description":f"HEGLD supply {ht['HEGLD-d61095']['supply_pct']:+.2f}%: EGLD depositors redeemed as EGLD fell. This is the behavioural leg the inverse rule should be read on; this week it moved with price, not against it."}],
  "consecutive_streaks":[
   {"metric":"otc_upbit_tranche_above_290k","direction":"up","weeks":4,"cumulative_change_pct":None,
    "interpretation":f"297,000 / 460,000 / 462,000 / {f(otc['upbit_feed'])}. Wave #4 confirmed; the programme is continuous."},
@@ -127,13 +136,13 @@ R["trend_indicators"]={
    "interpretation":"Zero for a fifth week; retired instrument, kept as a dormancy marker."}],
  "regime_shifts":[
   {"metric":"xexchange_mex_venue","before_value":MEXE["prev_pair_tvl_usd"],"after_value":0.0,
-   "description":"CANDIDATE, not promoted. The MEX/WEGLD pool is paused and MEX has no on-chain price. If the pair stays paused or delisted through run #26, MEX's price discovery has moved off-chain structurally. A resume would make it an incident. Registered as a pre-committed test."},
+   "description":"NOT A REGIME SHIFT, AN INCIDENT. The three MEX pools and Hatom's MEX market are paused to contain Hatom's MEX money market incident, with a stated resume by Wednesday. It becomes a regime question only if the pools stay paused well past that date; the recovery test below tracks it."},
   {"metric":"reward_compound_pct","before_value":62.05,"after_value":cvc["compound_pct_of_reward_decisions"],
    "description":"CANDIDATE, not promoted. A one-week fall from the series high to the series low. It needs a second week under ~52% to count as a regime shift, per the two-week rule that correctly rejected the desk-inventory candidate in run #24."}]}
 
 R["watch_list"]=[
- {"item":"XEXCHANGE MEX/WEGLD POOL PAUSED - LPs locked, MEX priced off-chain","weeks_on_list":1,
-  "reason":f"Paused 2026-09-13 16:43 UTC by erd1ss6u80ruas2p... (the router owner), tx b0decfa361de... The pool holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD. 172 failed transactions in the week, 116 of them removeLiquidity. MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko; HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%. PRE-COMMITTED (mex-pair-resume): pair resumed within two weeks with MEX back under ~8.2e-07 (2x pre-pause) = an incident and a liquidity-freeze squeeze; resumed with MEX above that = repricing that stuck; still paused or delisted by run #27 = MEX price discovery has left the chain."},
+ {"item":"HATOM MEX MONEY MARKET INCIDENT - three MEX pools and the MEX market paused, recovery under way","weeks_on_list":1,
+  "reason":f"Hatom says funds are safe, the incident is contained and a recovery plan will unwind it without user losses or bad debt; the MEX market and MEX/EGLD, MEX/USH, MEX/USDC resume by about Wednesday ({HATOM_URL}). Chain: one wallet deposited {f(WA['mex_deposited']/1e9,0)}B MEX and borrowed {f(WA['egld_borrowed'])} EGLD from {BORROW_FIRST} to {BORROW_LAST} UTC; pools paused 16:43 / {HM(PZ['MEX/USH']['ts'])} / {HM(PZ['MEX/USDC']['ts'])} by the router owner. MEX/WEGLD holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD. 172 failed transactions in the week, 116 of them removeLiquidity. MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko; HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%. PRE-COMMITTED (mex-incident-recovery): market and pools resumed by run #26 with no bad debt or user loss disclosed = recovery as stated; resumed but a loss or bad debt disclosed = contained, not costless; still paused at run #26 = the stated timeline slipped."},
  {"item":"OTC PIPELINE - wave #4 running; the desk float is low but the reservoir behind it is not","weeks_on_list":25,
   "reason":f"UPbit tranche {f(otc['upbit_feed'])}; net one-way {f(otc['net_one_way'])} ({OB['net_one_way_share_of_spot_volume_pct']:.1f}% of CEX spot volume); gross {f(otc['gross_out'])}; destinations Binance.com +{f(V(otc['net_by_venue'],'Binance.com'))}, Bybit +{f(V(otc['net_by_venue'],'Bybit'))}, Gate.io +{f(V(otc['net_by_venue'],'Gate.io'))}. Aug 17 - Sep 14 as one window: {f(wave['net_one_way'])}. PRE-COMMITTED (delivery-price-relevance): see the scoreboard."},
  {"item":"EXCHANGE ORDER BOOK - the first demand-side reading, now a baseline","weeks_on_list":1,
@@ -193,13 +202,13 @@ def new(tid,claim,threshold,branches,measured):
     return {"id":tid,"registered_in_run":25,"claim":claim,"threshold":threshold,"branches":branches,
             "status":"open","outcome":None,"resolved_in_run":None,"measured_value":measured,"resolution":None}
 tests+=[
- new("mex-pair-resume",
-  "The MEX/WEGLD pause is a structural move of MEX price discovery off-chain rather than a temporary incident.",
-  "by run #27 (two weeks): pair still paused or delisted = structural; pair resumed with MEX under ~8.2e-07 (2x the pre-pause 4.08e-07) = an incident that caused a liquidity-freeze squeeze; pair resumed with MEX at or above 8.2e-07 = an incident whose repricing stuck",
-  [{"condition":"still paused or delisted at run #27","reading":"structural: MEX price discovery has left the chain"},
-   {"condition":"resumed and MEX < 8.2e-07","reading":"incident; the spike was a squeeze on frozen liquidity"},
-   {"condition":"resumed and MEX >= 8.2e-07","reading":"incident; the repricing held after liquidity returned"}],
-  f"paused 2026-09-13 16:43 UTC; MEX {xx['mex_price']:.2e} on CoinGecko ({xx['mex_wow']:+.0f}% WoW); HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%"),
+ new("mex-incident-recovery",
+  "Hatom's MEX money market incident is resolved on the timeline and terms Hatom stated: markets back by Wednesday, no user losses, no bad debt.",
+  "at run #26: MEX market and the MEX/EGLD, MEX/USH, MEX/USDC pools resumed AND no bad debt or user loss disclosed = recovery as stated; resumed BUT a loss or bad debt disclosed = contained, not costless; any of them still paused = the stated timeline slipped",
+  [{"condition":"all resumed, no loss or bad debt disclosed","reading":"recovery as stated"},
+   {"condition":"resumed, loss or bad debt disclosed","reading":"contained, not costless"},
+   {"condition":"any still paused at run #26","reading":"timeline slipped"}],
+  f"pools paused Sep 13 16:43/{HM(PZ['MEX/USH']['ts'])}/{HM(PZ['MEX/USDC']['ts'])} UTC; Hatom statement Sep 14 21:03 UTC; incident wallet borrowed {f(WA['egld_borrowed'])} EGLD against {f(WA['mex_deposited']/1e9,0)}B MEX; MEX {xx['mex_price']:.2e} ({xx['mex_wow']:+.0f}% WoW)"),
  new("delivery-price-relevance",
   "The OTC pipeline's delivery is large enough to move EGLD's price relative to the market, despite being ~2% of CEX spot volume.",
   "next week, with net one-way delivery above 300,000 EGLD: EGLD underperforming BTC by more than 5pp = delivery is price-relevant; EGLD within 5pp of BTC or outperforming = delivery is absorbed by ordinary turnover and is not a price signal on its own; delivery under 300,000 = not evaluable, re-register",
@@ -241,13 +250,13 @@ R["meta_learning"]={
    "THE LIQUID-STAKING SWEEP IS NOT MONOTONE. Its candidate tokens come from search and ranked-list pages, and LEGLD and VEGLD fell out of that set this week while their contracts still stake. A discovery pass must seed from last week's finds.",
    "COINGECKO /coins/{id}/tickers?depth=true RETURNS cost_to_move_up_usd / cost_to_move_down_usd PER VENUE (±2% depth). /market_chart?interval=daily total_volumes gives rolling 24h volume per day. Together they are the first exchange-side instrument in the pipeline: 7d spot volume and venue depth."],
  "data_gaps":[
-   "The reason for the MEX/WEGLD pause is not on-chain. The model records the call, sender, reserves and failed calls.",
+   f"Hatom has not yet published the cause of the MEX money market incident; its detailed report is pending. The chain reconstruction covers the pauses, the {len(WA['deposits'])+len(WB['deposits'])} MEX deposits and {len(WA['borrows'])+len(WB['borrows'])} EGLD borrows by the two collateral wallets, and the {INC['liquidations_on_mex_market']} liquidations; where the borrowed EGLD finally went is only partly traced.",
    "Withdraw amounts on provider contracts are not decoded (withdraw carries no amount argument), so the matured-queue attribution of the staked drop rests on timing and call counts.",
    f"{f(otc['unresolved_out'])} EGLD of desk outbound remains unattributed after two hops.",
    "Order-book depth is one snapshot with no prior; trend claims wait a week.",
    "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."],
  "key_findings":[
-   f"The xExchange router owner paused the MEX/WEGLD pool on 2026-09-13 16:43 UTC. MEX was already 1.7x by 15:00 UTC and peaked near 7.5x after it, HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%, and 172 transactions against the frozen pair failed.",
+   f"Hatom's MEX money market incident: one wallet bought {f(WA['mex_bought']/1e9,0)}B MEX on xExchange, deposited {f(WA['mex_deposited']/1e9,0)}B MEX into Hatom and borrowed {f(WA['egld_borrowed'])} EGLD in 74 minutes; xExchange paused three MEX pools, the first six minutes after the last borrow. Hatom says funds are safe and markets resume by Wednesday.",
    f"Wave #4 confirmed: UPbit tranche {f(otc['upbit_feed'])}, net one-way {f(otc['net_one_way'])}, desks down to {f(otc['desk_bal'])}; {f(wave['net_one_way'])} EGLD one-way over Aug 17 - Sep 14.",
    f"The first exchange-side reading puts delivery at {OB['net_one_way_share_of_spot_volume_pct']:.1f}% of CEX spot volume; last week's 'invisible bid' was mostly ordinary turnover.",
    f"Staked ratio {100*M['sr']:.2f}%, below 46.80% in week one of the test, while new unDelegations fell by two-thirds.",
@@ -275,6 +284,10 @@ R["meta_learning"]={
  "new_addresses_discovered_detail":[
    {"address":"erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2","label":"xExchange: MEX/WEGLD pair (PAUSED 2026-09-13)",
     "evidence":"pause call from the router owner at 16:43 UTC; 191B MEX + 141,281 WEGLD reserves; 172 failed txs"},
+   {"address":WA["address"],"label":"Hatom MEX incident wallet A (2026-09-13)",
+    "evidence":f"deposited {f(WA['mex_deposited']/1e9,1)}B MEX into Hatom's MEX market and borrowed {f(WA['egld_borrowed'])} EGLD; bought {f(WA['mex_bought']/1e9,1)}B MEX via xExchange compose-tasks for {f(WA['egld_spent_buying_mex'])} EGLD"},
+   {"address":WB["address"],"label":"Hatom MEX incident wallet B (2026-09-13)",
+    "evidence":f"deposited {f(WB['mex_deposited']/1e9,1)}B MEX and borrowed {f(WB['egld_borrowed'])} EGLD in the same window"},
    {"address":"erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97","label":"xExchange: router owner / admin wallet",
     "evidence":"owner of the router contract that owns the pair; sent the pause"},
    {"address":"erd1ytpenkzjucgq7mxu4l6u8v72vfxxlux2237925glajhs4dj3u8asue9arn","label":"Bybit/Gate.io->OTC Desk Feeder (resolved run #25)",
@@ -286,9 +299,9 @@ R["meta_learning"]={
    f"The first exchange-side reading shows the desks' record 536,459 EGLD delivery was {OB['previous_net_one_way_share_of_spot_volume_pct']:.1f}% of that week's CEX spot volume, and this week's {f(otc['net_one_way'])} was {OB['net_one_way_share_of_spot_volume_pct']:.1f}%. "
    "The 'invisible bid' of run #24 was mostly ordinary turnover. The pipeline still matters, because it is persistent, one-directional and aimed at two venues, but its weekly total cannot be read against the weekly price as if nothing else traded. The MEX pause is the bigger event; this is the bigger correction to the model."),
  "top_recommendation":(
-   "RE-READ THE MEX/WEGLD PAIR STATE FIRST NEXT RUN. The pause is registered as a two-week test. Query the pair's transactions for resume/unpause/setState calls and removeLiquidity successes, track HMEX supply and the MEX price on both CoinGecko and /tokens, and check whether any other xExchange pair received a pause in the same window."),
+   "CLOSE OUT THE HATOM MEX INCIDENT. Read Hatom's incident report, check resume calls on the three MEX pools and Hatom's MEX market, and trace the recovery on chain: whether wallet A's 73,600 EGLD borrow is repaid or liquidated, what happens to its 322B MEX collateral, and HMEX supply after the unwind. Then resolve mex-incident-recovery."),
  "recommendations_for_next_run":[
-   "RESOLVE THE MEX PAIR STATE. Query erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 for resume/setState calls and successful removeLiquidity; scan the router owner erd1ss6u80ruas2p... for pause calls on OTHER pairs this window; track HMEX supply and MEX on CoinGecko vs /tokens.",
+   "RESOLVE mex-incident-recovery. Resume calls on MEX/WEGLD (erd1...jpsp6shh2), MEX/USH (erd1...jps0x7me7), MEX/USDC (erd1...jps8vsccx) and Hatom's MEX market; Hatom's incident report; the fate of incident wallet A's 73,600 EGLD debt and 322B MEX collateral; where the borrowed EGLD went beyond xExchange compose-tasks and the 2,035 EGLD sent out at 16:57.",
    "BUILD THE ORDER-BOOK SERIES. Store this week's per-venue ±2% depth and 7d spot volume in previous.json and report the WoW change for Binance and Bybit, the two delivery venues.",
    "SEED THE LIQUID-STAKING SWEEP FROM LAST WEEK'S PROTOCOLS so a known LSD cannot drop out of the table.",
    "ADD A 429 GUARD TO delegator_behavior.py (error-vs-empty distinction plus exponential backoff) and run it after the collector, never alongside.",

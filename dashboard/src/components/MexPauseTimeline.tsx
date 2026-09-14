@@ -22,7 +22,7 @@ interface Props {
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const H_CHART = 240
-const H_RUG = 64
+const H_RUG = 92
 const PAD = { top: 30, right: 64, bottom: 24, left: 12 }
 const HOUR = 3_600_000
 
@@ -61,6 +61,10 @@ interface Model {
   failed: number
   failedBy: Record<CallKind, number>
   okAfter: number
+  /** Hatom EGLD borrows by the incident's collateral wallets (ms, EGLD). */
+  borrows: Array<{ ms: number; egld: number }>
+  /** The later pauses on the other MEX pools. */
+  otherPauses: Array<{ ms: number; pair: string }>
 }
 
 function buildModel(event: MexPairEvent): Model | null {
@@ -102,6 +106,13 @@ function buildModel(event: MexPairEvent): Model | null {
       other: failedCalls.filter((c) => c.kind === 'other').length,
     },
     okAfter: after.filter((c) => c.status === 'success').length,
+    borrows: Object.values(event.incident?.wallets ?? {})
+      .flatMap((w) => w.borrows.map((b) => ({ ms: b.ts * 1000, egld: b.egld })))
+      .sort((a, b) => a.ms - b.ms),
+    otherPauses: (event.incident?.pauses ?? [])
+      .map((p) => ({ ms: p.ts * 1000, pair: p.pair }))
+      .filter((p) => p.ms !== pauseMs)
+      .sort((a, b) => a.ms - b.ms),
   }
 }
 
@@ -111,6 +122,7 @@ export function MexPauseTimeline({ event }: Props) {
   const [range, setRange] = useState<'zoom' | 'all'>('zoom')
   const model = useMemo(() => buildModel(event), [event])
 
+  const inc = event.incident
   const pauseMs = Date.parse(event.paused_at_utc)
   const quoteCg = event.mex_price_coingecko_now
   const quoteApi = event.mex_price_tokens_api
@@ -124,6 +136,18 @@ export function MexPauseTimeline({ event }: Props) {
     quoteCg != null && event.mex_price_prev
       ? (100 * (quoteCg - event.mex_price_prev)) / event.mex_price_prev
       : null
+
+  // Incident wallets: the largest by EGLD borrowed leads the story.
+  const wallets = inc ? Object.values(inc.wallets).sort((a, b) => b.egld_borrowed - a.egld_borrowed) : []
+  const lead = wallets[0]
+  const borrowedTotal = wallets.reduce((s, w) => s + w.egld_borrowed, 0)
+  const pauses = inc ? [...inc.pauses].sort((a, b) => a.ts - b.ts) : []
+  const firstBorrow = lead?.borrows[0]?.ts
+  const lastBorrow = lead?.borrows[lead.borrows.length - 1]?.ts
+  const minutesToPause = lastBorrow ? Math.round((pauseMs / 1000 - lastBorrow) / 60) : null
+
+  const linkCls =
+    'inline-flex items-center min-h-8 px-2.5 rounded text-text-secondary hover:text-accent-cyan hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan transition-colors'
 
   return (
     <section className="card" aria-labelledby="mex-pause-title">
@@ -140,74 +164,129 @@ export function MexPauseTimeline({ event }: Props) {
               }}
             >
               <span aria-hidden className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-severity-critical)' }} />
-              Paused
+              {inc ? 'Markets paused' : 'Paused'}
             </span>
             <h3 id="mex-pause-title" className="text-[13px] font-semibold text-text-primary tracking-tight">
-              MEX/WEGLD pool, frozen since {fmtStamp(pauseMs)}
+              {inc ? 'Hatom MEX money market incident' : `MEX/WEGLD pool, frozen since ${fmtStamp(pauseMs)}`}
             </h3>
           </div>
-          {model && (
-            <p className="text-[12px] text-text-secondary mt-1.5 max-w-[78ch] leading-relaxed">
-              The xExchange router owner paused the pool{' '}
-              <span className="text-text-primary">
-                {fmtDuration(pauseMs - model.moveMs)} after MEX had started moving
-              </span>
-              , with the price already{' '}
-              <span className="font-mono text-text-primary">{model.atPause.toFixed(1)}×</span> its
-              pre-move level. It went on to{' '}
-              <span className="font-mono text-text-primary">{model.peakMultiple.toFixed(1)}×</span>.
-              The liquidity is still inside, withdrawals fail, and{' '}
-              <span className="font-mono text-text-primary">{model.failed}</span> calls have bounced
-              since.
+          {model && lead && firstBorrow && lastBorrow ? (
+            <p className="text-[12px] text-text-secondary mt-1.5 max-w-[80ch] leading-relaxed">
+              On {fmtDay(pauseMs)}, as MEX rose, one wallet posted{' '}
+              <span className="font-mono text-text-primary">{(lead.mex_deposited / 1e9).toFixed(0)}B MEX</span> as collateral
+              on Hatom and borrowed{' '}
+              <span className="font-mono text-text-primary">{formatEgldBare(lead.egld_borrowed)} EGLD</span> between{' '}
+              {hhmm(firstBorrow * 1000)} and {hhmm(lastBorrow * 1000)} UTC. xExchange paused the MEX/WEGLD pool{' '}
+              <span className="text-text-primary">{minutesToPause} minutes after the last draw</span>, then the MEX/USH and
+              MEX/USDC pools. By the pause MEX was already{' '}
+              <span className="font-mono text-text-primary">{model.atPause.toFixed(1)}×</span> its pre-move level; it peaked
+              at <span className="font-mono text-text-primary">{model.peakMultiple.toFixed(1)}×</span>.
             </p>
-          )}
+          ) : model ? (
+            <p className="text-[12px] text-text-secondary mt-1.5 max-w-[78ch] leading-relaxed">
+              The xExchange router owner paused the pool {fmtDuration(pauseMs - model.moveMs)} after MEX had started moving,
+              with the price already {model.atPause.toFixed(1)}× its pre-move level.
+            </p>
+          ) : null}
         </div>
-        <div className="flex items-center gap-1 text-[11px] font-mono -ml-2.5 sm:ml-0 shrink-0">
-          <a
-            href={txUrl(event.pause_tx)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center min-h-8 px-2.5 rounded text-text-secondary hover:text-accent-cyan hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan transition-colors"
-          >
+        <div className="flex flex-wrap items-center gap-1 text-[11px] font-mono -ml-2.5 sm:ml-0 shrink-0">
+          {inc && (
+            <a href={inc.statement.source} target="_blank" rel="noopener noreferrer" className={linkCls}>
+              Hatom statement ↗
+            </a>
+          )}
+          <a href={txUrl(event.pause_tx)} target="_blank" rel="noopener noreferrer" className={linkCls}>
             Pause tx ↗
           </a>
-          <a
-            href={accountUrl(event.pair_address)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center min-h-8 px-2.5 rounded text-text-secondary hover:text-accent-cyan hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan transition-colors"
-          >
+          <a href={accountUrl(event.pair_address)} target="_blank" rel="noopener noreferrer" className={linkCls}>
             Pool contract ↗
           </a>
         </div>
       </header>
 
       <div className="p-4 space-y-4">
+        {/* ---------- what the protocol says ---------- */}
+        {inc && (
+          <div className="flex flex-col sm:flex-row gap-x-4 gap-y-1.5 rounded-md border border-border bg-bg-elevated px-3 py-2.5">
+            <div className="shrink-0 sm:w-40">
+              <div className="text-[10px] text-text-muted uppercase tracking-widest">Hatom says</div>
+              <div className="mt-0.5 text-[11px] font-mono text-text-secondary">{fmtStamp(Date.parse(inc.statement.published_utc))}</div>
+            </div>
+            <ul className="text-[12px] text-text-secondary leading-relaxed space-y-0.5 list-none">
+              <li>
+                <span className="text-up">User funds are safe</span> and the incident is contained, after a joint response
+                with xExchange.
+              </li>
+              <li>
+                A recovery plan will unwind the incident-driven activity with{' '}
+                <span className="text-text-primary">no user losses and no bad debt</span>.
+              </li>
+              <li>
+                The MEX market and the MEX/EGLD, MEX/USH and MEX/USDC pools stay paused,{' '}
+                <span className="text-text-primary">resuming by about Wednesday</span>. A full incident report will follow;
+                no cause has been given yet.
+              </li>
+            </ul>
+          </div>
+        )}
+
         {/* ---------- tiles ---------- */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {lead ? (
+            <StatTile
+              label="Borrowed against MEX"
+              value={formatEgldBare(borrowedTotal)}
+              unit="EGLD"
+              accent="critical"
+              sub={
+                <>
+                  <span className="font-mono text-text-primary">{lead.borrows.length}</span> draws by one wallet
+                  {wallets.length > 1 && (
+                    <>
+                      {' '}· <span className="font-mono">{Math.round(wallets.slice(1).reduce((s, w) => s + w.egld_borrowed, 0)).toLocaleString('en-US')}</span> by a second
+                    </>
+                  )}
+                </>
+              }
+            />
+          ) : (
+            <StatTile
+              label="Still locked in the pool"
+              value={formatEgldBare(event.pair_holds_wegld)}
+              unit="WEGLD"
+              sub={<>+ {(event.pair_holds_mex / 1e9).toFixed(1)}B MEX</>}
+            />
+          )}
           <StatTile
-            label="Still locked in the pool"
-            value={formatEgldBare(event.pair_holds_wegld)}
-            unit="WEGLD"
+            label="MEX posted as collateral"
+            value={lead ? `${(wallets.reduce((s, w) => s + w.mex_deposited, 0) / 1e9).toFixed(0)}B` : hmexPct != null ? `+${hmexPct.toFixed(0)}%` : '—'}
+            unit={lead ? 'MEX' : undefined}
             sub={
               <>
-                + {(event.pair_holds_mex / 1e9).toFixed(1)}B MEX · {formatUsd(event.prev_pair_tvl_usd)} of
-                liquidity last week, the #2 pool on xExchange
+                {lead?.mex_bought ? (
+                  <>
+                    <span className="font-mono text-text-primary">{(lead.mex_bought / 1e9).toFixed(0)}B</span> of it bought on
+                    xExchange that afternoon ·{' '}
+                  </>
+                ) : null}
+                HMEX supply {hmexPct != null ? `+${hmexPct.toFixed(0)}%` : '—'}
               </>
             }
           />
           <StatTile
-            label="Failed calls since the pause"
-            value={String(model ? model.failed : event.failed_txs_7d)}
-            unit="txs"
-            accent="critical"
+            label={pauses.length ? 'MEX pools paused' : 'Failed calls since the pause'}
+            value={pauses.length ? String(pauses.length) : String(model ? model.failed : event.failed_txs_7d)}
+            unit={pauses.length ? undefined : 'txs'}
             sub={
-              model ? (
-                <>
-                  <span className="font-mono text-text-primary">{model.failedBy.withdraw}</span> withdrawals ·{' '}
-                  <span className="font-mono text-text-primary">{model.failedBy.swap}</span> swaps
-                  {model.failedBy.other > 0 && <> · {model.failedBy.other} other</>}
-                </>
+              pauses.length ? (
+                <span className="flex flex-wrap gap-x-2 gap-y-0.5">
+                  {pauses.map((p) => (
+                    <span key={p.address} className="font-mono whitespace-nowrap">
+                      {p.pair.replace('MEX/', '')} {hhmm(p.ts * 1000)}
+                    </span>
+                  ))}
+                  {model && <span>{model.failed} failed calls on MEX/WEGLD</span>}
+                </span>
               ) : null
             }
           />
@@ -223,7 +302,7 @@ export function MexPauseTimeline({ event }: Props) {
                 {dexHasPrice ? (
                   <span className="font-mono text-text-primary">{formatTokenPrice(event.mex_price_mex_economics)}</span>
                 ) : (
-                  'no price while the pool is frozen'
+                  'no price while paused'
                 )}
               </>
             }
@@ -235,31 +314,15 @@ export function MexPauseTimeline({ event }: Props) {
               </span>
             )}
           </StatTile>
-          <StatTile
-            label="Hatom HMEX supply"
-            value={hmexPct != null ? `+${hmexPct.toFixed(0)}%` : '—'}
-            sub={
-              <>
-                {event.hmex_supply != null && event.hmex_prev_supply != null && (
-                  <span className="font-mono">
-                    {(event.hmex_prev_supply / 1e12).toFixed(1)}T → {(event.hmex_supply / 1e12).toFixed(1)}T ·{' '}
-                  </span>
-                )}
-                MEX went into Hatom lending, not out through the pool
-              </>
-            }
-          />
         </div>
 
         {/* ---------- chart ---------- */}
         {model && (
           <div className="bg-bg-elevated border border-border rounded-md p-3">
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-2">
-              <span className="text-[10px] text-text-muted uppercase tracking-widest">
-                MEX price · hourly · log scale
-              </span>
+              <span className="text-[10px] text-text-muted uppercase tracking-widest">MEX price · hourly · log scale</span>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <Legend />
+                <Legend showBorrows={!!lead} />
                 <RangeToggle
                   value={range}
                   onChange={(r) => {
@@ -275,10 +338,10 @@ export function MexPauseTimeline({ event }: Props) {
               )}
             </div>
             <p className="mt-2 pt-2 border-t border-border-subtle text-[11px] text-text-secondary leading-relaxed">
-              Price is CoinGecko's hourly series, because no onchain pool prices MEX any more. The two
-              rows below the chart are every transaction sent to the pool contract.
-              {model.okAfter > 0 && ` ${model.okAfter} calls after the pause still succeeded.`} The
-              reason for the pause is not recorded onchain.
+              Price is CoinGecko's hourly series, because no onchain pool prices MEX while it is paused.
+              {lead ? ' The top row marks each Hatom EGLD borrow by the collateral wallets, sized by amount; the rows below it are every transaction sent to the MEX/WEGLD pool.' : ' The rows below the chart are every transaction sent to the pool contract.'}
+              {model.okAfter > 0 && ` ${model.okAfter} calls after the pause still succeeded.`}{' '}
+              {inc ? 'Everything here is read from chain data; the cause is for Hatom’s incident report to confirm.' : 'The reason for the pause is not recorded onchain.'}
             </p>
           </div>
         )}
@@ -312,9 +375,15 @@ function RangeToggle({ value, onChange }: { value: 'zoom' | 'all'; onChange: (v:
   )
 }
 
-function Legend() {
+function Legend({ showBorrows = false }: { showBorrows?: boolean }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono text-text-secondary">
+      {showBorrows && (
+        <span className="flex items-center gap-1.5">
+          <span aria-hidden className="inline-block w-2 h-2.5 rounded-sm" style={{ background: 'var(--color-severity-high)' }} />
+          Hatom borrow
+        </span>
+      )}
       <span className="flex items-center gap-1.5">
         <span aria-hidden className="inline-block w-4 h-[2px] rounded" style={{ background: 'var(--color-accent-cyan)' }} />
         price
@@ -417,13 +486,22 @@ function TimelineChart({
 
   const callsNear = hp ? calls.filter((c) => Math.abs(c.ms - hp[0]) <= 30 * 60_000) : []
   const failedNear = callsNear.filter((c) => c.status === 'fail').length
+  const borrowedNear = hp ? model.borrows.filter((b) => Math.abs(b.ms - hp[0]) <= 30 * 60_000).reduce((acc, b) => acc + b.egld, 0) : 0
   const tipW = 196
   const tipLeft = hp ? (x(hp[0]) > width - tipW - 24 ? x(hp[0]) - tipW - 12 : x(hp[0]) + 12) : 0
 
-  const rows: Array<['withdraw' | 'swap', string, number]> = [
-    ['withdraw', 'Withdrawals', 26],
-    ['swap', 'Swaps', 52],
-  ]
+  const hasBorrows = model.borrows.length > 0
+  const rows: Array<['withdraw' | 'swap', string, number]> = hasBorrows
+    ? [
+        ['withdraw', width < 560 ? 'Withdrawals' : 'MEX/WEGLD withdrawals', 58],
+        ['swap', width < 560 ? 'Swaps' : 'MEX/WEGLD swaps', 84],
+      ]
+    : [
+        ['withdraw', 'Withdrawals', 26],
+        ['swap', 'Swaps', 52],
+      ]
+  const borrowMax = Math.max(1, ...model.borrows.map((b) => b.egld))
+  const borrowTotal = model.borrows.reduce((acc, b) => acc + b.egld, 0)
 
   return (
     <div className="relative">
@@ -518,6 +596,24 @@ function TimelineChart({
           Paused {hhmm(pauseMs)}
         </text>
 
+        {model.otherPauses
+          .filter((p) => p.ms >= t0 && p.ms <= t1)
+          .map((p) => (
+            <line
+              key={p.pair}
+              x1={x(p.ms)}
+              x2={x(p.ms)}
+              y1={PAD.top - 14}
+              y2={H_CHART + H_RUG - 2}
+              stroke="var(--color-severity-critical)"
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              opacity={0.6}
+            >
+              <title>{`${p.pair} paused ${hhmm(p.ms)} UTC`}</title>
+            </line>
+          ))}
+
         <circle cx={peakX} cy={y(peak[1])} r={3.5} fill="var(--color-bg-elevated)" stroke="var(--color-accent-cyan)" strokeWidth={1.5} />
         <text
           x={peakNearPause ? peakX + 4 : peakX}
@@ -539,6 +635,24 @@ function TimelineChart({
 
         {/* rug: the pool's own transactions */}
         <g transform={`translate(0, ${H_CHART})`}>
+          {hasBorrows && (
+            <g>
+              <line x1={PAD.left} x2={width - PAD.right} y1={30} y2={30} stroke="var(--color-border-subtle)" />
+              <text x={PAD.left + 4} y={12} fontSize={10} fill="var(--color-text-secondary)">
+                Hatom EGLD borrows · {formatEgldBare(borrowTotal)} EGLD
+              </text>
+              {model.borrows
+                .filter((b) => b.ms >= t0)
+                .map((b, i) => {
+                  const h = 4 + 12 * Math.sqrt(b.egld / borrowMax)
+                  return (
+                    <rect key={`b-${i}`} x={x(b.ms) - 1.5} y={30 - h} width={3} height={h} rx={1} fill="var(--color-severity-high)">
+                      <title>{`${hhmm(b.ms)} UTC · borrowed ${formatEgldBare(b.egld)} EGLD`}</title>
+                    </rect>
+                  )
+                })}
+            </g>
+          )}
           {rows.map(([k, label, ry]) => {
             const failedHere = calls.filter((c) => c.kind === k && c.status === 'fail' && c.ms > pauseMs).length
             return (
@@ -546,7 +660,7 @@ function TimelineChart({
                 <line x1={PAD.left} x2={width - PAD.right} y1={ry} y2={ry} stroke="var(--color-border-subtle)" />
                 <text x={PAD.left + 4} y={ry - 8} fontSize={10} fill="var(--color-text-secondary)">
                   {label}
-                  {failedHere > 0 && ` · ${failedHere} failed since pause`}
+                  {failedHere > 0 && ` · ${failedHere} failed${width < 560 ? '' : ' since pause'}`}
                 </text>
                 {calls
                   .filter((c) => c.kind === k)
@@ -599,6 +713,11 @@ function TimelineChart({
               </>
             )}
           </div>
+          {borrowedNear > 0 && (
+            <div className="mt-0.5 text-[11px]" style={{ color: 'var(--color-severity-high)' }}>
+              Hatom borrows this hour <span className="font-mono">{formatEgldBare(borrowedNear)} EGLD</span>
+            </div>
+          )}
         </div>
       )}
     </div>

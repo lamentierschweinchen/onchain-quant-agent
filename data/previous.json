@@ -3439,5 +3439,49 @@
       "weeks_tracked": 2,
       "first_seen": "2026-09-07"
     }
-  ]
+  ],
+  "hatom_mex_incident": {
+    "statement": {
+      "source": "https://x.com/HatomProtocol/status/2099605029715906573",
+      "author": "Hatom Labs (@HatomProtocol)",
+      "published_utc": "2026-09-14T21:03:42Z",
+      "summary": "Calls it a MEX money market incident. User funds remain safe and the incident is contained after a coordinated response with the xExchange team. A recovery plan, built with independent MultiversX DeFi experts, is designed to unwind the incident-driven activity without losses to users or bad debt for the protocol. The MEX money market and the MEX/EGLD, MEX/USH and MEX/USDC pairs remain paused and are expected to resume by Wednesday after recovery and safety checks. No user action required. A detailed incident report is promised; the statement gives no cause.",
+      "resume_expected": "by Wednesday 2026-09-16 (stated)"
+    },
+    "pauses": [
+      {
+        "ts": 1789326572,
+        "pair": "MEX/USDC",
+        "address": "erd1qqqqqqqqqqqqqpgqv0c22xku4vd5ugfh0u53tqufmdkqx5nv2jps8vsccx",
+        "tx": "3a9dd0096d3707e2e0dda3017016fe06ef21d9d86a3731090eee7c718f7eb6c6",
+        "status": "success"
+      },
+      {
+        "ts": 1789326395,
+        "pair": "MEX/USH",
+        "address": "erd1qqqqqqqqqqqqqpgqyghvzwv9qyzq95vwhvk4tafg945r8hcf2jps0x7me7",
+        "tx": "fbb8cc4b1768a38b444cb6b6e82d6dbeaedf7c0606b242862164d2d290311ac0",
+        "status": "success"
+      },
+      {
+        "ts": 1789317780,
+        "pair": "MEX/WEGLD",
+        "address": "erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2",
+        "tx": "b0decfa361def3e21753a1a1f59df1f3a09f7e256a6332e366ba9d4e5f2a8253",
+        "status": "success"
+      }
+    ],
+    "wallets": {
+      "A": {
+        "address": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+        "mex_deposited": 322442096766.00635,
+        "egld_borrowed": 73600.0036480807
+      },
+      "B": {
+        "address": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+        "mex_deposited": 2266180451.9928765,
+        "egld_borrowed": 551.82148821371
+      }
+    }
+  }
 }

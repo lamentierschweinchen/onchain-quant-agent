@@ -801,6 +801,9 @@ if _cgp:
     O["xexchange"]["mex_price_source"]="coingecko (mex/economics price=0 after the MEX/WEGLD pause)"
     O["xexchange"]["mex_mcap"]=_cgp[-1]*float(D["mex_economics"]["circulatingSupply"])
     O["z"]["mex"]=z("mex_price_usd",_cgp[-1])
+# Hatom's MEX money market incident (chain reconstruction + Hatom's statement), see
+# scripts/enrich_run25_hatom_incident.py
+O["mex_event"]["incident"]=D.get("dash_hatom_incident")
 # like-for-like venue: remove MEX/WEGLD from the PRIOR base (it is absent now)
 O["bid"]["prev_pooltvl_ex_mex_usd"]=prev["xexchange"]["pool_tvl_usd"]-_pmex_tvl
 O["bid"]["prev_pooltvl_ex_mex_egld"]=(prev["xexchange"]["pool_tvl_usd"]-_pmex_tvl)/pp

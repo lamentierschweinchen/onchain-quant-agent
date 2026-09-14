@@ -5676,7 +5676,7 @@
           "COINGECKO /coins/{id}/tickers?depth=true RETURNS cost_to_move_up_usd / cost_to_move_down_usd PER VENUE (\u00b12% depth). /market_chart?interval=daily total_volumes gives rolling 24h volume per day. Together they are the first exchange-side instrument in the pipeline: 7d spot volume and venue depth."
         ],
         "data_gaps": [
-          "The reason for the MEX/WEGLD pause is not on-chain. The model records the call, sender, reserves and failed calls.",
+          "Hatom has not yet published the cause of the MEX money market incident; its detailed report is pending. The chain reconstruction covers the pauses, the 20 MEX deposits and 19 EGLD borrows by the two collateral wallets, and the 15 liquidations; where the borrowed EGLD finally went is only partly traced.",
           "Withdraw amounts on provider contracts are not decoded (withdraw carries no amount argument), so the matured-queue attribution of the staked drop rests on timing and call counts.",
           "31,154 EGLD of desk outbound remains unattributed after two hops.",
           "Order-book depth is one snapshot with no prior; trend claims wait a week.",
@@ -5690,7 +5690,8 @@
           "DAY-SLICED BINANCE HOT-WALLET SCAN in the main pass: 772 txs, zero capped slices, no follow-up needed.",
           "TWO-HOP BACK-TRACE OF FEEDERS resolved run #24's largest unattributed feeder in one pass (Bybit + Gate.io).",
           "PAGED ERROR RECORDING made the 429 damage recoverable: the collector logged two failed wave legs as errors, and followup_run25.py re-paged them and rebuilt the four-week trace.",
-          "CROSS-CHECKING IMPLAUSIBLE NUMBERS BEFORE WRITING: a 177,587 EGLD provider exit (identity rename), a +44% Hatom Lending move (HMEX priced off a frozen pool) and a 46.8% compound rate from 4 providers (rate-limited sample) were all caught before publication."
+          "CROSS-CHECKING IMPLAUSIBLE NUMBERS BEFORE WRITING: a 177,587 EGLD provider exit (identity rename), a +44% Hatom Lending move (HMEX priced off a frozen pool) and a 46.8% compound rate from 4 providers (rate-limited sample) were all caught before publication.",
+          "TAKING AN EXTERNAL PROTOCOL STATEMENT AS A POINTER, NOT A SOURCE OF FACTS. Hatom's post named the incident but no mechanism; tracing the MEX market's callers found the collateral wallets, their borrows to the minute, and the MEX they bought on xExchange, so the report states what the chain shows and leaves the cause to Hatom's report."
         ],
         "what_needs_improvement": [
           "RUNNING delegator_behavior.py CONCURRENTLY WITH THE COLLECTOR tripped the shared rate limit. It damaged the wave trace and silently halved the reward sample. Scripts must run sequentially, and delegator_behavior.py needs the paged_txs error guard.",
@@ -5700,7 +5701,7 @@
           "THE BILATERAL INVERSE RULE has been partly mechanical all along: dollar collateral rises in EGLD terms when EGLD falls. The behavioural test is the HEGLD leg, and it failed this week."
         ],
         "surprising_findings": [
-          "xExchange paused its #2 deepest pool in the middle of a MEX spike: the price was already 1.7x at 15:00 UTC, the pool froze at 16:43, and MEX peaked near 7.5x after.",
+          "Hatom's MEX money market incident: one wallet bought 220B MEX on xExchange, posted 322B MEX (8% of circulating) as Hatom collateral and borrowed 73,600 EGLD in 74 minutes; xExchange paused MEX/WEGLD six minutes after the last draw and two more MEX pools by 19:09. Hatom says funds are safe and a recovery plan will unwind it.",
           "HMEX supply rose 672% in the pause week: MEX went into Hatom rather than out through the pool.",
           "The compound rate fell from the series high to the series low in one week (62.05% -> 49.44%), and none of the retail claims were sold.",
           "Staked EGLD fell 156,538 while delegation TVL rose 35,617.",
@@ -5720,7 +5721,10 @@
         "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97 - xExchange router owner/admin, sent the pause (added under defi_xexchange)",
         "erd1ytpenkzjucgq7mxu4l6u8v72vfxxlux2237925glajhs4dj3u8asue9arn - relabelled Bybit/Gate.io->OTC Desk Feeder after a two-hop back-trace",
         "Four secondary JEXchange routers added under defi_jexchange; new desk feeder/router wallets >15K EGLD labelled from this week's hub trace",
-        "Provider identity renames (not new addresses): cslabsio -> chainstatelabs (erd1...phllllsndz99p), kevinlallement -> dinovox (erd1...dlllllszljs2d)"
+        "Provider identity renames (not new addresses): cslabsio -> chainstatelabs (erd1...phllllsndz99p), kevinlallement -> dinovox (erd1...dlllllszljs2d)",
+        "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq - Hatom MEX incident wallet A: 322.4B MEX deposited, 73,600 EGLD borrowed (added under whales/incident)",
+        "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk - Hatom MEX incident wallet B: 2.3B MEX deposited, 552 EGLD borrowed",
+        "xExchange Compose Tasks contract and the MEX/USH, MEX/USDC pairs (both paused 2026-09-13) added under defi_xexchange"
       ],
       "action_items_completed": [
         "RESOLVE WAVE #4 - resolved as predicted: UPbit tranche 372,000, the programme is continuous.",
@@ -6011,7 +6015,7 @@
         "pre_committed_test_for_next_run": "MEX PAIR: still paused at run #27 = structural; resumed with MEX < 8.2e-07 = squeeze incident. DELIVERY-PRICE-RELEVANCE: delivery >300,000 and EGLD more than 5pp behind BTC = price-relevant supply. COMPOUND: <52% = regime switch; >=55% = one-week reaction. STAKED RATIO: <46.30% by run #27 = exits continuing."
       },
       "recommendations_for_next_run": [
-        "RESOLVE THE MEX PAIR STATE. Query erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 for resume/setState calls and successful removeLiquidity; scan the router owner erd1ss6u80ruas2p... for pause calls on OTHER pairs this window; track HMEX supply and MEX on CoinGecko vs /tokens.",
+        "RESOLVE mex-incident-recovery. Resume calls on MEX/WEGLD (erd1...jpsp6shh2), MEX/USH (erd1...jps0x7me7), MEX/USDC (erd1...jps8vsccx) and Hatom's MEX market; Hatom's incident report; the fate of incident wallet A's 73,600 EGLD debt and 322B MEX collateral; where the borrowed EGLD went beyond xExchange compose-tasks and the 2,035 EGLD sent out at 16:57.",
         "BUILD THE ORDER-BOOK SERIES. Store this week's per-venue \u00b12% depth and 7d spot volume in previous.json and report the WoW change for Binance and Bybit, the two delivery venues.",
         "SEED THE LIQUID-STAKING SWEEP FROM LAST WEEK'S PROTOCOLS so a known LSD cannot drop out of the table.",
         "ADD A 429 GUARD TO delegator_behavior.py (error-vs-empty distinction plus exponential backoff) and run it after the collector, never alongside.",

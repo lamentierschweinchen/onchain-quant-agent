@@ -574,6 +574,34 @@ export interface MexPairEvent {
   /** [epoch ms, price usd, rolling 24h volume usd] */
   price_series_hourly?: Array<[number, number, number]>
   pair_calls?: PairCall[]
+  incident?: MexIncident
+}
+
+/** Hatom MEX money market incident: the protocol's statement plus a chain reconstruction. */
+export interface MexIncident {
+  statement: {
+    source: string
+    author: string
+    published_utc: string
+    summary: string
+    resume_expected?: string
+  }
+  pauses: Array<{ ts: number; pair: string; address: string; tx: string; status: string }>
+  liquidations_on_mex_market?: number
+  mex_market_last_call_ts?: number | null
+  wallets: Record<
+    string,
+    {
+      address: string
+      deposits: Array<{ ts: number; mex: number }>
+      borrows: Array<{ ts: number; egld: number }>
+      xexchange_buys?: Array<{ ts: number; egld_in: number; mex_out: number }>
+      mex_deposited: number
+      egld_borrowed: number
+      egld_spent_buying_mex?: number
+      mex_bought?: number
+    }
+  >
 }
 
 export interface XExchangeSummary {

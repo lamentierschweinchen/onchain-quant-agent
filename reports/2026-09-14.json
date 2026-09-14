@@ -3,7 +3,7 @@
   "report_date": "2026-09-14",
   "period_start": "2026-09-07",
   "period_end": "2026-09-14",
-  "generated_at": "2026-09-14T20:28:57.679972Z",
+  "generated_at": "2026-09-14T21:19:41.752277Z",
   "egld_price_usd": 4.14,
   "btc_price_usd": 78460,
   "eth_price_usd": 2504.91,
@@ -63,7 +63,7 @@
   {
    "category": "defi",
    "severity": "critical",
-   "finding": "XEXCHANGE PAUSED ITS MEX/WEGLD POOL IN THE MIDDLE OF A SEVENFOLD MEX SPIKE. The pair contract erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 - last week the #2 deepest pool on the venue at $442,977 - received a `pause` call at 2026-09-13 16:43 UTC from the wallet that owns the xExchange router. It still holds 191.2B MEX and 141,281 WEGLD, and 172 transactions against it have failed since, 116 of them removeLiquidity attempts. On CoinGecko's hourly series MEX was already moving before the pause: 4.08e-07 through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm, and is 1.82e-06 now (+357% WoW). The spike did not follow the pause; the pause came about 1.7 hours after the price had already started to move. Hatom's HMEX supply rose 672% in the same week. The on-chain venue for MEX is frozen, the price is being set off-chain, and /mex/economics now reports MEX at $0. The reason for the pause is not visible on-chain."
+   "finding": "HATOM'S MEX MONEY MARKET HAD AN INCIDENT, AND XEXCHANGE PAUSED THREE MEX POOLS TO CONTAIN IT. On Sep 13, while MEX was rising on xExchange, one wallet (erd10fe5lv5v...fuqq) spent 85,200 EGLD buying 220B MEX through xExchange, deposited 322B MEX (8.1% of circulating supply) into Hatom's MEX market as collateral (HMEX supply +672% on the week), and borrowed 73,600 EGLD from Hatom's EGLD market in 11 draws between 15:23 and 16:37 UTC. The xExchange router owner paused MEX/WEGLD at 16:43, six minutes after the last draw, then MEX/USH at 19:06 and MEX/USDC at 19:09. Hatom's statement (Sep 14, 21:03 UTC) says user funds are safe, the incident is contained, and a recovery plan will unwind the incident-driven activity without user losses or bad debt; the MEX market and the three pairs should resume by Wednesday. Hatom has not stated a cause yet. MEX is still +357% on the week at 1.82e-06 (CoinGecko), the paused MEX/WEGLD pool holds 191.2B MEX and 141,281 WEGLD, and 172 calls against it failed in the week."
   },
   {
    "category": "whale",
@@ -1522,7 +1522,7 @@
     ]
    }
   },
-  "analysis": "WAVE #4 CONFIRMED, AND THE RESERVOIR BEHIND THE DESKS IS STILL FULL. UPbit fed 372,000 EGLD, the fourth straight tranche above 290,000, and the desks delivered 401,353 one-way on 893,299 gross. The desk balance moved 96,114 -> 56,596. That is a pass-through float, not an inventory: the UPbit wallet feeding it still holds 1,044,107 EGLD, roughly eighteen times the desk balance. z=+1.07sigma on the net series, the second-largest week in tracking behind last week's record.\n\nWHERE IT WENT. Binance.com +185,204 (383,961 out, 198,758 back), Bybit +111,568, Gate.io +37,955, plus the Unknown Whale I operator and its router. UPbit took 40,000 back from the desks. 31,154 EGLD of outbound is unattributed after two hops. Circularity was 55%, below the 63-80% band. That is the run #21 straddle signature, and the four-week window netting confirms it: 1,336,721 one-way over Aug 17 - Sep 14 against 1,462,317 from the weekly frames.\n\nWHO FEEDS IT. By parent venue this week: UPbit 372,000, Binance-parented feeders 215,762, Bybit-parented 130,414, unattributed 108,047. Run #24's open question about the 196,492 EGLD feeder is answered by the back-trace. erd1ytpenkzj (nonce 206, balance 0.00) received 367,351 EGLD from Bybit and 112,212 from Gate.io over the wave. It is a Bybit/Gate.io pass-through, not a fifth venue. Of the eight largest unlabelled feeders, seven resolve to Binance, Bybit or Gate.io within two hops, and the eighth to the Unknown Whale I operator. The feed side and the delivery side are the same four exchanges.\n\nBINANCE. Day-sliced over the full seven days (772 outbound transactions, no capped slice), the hot wallet sent 218,264 EGLD to known OTC desk feeders and routers. That is the third consecutive week above the 50,000 line run #24's watch item named, so Binance is a standing funding line for the pipeline. The same wallet sent 142,319 to staking custody, which has now risen two weeks running to 3,493,535. Custody refills and the desk feed run side by side, so the custody balance should no longer be read as a supply signal.\n\nTIERS. On the common-address basis mega +120,606, large +140,675, mid -90,533. Holding each wallet in its prior tier (run #14 guard): mega +120,606, large +33,943, mid +12,554. The mega figure is the Binance custody refill. The raw mid-tier loss is reclassification: an unlabelled wallet (erd1ygqnssmn...) grew 39,294 -> 106,732 and left the tier. Once that is netted out every tier is slightly positive. Inside the large tier two contract moves offset each other: the xExchange WEGLD contract +100,133 EGLD and the Hatom EGLD money market -89,886 EGLD, consistent with EGLD being wrapped to trade on WEGLD/USDC and withdrawn from lending in the same week.\n\nDEMAND - THE FIRST EXCHANGE-SIDE READING. Run #24's top recommendation was an instrument on the far side of the order book, and a crude one now exists. Across every venue CoinGecko tracks, EGLD has $1,738,275 of bids and $1,604,647 of asks within 2% of mid, on $6,785,451 of 24h volume. Binance (4 pairs) shows $103,119 of bids and $48,876 of asks, Bybit $21,874 and $8,959. Seven-day spot volume was 17.70M EGLD, so this week's one-way delivery was 2.3% of it. That is the scale the model has been missing. The pipeline is a persistent, directional ~2% of turnover, not a flood, and a 17% up-week through a record delivery is less paradoxical at that scale than run #24 made it sound. Bids sit deeper than asks on both of the pipeline's destination venues. That is one snapshot and cannot yet be called a trend; it is the baseline for next week's reading.\n\nThe on-chain demand instruments: withdrawal breadth 47 ex-pipeline recipients took 397,124 EGLD, with the top two at 32% of value, under the 50% line, so run #24's concentration test resolves on the genuine-dispersal branch. DEX volume in EGLD more than doubled, but 98% of it is WEGLD/USDC in a falling week, which is selling volume. The identifiable-bid proxies stayed at zero for a fifth week."
+  "analysis": "WAVE #4 CONFIRMED, AND THE RESERVOIR BEHIND THE DESKS IS STILL FULL. UPbit fed 372,000 EGLD, the fourth straight tranche above 290,000, and the desks delivered 401,353 one-way on 893,299 gross. The desk balance moved 96,114 -> 56,596. That is a pass-through float, not an inventory: the UPbit wallet feeding it still holds 1,044,107 EGLD, roughly eighteen times the desk balance. z=+1.07sigma on the net series, the second-largest week in tracking behind last week's record.\n\nWHERE IT WENT. Binance.com +185,204 (383,961 out, 198,758 back), Bybit +111,568, Gate.io +37,955, plus the Unknown Whale I operator and its router. UPbit took 40,000 back from the desks. 31,154 EGLD of outbound is unattributed after two hops. Circularity was 55%, below the 63-80% band. That is the run #21 straddle signature, and the four-week window netting confirms it: 1,336,721 one-way over Aug 17 - Sep 14 against 1,462,317 from the weekly frames.\n\nWHO FEEDS IT. By parent venue this week: UPbit 372,000, Binance-parented feeders 215,762, Bybit-parented 130,414, unattributed 108,047. Run #24's open question about the 196,492 EGLD feeder is answered by the back-trace. erd1ytpenkzj (nonce 206, balance 0.00) received 367,351 EGLD from Bybit and 112,212 from Gate.io over the wave. It is a Bybit/Gate.io pass-through, not a fifth venue. Of the eight largest unlabelled feeders, seven resolve to Binance, Bybit or Gate.io within two hops, and the eighth to the Unknown Whale I operator. The feed side and the delivery side are the same four exchanges.\n\nBINANCE. Day-sliced over the full seven days (772 outbound transactions, no capped slice), the hot wallet sent 218,264 EGLD to known OTC desk feeders and routers. That is the third consecutive week above the 50,000 line run #24's watch item named, so Binance is a standing funding line for the pipeline. The same wallet sent 142,319 to staking custody, which has now risen two weeks running to 3,493,535. Custody refills and the desk feed run side by side, so the custody balance should no longer be read as a supply signal.\n\nTIERS. On the common-address basis mega +120,606, large +140,675, mid -90,533. Holding each wallet in its prior tier (run #14 guard): mega +120,606, large +33,943, mid +12,554. The mega figure is the Binance custody refill. The raw mid-tier loss is reclassification: an unlabelled wallet (erd1ygqnssmn...) grew 39,294 -> 106,732 and left the tier. Once that is netted out every tier is slightly positive. Inside the large tier two contract moves offset each other: the xExchange WEGLD contract +100,133 EGLD and the Hatom EGLD money market -89,886 EGLD. 74,152 EGLD of that Hatom outflow is the two MEX-collateral wallets' borrowing during the incident.\n\nDEMAND - THE FIRST EXCHANGE-SIDE READING. Run #24's top recommendation was an instrument on the far side of the order book, and a crude one now exists. Across every venue CoinGecko tracks, EGLD has $1,738,275 of bids and $1,604,647 of asks within 2% of mid, on $6,785,451 of 24h volume. Binance (4 pairs) shows $103,119 of bids and $48,876 of asks, Bybit $21,874 and $8,959. Seven-day spot volume was 17.70M EGLD, so this week's one-way delivery was 2.3% of it. That is the scale the model has been missing. The pipeline is a persistent, directional ~2% of turnover, not a flood, and a 17% up-week through a record delivery is less paradoxical at that scale than run #24 made it sound. Bids sit deeper than asks on both of the pipeline's destination venues. That is one snapshot and cannot yet be called a trend; it is the baseline for next week's reading.\n\nThe on-chain demand instruments: withdrawal breadth 47 ex-pipeline recipients took 397,124 EGLD, with the top two at 32% of value, under the 50% line, so run #24's concentration test resolves on the genuine-dispersal branch. DEX volume in EGLD more than doubled, but 98% of it is WEGLD/USDC in a falling week, which is selling volume. The identifiable-bid proxies stayed at zero for a fifth week."
  },
  "staking_intelligence": {
   "summary": {
@@ -5628,10 +5628,1033 @@
       "fn": "swapTokensFixedInput",
       "status": "fail"
      }
-    ]
+    ],
+    "incident": {
+     "statement": {
+      "source": "https://x.com/HatomProtocol/status/2099605029715906573",
+      "author": "Hatom Labs (@HatomProtocol)",
+      "published_utc": "2026-09-14T21:03:42Z",
+      "summary": "Calls it a MEX money market incident. User funds remain safe and the incident is contained after a coordinated response with the xExchange team. A recovery plan, built with independent MultiversX DeFi experts, is designed to unwind the incident-driven activity without losses to users or bad debt for the protocol. The MEX money market and the MEX/EGLD, MEX/USH and MEX/USDC pairs remain paused and are expected to resume by Wednesday after recovery and safety checks. No user action required. A detailed incident report is promised; the statement gives no cause.",
+      "resume_expected": "by Wednesday 2026-09-16 (stated)"
+     },
+     "pauses": [
+      {
+       "ts": 1789326572,
+       "pair": "MEX/USDC",
+       "address": "erd1qqqqqqqqqqqqqpgqv0c22xku4vd5ugfh0u53tqufmdkqx5nv2jps8vsccx",
+       "tx": "3a9dd0096d3707e2e0dda3017016fe06ef21d9d86a3731090eee7c718f7eb6c6",
+       "status": "success"
+      },
+      {
+       "ts": 1789326395,
+       "pair": "MEX/USH",
+       "address": "erd1qqqqqqqqqqqqqpgqyghvzwv9qyzq95vwhvk4tafg945r8hcf2jps0x7me7",
+       "tx": "fbb8cc4b1768a38b444cb6b6e82d6dbeaedf7c0606b242862164d2d290311ac0",
+       "status": "success"
+      },
+      {
+       "ts": 1789317780,
+       "pair": "MEX/WEGLD",
+       "address": "erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2",
+       "tx": "b0decfa361def3e21753a1a1f59df1f3a09f7e256a6332e366ba9d4e5f2a8253",
+       "status": "success"
+      }
+     ],
+     "mex_money_market_calls": [
+      {
+       "ts": 1789267549,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1mmh2j5y8esv2tmmyeau3hr4xa2u2te3zc3j9wumn3v5vm8uvsczqnucj5l",
+       "status": "success"
+      },
+      {
+       "ts": 1789278352,
+       "fn": "borrow",
+       "sender": "erd1gdhvuzj5kdptayyalc59mdrf5y97mtzu30eg0xqreyp7mh46200s3t7dqp",
+       "status": "success"
+      },
+      {
+       "ts": 1789279353,
+       "fn": "repayBorrow",
+       "sender": "erd1ufrz6jqgwrml0qt79ghww4wtnskum9hzh406ca7xgs80f742e8vqvkwpc5",
+       "status": "success"
+      },
+      {
+       "ts": 1789280342,
+       "fn": "mint",
+       "sender": "erd1wpkucm42uzkldem2g9m4rqkxk0myvwr0lqlssfc7lp7ml284jzfqmphphw",
+       "status": "success"
+      },
+      {
+       "ts": 1789282797,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789287713,
+       "fn": "borrow",
+       "sender": "erd1gdhvuzj5kdptayyalc59mdrf5y97mtzu30eg0xqreyp7mh46200s3t7dqp",
+       "status": "success"
+      },
+      {
+       "ts": 1789298636,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789299153,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789300321,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789300651,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789301185,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789302287,
+       "fn": "repayBorrow",
+       "sender": "erd1nw6afl5zmcdwkn3u6teqpx7dwpk4l9sjfsy6gzpwyfnjxqhrm0psy59d8f",
+       "status": "success"
+      },
+      {
+       "ts": 1789306699,
+       "fn": "borrow",
+       "sender": "erd1gdhvuzj5kdptayyalc59mdrf5y97mtzu30eg0xqreyp7mh46200s3t7dqp",
+       "status": "success"
+      },
+      {
+       "ts": 1789311908,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789312107,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789312303,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789312509,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789312686,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789312721,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789312860,
+       "fn": "borrow",
+       "sender": "erd1hhew85wlr0xlcygpc04ak7v8gpm0ml7sps0x45xc8e5yygct09ts8j383a",
+       "status": "success"
+      },
+      {
+       "ts": 1789312901,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789312928,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789313131,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789313332,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789313510,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789313689,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789313752,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789313870,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789314102,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "status": "success"
+      },
+      {
+       "ts": 1789314304,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789314405,
+       "fn": "mint",
+       "sender": "erd1hktwapmefxu56z5p3usfj5rf3pp47pa8g705duuesthgklxxe2zq53pf57",
+       "status": "success"
+      },
+      {
+       "ts": 1789314492,
+       "fn": "redeem",
+       "sender": "erd1c20k3hh56uhr6rm64fcrjrvtk4uykur3nqfc6ns3g2n6m68yym3q0nwdxs",
+       "status": "success"
+      },
+      {
+       "ts": 1789314549,
+       "fn": "repayBorrow",
+       "sender": "erd1c20k3hh56uhr6rm64fcrjrvtk4uykur3nqfc6ns3g2n6m68yym3q0nwdxs",
+       "status": "success"
+      },
+      {
+       "ts": 1789314692,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789314718,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789314864,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789315283,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789315596,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789315621,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789315843,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789315882,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789315935,
+       "fn": "liquidateBorrow",
+       "sender": "erd10y82srn6l7hzf7jnsx40t8l7c2p8de7we9cpymr04qsw7uhp9nps4k5k0u",
+       "status": "success"
+      },
+      {
+       "ts": 1789316117,
+       "fn": "borrow",
+       "sender": "erd1ufrz6jqgwrml0qt79ghww4wtnskum9hzh406ca7xgs80f742e8vqvkwpc5",
+       "status": "success"
+      },
+      {
+       "ts": 1789316236,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789316307,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "status": "success"
+      },
+      {
+       "ts": 1789316433,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "status": "success"
+      },
+      {
+       "ts": 1789316461,
+       "fn": "redeem",
+       "sender": "erd1wrgtqekuzc29apvsa4s3mxeusnm625ws3leks7pekafw6qgqs6wqyj4qmy",
+       "status": "success"
+      },
+      {
+       "ts": 1789316562,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789316640,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1y6msnngts27cspd6n8rrccm7dqr8dk2s92d64926ktkmv6vm3uqqjr5q6g",
+       "status": "success"
+      },
+      {
+       "ts": 1789316648,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "status": "success"
+      },
+      {
+       "ts": 1789316703,
+       "fn": "repayBorrow",
+       "sender": "erd149xzn5hh25e5w2l022g53z5za3fv6damnf303k9v0zzsm23kqfds6d6xff",
+       "status": "success"
+      },
+      {
+       "ts": 1789316875,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "status": "success"
+      },
+      {
+       "ts": 1789316977,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789317128,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "status": "success"
+      },
+      {
+       "ts": 1789317372,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789317398,
+       "fn": "redeem",
+       "sender": "erd1mhmvdae3y0qnswrda75ecm5nhnpvewwlj9tzgcdf7ggy6ha5ckwq3xf5mf",
+       "status": "success"
+      },
+      {
+       "ts": 1789317621,
+       "fn": "repayBorrow",
+       "sender": "erd1hhew85wlr0xlcygpc04ak7v8gpm0ml7sps0x45xc8e5yygct09ts8j383a",
+       "status": "success"
+      },
+      {
+       "ts": 1789317798,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "status": "success"
+      },
+      {
+       "ts": 1789318579,
+       "fn": "mintAndEnterMarket",
+       "sender": "erd1q2sgtapnerrq73vd9482gdy0urdeh8av9c7nh00j68qksrxztccsc54jm3",
+       "status": "success"
+      }
+     ],
+     "wallets": {
+      "A": {
+       "address": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+       "deposits": [
+        {
+         "ts": 1789312686,
+         "mex": 10000000.0
+        },
+        {
+         "ts": 1789312901,
+         "mex": 163085054702.40106
+        },
+        {
+         "ts": 1789313752,
+         "mex": 31311849261.196655
+        },
+        {
+         "ts": 1789314304,
+         "mex": 17810059319.006992
+        },
+        {
+         "ts": 1789314692,
+         "mex": 8224439585.673062
+        },
+        {
+         "ts": 1789314864,
+         "mex": 6841037742.478708
+        },
+        {
+         "ts": 1789315283,
+         "mex": 14874585847.973085
+        },
+        {
+         "ts": 1789315596,
+         "mex": 13395687763.754156
+        },
+        {
+         "ts": 1789315882,
+         "mex": 12420251019.624315
+        },
+        {
+         "ts": 1789316236,
+         "mex": 11271975210.28162
+        },
+        {
+         "ts": 1789316562,
+         "mex": 14109528700.129133
+        },
+        {
+         "ts": 1789316977,
+         "mex": 9816171625.995169
+        },
+        {
+         "ts": 1789317372,
+         "mex": 9213973828.812643
+        },
+        {
+         "ts": 1789317798,
+         "mex": 10057482158.679724
+        }
+       ],
+       "borrows": [
+        {
+         "ts": 1789313038,
+         "egld": 9000.00052305681
+        },
+        {
+         "ts": 1789313908,
+         "egld": 6000.00031695351
+        },
+        {
+         "ts": 1789314463,
+         "egld": 5600.00031522685
+        },
+        {
+         "ts": 1789314927,
+         "egld": 6000.000315628859
+        },
+        {
+         "ts": 1789315376,
+         "egld": 6000.0003189317595
+        },
+        {
+         "ts": 1789315680,
+         "egld": 6000.00031543796
+        },
+        {
+         "ts": 1789315944,
+         "egld": 6000.000275336711
+        },
+        {
+         "ts": 1789316367,
+         "egld": 8000.00031677551
+        },
+        {
+         "ts": 1789316623,
+         "egld": 6000.00031561939
+        },
+        {
+         "ts": 1789317057,
+         "egld": 6000.00031831704
+        },
+        {
+         "ts": 1789317430,
+         "egld": 9000.00031679631
+        }
+       ],
+       "xexchange_buys": [
+        {
+         "ts": 1789271946,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789272019,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789291485,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789292067,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789294388,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789296169,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789296207,
+         "egld_in": 0.0,
+         "mex_out": 0.0
+        },
+        {
+         "ts": 1789312069,
+         "egld_in": 1000.0,
+         "mex_out": 5091093645.370149
+        },
+        {
+         "ts": 1789312153,
+         "egld_in": 1000.0,
+         "mex_out": 4989506456.186736
+        },
+        {
+         "ts": 1789312189,
+         "egld_in": 1000.0,
+         "mex_out": 4896508417.843797
+        },
+        {
+         "ts": 1789312222,
+         "egld_in": 1000.0,
+         "mex_out": 4803998348.26805
+        },
+        {
+         "ts": 1789312251,
+         "egld_in": 1000.0,
+         "mex_out": 4708548033.6034565
+        },
+        {
+         "ts": 1789312357,
+         "egld_in": 1000.0,
+         "mex_out": 4582829517.583464
+        },
+        {
+         "ts": 1789312410,
+         "egld_in": 1000.0,
+         "mex_out": 4496985529.338813
+        },
+        {
+         "ts": 1789312441,
+         "egld_in": 1000.0,
+         "mex_out": 4414336583.362509
+        },
+        {
+         "ts": 1789312471,
+         "egld_in": 1000.0,
+         "mex_out": 4340998561.74112
+        },
+        {
+         "ts": 1789312529,
+         "egld_in": 1000.0,
+         "mex_out": 4263666164.765342
+        },
+        {
+         "ts": 1789312555,
+         "egld_in": 1000.0,
+         "mex_out": 4191069803.951998
+        },
+        {
+         "ts": 1789312584,
+         "egld_in": 1000.0,
+         "mex_out": 4116500798.9998455
+        },
+        {
+         "ts": 1789312629,
+         "egld_in": 1000.0,
+         "mex_out": 4058070476.3348074
+        },
+        {
+         "ts": 1789312663,
+         "egld_in": 500.0,
+         "mex_out": 2010215188.4199438
+        },
+        {
+         "ts": 1789313271,
+         "egld_in": 1000.0,
+         "mex_out": 3677823644.6141524
+        },
+        {
+         "ts": 1789313302,
+         "egld_in": 1000.0,
+         "mex_out": 3614772999.1412463
+        },
+        {
+         "ts": 1789313341,
+         "egld_in": 1000.0,
+         "mex_out": 3551858376.225734
+        },
+        {
+         "ts": 1789313448,
+         "egld_in": 1000.0,
+         "mex_out": 3493231855.0419197
+        },
+        {
+         "ts": 1789313478,
+         "egld_in": 1000.0,
+         "mex_out": 3436858794.9114804
+        },
+        {
+         "ts": 1789313516,
+         "egld_in": 1000.0,
+         "mex_out": 3383283069.8915877
+        },
+        {
+         "ts": 1789313552,
+         "egld_in": 1000.0,
+         "mex_out": 3329390128.6173434
+        },
+        {
+         "ts": 1789313586,
+         "egld_in": 1000.0,
+         "mex_out": 3277995481.626562
+        },
+        {
+         "ts": 1789313617,
+         "egld_in": 1100.0,
+         "mex_out": 3546634911.126629
+        },
+        {
+         "ts": 1789313942,
+         "egld_in": 1000.0,
+         "mex_out": 3106000585.381318
+        },
+        {
+         "ts": 1789313976,
+         "egld_in": 1000.0,
+         "mex_out": 3036365824.0744066
+        },
+        {
+         "ts": 1789314015,
+         "egld_in": 1000.0,
+         "mex_out": 2987998742.036329
+        },
+        {
+         "ts": 1789314043,
+         "egld_in": 1000.0,
+         "mex_out": 2934921957.3199883
+        },
+        {
+         "ts": 1789314079,
+         "egld_in": 1000.0,
+         "mex_out": 2891072959.5699453
+        },
+        {
+         "ts": 1789314138,
+         "egld_in": 1000.0,
+         "mex_out": 2853699250.6250043
+        },
+        {
+         "ts": 1789314600,
+         "egld_in": 1000.0,
+         "mex_out": 2786863249.021774
+        },
+        {
+         "ts": 1789314635,
+         "egld_in": 1000.0,
+         "mex_out": 2740909912.0537324
+        },
+        {
+         "ts": 1789314670,
+         "egld_in": 1000.0,
+         "mex_out": 2696666424.597555
+        },
+        {
+         "ts": 1789314738,
+         "egld_in": 1000.0,
+         "mex_out": 2662515824.6052203
+        },
+        {
+         "ts": 1789314786,
+         "egld_in": 500.0,
+         "mex_out": 1316864717.421727
+        },
+        {
+         "ts": 1789314822,
+         "egld_in": 1100.0,
+         "mex_out": 2861657200.4517612
+        },
+        {
+         "ts": 1789315009,
+         "egld_in": 1000.0,
+         "mex_out": 2572474559.7966533
+        },
+        {
+         "ts": 1789315045,
+         "egld_in": 1000.0,
+         "mex_out": 2530620948.8008165
+        },
+        {
+         "ts": 1789315070,
+         "egld_in": 1000.0,
+         "mex_out": 2491646643.0917697
+        },
+        {
+         "ts": 1789315102,
+         "egld_in": 1000.0,
+         "mex_out": 2458672292.65225
+        },
+        {
+         "ts": 1789315128,
+         "egld_in": 1000.0,
+         "mex_out": 2425777997.2291207
+        },
+        {
+         "ts": 1789315159,
+         "egld_in": 1000.0,
+         "mex_out": 2395393406.4024744
+        },
+        {
+         "ts": 1789315409,
+         "egld_in": 1000.0,
+         "mex_out": 2314329619.3215084
+        },
+        {
+         "ts": 1789315434,
+         "egld_in": 1000.0,
+         "mex_out": 2277147960.6461987
+        },
+        {
+         "ts": 1789315467,
+         "egld_in": 1000.0,
+         "mex_out": 2239333341.777089
+        },
+        {
+         "ts": 1789315494,
+         "egld_in": 1000.0,
+         "mex_out": 2216184235.6175385
+        },
+        {
+         "ts": 1789315535,
+         "egld_in": 1000.0,
+         "mex_out": 2187801102.9802837
+        },
+        {
+         "ts": 1789315561,
+         "egld_in": 1000.0,
+         "mex_out": 2160891503.4115367
+        },
+        {
+         "ts": 1789315714,
+         "egld_in": 1000.0,
+         "mex_out": 2136343838.5040216
+        },
+        {
+         "ts": 1789315741,
+         "egld_in": 1000.0,
+         "mex_out": 2107056165.9719884
+        },
+        {
+         "ts": 1789315771,
+         "egld_in": 1000.0,
+         "mex_out": 2080936146.7170947
+        },
+        {
+         "ts": 1789315805,
+         "egld_in": 1000.0,
+         "mex_out": 2053368972.0271764
+        },
+        {
+         "ts": 1789315831,
+         "egld_in": 1000.0,
+         "mex_out": 2027924788.1154945
+        },
+        {
+         "ts": 1789315854,
+         "egld_in": 1000.0,
+         "mex_out": 2014621108.2885387
+        },
+        {
+         "ts": 1789316055,
+         "egld_in": 1000.0,
+         "mex_out": 1936327899.5489671
+        },
+        {
+         "ts": 1789316085,
+         "egld_in": 1000.0,
+         "mex_out": 1909079109.6012218
+        },
+        {
+         "ts": 1789316112,
+         "egld_in": 1000.0,
+         "mex_out": 1885010012.682231
+        },
+        {
+         "ts": 1789316139,
+         "egld_in": 1000.0,
+         "mex_out": 1862448240.99473
+        },
+        {
+         "ts": 1789316174,
+         "egld_in": 1000.0,
+         "mex_out": 1842294980.6146572
+        },
+        {
+         "ts": 1789316207,
+         "egld_in": 1000.0,
+         "mex_out": 1836814966.8398128
+        },
+        {
+         "ts": 1789316412,
+         "egld_in": 1000.0,
+         "mex_out": 1856244759.247541
+        },
+        {
+         "ts": 1789316440,
+         "egld_in": 2000.0,
+         "mex_out": 3602855047.9994073
+        },
+        {
+         "ts": 1789316478,
+         "egld_in": 2000.0,
+         "mex_out": 3522190661.8452215
+        },
+        {
+         "ts": 1789316503,
+         "egld_in": 2000.0,
+         "mex_out": 3434243823.391415
+        },
+        {
+         "ts": 1789316530,
+         "egld_in": 1000.0,
+         "mex_out": 1693994407.6455476
+        },
+        {
+         "ts": 1789316699,
+         "egld_in": 1000.0,
+         "mex_out": 1689344630.9125724
+        },
+        {
+         "ts": 1789316735,
+         "egld_in": 1000.0,
+         "mex_out": 1663627481.8840609
+        },
+        {
+         "ts": 1789316781,
+         "egld_in": 1000.0,
+         "mex_out": 1642456173.394233
+        },
+        {
+         "ts": 1789316850,
+         "egld_in": 1000.0,
+         "mex_out": 1625536131.4151835
+        },
+        {
+         "ts": 1789316892,
+         "egld_in": 1000.0,
+         "mex_out": 1604830643.1458614
+        },
+        {
+         "ts": 1789316926,
+         "egld_in": 1000.0,
+         "mex_out": 1590376565.2432585
+        },
+        {
+         "ts": 1789317084,
+         "egld_in": 1000.0,
+         "mex_out": 1577998118.8430939
+        },
+        {
+         "ts": 1789317120,
+         "egld_in": 1000.0,
+         "mex_out": 1558975994.772345
+        },
+        {
+         "ts": 1789317166,
+         "egld_in": 1000.0,
+         "mex_out": 1536733915.525365
+        },
+        {
+         "ts": 1789317196,
+         "egld_in": 1000.0,
+         "mex_out": 1524480564.162144
+        },
+        {
+         "ts": 1789317230,
+         "egld_in": 1000.0,
+         "mex_out": 1507125109.338508
+        },
+        {
+         "ts": 1789317270,
+         "egld_in": 1000.0,
+         "mex_out": 1508660126.171188
+        },
+        {
+         "ts": 1789317468,
+         "egld_in": 1000.0,
+         "mex_out": 1483112160.9282823
+        },
+        {
+         "ts": 1789317498,
+         "egld_in": 1000.0,
+         "mex_out": 1463918466.7352006
+        },
+        {
+         "ts": 1789317545,
+         "egld_in": 1000.0,
+         "mex_out": 1447849584.1679215
+        },
+        {
+         "ts": 1789317585,
+         "egld_in": 1000.0,
+         "mex_out": 1438070678.693497
+        },
+        {
+         "ts": 1789317620,
+         "egld_in": 1000.0,
+         "mex_out": 1422200752.5491114
+        },
+        {
+         "ts": 1789317663,
+         "egld_in": 1000.0,
+         "mex_out": 1408648626.9987457
+        },
+        {
+         "ts": 1789317690,
+         "egld_in": 1000.0,
+         "mex_out": 1393681888.6069658
+        }
+       ],
+       "mex_deposited": 322442096766.00635,
+       "egld_borrowed": 73600.0036480807,
+       "egld_spent_buying_mex": 85200.0,
+       "mex_bought": 220311369589.3753
+      },
+      "B": {
+       "address": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+       "deposits": [
+        {
+         "ts": 1789314102,
+         "mex": 1197179810.576712
+        },
+        {
+         "ts": 1789316307,
+         "mex": 582948600.5775193
+        },
+        {
+         "ts": 1789316433,
+         "mex": 234667281.58709288
+        },
+        {
+         "ts": 1789316648,
+         "mex": 103045956.44204664
+        },
+        {
+         "ts": 1789316875,
+         "mex": 74431422.1527873
+        },
+        {
+         "ts": 1789317128,
+         "mex": 73907380.65671864
+        }
+       ],
+       "borrows": [
+        {
+         "ts": 1789314279,
+         "egld": 143.68439644017516
+        },
+        {
+         "ts": 1789315937,
+         "egld": 76.86970550549154
+        },
+        {
+         "ts": 1789316181,
+         "egld": 12.96002260203861
+        },
+        {
+         "ts": 1789316337,
+         "egld": 126.20105520815763
+        },
+        {
+         "ts": 1789316471,
+         "egld": 59.06597200422116
+        },
+        {
+         "ts": 1789316808,
+         "egld": 45.70047529783296
+        },
+        {
+         "ts": 1789316965,
+         "egld": 46.29267008565083
+        },
+        {
+         "ts": 1789317172,
+         "egld": 41.0471910701421
+        }
+       ],
+       "xexchange_buys": [],
+       "mex_deposited": 2266180451.9928765,
+       "egld_borrowed": 551.82148821371,
+       "egld_spent_buying_mex": 0,
+       "mex_bought": 0
+      }
+     },
+     "liquidations_on_mex_market": 15,
+     "mex_market_last_call_ts": 1789318579
+    }
    }
   },
-  "analysis": "THE MEX/WEGLD POOL IS FROZEN. At 2026-09-13 16:43 UTC the wallet that owns the xExchange router (erd1ss6u80ruas2p...) called `pause` on the MEX/WEGLD pair contract. The last successful swap was three minutes earlier. Since then 172 transactions against the pair have failed, 116 of them removeLiquidity calls from LPs trying to get out. The contract still holds 191.2B MEX and 141,281 WEGLD (about $584,903 of EGLD). Last week this was the #2 deepest pool on the venue at $442,977. The API now omits it: /mex/pairs does not list it, /mex/pairs/MEX-455c57/WEGLD-bd4d79 returns 404, and /mex/economics reports MEX at $0.\n\nTHE PRICE MOVED FIRST. On CoinGecko's hourly series MEX was already moving before the pause: 4.08e-07 through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm. Read at daily resolution this looks like 'pause, then spike'; hourly, it is the reverse. It has since fallen back to 1.82e-06, still +357% on the week. The MultiversX /tokens endpoint carries 3.06e-06. Three sources give three different prices and none of them comes from the on-chain pool, which is frozen. Hatom's HMEX supply rose from 3.23T to 24.96T, so MEX was deposited into the Hatom money market in size in the same week. What is NOT on-chain is the reason for the pause. The model records the call, its sender and its effects and does not guess the motive. MEX supply moved -0.082%, so the week included no mint or burn.\n\nTHE REST OF THE VENUE TRADED ONE PAIR. EGLD-denominated volume 44,557 -> 96,002/day (+115%), with WEGLD/USDC 98.4% of it on 1,927 trades. Every other pair together did $6,189. Price fell while volume doubled, which by the run #18 diagnostic is an aggressive offer rather than an absent bid. Raw pool TVL fell 22% in USD, but the MEX/WEGLD pool leaving the API accounts for most of that. Like-for-like it is -4.8% in USD and +3.0% in EGLD, and the turnover ratio on that base went from 9.69% to 20.86%.\n\nSTABLECOINS: USDC +2.73% to 7,786,216, USDT -12.81% to 463,905. Combined expansion ends the three-week contraction and demotes the dollar base to DeFi plumbing, as run #24's test specified. USDT's -12.8% (68,130 tokens) is the largest weekly move in its tracked series. It was offset by USDC minting 207,052.\n\nHOLDERS: the top-10 list shows the usual dust attrition; the largest declines this week were MEX -130, WEGLD -129, QWT -125, HYPE -120.\n\nNEWLY ISSUED: 5 issuances cleared the ESDT system-SC scan, and 2 of them clear the quality bar: ECAT-4ebd0f (15 holders, 18 txs), BRO-aa5132 (18 holders, 23 txs). That ends an eight-week run in which none did. Both are small, and neither has an identifiable deployer in known-addresses."
+  "analysis": "A HATOM MEX MONEY MARKET INCIDENT FROZE THREE MEX POOLS. Hatom's Sep 14 statement (https://x.com/HatomProtocol/status/2099605029715906573) calls it a MEX money market incident, says user funds are safe and it is contained after a coordinated response with xExchange, and says a recovery plan will unwind the incident-driven activity without losses to users or bad debt. The MEX market and the MEX/EGLD, MEX/USH and MEX/USDC pairs stay paused until about Wednesday; a full incident report is promised and no cause is given yet. The chain shows the sequence. The xExchange router owner (erd1ss6u80ruas2p...) paused MEX/WEGLD at 16:43 UTC, three minutes after its last successful swap, then MEX/USH at 19:06 and MEX/USDC at 19:09. Hatom's MEX market saw its last call at 16:56. Since then 172 transactions against the pair have failed, 116 of them removeLiquidity calls from LPs trying to get out. The contract still holds 191.2B MEX and 141,281 WEGLD (about $584,903 of EGLD). Last week this was the #2 deepest pool on the venue at $442,977. The API now omits it: /mex/pairs does not list it, /mex/pairs/MEX-455c57/WEGLD-bd4d79 returns 404, and /mex/economics reports MEX at $0.\n\nTHE PRICE MOVED FIRST. On CoinGecko's hourly series MEX was already moving before the pause: 4.08e-07 through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm. Read at daily resolution this looks like 'pause, then spike'; hourly, it is the reverse. It has since fallen back to 1.82e-06, still +357% on the week. The MultiversX /tokens endpoint carries 3.06e-06. Three sources give three different prices and none of them comes from the on-chain pool, which is frozen. Hatom's HMEX supply rose from 3.23T to 24.96T, so MEX was deposited into the Hatom money market in size in the same week. WHAT HAPPENED IN THE MONEY MARKET, FROM THE CHAIN. One wallet (erd10fe5lv5v...fuqq) spent 85,200 EGLD buying 220.3B MEX through xExchange's compose-tasks contract between 15:00 and 17:00 UTC, deposited 322.4B MEX into Hatom's MEX market (8.1% of circulating MEX) in 14 deposits, and borrowed 73,600 EGLD from Hatom's EGLD market in 11 draws from 15:23 to 16:37. The last draw came six minutes before the first pause. A second wallet (erd1fjcgt8g0...8cuk) deposited 2.3B MEX and borrowed 552 EGLD in the same window. Buying MEX raises its price, a higher price raises the value of MEX collateral, and more collateral supports more borrowing, so the buy-deposit-borrow sequence is self-reinforcing. Whether that was the mechanism of the incident is for Hatom's report to confirm; the model records the flows and not the intent. Over the same hours a liquidation bot repaid MEX debt 15 times on the MEX market as MEX borrowers went underwater, seizing WBTC collateral. MEX supply moved -0.082%, so the week included no mint or burn.\n\nTHE REST OF THE VENUE TRADED ONE PAIR. EGLD-denominated volume 44,557 -> 96,002/day (+115%), with WEGLD/USDC 98.4% of it on 1,927 trades. Every other pair together did $6,189. Price fell while volume doubled, which by the run #18 diagnostic is an aggressive offer rather than an absent bid. Raw pool TVL fell 22% in USD, but the MEX/WEGLD pool leaving the API accounts for most of that. Like-for-like it is -4.8% in USD and +3.0% in EGLD, and the turnover ratio on that base went from 9.69% to 20.86%.\n\nSTABLECOINS: USDC +2.73% to 7,786,216, USDT -12.81% to 463,905. Combined expansion ends the three-week contraction and demotes the dollar base to DeFi plumbing, as run #24's test specified. USDT's -12.8% (68,130 tokens) is the largest weekly move in its tracked series. It was offset by USDC minting 207,052.\n\nHOLDERS: the top-10 list shows the usual dust attrition; the largest declines this week were MEX -130, WEGLD -129, QWT -125, HYPE -120.\n\nNEWLY ISSUED: 5 issuances cleared the ESDT system-SC scan, and 2 of them clear the quality bar: ECAT-4ebd0f (15 holders, 18 txs), BRO-aa5132 (18 holders, 23 txs). That ends an eight-week run in which none did. Both are small, and neither has an identifiable deployer in known-addresses."
  },
  "defi_activity": {
   "protocols": [
@@ -5686,7 +6709,7 @@
     "tvl_wow_change_pct": 18.538943254974093,
     "transfers_24h": null,
     "volume_24h_usd": 397448.7353661145,
-    "notable_events": "MEX/WEGLD PAUSED 2026-09-13 16:43 UTC by the router owner, with 191B MEX and 141,281 WEGLD still inside and 172 failed transactions since. Volume 44,557 -> 96,002 EGLD/day, 98.4% WEGLD/USDC. Like-for-like pool TVL ex the paused pair +3.0% in EGLD. WEGLD contract balances 632,850 EGLD (+18.5%).",
+    "notable_events": "MEX/WEGLD, MEX/USH AND MEX/USDC PAUSED on Sep 13 (16:43, 19:06, 19:09 UTC) to contain Hatom's MEX money market incident; Hatom expects them to resume by Wednesday. MEX/WEGLD still holds 191B MEX and 141,281 WEGLD, with 172 failed transactions in the week. Volume 44,557 -> 96,002 EGLD/day, 98.4% WEGLD/USDC. Like-for-like pool TVL ex the paused pair +3.0% in EGLD. WEGLD contract balances 632,850 EGLD (+18.5%).",
     "health_signal": "spiking"
    },
    {
@@ -5697,7 +6720,7 @@
     "tvl_egld": 1537065.5812284083,
     "tvl_wow_change_pct": 8.347667735081085,
     "transfers_24h": 140,
-    "notable_events": "HEADLINE +44% IN EGLD IS A MEX PRICE PRINT. HMEX market cap $27,047 -> $1,605,761 (supply +672%, priced off a MEX quote that no pool sets). Ex-HMEX, EGLD-denominated TVL +8.35% on a -7.59% price: inverse rule sign correct on a down-week, response ratio 1.10. The rule's sign came from USD collateral repricing (HUSDC supply +2.0%, HWBTC -0.5%) while EGLD depositors WITHDREW: HEGLD supply -5.45% and the EGLD money market contract -89,886 EGLD. HHTM supply +16.4%.",
+    "notable_events": "HEADLINE +44% IN EGLD IS A MEX PRICE PRINT. HMEX market cap $27,047 -> $1,605,761 (supply +672%, priced off a MEX quote that no pool sets). Ex-HMEX, EGLD-denominated TVL +8.35% on a -7.59% price: inverse rule sign correct on a down-week, response ratio 1.10. The rule's sign came from USD collateral repricing (HUSDC supply +2.0%, HWBTC -0.5%) while EGLD depositors redeemed: HEGLD supply -5.45%. The EGLD money market contract's -89,886 EGLD is mostly the incident: 74,152 EGLD borrowed against MEX collateral on Sep 13, which Hatom's recovery plan says it will unwind. HHTM supply +16.4%.",
     "health_signal": "growing"
    },
    {
@@ -5815,7 +6838,7 @@
    }
   ],
   "sc_deployments": [],
-  "analysis": "THE WEEK'S DEFI STORY IS A FROZEN POOL AND WHAT ROUTED AROUND IT. The MEX/WEGLD pair has been paused since Saturday afternoon, and the aggregators lit up over the 24 hours that include the pause: XOXNO 50,014 transfers against 20,471, OneDex 31,250 against 10,408, the JEXchange fees contract 8,171 against 3,954. Hatom's MEX market took the deposits: HMEX supply +672%. That HMEX line is also a trap for the TVL figure. HMEX market cap went from $27,047 to $1,605,761, priced off a MEX quote no on-chain pool sets, which lifts Hatom Lending's headline EGLD TVL +44%. Excluding HMEX the move is +8.35%, and that is the figure in the breakdown.\n\nTHE INVERSE RULE'S SIGN WAS RIGHT, FOR A MECHANICAL REASON. On a -7.59% week, ex-HMEX lending TVL in EGLD rose +8.35% - correct sign, response ratio 1.10. The per-market supplies show where the sign comes from. EGLD depositors withdrew: HEGLD supply -5.45%, and the EGLD money market contract lost 89,886 EGLD. The markets that grew are dollar and BTC collateral (HUSDC +2.0%, HUSDT +0.5%, HWETH +1.6%), and those rise in EGLD terms whenever EGLD falls. Part of the rule's two-sided record is therefore just the divisor. The EGLD-native leg, HEGLD supply, is the behavioural test, and this week it moved WITH the price: depositors left as EGLD fell. The rule is kept, with its behavioural reading limited to the HEGLD leg from now on.\n\nLiquid staking stayed still where it is large and grew where it is small. SEGLD -0.020% (eighth flat week), XEGLD -0.478%, while JewelSwap's delegated stake rose +28% and VoxEGLD +6.5% with holders at 128. Together those two added about 630 EGLD, which changes no aggregate. USH minted +1.37%.\n\nSWEEP CAVEAT: the liquid-staking discovery sweep returned four protocols instead of six. SALSA (6,420 EGLD) and VestaX (1,121) still stake and were measured directly, but their receipt tokens did not appear in this week's candidate list. A discovery method that can lose a known protocol cannot be run from scratch each week; it has to carry last week's finds forward as seeds."
+  "analysis": "THE WEEK'S DEFI STORY IS HATOM'S MEX MONEY MARKET INCIDENT. Hatom says funds are safe and the incident is contained, and the MEX market and three MEX pools are paused until about Wednesday while a recovery plan unwinds it. The MEX/WEGLD pair has been paused since Saturday afternoon, and the aggregators lit up over the 24 hours that include the pause: XOXNO 50,014 transfers against 20,471, OneDex 31,250 against 10,408, the JEXchange fees contract 8,171 against 3,954. Hatom's MEX market took the deposits: HMEX supply +672%, almost all of it one wallet's 322B MEX, which then borrowed 73,600 EGLD. That HMEX line is also a trap for the TVL figure. HMEX market cap went from $27,047 to $1,605,761, priced off a MEX quote no on-chain pool sets, which lifts Hatom Lending's headline EGLD TVL +44%. Excluding HMEX the move is +8.35%, and that is the figure in the breakdown.\n\nTHE INVERSE RULE'S SIGN WAS RIGHT, FOR A MECHANICAL REASON. On a -7.59% week, ex-HMEX lending TVL in EGLD rose +8.35% - correct sign, response ratio 1.10. The per-market supplies show where the sign comes from. EGLD depositors redeemed: HEGLD supply -5.45%. (The EGLD money market contract also lost 89,886 EGLD, but 74,152 of that is incident borrowing, not depositor behaviour.) The markets that grew are dollar and BTC collateral (HUSDC +2.0%, HUSDT +0.5%, HWETH +1.6%), and those rise in EGLD terms whenever EGLD falls. Part of the rule's two-sided record is therefore just the divisor. The EGLD-native leg, HEGLD supply, is the behavioural test, and this week it moved WITH the price: depositors left as EGLD fell. The rule is kept, with its behavioural reading limited to the HEGLD leg from now on.\n\nLiquid staking stayed still where it is large and grew where it is small. SEGLD -0.020% (eighth flat week), XEGLD -0.478%, while JewelSwap's delegated stake rose +28% and VoxEGLD +6.5% with holders at 128. Together those two added about 630 EGLD, which changes no aggregate. USH minted +1.37%.\n\nSWEEP CAVEAT: the liquid-staking discovery sweep returned four protocols instead of six. SALSA (6,420 EGLD) and VestaX (1,121) still stake and were measured directly, but their receipt tokens did not appear in this week's candidate list. A discovery method that can lose a known protocol cannot be run from scratch each week; it has to carry last week's finds forward as seeds."
  },
  "anomalies": [
   {
@@ -5828,7 +6851,7 @@
    "stddev": 5.5606641980305526e-08,
    "z_score": 27.378081416482857,
    "change_pct": 356.7235366050635,
-   "description": "MEX +357% WoW on CoinGecko (3.98e-07 -> 1.82e-06), z=+27.4sigma - the largest standardised move on any tracked series. The move STARTED before the MEX/WEGLD pool was paused (1.7x by 15:00 UTC, about 4x by 16:00, pause at 16:43 by the xExchange router owner), peaked near 7.5x that evening and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at 3.06e-06. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see."
+   "description": "MEX +357% WoW on CoinGecko (3.98e-07 -> 1.82e-06), z=+27.4sigma - the largest standardised move on any tracked series. The move STARTED before the MEX/WEGLD pool was paused (1.7x by 15:00 UTC, about 4x by 16:00, pause at 16:43 by the xExchange router owner), peaked near 7.5x that evening and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at 3.06e-06. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see. The move ran alongside Hatom's MEX money market incident, in which one wallet bought 220B MEX on xExchange and deposited 322B as collateral."
   },
   {
    "metric": "xexchange_mex_wegld_pair_state",
@@ -5837,7 +6860,7 @@
    "method": "rule_based",
    "severity": "critical",
    "change_pct": -100.0,
-   "description": "The #2 deepest pool on xExchange ($442,977 last week) is paused and has been dropped from /mex/pairs. It holds 191.2B MEX and 141,281 WEGLD. 172 transactions have failed against it in the week, 116 of them removeLiquidity, so LPs are trying and failing to withdraw. This is the first venue-level state change in the archive, as opposed to a flow."
+   "description": "The #2 deepest pool on xExchange ($442,977 last week) is paused and has been dropped from /mex/pairs. It holds 191.2B MEX and 141,281 WEGLD. 172 transactions have failed against it in the week, 116 of them removeLiquidity, so LPs are trying and failing to withdraw. It is one of three MEX pools the xExchange router owner paused on Sep 13 (MEX/USH 19:06, MEX/USDC 19:09 UTC) to contain Hatom's MEX money market incident; Hatom expects all three to resume by Wednesday. It is also the first venue-level state change in the archive, as opposed to a flow."
   },
   {
    "metric": "hatom_hmex_supply",
@@ -5846,7 +6869,7 @@
    "method": "rule_based",
    "severity": "high",
    "change_pct": 672.2264702775512,
-   "description": "HMEX supply +672% (3.23T -> 24.96T): MEX was deposited into Hatom's MEX money market in size in the pause week. HMEX market cap went from $27,047 to $1,605,761 and would have lifted Hatom Lending's EGLD TVL +44% if left in. The breakdown reports lending ex-HMEX (+8.35%)."
+   "description": "HMEX supply +672% (3.23T -> 24.96T): one wallet deposited 322B MEX into Hatom's MEX market on Sep 13 and borrowed 73,600 EGLD against it, in what Hatom calls a MEX money market incident. HMEX market cap went from $27,047 to $1,605,761 and would have lifted Hatom Lending's EGLD TVL +44% if left in. The breakdown reports lending ex-HMEX (+8.35%)."
   },
   {
    "metric": "reward_compound_pct",
@@ -5994,7 +7017,7 @@
     "supply_previous": "3232123702089",
     "supply_current": "24959314779646",
     "change_pct": 672.2264702775512,
-    "description": "HMEX minted +672%: MEX deposited into Hatom in the week the MEX/WEGLD pool was paused."
+    "description": "HMEX minted +672%: 322B MEX deposited by one wallet during Hatom's MEX money market incident, collateral for 73,600 EGLD of borrowing that Hatom says its recovery plan will unwind."
    },
    {
     "identifier": "USDT-f8c08c",
@@ -6030,7 +7053,7 @@
     "supply_previous": null,
     "supply_current": null,
     "change_pct": -5.451862804626991,
-    "description": "HEGLD supply -5.45%: EGLD depositors withdrew from Hatom as EGLD fell. This is the behavioural leg the inverse rule should be read on; this week it moved with price, not against it."
+    "description": "HEGLD supply -5.45%: EGLD depositors redeemed as EGLD fell. This is the behavioural leg the inverse rule should be read on; this week it moved with price, not against it."
    }
   ],
   "consecutive_streaks": [
@@ -6089,7 +7112,7 @@
     "metric": "xexchange_mex_venue",
     "before_value": 442977.1136342579,
     "after_value": 0.0,
-    "description": "CANDIDATE, not promoted. The MEX/WEGLD pool is paused and MEX has no on-chain price. If the pair stays paused or delisted through run #26, MEX's price discovery has moved off-chain structurally. A resume would make it an incident. Registered as a pre-committed test."
+    "description": "NOT A REGIME SHIFT, AN INCIDENT. The three MEX pools and Hatom's MEX market are paused to contain Hatom's MEX money market incident, with a stated resume by Wednesday. It becomes a regime question only if the pools stay paused well past that date; the recovery test below tracks it."
    },
    {
     "metric": "reward_compound_pct",
@@ -6101,9 +7124,9 @@
  },
  "watch_list": [
   {
-   "item": "XEXCHANGE MEX/WEGLD POOL PAUSED - LPs locked, MEX priced off-chain",
+   "item": "HATOM MEX MONEY MARKET INCIDENT - three MEX pools and the MEX market paused, recovery under way",
    "weeks_on_list": 1,
-   "reason": "Paused 2026-09-13 16:43 UTC by erd1ss6u80ruas2p... (the router owner), tx b0decfa361de... The pool holds 191.2B MEX and 141,281 WEGLD. 172 failed transactions in the week, 116 of them removeLiquidity. MEX +357% WoW on CoinGecko; HMEX supply +672%. PRE-COMMITTED (mex-pair-resume): pair resumed within two weeks with MEX back under ~8.2e-07 (2x pre-pause) = an incident and a liquidity-freeze squeeze; resumed with MEX above that = repricing that stuck; still paused or delisted by run #27 = MEX price discovery has left the chain."
+   "reason": "Hatom says funds are safe, the incident is contained and a recovery plan will unwind it without user losses or bad debt; the MEX market and MEX/EGLD, MEX/USH, MEX/USDC resume by about Wednesday (https://x.com/HatomProtocol/status/2099605029715906573). Chain: one wallet deposited 322B MEX and borrowed 73,600 EGLD from 15:23 to 16:37 UTC; pools paused 16:43 / 19:06 / 19:09 by the router owner. MEX/WEGLD holds 191.2B MEX and 141,281 WEGLD. 172 failed transactions in the week, 116 of them removeLiquidity. MEX +357% WoW on CoinGecko; HMEX supply +672%. PRE-COMMITTED (mex-incident-recovery): market and pools resumed by run #26 with no bad debt or user loss disclosed = recovery as stated; resumed but a loss or bad debt disclosed = contained, not costless; still paused at run #26 = the stated timeline slipped."
   },
   {
    "item": "OTC PIPELINE - wave #4 running; the desk float is low but the reservoir behind it is not",
@@ -6205,14 +7228,14 @@
    "COINGECKO /coins/{id}/tickers?depth=true RETURNS cost_to_move_up_usd / cost_to_move_down_usd PER VENUE (\u00b12% depth). /market_chart?interval=daily total_volumes gives rolling 24h volume per day. Together they are the first exchange-side instrument in the pipeline: 7d spot volume and venue depth."
   ],
   "data_gaps": [
-   "The reason for the MEX/WEGLD pause is not on-chain. The model records the call, sender, reserves and failed calls.",
+   "Hatom has not yet published the cause of the MEX money market incident; its detailed report is pending. The chain reconstruction covers the pauses, the 20 MEX deposits and 19 EGLD borrows by the two collateral wallets, and the 15 liquidations; where the borrowed EGLD finally went is only partly traced.",
    "Withdraw amounts on provider contracts are not decoded (withdraw carries no amount argument), so the matured-queue attribution of the staked drop rests on timing and call counts.",
    "31,154 EGLD of desk outbound remains unattributed after two hops.",
    "Order-book depth is one snapshot with no prior; trend claims wait a week.",
    "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."
   ],
   "key_findings": [
-   "The xExchange router owner paused the MEX/WEGLD pool on 2026-09-13 16:43 UTC. MEX was already 1.7x by 15:00 UTC and peaked near 7.5x after it, HMEX supply +672%, and 172 transactions against the frozen pair failed.",
+   "Hatom's MEX money market incident: one wallet bought 220B MEX on xExchange, deposited 322B MEX into Hatom and borrowed 73,600 EGLD in 74 minutes; xExchange paused three MEX pools, the first six minutes after the last borrow. Hatom says funds are safe and markets resume by Wednesday.",
    "Wave #4 confirmed: UPbit tranche 372,000, net one-way 401,353, desks down to 56,596; 1,336,721 EGLD one-way over Aug 17 - Sep 14.",
    "The first exchange-side reading puts delivery at 2.3% of CEX spot volume; last week's 'invisible bid' was mostly ordinary turnover.",
    "Staked ratio 46.55%, below 46.80% in week one of the test, while new unDelegations fell by two-thirds.",
@@ -6247,6 +7270,16 @@
     "evidence": "pause call from the router owner at 16:43 UTC; 191B MEX + 141,281 WEGLD reserves; 172 failed txs"
    },
    {
+    "address": "erd10fe5lv5vwslmua46zgx9vfy79575al3cy2z6t26j94flqymccdpqz0fuqq",
+    "label": "Hatom MEX incident wallet A (2026-09-13)",
+    "evidence": "deposited 322.4B MEX into Hatom's MEX market and borrowed 73,600 EGLD; bought 220.3B MEX via xExchange compose-tasks for 85,200 EGLD"
+   },
+   {
+    "address": "erd1fjcgt8g02ejvhqc5hye8k0zqws2j5g4mw3vxvyy38tv9llpkwt3q428cuk",
+    "label": "Hatom MEX incident wallet B (2026-09-13)",
+    "evidence": "deposited 2.3B MEX and borrowed 552 EGLD in the same window"
+   },
+   {
     "address": "erd1ss6u80ruas2phpmr82r42xnkd6rxy40g9jl69frppl4qez9w2jpsqj8x97",
     "label": "xExchange: router owner / admin wallet",
     "evidence": "owner of the router contract that owns the pair; sent the pause"
@@ -6260,9 +7293,9 @@
   "action_items_completed": 9,
   "new_addresses_discovered": 3,
   "most_valuable_insight": "Putting the pipeline in market scale. For five weeks the report has measured supply to the EGLD and treated the week's price as its counterpart. The first exchange-side reading shows the desks' record 536,459 EGLD delivery was 2.1% of that week's CEX spot volume, and this week's 401,353 was 2.3%. The 'invisible bid' of run #24 was mostly ordinary turnover. The pipeline still matters, because it is persistent, one-directional and aimed at two venues, but its weekly total cannot be read against the weekly price as if nothing else traded. The MEX pause is the bigger event; this is the bigger correction to the model.",
-  "top_recommendation": "RE-READ THE MEX/WEGLD PAIR STATE FIRST NEXT RUN. The pause is registered as a two-week test. Query the pair's transactions for resume/unpause/setState calls and removeLiquidity successes, track HMEX supply and the MEX price on both CoinGecko and /tokens, and check whether any other xExchange pair received a pause in the same window.",
+  "top_recommendation": "CLOSE OUT THE HATOM MEX INCIDENT. Read Hatom's incident report, check resume calls on the three MEX pools and Hatom's MEX market, and trace the recovery on chain: whether wallet A's 73,600 EGLD borrow is repaid or liquidated, what happens to its 322B MEX collateral, and HMEX supply after the unwind. Then resolve mex-incident-recovery.",
   "recommendations_for_next_run": [
-   "RESOLVE THE MEX PAIR STATE. Query erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 for resume/setState calls and successful removeLiquidity; scan the router owner erd1ss6u80ruas2p... for pause calls on OTHER pairs this window; track HMEX supply and MEX on CoinGecko vs /tokens.",
+   "RESOLVE mex-incident-recovery. Resume calls on MEX/WEGLD (erd1...jpsp6shh2), MEX/USH (erd1...jps0x7me7), MEX/USDC (erd1...jps8vsccx) and Hatom's MEX market; Hatom's incident report; the fate of incident wallet A's 73,600 EGLD debt and 322B MEX collateral; where the borrowed EGLD went beyond xExchange compose-tasks and the 2,035 EGLD sent out at 16:57.",
    "BUILD THE ORDER-BOOK SERIES. Store this week's per-venue \u00b12% depth and 7d spot volume in previous.json and report the WoW change for Binance and Bybit, the two delivery venues.",
    "SEED THE LIQUID-STAKING SWEEP FROM LAST WEEK'S PROTOCOLS so a known LSD cannot drop out of the table.",
    "ADD A 429 GUARD TO delegator_behavior.py (error-vs-empty distinction plus exponential backoff) and run it after the collector, never alongside.",
@@ -7069,28 +8102,28 @@
    "resolution": null
   },
   {
-   "id": "mex-pair-resume",
+   "id": "mex-incident-recovery",
    "registered_in_run": 25,
-   "claim": "The MEX/WEGLD pause is a structural move of MEX price discovery off-chain rather than a temporary incident.",
-   "threshold": "by run #27 (two weeks): pair still paused or delisted = structural; pair resumed with MEX under ~8.2e-07 (2x the pre-pause 4.08e-07) = an incident that caused a liquidity-freeze squeeze; pair resumed with MEX at or above 8.2e-07 = an incident whose repricing stuck",
+   "claim": "Hatom's MEX money market incident is resolved on the timeline and terms Hatom stated: markets back by Wednesday, no user losses, no bad debt.",
+   "threshold": "at run #26: MEX market and the MEX/EGLD, MEX/USH, MEX/USDC pools resumed AND no bad debt or user loss disclosed = recovery as stated; resumed BUT a loss or bad debt disclosed = contained, not costless; any of them still paused = the stated timeline slipped",
    "branches": [
     {
-     "condition": "still paused or delisted at run #27",
-     "reading": "structural: MEX price discovery has left the chain"
+     "condition": "all resumed, no loss or bad debt disclosed",
+     "reading": "recovery as stated"
     },
     {
-     "condition": "resumed and MEX < 8.2e-07",
-     "reading": "incident; the spike was a squeeze on frozen liquidity"
+     "condition": "resumed, loss or bad debt disclosed",
+     "reading": "contained, not costless"
     },
     {
-     "condition": "resumed and MEX >= 8.2e-07",
-     "reading": "incident; the repricing held after liquidity returned"
+     "condition": "any still paused at run #26",
+     "reading": "timeline slipped"
     }
    ],
    "status": "open",
    "outcome": null,
    "resolved_in_run": null,
-   "measured_value": "paused 2026-09-13 16:43 UTC; MEX 1.82e-06 on CoinGecko (+357% WoW); HMEX supply +672%",
+   "measured_value": "pools paused Sep 13 16:43/19:06/19:09 UTC; Hatom statement Sep 14 21:03 UTC; incident wallet borrowed 73,600 EGLD against 322B MEX; MEX 1.82e-06 (+357% WoW)",
    "resolution": null
   },
   {

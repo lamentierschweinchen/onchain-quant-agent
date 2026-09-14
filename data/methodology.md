@@ -1181,6 +1181,18 @@ The first draft of run #25 said xExchange paused the MEX/WEGLD pool and MEX "wen
 
 **Rule**: before writing "X happened, then Y", put both on a time axis at a resolution finer than the gap between them. For event-versus-price claims that means hourly data at minimum.
 
+
+### A PROTOCOL'S STATEMENT IS A POINTER, THE CHAIN IS THE RECORD (run #25, 2026-09-14)
+
+The MEX/WEGLD pause was first published with "the reason is not visible onchain". Hatom's statement the next evening (x.com/HatomProtocol/status/2099605029715906573) named it a MEX money market incident: funds safe, contained, recovery plan to unwind without user losses or bad debt, the MEX market and the MEX/EGLD, MEX/USH and MEX/USDC pools paused until about Wednesday. It gave no mechanism.
+
+Tracing the callers of Hatom's MEX market (`scripts/enrich_run25_hatom_incident.py`) found it. One wallet spent 85,200 EGLD buying 220B MEX through xExchange's compose-tasks contract, posted 322B MEX (8% of circulating supply) as collateral, and borrowed 73,600 EGLD in 11 draws from 15:23 to 16:37 UTC. xExchange paused MEX/WEGLD at 16:43, then MEX/USH at 19:06 and MEX/USDC at 19:09. A second wallet borrowed 552 EGLD the same way, and a liquidation bot repaid MEX debt 15 times as MEX shorts went underwater.
+
+**Rules**:
+1. When a pool or market pauses, pull the protocol's public statement for the framing, then reconstruct the flows from the contract's callers. Report what each source supports, and keep the cause attributed to the protocol until its incident report is out.
+2. A pool admin's pause list is enumerable: query `function=pause` on the router owner. One pause is rarely the only one.
+3. Recheck earlier contract-balance attributions against the incident. The Hatom EGLD money market's -89,886 EGLD was first read as depositors leaving; 74,152 of it was incident borrowing.
+
 ## Evolution Log
 
 | Run | Date | Changes |
