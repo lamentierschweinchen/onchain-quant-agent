@@ -7,9 +7,9 @@ REPO="/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 OUT="/tmp/run25w"; os.makedirs(OUT, exist_ok=True)
 RD="2026-09-14"
 D=json.load(open(f"{REPO}/data/collected/{RD}.json"))
-prev=json.load(open(f"{REPO}/data/previous.json"))
-kn=json.load(open(f"{REPO}/data/known-addresses.json"))
-learn=json.load(open(f"{REPO}/data/learnings.json"))
+prev=json.load(open("/tmp/run25w/previous_run24.json"))
+kn=json.load(open("/tmp/run25w/known_run24.json"))
+learn=json.load(open("/tmp/run25w/learnings_run24.json"))
 beh=json.load(open(f"{REPO}/data/collected/delegator_behavior_{RD}.json"))
 
 label_map,cat_map={},{}
@@ -709,12 +709,33 @@ book={"binance":_agg({"Binance"}),"bybit":_agg({"Bybit"}),"upbit":_agg({"Upbit"}
              "depth_minus2_usd":sum(r["depth_minus2_usd"] or 0 for r in tot_rows)},
       "top":sorted(venues.values(),key=lambda r:-(r["volume_24h_usd"] or 0))[:10]}
 mc_=D.get("cg_market_chart") or {}
-tv=[x[1] for x in (mc_.get("total_volumes") or [])]
 pr=[x[1] for x in (mc_.get("prices") or [])]
-if len(tv)>=14:
-    book["spot_volume_7d_usd"]=sum(tv[-7:]); book["spot_volume_prior_7d_usd"]=sum(tv[-14:-7])
-    book["spot_volume_7d_egld"]=sum(v/p for v,p in zip(tv[-7:],pr[-7:]))
-    book["spot_volume_prior_7d_egld"]=sum(v/p for v,p in zip(tv[-14:-7],pr[-14:-7]))
+# 7-day spot volume on ONE rule for every run: the daily rolling-24h volume points
+# stamped in (report_date - 7d, report_date], each divided by that day's price.
+# The 90-day series makes the same window computable for every run back to #16.
+_g90=D.get("dash_cg_egld_90d") or {}
+_vol90=[(x[0]/1000,x[1]) for x in (_g90.get("total_volumes") or [])]
+_pr90={int(x[0]/1000)//86400:x[1] for x in (_g90.get("prices") or [])}
+from datetime import datetime as _dt, timezone as _tz
+def spot7_egld(date_str):
+    end=_dt.strptime(date_str,"%Y-%m-%d").replace(tzinfo=_tz.utc).timestamp()
+    pts=[(t,v) for t,v in _vol90 if end-7*86400 < t <= end]
+    if len(pts)<7: return None
+    return sum(v/_pr90.get(int(t)//86400, price) for t,v in pts)
+_runs_dates=sorted(json.load(open(f"{REPO}/dashboard/public/report-manifest.json")),key=lambda r:r["date"])
+_run_date={i+1:r["date"] for i,r in enumerate(_runs_dates)}
+_run_date[25]=RD
+_nets={int("".join(c for c in k if c.isdigit())):v for k,v in prev["otc_net_one_way_series"].items()}
+_nets[25]=O["otc"]["net_one_way"]
+share_series=[]
+for rn in sorted(_nets):
+    dt_=_run_date.get(rn); sv=spot7_egld(dt_) if dt_ else None
+    if sv:
+        share_series.append({"run":rn,"date":dt_,"net_one_way_egld":_nets[rn],"spot_volume_7d_egld":sv,
+                             "share_pct":100*_nets[rn]/sv})
+book["delivery_share_series"]=share_series
+book["spot_volume_7d_egld"]=spot7_egld(RD)
+book["spot_volume_prior_7d_egld"]=spot7_egld(prev["snapshot_date"])
 book["daily_prices"]=pr[-8:]
 O["orderbook"]=book
 
@@ -766,7 +787,11 @@ O["mex_event"]={
   "mex_price_coingecko_sep13":_cgp[-3] if len(_cgp)>=3 else None,
   "mex_price_prev":prev["xexchange"]["mex_price_usd"],
   "hmex_supply":float(tt["HMEX-df6df7"]["supply"]),"hmex_prev_supply":float(P7["tvl_tokens"]["HMEX-df6df7"]["supply"]),
-  "hmex_mcap":mc("HMEX-df6df7"),"hmex_prev_mcap":P7["tvl_tokens"]["HMEX-df6df7"].get("marketCap") or 0}
+  "hmex_mcap":mc("HMEX-df6df7"),"hmex_prev_mcap":P7["tvl_tokens"]["HMEX-df6df7"].get("marketCap") or 0,
+  # timeline series for the dashboard: CoinGecko hourly MEX, and the pair's own calls
+  "price_series_hourly":[[int(p_[0]),p_[1],v_[1]] for p_,v_ in zip((D.get("dash_cg_mex_hourly") or {}).get("prices",[]),
+                                                                   (D.get("dash_cg_mex_hourly") or {}).get("total_volumes",[]))],
+  "pair_calls":sorted([{"ts":t["ts"],"fn":t["fn"],"status":t["status"]} for t in (D.get("dash_mex_pair_txs") or [])],key=lambda r:r["ts"])}
 # MEX price: /mex/economics returns 0 (the pair it prices from is paused), so the
 # reported MEX price is CoinGecko's live quote, with the MultiversX tokens-API
 # print alongside it. Neither is an on-chain pool price any more.

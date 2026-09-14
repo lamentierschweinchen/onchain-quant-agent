@@ -5700,7 +5700,7 @@
           "THE BILATERAL INVERSE RULE has been partly mechanical all along: dollar collateral rises in EGLD terms when EGLD falls. The behavioural test is the HEGLD leg, and it failed this week."
         ],
         "surprising_findings": [
-          "xExchange paused its #2 deepest pool, and MEX went UP ~7.5x the next day rather than down.",
+          "xExchange paused its #2 deepest pool in the middle of a MEX spike: the price was already 1.7x at 15:00 UTC, the pool froze at 16:43, and MEX peaked near 7.5x after.",
           "HMEX supply rose 672% in the pause week: MEX went into Hatom rather than out through the pool.",
           "The compound rate fell from the series high to the series low in one week (62.05% -> 49.44%), and none of the retail claims were sold.",
           "Staked EGLD fell 156,538 while delegation TVL rose 35,617.",
@@ -5930,10 +5930,10 @@
           397124
         ],
         "cex_spot_volume_7d_egld": [
-          17545263
+          17696479
         ],
         "otc_delivery_share_of_spot_pct": [
-          2.29
+          2.27
         ],
         "binance_bybit_bid_depth_2pct_usd": [
           124993
@@ -5966,7 +5966,7 @@
       "dashboard_feature_suggestions": [
         {
           "title": "Contract-state event timeline - the MEX/WEGLD pause against price and deposits",
-          "motivation": "This run's headline is a venue-level state change: a pool paused at a known timestamp, followed within a day by a 7.5x MEX move, an 8x HMEX mint and 172 failed calls. The dashboard has no way to show an event with a timestamp next to the series it moved, so the causal ordering (pause at 16:43, last swap at 16:39, price spike the next day) is only in prose.",
+          "motivation": "This run's headline is a venue-level state change: a pool paused at a known timestamp, inside a 7.5x MEX move, with an 8x HMEX mint and 172 failed calls. BUILT THIS RUN, and building it corrected the report: the prose read 'pause, then spike' from daily closes, and the hourly chart shows the price had already risen 1.7x before the pause. A timestamped event next to the series it moved is the only way that ordering is visible.",
           "suggested_visualization": "a time-axis strip with an annotated vertical marker for the pause tx, the MEX daily price line on one axis and HMEX supply on another, plus a small panel of the pair's reserves and failed-call count",
           "data_already_available": true,
           "data_source": "token_activity.xexchange.mex_pair_event (new field this run) plus a CoinGecko MEX market_chart stored in the collected snapshot",
@@ -5974,10 +5974,10 @@
         },
         {
           "title": "Pipeline in market scale - delivery as a share of CEX turnover and depth",
-          "motivation": "The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their \u00b12% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
+          "motivation": "BUILT THIS RUN as the Pipeline at market scale panel, with the delivery-share series backfilled to run #16 from CoinGecko's 90-day volume. The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their \u00b12% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
           "suggested_visualization": "a second y-axis or a small-multiple under the OTC bars plotting net one-way as % of 7d spot volume, plus a per-venue depth tile row (Binance, Bybit, Gate) with bid vs ask \u00b12% bars",
           "data_already_available": true,
-          "data_source": "whale_intelligence.demand_instruments.exchange_orderbook (new field this run); history starts run #25",
+          "data_source": "whale_intelligence.demand_instruments.exchange_orderbook, including delivery_share_series (runs #16-#25); venue depth history starts run #25",
           "priority": "medium"
         }
       ],

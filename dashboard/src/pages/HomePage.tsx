@@ -9,6 +9,8 @@ import { TokenDefi } from '../components/TokenDefi'
 import { AnomaliesWatchList } from '../components/AnomaliesWatchList'
 import { MetaLearning } from '../components/MetaLearning'
 import { OtcPipeline } from '../components/OtcPipeline'
+import { MexPauseTimeline } from '../components/MexPauseTimeline'
+import { MarketScale } from '../components/MarketScale'
 import { UnbondingCard } from '../components/UnbondingCard'
 import { Scoreboard } from '../components/Scoreboard'
 import { ErrataBanner } from '../components/ErrataBanner'
@@ -61,6 +63,9 @@ export function HomePage() {
     )
   }
 
+  const mexEvent = report.token_activity.xexchange.mex_pair_event
+  const SECTIONS_HIDDEN = mexEvent ? [] : ['contract-events']
+
   return (
     <div className="min-h-screen bg-bg text-text-primary">
       <Header
@@ -71,7 +76,7 @@ export function HomePage() {
         onDateChange={setSelectedDate}
       />
 
-      <SectionNav />
+      <SectionNav hidden={SECTIONS_HIDDEN} />
 
       <main className="max-w-[1380px] mx-auto px-6 pb-16 space-y-8 pt-6">
         <ErrataBanner
@@ -86,6 +91,17 @@ export function HomePage() {
           </section>
         </SectionHeader>
 
+        {mexEvent && (
+          <SectionHeader
+            title="Contract Events"
+            subtitle="Venue state changes, drawn against what they moved"
+          >
+            <section id="contract-events">
+              <MexPauseTimeline event={mexEvent} />
+            </section>
+          </SectionHeader>
+        )}
+
         <SectionHeader title="Network Health" subtitle="Macro economics + onchain activity">
           <section id="network-health">
             <NetworkHealth data={report.network_health} />
@@ -97,10 +113,18 @@ export function HomePage() {
           subtitle="Gross vs net one-way · wave-window netting · venue terminals"
         >
           <section id="otc-pipeline">
-            <OtcPipeline
-              data={report.whale_intelligence.otc_pipeline}
-              reportDate={report.metadata.report_date}
-            />
+            <div className="space-y-4">
+              <OtcPipeline
+                data={report.whale_intelligence.otc_pipeline}
+                reportDate={report.metadata.report_date}
+              />
+              {report.whale_intelligence.otc_pipeline && (
+                <MarketScale
+                  data={report.whale_intelligence.demand_instruments?.exchange_orderbook}
+                  reportDate={report.metadata.report_date}
+                />
+              )}
+            </div>
           </section>
         </SectionHeader>
 

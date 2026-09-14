@@ -86,6 +86,7 @@ export const HEALTH_COLORS = {
 
 export const SECTION_IDS = [
   'executive-summary',
+  'contract-events',
   'network-health',
   'otc-pipeline',
   'whale-intelligence',
@@ -98,6 +99,7 @@ export const SECTION_IDS = [
 
 export const SECTION_LABELS: Record<string, string> = {
   'executive-summary': 'Summary',
+  'contract-events': 'Events',
   'network-health': 'Network',
   'otc-pipeline': 'OTC',
   'whale-intelligence': 'Whales',

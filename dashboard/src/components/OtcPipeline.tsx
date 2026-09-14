@@ -1,6 +1,7 @@
 import type { OtcPipeline as OtcPipelineData } from '../types/report'
 import { formatEgldBare, formatPct2 } from '../lib/formatters'
 import { NullState } from './ui/NullState'
+import { StatTile } from './ui/StatTile'
 
 interface Props {
   data?: OtcPipelineData
@@ -114,46 +115,15 @@ function waveRuns(
   return null
 }
 
-function Tile({
-  label,
-  value,
-  unit,
-  sub,
-  accent,
-}: {
+function Tile(props: {
   label: string
   value: string
   unit?: string
   sub?: React.ReactNode
   accent?: 'cyan' | 'muted' | 'down'
 }) {
-  const valueColor =
-    accent === 'cyan'
-      ? 'var(--color-accent-cyan)'
-      : accent === 'down'
-        ? 'var(--color-down)'
-        : 'var(--color-text-primary)'
-  return (
-    <div className="bg-bg-elevated border border-border rounded p-3">
-      <div className="text-[9.5px] text-text-muted uppercase tracking-widest">
-        {label}
-      </div>
-      <div className="mt-1.5 flex items-baseline gap-1">
-        <span
-          className="font-mono text-[18px] font-semibold leading-none"
-          style={{ color: valueColor }}
-        >
-          {value}
-        </span>
-        {unit && <span className="hero-unit">{unit}</span>}
-      </div>
-      {sub && (
-        <div className="mt-1 text-[10.5px] text-text-secondary leading-snug">
-          {sub}
-        </div>
-      )}
-    </div>
-  )
+  const { accent, ...rest } = props
+  return <StatTile {...rest} accent={accent === 'muted' ? undefined : accent} />
 }
 
 // ---------------------------------------------------------------------------
@@ -426,7 +396,7 @@ export function OtcPipeline({ data, reportDate }: Props) {
             it
           </p>
         </div>
-        <span className="text-[9.5px] font-mono uppercase tracking-widest text-text-faint whitespace-nowrap">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-text-muted whitespace-nowrap">
           {reportDate}
         </span>
       </header>

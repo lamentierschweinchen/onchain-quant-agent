@@ -518,3 +518,16 @@ table.terminal-table tbody tr:hover td {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* Legend swatch for a frozen / paused region (matches the chart's hatch fill) */
+.hatch-frozen {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--color-severity-critical) 35%, transparent) 0 1px,
+    transparent 1px 5px
+  );
+}
+
+/* SVG groups can't use focus-visible:ring; draw the ring as a child rect instead */
+.focus-ring-svg { opacity: 0; }
+g:focus-visible > .focus-ring-svg { opacity: 1; }

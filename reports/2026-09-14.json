@@ -3,7 +3,7 @@
   "report_date": "2026-09-14",
   "period_start": "2026-09-07",
   "period_end": "2026-09-14",
-  "generated_at": "2026-09-14T17:00:36.334441Z",
+  "generated_at": "2026-09-14T20:28:57.679972Z",
   "egld_price_usd": 4.14,
   "btc_price_usd": 78460,
   "eth_price_usd": 2504.91,
@@ -63,17 +63,17 @@
   {
    "category": "defi",
    "severity": "critical",
-   "finding": "XEXCHANGE PAUSED ITS MEX/WEGLD POOL AND MEX WENT UP SEVENFOLD WITHIN A DAY. The pair contract erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 - last week the #2 deepest pool on the venue at $442,977 - received a `pause` call at 2026-09-13 16:43 UTC from the wallet that owns the xExchange router. It still holds 191.2B MEX and 141,281 WEGLD, and 172 transactions against it have failed since, 116 of them removeLiquidity attempts. The CoinGecko daily MEX close went from 4.08e-07 to 3.05e-06 the next day on roughly $1.6M of volume against a ~$10K norm, and is 1.82e-06 now (+357% WoW). Hatom's HMEX supply rose 672% in the same week. The on-chain venue for MEX is frozen, the price is being set off-chain, and /mex/economics now reports MEX at $0. The reason for the pause is not visible on-chain."
+   "finding": "XEXCHANGE PAUSED ITS MEX/WEGLD POOL IN THE MIDDLE OF A SEVENFOLD MEX SPIKE. The pair contract erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 - last week the #2 deepest pool on the venue at $442,977 - received a `pause` call at 2026-09-13 16:43 UTC from the wallet that owns the xExchange router. It still holds 191.2B MEX and 141,281 WEGLD, and 172 transactions against it have failed since, 116 of them removeLiquidity attempts. On CoinGecko's hourly series MEX was already moving before the pause: 4.08e-07 through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm, and is 1.82e-06 now (+357% WoW). The spike did not follow the pause; the pause came about 1.7 hours after the price had already started to move. Hatom's HMEX supply rose 672% in the same week. The on-chain venue for MEX is frozen, the price is being set off-chain, and /mex/economics now reports MEX at $0. The reason for the pause is not visible on-chain."
   },
   {
    "category": "whale",
    "severity": "high",
-   "finding": "WAVE #4 IS UNDER WAY - THE DISTRIBUTION PROGRAMME IS CONTINUOUS. UPbit sent 372,000 EGLD into its desk, above the 200,000 branch run #24 pre-registered, and the desks delivered 401,353 EGLD one-way on 893,299 gross (circularity 55%). Destinations two hops out: Binance.com +185,204, Bybit +111,568, Gate.io +37,955. Inventory ran down again, 96,114 -> 56,596. Netted as one window from Aug 17 to Sep 14 the programme has delivered 1,336,721 EGLD one-way; the four weekly figures sum to 1,462,317, a 9% overstatement. The 55% weekly circularity sits below the 63-80% band, the run #21 sign that a return leg landed from an earlier week."
+   "finding": "WAVE #4 IS UNDER WAY - THE DISTRIBUTION PROGRAMME IS CONTINUOUS. UPbit sent 372,000 EGLD into its desk, above the 200,000 branch run #24 pre-registered, and the desks delivered 401,353 EGLD one-way on 893,299 gross (circularity 55%). Destinations two hops out: Binance.com +185,204, Bybit +111,568, Gate.io +37,955. The desk balance fell to 56,596, but it is a working float, not a stock being sold down: the UPbit wallet that refills it still holds 1,044,107 EGLD. Netted as one window from Aug 17 to Sep 14 the programme has delivered 1,336,721 EGLD one-way; the four weekly figures sum to 1,462,317, a 9% overstatement. The 55% weekly circularity sits below the 63-80% band, the run #21 sign that a return leg landed from an earlier week."
   },
   {
    "category": "network",
    "severity": "high",
-   "finding": "EGLD FELL 7.59% TO $4.14 WHILE THE MAJORS HELD - AND THE ORDER BOOK SHOWS WHY THE PIPELINE IS NOT THE WHOLE STORY. BTC -0.51%, ETH +1.26%: a third consecutive EGLD-specific week, this time to the downside, after a peak near $5.17 on the CoinGecko daily series. The first exchange-side measurement this model has taken puts the week in scale: CEX spot volume was 17.5M EGLD over seven days (-32% WoW), so the desks' one-way delivery was 2.3% of it, against 2.1% in the record week. On depth, Binance and Bybit together show $124,993 of bids within 2% of mid, and the pipeline's net delivery into those two venues this week was $1,228,634, about 10x that visible bid. The desks' supply is worked into the book over days rather than hitting it at once, and it is a small fraction of what trades. Run #24's price-only bid test ended inconclusive at $4.14."
+   "finding": "EGLD FELL 7.59% TO $4.14 WHILE THE MAJORS HELD - AND THE ORDER BOOK SHOWS WHY THE PIPELINE IS NOT THE WHOLE STORY. BTC -0.51%, ETH +1.26%: a third consecutive EGLD-specific week, this time to the downside, after a peak near $5.17 on the CoinGecko daily series. The first exchange-side measurement this model has taken puts the week in scale: CEX spot volume was 17.7M EGLD over seven days (-31% WoW), so the desks' one-way delivery was 2.3% of it, against 2.1% in the record week. On depth, Binance and Bybit together show $124,993 of bids within 2% of mid, and the pipeline's net delivery into those two venues this week was $1,228,634, about 10x that visible bid. The desks' supply is worked into the book over days rather than hitting it at once, and it is a small fraction of what trades. Run #24's price-only bid test ended inconclusive at $4.14."
   },
   {
    "category": "staking",
@@ -135,7 +135,7 @@
    "epoch_advanced": 7,
    "btc_correlation_note": "BTC -0.51%, ETH +1.26%, EGLD -7.59%. Third consecutive EGLD-specific week under the run #16 rule, and the first of the three to the downside. The CoinGecko daily series shows the round trip inside the window: up to about $5.17, then down to $4.14."
   },
-  "analysis": "EGLD closed at $4.14, -7.59% on the week, with BTC -0.51% and ETH +1.26%. The snapshot-to-snapshot figure hides a round trip. On CoinGecko's daily series EGLD pushed to about $5.17 early in the window, extending last week's move, and then gave back roughly a fifth of its value into Sunday. z=+1.44sigma, which understates it: four up-weeks pulled the baseline mean to $3.25, below the current price (the run #16 under-flag rule).\n\nTHE STAKED RATIO BROKE ITS FLOOR. Staked EGLD fell 156,538 to 14,329,174. With 49,128 EGLD of emission on top, the ratio fell -0.58pp to 46.55%, below the 46.80% line run #24 registered as the genuine-downtrend branch. It is the lowest reading in the archive by a wide margin, z=-3.69sigma.\n\nThe mechanism matters for what happens next. Delegation TVL ROSE 35,617 in the same week, so the fall in staked EGLD is not in the delegation layer's active stake. The staked-minus-delegated residual moved -192,155. The most likely explanation is timing: the two previous full-set scans found 151,443 and 208,125 EGLD entering the unbonding queue, and the unbonding period for much of that ends inside this window. The evidence for it is circumstantial. 573 withdraw calls hit provider contracts this week against 528 last week, and the scan does not decode withdraw amounts. What is measured is the inflow: new unDelegations fell to 73,351 EGLD from 248 wallets, a third of last week's. The security budget did shrink. The pipe feeding the next round has narrowed.\n\nActivity: 1,700,711 transactions over 7 epochs (242,958/day) and 3,804 new accounts. Network APR +0.094pp to 8.82%, which is what a smaller staked base does to a fixed reward.\n\nFOR THE FIRST TIME THE MODEL CAN PUT THE PIPELINE IN MARKET SCALE. CoinGecko's aggregate spot volume for EGLD was 17.55M EGLD over the seven days, against 25.88M in the record-delivery week. The desks' one-way delivery of 401,353 is 2.3% of it, and last week's record 536,459 was 2.1%. Run #24 ended on the claim that a record delivery was absorbed by a bid nobody could see. Part of that bid is simply the market's ordinary turnover, which is some fifty times the pipeline's weekly flow. This does not make the pipeline irrelevant. It is persistent, one-directional and aimed at two venues, and a steady 2% net offer can move a price the other 98% only churns. It does mean a week's delivery cannot be read against the week's price as if nothing else traded."
+  "analysis": "EGLD closed at $4.14, -7.59% on the week, with BTC -0.51% and ETH +1.26%. The snapshot-to-snapshot figure hides a round trip. On CoinGecko's daily series EGLD pushed to about $5.17 early in the window, extending last week's move, and then gave back roughly a fifth of its value into Sunday. z=+1.44sigma, which understates it: four up-weeks pulled the baseline mean to $3.25, below the current price (the run #16 under-flag rule).\n\nTHE STAKED RATIO BROKE ITS FLOOR. Staked EGLD fell 156,538 to 14,329,174. With 49,128 EGLD of emission on top, the ratio fell -0.58pp to 46.55%, below the 46.80% line run #24 registered as the genuine-downtrend branch. It is the lowest reading in the archive by a wide margin, z=-3.69sigma.\n\nThe mechanism matters for what happens next. Delegation TVL ROSE 35,617 in the same week, so the fall in staked EGLD is not in the delegation layer's active stake. The staked-minus-delegated residual moved -192,155. The most likely explanation is timing: the two previous full-set scans found 151,443 and 208,125 EGLD entering the unbonding queue, and the unbonding period for much of that ends inside this window. The evidence for it is circumstantial. 573 withdraw calls hit provider contracts this week against 528 last week, and the scan does not decode withdraw amounts. What is measured is the inflow: new unDelegations fell to 73,351 EGLD from 248 wallets, a third of last week's. The security budget did shrink. The pipe feeding the next round has narrowed.\n\nActivity: 1,700,711 transactions over 7 epochs (242,958/day) and 3,804 new accounts. Network APR +0.094pp to 8.82%, which is what a smaller staked base does to a fixed reward.\n\nFOR THE FIRST TIME THE MODEL CAN PUT THE PIPELINE IN MARKET SCALE. CoinGecko's aggregate spot volume for EGLD was 17.70M EGLD over the seven days, against 25.59M in the record-delivery week. The desks' one-way delivery of 401,353 is 2.3% of it, and last week's record 536,459 was 2.1%. Run #24 ended on the claim that a record delivery was absorbed by a bid nobody could see. Part of that bid is simply the market's ordinary turnover, which is some fifty times the pipeline's weekly flow. This does not make the pipeline irrelevant. It is persistent, one-directional and aimed at two venues, and a steady 2% net offer can move a price the other 98% only churns. It does mean a week's delivery cannot be read against the week's price as if nothing else traded."
  },
  "whale_intelligence": {
   "large_transactions": [
@@ -1231,7 +1231,7 @@
      }
     }
    ],
-   "series_note": "Staging and delivery ran down together for a second week. Inventory run21: 60,565 -> run22: 109,857 -> run23: 266,213 -> run24: 96,114 -> run25: 56,596, while net one-way delivery was 401,353, the second-largest week on record. With the desks at 56,596, next week's delivery is capped by next week's feed. A fifth tranche would be visible at once, and without one the pipeline cannot deliver at this scale."
+   "series_note": "Delivery held near record scale for a second week while the desk float fell. End-of-week desk balance run21: 60,565 -> run22: 109,857 -> run23: 266,213 -> run24: 96,114 -> run25: 56,596, while net one-way delivery was 401,353, the second-largest week on record. The desk balance (56,596) is a float that UPbit's 1,044,107 EGLD wallet refills, so a low reading does not mean supply is running out. The inventory line shows what sat on the desks at each week's end, not what is left to sell."
   },
   "demand_instruments": {
    "identifiable_bid_absorbed_egld_7d": 0.0,
@@ -1340,12 +1340,84 @@
      "depth_plus2_usd": 1604646.605629831,
      "depth_minus2_usd": 1738275.0567828857
     },
-    "spot_volume_7d_egld": 17545262.956387214,
-    "spot_volume_prior_7d_egld": 25881238.522063088,
-    "net_one_way_share_of_spot_volume_pct": 2.2875263533146044,
-    "previous_net_one_way_share_of_spot_volume_pct": 2.0727717475447807,
+    "spot_volume_7d_egld": 17696479.096892744,
+    "spot_volume_prior_7d_egld": 25591319.020160433,
+    "net_one_way_share_of_spot_volume_pct": 2.2679794759635237,
+    "previous_net_one_way_share_of_spot_volume_pct": 2.096253810041546,
     "binance_bybit_net_delivery_usd_7d": 1228633.831271848,
     "binance_bybit_bid_depth_2pct_usd": 124993.23099768154,
+    "delivery_share_series": [
+     {
+      "run": 16,
+      "date": "2026-07-13",
+      "net_one_way_egld": 309197,
+      "spot_volume_7d_egld": 18724887.831476755,
+      "share_pct": 1.651262228018457
+     },
+     {
+      "run": 17,
+      "date": "2026-07-20",
+      "net_one_way_egld": 409680,
+      "spot_volume_7d_egld": 19721499.48901829,
+      "share_pct": 2.077326829169993
+     },
+     {
+      "run": 18,
+      "date": "2026-07-27",
+      "net_one_way_egld": 114877,
+      "spot_volume_7d_egld": 6621795.1824085675,
+      "share_pct": 1.73483167080102
+     },
+     {
+      "run": 19,
+      "date": "2026-08-03",
+      "net_one_way_egld": 61435,
+      "spot_volume_7d_egld": 7064715.482626502,
+      "share_pct": 0.8696033145436715
+     },
+     {
+      "run": 20,
+      "date": "2026-08-10",
+      "net_one_way_egld": 188658,
+      "spot_volume_7d_egld": 7191778.260137457,
+      "share_pct": 2.623245505853432
+     },
+     {
+      "run": 21,
+      "date": "2026-08-17",
+      "net_one_way_egld": 138265,
+      "spot_volume_7d_egld": 8264938.617986086,
+      "share_pct": 1.6729101859160689
+     },
+     {
+      "run": 22,
+      "date": "2026-08-24",
+      "net_one_way_egld": 252109,
+      "spot_volume_7d_egld": 11568680.045520311,
+      "share_pct": 2.179237380651936
+     },
+     {
+      "run": 23,
+      "date": "2026-08-31",
+      "net_one_way_egld": 272396,
+      "spot_volume_7d_egld": 10984670.029445829,
+      "share_pct": 2.4797831821056735
+     },
+     {
+      "run": 24,
+      "date": "2026-09-07",
+      "net_one_way_egld": 536459,
+      "spot_volume_7d_egld": 25591319.020160433,
+      "share_pct": 2.096253810041546
+     },
+     {
+      "run": 25,
+      "date": "2026-09-14",
+      "net_one_way_egld": 401352.5138857026,
+      "spot_volume_7d_egld": 17696479.096892744,
+      "share_pct": 2.2679794759635237
+     }
+    ],
     "top_tickers": [
      {
       "market": "Binance",
@@ -1450,7 +1522,7 @@
     ]
    }
   },
-  "analysis": "WAVE #4 CONFIRMED, AND THE WAREHOUSE KEPT EMPTYING. UPbit fed 372,000 EGLD, the fourth straight tranche above 290,000, and the desks delivered 401,353 one-way on 893,299 gross. Inventory fell again, 96,114 -> 56,596: the desks delivered this week's feed plus part of what was left from last week. z=+1.07sigma on the net series, the second-largest week in tracking behind last week's record.\n\nWHERE IT WENT. Binance.com +185,204 (383,961 out, 198,758 back), Bybit +111,568, Gate.io +37,955, plus the Unknown Whale I operator and its router. UPbit took 40,000 back from the desks. 31,154 EGLD of outbound is unattributed after two hops. Circularity was 55%, below the 63-80% band. That is the run #21 straddle signature, and the four-week window netting confirms it: 1,336,721 one-way over Aug 17 - Sep 14 against 1,462,317 from the weekly frames.\n\nWHO FEEDS IT. By parent venue this week: UPbit 372,000, Binance-parented feeders 215,762, Bybit-parented 130,414, unattributed 108,047. Run #24's open question about the 196,492 EGLD feeder is answered by the back-trace. erd1ytpenkzj (nonce 206, balance 0.00) received 367,351 EGLD from Bybit and 112,212 from Gate.io over the wave. It is a Bybit/Gate.io pass-through, not a fifth venue. Of the eight largest unlabelled feeders, seven resolve to Binance, Bybit or Gate.io within two hops, and the eighth to the Unknown Whale I operator. The feed side and the delivery side are the same four exchanges.\n\nBINANCE. Day-sliced over the full seven days (772 outbound transactions, no capped slice), the hot wallet sent 218,264 EGLD to known OTC desk feeders and routers. That is the third consecutive week above the 50,000 line run #24's watch item named, so Binance is a standing funding line for the pipeline. The same wallet sent 142,319 to staking custody, which has now risen two weeks running to 3,493,535. Custody refills and the desk feed run side by side, so the custody balance should no longer be read as a supply signal.\n\nTIERS. On the common-address basis mega +120,606, large +140,675, mid -90,533. Holding each wallet in its prior tier (run #14 guard): mega +120,606, large +33,943, mid +12,554. The mega figure is the Binance custody refill. The raw mid-tier loss is reclassification: an unlabelled wallet (erd1ygqnssmn...) grew 39,294 -> 106,732 and left the tier. Once that is netted out every tier is slightly positive. Inside the large tier two contract moves offset each other: the xExchange WEGLD contract +100,133 EGLD and the Hatom EGLD money market -89,886 EGLD, consistent with EGLD being wrapped to trade on WEGLD/USDC and withdrawn from lending in the same week.\n\nDEMAND - THE FIRST EXCHANGE-SIDE READING. Run #24's top recommendation was an instrument on the far side of the order book, and a crude one now exists. Across every venue CoinGecko tracks, EGLD has $1,738,275 of bids and $1,604,647 of asks within 2% of mid, on $6,785,451 of 24h volume. Binance (4 pairs) shows $103,119 of bids and $48,876 of asks, Bybit $21,874 and $8,959. Seven-day spot volume was 17.55M EGLD, so this week's one-way delivery was 2.3% of it. That is the scale the model has been missing. The pipeline is a persistent, directional ~2% of turnover, not a flood, and a 17% up-week through a record delivery is less paradoxical at that scale than run #24 made it sound. Bids sit deeper than asks on both of the pipeline's destination venues. That is one snapshot and cannot yet be called a trend; it is the baseline for next week's reading.\n\nThe on-chain demand instruments: withdrawal breadth 47 ex-pipeline recipients took 397,124 EGLD, with the top two at 32% of value, under the 50% line, so run #24's concentration test resolves on the genuine-dispersal branch. DEX volume in EGLD more than doubled, but 98% of it is WEGLD/USDC in a falling week, which is selling volume. The identifiable-bid proxies stayed at zero for a fifth week."
+  "analysis": "WAVE #4 CONFIRMED, AND THE RESERVOIR BEHIND THE DESKS IS STILL FULL. UPbit fed 372,000 EGLD, the fourth straight tranche above 290,000, and the desks delivered 401,353 one-way on 893,299 gross. The desk balance moved 96,114 -> 56,596. That is a pass-through float, not an inventory: the UPbit wallet feeding it still holds 1,044,107 EGLD, roughly eighteen times the desk balance. z=+1.07sigma on the net series, the second-largest week in tracking behind last week's record.\n\nWHERE IT WENT. Binance.com +185,204 (383,961 out, 198,758 back), Bybit +111,568, Gate.io +37,955, plus the Unknown Whale I operator and its router. UPbit took 40,000 back from the desks. 31,154 EGLD of outbound is unattributed after two hops. Circularity was 55%, below the 63-80% band. That is the run #21 straddle signature, and the four-week window netting confirms it: 1,336,721 one-way over Aug 17 - Sep 14 against 1,462,317 from the weekly frames.\n\nWHO FEEDS IT. By parent venue this week: UPbit 372,000, Binance-parented feeders 215,762, Bybit-parented 130,414, unattributed 108,047. Run #24's open question about the 196,492 EGLD feeder is answered by the back-trace. erd1ytpenkzj (nonce 206, balance 0.00) received 367,351 EGLD from Bybit and 112,212 from Gate.io over the wave. It is a Bybit/Gate.io pass-through, not a fifth venue. Of the eight largest unlabelled feeders, seven resolve to Binance, Bybit or Gate.io within two hops, and the eighth to the Unknown Whale I operator. The feed side and the delivery side are the same four exchanges.\n\nBINANCE. Day-sliced over the full seven days (772 outbound transactions, no capped slice), the hot wallet sent 218,264 EGLD to known OTC desk feeders and routers. That is the third consecutive week above the 50,000 line run #24's watch item named, so Binance is a standing funding line for the pipeline. The same wallet sent 142,319 to staking custody, which has now risen two weeks running to 3,493,535. Custody refills and the desk feed run side by side, so the custody balance should no longer be read as a supply signal.\n\nTIERS. On the common-address basis mega +120,606, large +140,675, mid -90,533. Holding each wallet in its prior tier (run #14 guard): mega +120,606, large +33,943, mid +12,554. The mega figure is the Binance custody refill. The raw mid-tier loss is reclassification: an unlabelled wallet (erd1ygqnssmn...) grew 39,294 -> 106,732 and left the tier. Once that is netted out every tier is slightly positive. Inside the large tier two contract moves offset each other: the xExchange WEGLD contract +100,133 EGLD and the Hatom EGLD money market -89,886 EGLD, consistent with EGLD being wrapped to trade on WEGLD/USDC and withdrawn from lending in the same week.\n\nDEMAND - THE FIRST EXCHANGE-SIDE READING. Run #24's top recommendation was an instrument on the far side of the order book, and a crude one now exists. Across every venue CoinGecko tracks, EGLD has $1,738,275 of bids and $1,604,647 of asks within 2% of mid, on $6,785,451 of 24h volume. Binance (4 pairs) shows $103,119 of bids and $48,876 of asks, Bybit $21,874 and $8,959. Seven-day spot volume was 17.70M EGLD, so this week's one-way delivery was 2.3% of it. That is the scale the model has been missing. The pipeline is a persistent, directional ~2% of turnover, not a flood, and a 17% up-week through a record delivery is less paradoxical at that scale than run #24 made it sound. Bids sit deeper than asks on both of the pipeline's destination venues. That is one snapshot and cannot yet be called a trend; it is the baseline for next week's reading.\n\nThe on-chain demand instruments: withdrawal breadth 47 ex-pipeline recipients took 397,124 EGLD, with the top two at 32% of value, under the 50% line, so run #24's concentration test resolves on the genuine-dispersal branch. DEX volume in EGLD more than doubled, but 98% of it is WEGLD/USDC in a falling week, which is selling volume. The identifiable-bid proxies stayed at zero for a fifth week."
  },
  "staking_intelligence": {
   "summary": {
@@ -2762,10 +2834,2804 @@
     "hmex_supply": 24959314779646.0,
     "hmex_prev_supply": 3232123702089.0,
     "hmex_mcap": 1605760.7344035583,
-    "hmex_prev_mcap": 27047.117362819925
+    "hmex_prev_mcap": 27047.117362819925,
+    "price_series_hourly": [
+     [
+      1788210000000,
+      3.540869237044253e-07,
+      7405.169874760245
+     ],
+     [
+      1788213600000,
+      3.5427171273681863e-07,
+      6905.830573682696
+     ],
+     [
+      1788217200000,
+      3.5457144980801e-07,
+      6873.468539742736
+     ],
+     [
+      1788220800000,
+      3.5567074864591527e-07,
+      6610.338192119176
+     ],
+     [
+      1788224400000,
+      3.5757030839019986e-07,
+      5746.546652849984
+     ],
+     [
+      1788228000000,
+      3.5756758610472384e-07,
+      5780.673672127186
+     ],
+     [
+      1788231600000,
+      3.5756175370987485e-07,
+      5616.206128563139
+     ],
+     [
+      1788235200000,
+      3.5817744665550815e-07,
+      5559.967837634552
+     ],
+     [
+      1788238800000,
+      3.581510141135237e-07,
+      3976.894780673733
+     ],
+     [
+      1788242400000,
+      3.5845562929096976e-07,
+      3426.7717775903097
+     ],
+     [
+      1788246000000,
+      3.6004433545091247e-07,
+      3388.4663930020133
+     ],
+     [
+      1788249600000,
+      3.6074224585292864e-07,
+      3099.122855064057
+     ],
+     [
+      1788253200000,
+      3.5921183010289266e-07,
+      2759.353903195214
+     ],
+     [
+      1788256800000,
+      3.58872272390454e-07,
+      2912.1311400598856
+     ],
+     [
+      1788260400000,
+      3.588441228714597e-07,
+      2615.080574059578
+     ],
+     [
+      1788264000000,
+      3.582178411100064e-07,
+      2635.7291442909727
+     ],
+     [
+      1788267600000,
+      3.611064819464273e-07,
+      2911.982905218878
+     ],
+     [
+      1788271200000,
+      3.6604034392430436e-07,
+      3138.4717806136928
+     ],
+     [
+      1788274800000,
+      3.6832973064453425e-07,
+      3066.449159870236
+     ],
+     [
+      1788278400000,
+      3.753848273414768e-07,
+      3407.667086415478
+     ],
+     [
+      1788282000000,
+      3.7181958664892145e-07,
+      3772.4772293781507
+     ],
+     [
+      1788285600000,
+      3.7237395398693424e-07,
+      3722.0944598739006
+     ],
+     [
+      1788289200000,
+      3.7245185892173103e-07,
+      3750.018573013689
+     ],
+     [
+      1788292800000,
+      3.724114822756467e-07,
+      3851.7364964151307
+     ],
+     [
+      1788296400000,
+      3.725004580745503e-07,
+      3631.4424903920417
+     ],
+     [
+      1788300000000,
+      3.7250577578264216e-07,
+      3652.750560827865
+     ],
+     [
+      1788303600000,
+      3.722336283005478e-07,
+      3908.575746953768
+     ],
+     [
+      1788307200000,
+      3.720069618911441e-07,
+      4022.5328029539287
+     ],
+     [
+      1788310800000,
+      3.7202531027351007e-07,
+      3788.5131335222445
+     ],
+     [
+      1788314400000,
+      3.7127616902108715e-07,
+      4124.043783116918
+     ],
+     [
+      1788318000000,
+      3.6845232779520064e-07,
+      4224.914362154097
+     ],
+     [
+      1788321600000,
+      3.73453380923498e-07,
+      5725.451280351595
+     ],
+     [
+      1788325200000,
+      3.7286647439163034e-07,
+      6205.878629550319
+     ],
+     [
+      1788328800000,
+      3.7669404771020974e-07,
+      6594.301629172034
+     ],
+     [
+      1788332400000,
+      3.82143352597377e-07,
+      6881.599034991101
+     ],
+     [
+      1788336000000,
+      3.812518370058518e-07,
+      6933.463644625326
+     ],
+     [
+      1788339600000,
+      3.8125031233828587e-07,
+      6738.358576422517
+     ],
+     [
+      1788343200000,
+      3.787412488284533e-07,
+      6521.4799591506135
+     ],
+     [
+      1788346800000,
+      3.816363778993367e-07,
+      6667.477256505037
+     ],
+     [
+      1788350400000,
+      3.812067998462248e-07,
+      6624.500749023582
+     ],
+     [
+      1788354000000,
+      3.8961549418776564e-07,
+      7405.932288014151
+     ],
+     [
+      1788357600000,
+      3.9041667470510165e-07,
+      7584.803949088609
+     ],
+     [
+      1788361200000,
+      3.9889392057717055e-07,
+      10179.63240579265
+     ],
+     [
+      1788364800000,
+      3.888896423247205e-07,
+      12984.95503383189
+     ],
+     [
+      1788368400000,
+      4.0555628488394797e-07,
+      15318.23601555263
+     ],
+     [
+      1788372000000,
+      4.0243758386890394e-07,
+      15587.525932555649
+     ],
+     [
+      1788375600000,
+      4.0254403516533657e-07,
+      16813.274034392845
+     ],
+     [
+      1788379200000,
+      3.9774007496009566e-07,
+      17227.48919998631
+     ],
+     [
+      1788382800000,
+      4.0692309240029643e-07,
+      18120.222206311904
+     ],
+     [
+      1788386400000,
+      4.331314102142634e-07,
+      24462.67241000706
+     ],
+     [
+      1788390000000,
+      4.481360587695254e-07,
+      25709.689285167
+     ],
+     [
+      1788393600000,
+      4.445183148239735e-07,
+      28685.799894307493
+     ],
+     [
+      1788397200000,
+      4.286308868447487e-07,
+      30541.681627316295
+     ],
+     [
+      1788400800000,
+      4.3031880747175407e-07,
+      31045.197690951623
+     ],
+     [
+      1788404400000,
+      4.342247817499298e-07,
+      31692.482964873063
+     ],
+     [
+      1788408000000,
+      4.3002986355686336e-07,
+      31575.353504741226
+     ],
+     [
+      1788411600000,
+      4.3862297602637945e-07,
+      33070.27814570348
+     ],
+     [
+      1788415200000,
+      4.46238115271805e-07,
+      34826.02251652067
+     ],
+     [
+      1788418800000,
+      4.448375215680936e-07,
+      35459.144718569405
+     ],
+     [
+      1788422400000,
+      4.434371495631883e-07,
+      36000.84377681208
+     ],
+     [
+      1788426000000,
+      4.3464180519168e-07,
+      35609.71498869012
+     ],
+     [
+      1788429600000,
+      4.4183241277256456e-07,
+      38030.02639897291
+     ],
+     [
+      1788433200000,
+      4.285271454537716e-07,
+      38372.73621281553
+     ],
+     [
+      1788436800000,
+      4.2173427622571136e-07,
+      38670.03388221667
+     ],
+     [
+      1788440400000,
+      4.209465344386567e-07,
+      37832.67178969903
+     ],
+     [
+      1788444000000,
+      4.1734681193141044e-07,
+      37257.56528748893
+     ],
+     [
+      1788447600000,
+      4.1925607049284294e-07,
+      35021.745824097095
+     ],
+     [
+      1788451200000,
+      4.1435201707769056e-07,
+      31312.24001052868
+     ],
+     [
+      1788454800000,
+      4.094489974470758e-07,
+      29131.403603206552
+     ],
+     [
+      1788458400000,
+      4.0954786706500745e-07,
+      28450.750339738992
+     ],
+     [
+      1788462000000,
+      4.0873134451417694e-07,
+      31146.276645610116
+     ],
+     [
+      1788465600000,
+      4.122303333477889e-07,
+      31895.604460398496
+     ],
+     [
+      1788469200000,
+      4.106125588106285e-07,
+      31347.84448670688
+     ],
+     [
+      1788472800000,
+      4.106304892502443e-07,
+      26626.806927689962
+     ],
+     [
+      1788476400000,
+      4.103337675292028e-07,
+      26757.551112478763
+     ],
+     [
+      1788480000000,
+      4.1153894384879776e-07,
+      23736.318211908732
+     ],
+     [
+      1788483600000,
+      4.122200364492361e-07,
+      21007.43474973016
+     ],
+     [
+      1788487200000,
+      4.03311236892614e-07,
+      20713.7905807389
+     ],
+     [
+      1788490800000,
+      4.0329994507980234e-07,
+      20257.954556002136
+     ],
+     [
+      1788494400000,
+      4.0144639322971134e-07,
+      18425.43401710173
+     ],
+     [
+      1788498000000,
+      4.0147285215691177e-07,
+      17106.328153956783
+     ],
+     [
+      1788501600000,
+      3.990385209956177e-07,
+      15818.356885447552
+     ],
+     [
+      1788505200000,
+      3.946706152320752e-07,
+      14688.562217410694
+     ],
+     [
+      1788508800000,
+      3.9367807638450565e-07,
+      14439.117065242363
+     ],
+     [
+      1788512400000,
+      3.919484218405107e-07,
+      13490.331855928935
+     ],
+     [
+      1788516000000,
+      3.9879494484262073e-07,
+      13504.103783203649
+     ],
+     [
+      1788519600000,
+      4.0647575819914474e-07,
+      12661.13644228374
+     ],
+     [
+      1788523200000,
+      4.150161059263196e-07,
+      12344.339988183434
+     ],
+     [
+      1788526800000,
+      4.083947231873358e-07,
+      13987.832537399277
+     ],
+     [
+      1788530400000,
+      4.154549019062519e-07,
+      14993.853547181228
+     ],
+     [
+      1788534000000,
+      4.1290447008225856e-07,
+      15460.546930073238
+     ],
+     [
+      1788537600000,
+      4.2333141745835994e-07,
+      16635.403815570815
+     ],
+     [
+      1788541200000,
+      4.211400344178624e-07,
+      16472.152099468072
+     ],
+     [
+      1788544800000,
+      4.1846034818115747e-07,
+      16820.123767411565
+     ],
+     [
+      1788548400000,
+      4.213944770072748e-07,
+      13172.959686300877
+     ],
+     [
+      1788552000000,
+      4.2077108482058423e-07,
+      11941.001396733596
+     ],
+     [
+      1788555600000,
+      4.1923452697542105e-07,
+      11863.38493609652
+     ],
+     [
+      1788559200000,
+      4.192358594095912e-07,
+      11653.371377602103
+     ],
+     [
+      1788562800000,
+      4.1755012501073604e-07,
+      10904.6592281139
+     ],
+     [
+      1788566400000,
+      4.151344691830187e-07,
+      10971.80080932814
+     ],
+     [
+      1788570000000,
+      4.15743675548972e-07,
+      11794.511294522437
+     ],
+     [
+      1788573600000,
+      4.122359917925203e-07,
+      11143.35271964804
+     ],
+     [
+      1788577200000,
+      4.081355071819685e-07,
+      11777.904896845339
+     ],
+     [
+      1788580800000,
+      4.0813389033055627e-07,
+      11786.066118898785
+     ],
+     [
+      1788584400000,
+      4.0944142801873514e-07,
+      12135.304443438574
+     ],
+     [
+      1788588000000,
+      4.1093952757530274e-07,
+      12133.300021714535
+     ],
+     [
+      1788591600000,
+      4.1094063427343004e-07,
+      12282.43668849598
+     ],
+     [
+      1788595200000,
+      4.145428828637451e-07,
+      12287.68333695108
+     ],
+     [
+      1788598800000,
+      4.1553157352724006e-07,
+      12126.068694925481
+     ],
+     [
+      1788602400000,
+      4.149339109602286e-07,
+      11256.467840083496
+     ],
+     [
+      1788606000000,
+      4.1174816226815503e-07,
+      10760.472075008558
+     ],
+     [
+      1788609600000,
+      4.1026959940434776e-07,
+      10904.627852194448
+     ],
+     [
+      1788613200000,
+      4.1025270603686423e-07,
+      8520.88507856847
+     ],
+     [
+      1788616800000,
+      4.1025809902678954e-07,
+      7894.855532673042
+     ],
+     [
+      1788620400000,
+      4.102583449286368e-07,
+      6882.961695470819
+     ],
+     [
+      1788624000000,
+      4.0645042382513867e-07,
+      5976.215897926108
+     ],
+     [
+      1788627600000,
+      4.0555766090289956e-07,
+      6047.181355971637
+     ],
+     [
+      1788631200000,
+      4.042599908810046e-07,
+      5714.282682371454
+     ],
+     [
+      1788634800000,
+      3.9885889800462283e-07,
+      5668.887126953845
+     ],
+     [
+      1788638400000,
+      3.9776008445727404e-07,
+      5921.871583508855
+     ],
+     [
+      1788642000000,
+      3.9976453443237703e-07,
+      6399.335553367304
+     ],
+     [
+      1788645600000,
+      4.019614467641931e-07,
+      6722.824825185236
+     ],
+     [
+      1788649200000,
+      4.0265760103565793e-07,
+      6633.814373997805
+     ],
+     [
+      1788652800000,
+      4.0265270298092956e-07,
+      6507.420808599367
+     ],
+     [
+      1788656400000,
+      4.026533146058717e-07,
+      5698.349926729865
+     ],
+     [
+      1788660000000,
+      4.0299767359925466e-07,
+      5340.821867337574
+     ],
+     [
+      1788663600000,
+      4.017564959605691e-07,
+      4581.775473325701
+     ],
+     [
+      1788667200000,
+      4.0174775329526527e-07,
+      4585.259850043257
+     ],
+     [
+      1788670800000,
+      4.0164331932427043e-07,
+      4338.0740430948845
+     ],
+     [
+      1788674400000,
+      4.0475040645957955e-07,
+      4261.893002972955
+     ],
+     [
+      1788678000000,
+      4.053637039161257e-07,
+      4203.259464846351
+     ],
+     [
+      1788681600000,
+      4.053489523249023e-07,
+      3813.4775134911397
+     ],
+     [
+      1788685200000,
+      4.047509441329708e-07,
+      3746.684879192378
+     ],
+     [
+      1788688800000,
+      4.011125667662238e-07,
+      3803.0552573433956
+     ],
+     [
+      1788692400000,
+      4.024499083365359e-07,
+      3729.824926798613
+     ],
+     [
+      1788696000000,
+      4.024567921729597e-07,
+      3260.705096065348
+     ],
+     [
+      1788699600000,
+      4.0093909004550507e-07,
+      3235.7965590531994
+     ],
+     [
+      1788703200000,
+      3.976531185671866e-07,
+      3490.023250260895
+     ],
+     [
+      1788706800000,
+      3.951576994807062e-07,
+      4349.531284890563
+     ],
+     [
+      1788710400000,
+      3.9585646185691335e-07,
+      3922.695961799225
+     ],
+     [
+      1788714000000,
+      3.958559891337092e-07,
+      3788.775094682156
+     ],
+     [
+      1788717600000,
+      3.9584499178100205e-07,
+      3582.6996335987246
+     ],
+     [
+      1788721200000,
+      3.9645366824924574e-07,
+      3202.6992445501655
+     ],
+     [
+      1788724800000,
+      3.988664911991286e-07,
+      2934.115964065496
+     ],
+     [
+      1788728400000,
+      3.997264952867589e-07,
+      2692.985413126211
+     ],
+     [
+      1788732000000,
+      3.988409485017314e-07,
+      2346.0574115899913
+     ],
+     [
+      1788735600000,
+      3.9870989114889466e-07,
+      2353.1963794539206
+     ],
+     [
+      1788739200000,
+      3.983267268731414e-07,
+      2357.1951423680625
+     ],
+     [
+      1788742800000,
+      3.9778453939889636e-07,
+      2349.546989986267
+     ],
+     [
+      1788746400000,
+      3.959995569791337e-07,
+      2361.6319283337107
+     ],
+     [
+      1788750000000,
+      3.932036765141688e-07,
+      2581.445413176849
+     ],
+     [
+      1788753600000,
+      3.9291548867061514e-07,
+      2837.8173036411526
+     ],
+     [
+      1788757200000,
+      3.9409855023518536e-07,
+      3144.929769239384
+     ],
+     [
+      1788760800000,
+      3.9517183732334964e-07,
+      2989.6664429271045
+     ],
+     [
+      1788764400000,
+      3.948396502834476e-07,
+      3112.73306517204
+     ],
+     [
+      1788768000000,
+      3.9147211539400997e-07,
+      3584.3898803897027
+     ],
+     [
+      1788771600000,
+      3.8712017988918184e-07,
+      4106.611459217021
+     ],
+     [
+      1788775200000,
+      3.895102021589464e-07,
+      4220.390462843051
+     ],
+     [
+      1788778800000,
+      3.9037630206952797e-07,
+      5801.524744432567
+     ],
+     [
+      1788782400000,
+      4.001565416308736e-07,
+      5989.511969532879
+     ],
+     [
+      1788786000000,
+      4.0368903732606315e-07,
+      6122.784594536018
+     ],
+     [
+      1788789600000,
+      4.100374688377218e-07,
+      6652.695260338885
+     ],
+     [
+      1788793200000,
+      4.096420366320025e-07,
+      6209.062323897375
+     ],
+     [
+      1788796800000,
+      4.002576298106799e-07,
+      6757.410112255051
+     ],
+     [
+      1788800400000,
+      4.002521605200127e-07,
+      6834.208727287217
+     ],
+     [
+      1788804000000,
+      4.0475175590038637e-07,
+      7188.773924100076
+     ],
+     [
+      1788807600000,
+      4.090632999117892e-07,
+      8037.12079697245
+     ],
+     [
+      1788811200000,
+      4.093629982834527e-07,
+      7985.82340544018
+     ],
+     [
+      1788814800000,
+      4.089615091164145e-07,
+      8136.4474612564045
+     ],
+     [
+      1788818400000,
+      4.089574455532319e-07,
+      8172.42432382653
+     ],
+     [
+      1788822000000,
+      4.08746425468365e-07,
+      8140.907600486869
+     ],
+     [
+      1788825600000,
+      4.0874734068796555e-07,
+      8149.768207874297
+     ],
+     [
+      1788829200000,
+      4.096432196187506e-07,
+      8428.278280956632
+     ],
+     [
+      1788832800000,
+      4.103586577174404e-07,
+      8452.586763835709
+     ],
+     [
+      1788836400000,
+      4.104485036707954e-07,
+      8223.561946831669
+     ],
+     [
+      1788840000000,
+      4.101491866521274e-07,
+      7940.208343603756
+     ],
+     [
+      1788843600000,
+      4.101454675251597e-07,
+      7626.707505251307
+     ],
+     [
+      1788847200000,
+      4.1126310230778755e-07,
+      7830.833841589096
+     ],
+     [
+      1788850800000,
+      4.084550782157931e-07,
+      7686.91818671516
+     ],
+     [
+      1788854400000,
+      4.0845466836041503e-07,
+      7332.167188258349
+     ],
+     [
+      1788858000000,
+      4.091460242156286e-07,
+      6647.848504123563
+     ],
+     [
+      1788861600000,
+      4.091444547396956e-07,
+      6435.7058192732975
+     ],
+     [
+      1788865200000,
+      4.091474237056921e-07,
+      4752.433680637548
+     ],
+     [
+      1788868800000,
+      4.09136972769812e-07,
+      4728.980944772272
+     ],
+     [
+      1788872400000,
+      4.0915080740281345e-07,
+      4541.881063812439
+     ],
+     [
+      1788876000000,
+      4.0824656801002046e-07,
+      3841.235888809582
+     ],
+     [
+      1788879600000,
+      4.082522035648157e-07,
+      3678.267819178912
+     ],
+     [
+      1788883200000,
+      4.0917932717326695e-07,
+      2884.930048595426
+     ],
+     [
+      1788886800000,
+      4.1125156378271603e-07,
+      2873.4481369314126
+     ],
+     [
+      1788890400000,
+      4.1457577285722626e-07,
+      2870.4385828252434
+     ],
+     [
+      1788894000000,
+      4.14665747551538e-07,
+      2160.3611986796714
+     ],
+     [
+      1788897600000,
+      4.2166533586298274e-07,
+      3023.3048761355844
+     ],
+     [
+      1788901200000,
+      4.2236717340780386e-07,
+      2847.0849338413136
+     ],
+     [
+      1788904800000,
+      4.2566877802711674e-07,
+      3225.0270105094023
+     ],
+     [
+      1788908400000,
+      4.2866526126664253e-07,
+      3617.095114146228
+     ],
+     [
+      1788912000000,
+      4.3307249387821587e-07,
+      4188.480975756396
+     ],
+     [
+      1788915600000,
+      4.403629840500385e-07,
+      5637.71016453984
+     ],
+     [
+      1788919200000,
+      4.3772550499237976e-07,
+      6169.240157667648
+     ],
+     [
+      1788922800000,
+      4.3815450004606685e-07,
+      6454.08039574664
+     ],
+     [
+      1788926400000,
+      4.30456482598552e-07,
+      7005.440504198751
+     ],
+     [
+      1788930000000,
+      4.3635840403910635e-07,
+      8110.54128831691
+     ],
+     [
+      1788933600000,
+      4.357459577562558e-07,
+      8063.709433910328
+     ],
+     [
+      1788937200000,
+      4.354509182229515e-07,
+      8011.741147750658
+     ],
+     [
+      1788940800000,
+      4.336442932865203e-07,
+      8003.387302047492
+     ],
+     [
+      1788944400000,
+      4.3345214745487645e-07,
+      8239.53958470442
+     ],
+     [
+      1788948000000,
+      4.3173591305078897e-07,
+      8261.99024545805
+     ],
+     [
+      1788951600000,
+      4.2885111694281597e-07,
+      8642.27761444089
+     ],
+     [
+      1788955200000,
+      4.284538230330452e-07,
+      8779.556514637894
+     ],
+     [
+      1788958800000,
+      4.272662337382664e-07,
+      8982.830423550397
+     ],
+     [
+      1788962400000,
+      4.272592160527689e-07,
+      8866.352698695733
+     ],
+     [
+      1788966000000,
+      4.2723794471238246e-07,
+      8867.335706334852
+     ],
+     [
+      1788969600000,
+      4.363735350103768e-07,
+      9486.23239439574
+     ],
+     [
+      1788973200000,
+      4.4166706504239776e-07,
+      10273.167441587419
+     ],
+     [
+      1788976800000,
+      4.459421843991846e-07,
+      11641.854121531662
+     ],
+     [
+      1788980400000,
+      4.4471644367434854e-07,
+      12106.658355269064
+     ],
+     [
+      1788984000000,
+      4.4462693586517484e-07,
+      11609.763707420052
+     ],
+     [
+      1788987600000,
+      4.356578799229998e-07,
+      12361.322033996288
+     ],
+     [
+      1788991200000,
+      4.401989412873097e-07,
+      12279.773495291345
+     ],
+     [
+      1788994800000,
+      4.3934845377944594e-07,
+      11981.175240671535
+     ],
+     [
+      1788998400000,
+      4.431483498273104e-07,
+      12076.960222877355
+     ],
+     [
+      1789002000000,
+      4.4624257101969766e-07,
+      10686.291813976806
+     ],
+     [
+      1789005600000,
+      4.462579585086257e-07,
+      10103.08597907967
+     ],
+     [
+      1789009200000,
+      4.4224235677227307e-07,
+      10365.164751628276
+     ],
+     [
+      1789012800000,
+      4.409554642517531e-07,
+      10112.507036383562
+     ],
+     [
+      1789016400000,
+      4.4162889804297405e-07,
+      9195.170851321096
+     ],
+     [
+      1789020000000,
+      4.401294105407883e-07,
+      9052.13725226168
+     ],
+     [
+      1789023600000,
+      4.53740967061127e-07,
+      10155.667004153076
+     ],
+     [
+      1789027200000,
+      4.5064888881576633e-07,
+      11174.809528434636
+     ],
+     [
+      1789030800000,
+      4.6648210604500407e-07,
+      13676.476370812865
+     ],
+     [
+      1789034400000,
+      4.548795988400708e-07,
+      17530.48707021288
+     ],
+     [
+      1789038000000,
+      4.6237303396241135e-07,
+      21464.805614957513
+     ],
+     [
+      1789041600000,
+      4.50041990676516e-07,
+      22886.86042477733
+     ],
+     [
+      1789045200000,
+      4.465158426456197e-07,
+      24171.1603191084
+     ],
+     [
+      1789048800000,
+      4.4427655323554006e-07,
+      24899.143480975526
+     ],
+     [
+      1789052400000,
+      4.439683982596955e-07,
+      27751.000383934796
+     ],
+     [
+      1789056000000,
+      4.4614096137095944e-07,
+      28472.125207107267
+     ],
+     [
+      1789059600000,
+      4.3769288117816636e-07,
+      28970.595853365365
+     ],
+     [
+      1789063200000,
+      4.3910415766690027e-07,
+      27987.795162060727
+     ],
+     [
+      1789066800000,
+      4.385895329569109e-07,
+      27524.71167231654
+     ],
+     [
+      1789070400000,
+      4.462655553803625e-07,
+      28264.94449857901
+     ],
+     [
+      1789074000000,
+      4.449586364918727e-07,
+      27322.655021306753
+     ],
+     [
+      1789077600000,
+      4.39575474061196e-07,
+      27319.032331757513
+     ],
+     [
+      1789081200000,
+      4.3551521175614744e-07,
+      27628.987575774485
+     ],
+     [
+      1789084800000,
+      4.3212316167581875e-07,
+      27498.959767081607
+     ],
+     [
+      1789088400000,
+      4.3332787545184274e-07,
+      28364.82569302192
+     ],
+     [
+      1789092000000,
+      4.3412463905192674e-07,
+      28515.464930854167
+     ],
+     [
+      1789095600000,
+      4.3342182413079165e-07,
+      27759.95680796938
+     ],
+     [
+      1789099200000,
+      4.331232881480914e-07,
+      27482.99616833366
+     ],
+     [
+      1789102800000,
+      4.3163047752761634e-07,
+      27432.663903729102
+     ],
+     [
+      1789106400000,
+      4.281396620605124e-07,
+      27689.082937839823
+     ],
+     [
+      1789110000000,
+      4.293113536415777e-07,
+      27398.518084673924
+     ],
+     [
+      1789113600000,
+      4.2743059162311067e-07,
+      27014.058989706216
+     ],
+     [
+      1789117200000,
+      4.273318232880663e-07,
+      25135.53257247117
+     ],
+     [
+      1789120800000,
+      4.2396803581298034e-07,
+      21578.33391303222
+     ],
+     [
+      1789124400000,
+      4.226966503650747e-07,
+      17792.14143594269
+     ],
+     [
+      1789128000000,
+      4.205598632810664e-07,
+      16792.84487163913
+     ],
+     [
+      1789131600000,
+      4.269158052087116e-07,
+      16705.203090374
+     ],
+     [
+      1789135200000,
+      4.2384851832557336e-07,
+      16706.065234958252
+     ],
+     [
+      1789138800000,
+      4.223541272434905e-07,
+      14348.132197408344
+     ],
+     [
+      1789142400000,
+      4.139411963536967e-07,
+      13237.131904760781
+     ],
+     [
+      1789146000000,
+      4.100599364235174e-07,
+      12818.53727030265
+     ],
+     [
+      1789149600000,
+      4.129280218408927e-07,
+      12500.773947907406
+     ],
+     [
+      1789153200000,
+      4.0913535119445276e-07,
+      12363.599728391859
+     ],
+     [
+      1789156800000,
+      4.172362961810119e-07,
+      12659.054116560643
+     ],
+     [
+      1789160400000,
+      4.207931412811271e-07,
+      12855.179570760865
+     ],
+     [
+      1789164000000,
+      4.196449373729627e-07,
+      12470.743446813067
+     ],
+     [
+      1789167600000,
+      4.203317962198224e-07,
+      11977.049179568323
+     ],
+     [
+      1789171200000,
+      4.2033227412111094e-07,
+      11371.83889669405
+     ],
+     [
+      1789174800000,
+      4.215329688312749e-07,
+      10456.546145199834
+     ],
+     [
+      1789178400000,
+      4.2033961238415426e-07,
+      10424.832681440004
+     ],
+     [
+      1789182000000,
+      4.172345477777469e-07,
+      10577.802949043968
+     ],
+     [
+      1789185600000,
+      4.1344078489769183e-07,
+      10704.38714735041
+     ],
+     [
+      1789189200000,
+      4.1342931991992906e-07,
+      10646.32403446455
+     ],
+     [
+      1789192800000,
+      4.128378029179701e-07,
+      10146.577903967389
+     ],
+     [
+      1789196400000,
+      4.1673274594088807e-07,
+      9929.753099846592
+     ],
+     [
+      1789200000000,
+      4.1983009073624096e-07,
+      9337.813305060334
+     ],
+     [
+      1789203600000,
+      4.181336189254712e-07,
+      9541.540309152027
+     ],
+     [
+      1789207200000,
+      4.178325259326108e-07,
+      9073.464426287785
+     ],
+     [
+      1789210800000,
+      4.1693859601453854e-07,
+      9232.955622603751
+     ],
+     [
+      1789214400000,
+      4.166359133281835e-07,
+      8064.742002358689
+     ],
+     [
+      1789218000000,
+      4.1842850625416346e-07,
+      7040.094457244746
+     ],
+     [
+      1789221600000,
+      4.1663186383315646e-07,
+      6865.513281085544
+     ],
+     [
+      1789225200000,
+      4.185312233477856e-07,
+      8406.170869878157
+     ],
+     [
+      1789228800000,
+      4.160401672702854e-07,
+      8847.339117608357
+     ],
+     [
+      1789232400000,
+      4.160386948281389e-07,
+      7933.619146699702
+     ],
+     [
+      1789236000000,
+      4.156387335934189e-07,
+      8044.413139619113
+     ],
+     [
+      1789239600000,
+      4.1454308865225527e-07,
+      7764.124901268387
+     ],
+     [
+      1789243200000,
+      4.111438733397222e-07,
+      7145.795341232474
+     ],
+     [
+      1789246800000,
+      4.0903521744899774e-07,
+      6966.447745572831
+     ],
+     [
+      1789250400000,
+      4.080430744785515e-07,
+      6854.662004192411
+     ],
+     [
+      1789254000000,
+      4.0794293099522626e-07,
+      6959.101907303252
+     ],
+     [
+      1789257600000,
+      4.0774201716948153e-07,
+      7084.55566168492
+     ],
+     [
+      1789261200000,
+      4.077347766554508e-07,
+      7075.60634743489
+     ],
+     [
+      1789264800000,
+      4.019399918429924e-07,
+      7311.177277189557
+     ],
+     [
+      1789268400000,
+      4.019322839148855e-07,
+      7218.475905944114
+     ],
+     [
+      1789272000000,
+      4.0694614708604296e-07,
+      6848.0446037336915
+     ],
+     [
+      1789275600000,
+      4.056384513106505e-07,
+      7442.771236973394
+     ],
+     [
+      1789279200000,
+      4.0423013910784915e-07,
+      7416.839608765756
+     ],
+     [
+      1789282800000,
+      4.020307862658207e-07,
+      7971.720220377897
+     ],
+     [
+      1789286400000,
+      3.973340352141172e-07,
+      8248.455293721117
+     ],
+     [
+      1789290000000,
+      3.9743703198297916e-07,
+      7819.14432029872
+     ],
+     [
+      1789293600000,
+      4.005303515373586e-07,
+      8310.862885721555
+     ],
+     [
+      1789297200000,
+      4.0242106356853324e-07,
+      8293.10935682451
+     ],
+     [
+      1789300800000,
+      4.0062547059322364e-07,
+      10133.213368505138
+     ],
+     [
+      1789304400000,
+      4.373207628769135e-07,
+      15941.772239367196
+     ],
+     [
+      1789308000000,
+      4.3512182952199767e-07,
+      24165.285882809083
+     ],
+     [
+      1789311600000,
+      6.855883294294049e-07,
+      78035.82420807032
+     ],
+     [
+      1789315200000,
+      1.701427747185532e-06,
+      670748.8785386508
+     ],
+     [
+      1789318800000,
+      2.8897779410460915e-06,
+      1616719.455564999
+     ],
+     [
+      1789322400000,
+      2.4591295448067814e-06,
+      1377371.7864005459
+     ],
+     [
+      1789326000000,
+      2.311790209777853e-06,
+      1296159.537492321
+     ],
+     [
+      1789329600000,
+      3.1724087888321205e-06,
+      1681544.0842206113
+     ],
+     [
+      1789333200000,
+      3.1779533675555793e-06,
+      1684544.6623876698
+     ],
+     [
+      1789336800000,
+      3.148798033278566e-06,
+      1669149.9994305435
+     ],
+     [
+      1789340400000,
+      3.0376515284585037e-06,
+      1610275.2502033615
+     ],
+     [
+      1789344000000,
+      3.0517922868275198e-06,
+      1617771.3621586899
+     ],
+     [
+      1789347600000,
+      3.069128733184692e-06,
+      1626968.5100153007
+     ],
+     [
+      1789351200000,
+      3.0679207802853572e-06,
+      1626336.9022562522
+     ],
+     [
+      1789354800000,
+      3.091467793027866e-06,
+      1638819.4200602095
+     ],
+     [
+      1789362000000,
+      1.8217570897086497e-06,
+      57641.99584667471
+     ],
+     [
+      1789365600000,
+      1.8163704666168004e-06,
+      1014072.5431193071
+     ],
+     [
+      1789369200000,
+      1.8164176685875307e-06,
+      1010805.8977960482
+     ],
+     [
+      1789372800000,
+      1.8164523024753742e-06,
+      1008363.479414558
+     ],
+     [
+      1789376400000,
+      1.8164236863755505e-06,
+      1008393.3783763291
+     ],
+     [
+      1789380000000,
+      1.8164236916380356e-06,
+      1008455.0367591341
+     ],
+     [
+      1789383600000,
+      1.8164521532024759e-06,
+      1008532.9989249377
+     ],
+     [
+      1789387200000,
+      1.816461631571806e-06,
+      1008550.180922399
+     ],
+     [
+      1789390800000,
+      1.816338900289722e-06,
+      1008486.7201054533
+     ],
+     [
+      1789394400000,
+      1.816390553070518e-06,
+      1008507.2771724995
+     ],
+     [
+      1789398000000,
+      1.8163538766973835e-06,
+      1008441.8335521375
+     ],
+     [
+      1789401600000,
+      1.8163415408900137e-06,
+      26937.744352197522
+     ],
+     [
+      1789405200000,
+      1.8163633531861832e-06,
+      26905.12077679664
+     ],
+     [
+      1789408800000,
+      1.8163132604108518e-06,
+      26829.76665194764
+     ],
+     [
+      1789412400000,
+      1.8163949715742629e-06,
+      26884.056486081598
+     ],
+     [
+      1789416080000,
+      1.8163012184882692e-06,
+      26763.031843425964
+     ]
+    ],
+    "pair_calls": [
+     {
+      "ts": 1788765996,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788794112,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788799170,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788817176,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788849180,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788895458,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788927054,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788946296,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1788953226,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789001844,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789025388,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789045998,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789055784,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789070845,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789085413,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789098138,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789126569,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789130910,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789190127,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789201823,
+      "fn": "addLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789203161,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789223546,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789303564,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789303661,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789303861,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789303978,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789303978,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789304061,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789304067,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789304113,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789304127,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789306297,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789306598,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789309853,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789309944,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310019,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310222,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310224,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310306,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310394,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310453,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310495,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310568,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310608,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789310988,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789311037,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789311663,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789311684,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789311733,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789311733,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789311870,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789311890,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789312290,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789312521,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789312645,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789313216,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789313248,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789313630,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789313691,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789313881,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789313954,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789313980,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789314171,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789314546,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789315168,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789315410,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789315600,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789315642,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789315663,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789316130,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789316173,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789316311,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789316385,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789316622,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789317510,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789317514,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789317537,
+      "fn": "removeLiquidity",
+      "status": "success"
+     },
+     {
+      "ts": 1789317589,
+      "fn": "swapTokensFixedInput",
+      "status": "success"
+     },
+     {
+      "ts": 1789317780,
+      "fn": "pause",
+      "status": "success"
+     },
+     {
+      "ts": 1789318503,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319083,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319106,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319107,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319136,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319326,
+      "fn": "swapTokensFixedOutput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319334,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319372,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319391,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319413,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319538,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319559,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319567,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319578,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319599,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319622,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319707,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319744,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319785,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319797,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319818,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319898,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789319980,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320139,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320213,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320282,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320299,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320363,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320383,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320576,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320664,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320673,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320723,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320772,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320787,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320894,
+      "fn": "addLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789320921,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321042,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321068,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321089,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321113,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321131,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321132,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321153,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321169,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321220,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321264,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321370,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321426,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321446,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321575,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321602,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321620,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321621,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321649,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321713,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321732,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321824,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321836,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321857,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321947,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789321978,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322037,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322043,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322076,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322092,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322102,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322110,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322140,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322177,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322220,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322273,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322286,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322307,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322318,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322336,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322428,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322452,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322476,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322481,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322497,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322553,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322598,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322606,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322637,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322719,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322786,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322816,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322853,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322956,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789322977,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323006,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323201,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323204,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323274,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323373,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323518,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323753,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323928,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789323984,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789325299,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789325420,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789327400,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329495,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329512,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329726,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329741,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329757,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329779,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329795,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329820,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329837,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329845,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329890,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329909,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329948,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329949,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329952,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789329973,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789330012,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789330018,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789330050,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789330053,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789330059,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789330124,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789334892,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789356817,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789362848,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789368496,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789368575,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789369040,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789369676,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789369944,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789371341,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789371635,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789371661,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789371667,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789373775,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789374075,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789374761,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     },
+     {
+      "ts": 1789377441,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789382037,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789398624,
+      "fn": "removeLiquidity",
+      "status": "fail"
+     },
+     {
+      "ts": 1789399882,
+      "fn": "swapTokensFixedInput",
+      "status": "fail"
+     }
+    ]
    }
   },
-  "analysis": "THE MEX/WEGLD POOL IS FROZEN. At 2026-09-13 16:43 UTC the wallet that owns the xExchange router (erd1ss6u80ruas2p...) called `pause` on the MEX/WEGLD pair contract. The last successful swap was three minutes earlier. Since then 172 transactions against the pair have failed, 116 of them removeLiquidity calls from LPs trying to get out. The contract still holds 191.2B MEX and 141,281 WEGLD (about $584,903 of EGLD). Last week this was the #2 deepest pool on the venue at $442,977. The API now omits it: /mex/pairs does not list it, /mex/pairs/MEX-455c57/WEGLD-bd4d79 returns 404, and /mex/economics reports MEX at $0.\n\nTHE PRICE WENT UP, NOT DOWN. CoinGecko's MEX close was 4.08e-07 on Sep 13 and 3.05e-06 on Sep 14, about 7.5x, on some $1.6M of volume against a two-week norm around $10K a day. It has since fallen back to 1.82e-06, still +357% on the week. The MultiversX /tokens endpoint carries 3.06e-06. Three sources give three different prices and none of them comes from the on-chain pool, which is frozen. Hatom's HMEX supply rose from 3.23T to 24.96T, so MEX was deposited into the Hatom money market in size in the same week. What is NOT on-chain is the reason for the pause. The model records the call, its sender and its effects and does not guess the motive. MEX supply moved -0.082%, so the week included no mint or burn.\n\nTHE REST OF THE VENUE TRADED ONE PAIR. EGLD-denominated volume 44,557 -> 96,002/day (+115%), with WEGLD/USDC 98.4% of it on 1,927 trades. Every other pair together did $6,189. Price fell while volume doubled, which by the run #18 diagnostic is an aggressive offer rather than an absent bid. Raw pool TVL fell 22% in USD, but the MEX/WEGLD pool leaving the API accounts for most of that. Like-for-like it is -4.8% in USD and +3.0% in EGLD, and the turnover ratio on that base went from 9.69% to 20.86%.\n\nSTABLECOINS: USDC +2.73% to 7,786,216, USDT -12.81% to 463,905. Combined expansion ends the three-week contraction and demotes the dollar base to DeFi plumbing, as run #24's test specified. USDT's -12.8% (68,130 tokens) is the largest weekly move in its tracked series. It was offset by USDC minting 207,052.\n\nHOLDERS: the top-10 list shows the usual dust attrition; the largest declines this week were MEX -130, WEGLD -129, QWT -125, HYPE -120.\n\nNEWLY ISSUED: 5 issuances cleared the ESDT system-SC scan, and 2 of them clear the quality bar: ECAT-4ebd0f (15 holders, 18 txs), BRO-aa5132 (18 holders, 23 txs). That ends an eight-week run in which none did. Both are small, and neither has an identifiable deployer in known-addresses."
+  "analysis": "THE MEX/WEGLD POOL IS FROZEN. At 2026-09-13 16:43 UTC the wallet that owns the xExchange router (erd1ss6u80ruas2p...) called `pause` on the MEX/WEGLD pair contract. The last successful swap was three minutes earlier. Since then 172 transactions against the pair have failed, 116 of them removeLiquidity calls from LPs trying to get out. The contract still holds 191.2B MEX and 141,281 WEGLD (about $584,903 of EGLD). Last week this was the #2 deepest pool on the venue at $442,977. The API now omits it: /mex/pairs does not list it, /mex/pairs/MEX-455c57/WEGLD-bd4d79 returns 404, and /mex/economics reports MEX at $0.\n\nTHE PRICE MOVED FIRST. On CoinGecko's hourly series MEX was already moving before the pause: 4.08e-07 through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm. Read at daily resolution this looks like 'pause, then spike'; hourly, it is the reverse. It has since fallen back to 1.82e-06, still +357% on the week. The MultiversX /tokens endpoint carries 3.06e-06. Three sources give three different prices and none of them comes from the on-chain pool, which is frozen. Hatom's HMEX supply rose from 3.23T to 24.96T, so MEX was deposited into the Hatom money market in size in the same week. What is NOT on-chain is the reason for the pause. The model records the call, its sender and its effects and does not guess the motive. MEX supply moved -0.082%, so the week included no mint or burn.\n\nTHE REST OF THE VENUE TRADED ONE PAIR. EGLD-denominated volume 44,557 -> 96,002/day (+115%), with WEGLD/USDC 98.4% of it on 1,927 trades. Every other pair together did $6,189. Price fell while volume doubled, which by the run #18 diagnostic is an aggressive offer rather than an absent bid. Raw pool TVL fell 22% in USD, but the MEX/WEGLD pool leaving the API accounts for most of that. Like-for-like it is -4.8% in USD and +3.0% in EGLD, and the turnover ratio on that base went from 9.69% to 20.86%.\n\nSTABLECOINS: USDC +2.73% to 7,786,216, USDT -12.81% to 463,905. Combined expansion ends the three-week contraction and demotes the dollar base to DeFi plumbing, as run #24's test specified. USDT's -12.8% (68,130 tokens) is the largest weekly move in its tracked series. It was offset by USDC minting 207,052.\n\nHOLDERS: the top-10 list shows the usual dust attrition; the largest declines this week were MEX -130, WEGLD -129, QWT -125, HYPE -120.\n\nNEWLY ISSUED: 5 issuances cleared the ESDT system-SC scan, and 2 of them clear the quality bar: ECAT-4ebd0f (15 holders, 18 txs), BRO-aa5132 (18 holders, 23 txs). That ends an eight-week run in which none did. Both are small, and neither has an identifiable deployer in known-addresses."
  },
  "defi_activity": {
   "protocols": [
@@ -2962,7 +5828,7 @@
    "stddev": 5.5606641980305526e-08,
    "z_score": 27.378081416482857,
    "change_pct": 356.7235366050635,
-   "description": "MEX +357% WoW on CoinGecko (3.98e-07 -> 1.82e-06), z=+27.4sigma - the largest standardised move on any tracked series. It followed a `pause` on the MEX/WEGLD pool at 2026-09-13 16:43 UTC, sent by the xExchange router owner. The daily close jumped ~7.5x on about $1.6M of volume and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at 3.06e-06. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see."
+   "description": "MEX +357% WoW on CoinGecko (3.98e-07 -> 1.82e-06), z=+27.4sigma - the largest standardised move on any tracked series. The move STARTED before the MEX/WEGLD pool was paused (1.7x by 15:00 UTC, about 4x by 16:00, pause at 16:43 by the xExchange router owner), peaked near 7.5x that evening and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at 3.06e-06. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see."
   },
   {
    "metric": "xexchange_mex_wegld_pair_state",
@@ -3187,7 +6053,7 @@
     "direction": "down",
     "weeks": 2,
     "cumulative_change_pct": -78.7,
-    "interpretation": "266,213 -> 96,114 -> 56,596. The desks are running on the current week's feed with almost nothing staged."
+    "interpretation": "266,213 -> 96,114 -> 56,596. A falling FLOAT, not a depleting stock: the UPbit wallet that refills the desks still holds about 1.04M EGLD, so this series says nothing about supply exhaustion."
    },
    {
     "metric": "lsd_supply_segld",
@@ -3240,14 +6106,14 @@
    "reason": "Paused 2026-09-13 16:43 UTC by erd1ss6u80ruas2p... (the router owner), tx b0decfa361de... The pool holds 191.2B MEX and 141,281 WEGLD. 172 failed transactions in the week, 116 of them removeLiquidity. MEX +357% WoW on CoinGecko; HMEX supply +672%. PRE-COMMITTED (mex-pair-resume): pair resumed within two weeks with MEX back under ~8.2e-07 (2x pre-pause) = an incident and a liquidity-freeze squeeze; resumed with MEX above that = repricing that stuck; still paused or delisted by run #27 = MEX price discovery has left the chain."
   },
   {
-   "item": "OTC PIPELINE - wave #4 running, desks near empty at 56,596",
+   "item": "OTC PIPELINE - wave #4 running; the desk float is low but the reservoir behind it is not",
    "weeks_on_list": 25,
    "reason": "UPbit tranche 372,000; net one-way 401,353 (2.3% of CEX spot volume); gross 893,299; destinations Binance.com +185,204, Bybit +111,568, Gate.io +37,955. Aug 17 - Sep 14 as one window: 1,336,721. PRE-COMMITTED (delivery-price-relevance): see the scoreboard."
   },
   {
    "item": "EXCHANGE ORDER BOOK - the first demand-side reading, now a baseline",
    "weeks_on_list": 1,
-   "reason": "Binance \u00b12% depth $48,876 ask / $103,119 bid; Bybit $8,959 / $21,874; all venues $1,604,647 / $1,738,275 on $6,785,451 24h volume. 7d spot volume 17.55M EGLD. One snapshot, so no trend claim yet. Next week the model can say whether bids thinned under continued delivery."
+   "reason": "Binance \u00b12% depth $48,876 ask / $103,119 bid; Bybit $8,959 / $21,874; all venues $1,604,647 / $1,738,275 on $6,785,451 24h volume. 7d spot volume 17.70M EGLD. One snapshot, so no trend claim yet. Next week the model can say whether bids thinned under continued delivery."
   },
   {
    "item": "STAKED RATIO BELOW 46.80% - the security budget",
@@ -3346,7 +6212,7 @@
    "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."
   ],
   "key_findings": [
-   "The xExchange router owner paused the MEX/WEGLD pool on 2026-09-13 16:43 UTC. MEX rose ~7.5x on CoinGecko the next day, HMEX supply +672%, and 172 transactions against the frozen pair failed.",
+   "The xExchange router owner paused the MEX/WEGLD pool on 2026-09-13 16:43 UTC. MEX was already 1.7x by 15:00 UTC and peaked near 7.5x after it, HMEX supply +672%, and 172 transactions against the frozen pair failed.",
    "Wave #4 confirmed: UPbit tranche 372,000, net one-way 401,353, desks down to 56,596; 1,336,721 EGLD one-way over Aug 17 - Sep 14.",
    "The first exchange-side reading puts delivery at 2.3% of CEX spot volume; last week's 'invisible bid' was mostly ordinary turnover.",
    "Staked ratio 46.55%, below 46.80% in week one of the test, while new unDelegations fell by two-thirds.",
@@ -3362,7 +6228,7 @@
    "ADD A RECENCY QUALIFIER TO THE DEREGISTRATION DETECTOR - done: transitions from locked > 0 in the prior stored snapshot, zero this week. Building it surfaced the identity-rename trap.",
    "ATTRIBUTE THE UNATTRIBUTED FEEDERS - done: two-hop back-trace of the 8 largest unlabelled feeders; the 196,492/214,978 EGLD feeder resolves to Bybit and Gate.io.",
    "RE-QUERY THE JEXCHANGE ROUTER AND PROMOTE IT - done: five routers in the collector, 9,968 transfers/7d on the main one, test resolved as predicted.",
-   "MEASURE WHETHER THE DESK-EMPTY STATE COINCIDES WITH A RETRACEMENT - done: desks near empty and EGLD -7.6% after a ~$5.17 intra-week peak, but delivery did not stop, so the pairing is not clean; replaced by the delivery-price-relevance test.",
+   "MEASURE WHETHER THE DESK-EMPTY STATE COINCIDES WITH A RETRACEMENT - done, and the premise was wrong: the desk balance is a refilled float (UPbit's ~1.04M EGLD wallet sits behind it), so 'desk-empty' is not a supply state. EGLD fell 7.6% while delivery continued, so the pairing is not clean; replaced by the delivery-price-relevance test.",
    "KEEP THE EMERGING-LSD SWEEP WITH HOLDERS - done, and it exposed that the sweep drops known protocols; holders recorded (VoxEGLD 128, LEGLD 378, VEGLD 435, JWLEGLD 552).",
    "CHECK THE FEE-REVERSED PROVIDERS - done: second week of losses (-3,345 and -1,607); the asymmetry is measured."
   ],
@@ -3407,7 +6273,7 @@
   "dashboard_feature_suggestions": [
    {
     "title": "Contract-state event timeline - the MEX/WEGLD pause against price and deposits",
-    "motivation": "This run's headline is a venue-level state change: a pool paused at a known timestamp, followed within a day by a 7.5x MEX move, an 8x HMEX mint and 172 failed calls. The dashboard has no way to show an event with a timestamp next to the series it moved, so the causal ordering (pause at 16:43, last swap at 16:39, price spike the next day) is only in prose.",
+    "motivation": "This run's headline is a venue-level state change: a pool paused at a known timestamp, inside a 7.5x MEX move, with an 8x HMEX mint and 172 failed calls. BUILT THIS RUN, and building it corrected the report: the prose read 'pause, then spike' from daily closes, and the hourly chart shows the price had already risen 1.7x before the pause. A timestamped event next to the series it moved is the only way that ordering is visible.",
     "suggested_visualization": "a time-axis strip with an annotated vertical marker for the pause tx, the MEX daily price line on one axis and HMEX supply on another, plus a small panel of the pair's reserves and failed-call count",
     "data_already_available": true,
     "data_source": "token_activity.xexchange.mex_pair_event (new field this run) plus a CoinGecko MEX market_chart stored in the collected snapshot",
@@ -3415,10 +6281,10 @@
    },
    {
     "title": "Pipeline in market scale - delivery as a share of CEX turnover and depth",
-    "motivation": "The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their \u00b12% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
+    "motivation": "BUILT THIS RUN as the Pipeline at market scale panel, with the delivery-share series backfilled to run #16 from CoinGecko's 90-day volume. The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their \u00b12% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
     "suggested_visualization": "a second y-axis or a small-multiple under the OTC bars plotting net one-way as % of 7d spot volume, plus a per-venue depth tile row (Binance, Bybit, Gate) with bid vs ask \u00b12% bars",
     "data_already_available": true,
-    "data_source": "whale_intelligence.demand_instruments.exchange_orderbook (new field this run); history starts run #25",
+    "data_source": "whale_intelligence.demand_instruments.exchange_orderbook, including delivery_share_series (runs #16-#25); venue depth history starts run #25",
     "priority": "medium"
    }
   ],

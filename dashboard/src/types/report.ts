@@ -273,7 +273,44 @@ export interface WithdrawalBreadth {
   pipeline_share_pct: number | null
 }
 
+/** One venue's slice of the CoinGecko ticker book (all of its EGLD pairs summed). */
+export interface VenueDepth {
+  pairs: number
+  volume_24h_usd: number
+  /** USD needed to move the price up 2% (ask side). */
+  depth_plus2_usd: number
+  /** USD needed to move the price down 2% (bid side). */
+  depth_minus2_usd: number
+}
+
+export interface DeliveryShareRun {
+  run: number
+  date: string
+  net_one_way_egld: number
+  spot_volume_7d_egld: number
+  share_pct: number
+}
+
+/** Third-party exchange-side instrument, first published run #25. */
+export interface ExchangeOrderbook {
+  source?: string
+  binance: VenueDepth
+  bybit: VenueDepth
+  upbit?: VenueDepth
+  coinbase?: VenueDepth
+  gate?: VenueDepth
+  all_venues: VenueDepth
+  spot_volume_7d_egld: number
+  spot_volume_prior_7d_egld?: number | null
+  net_one_way_share_of_spot_volume_pct: number | null
+  previous_net_one_way_share_of_spot_volume_pct?: number | null
+  binance_bybit_net_delivery_usd_7d?: number
+  binance_bybit_bid_depth_2pct_usd?: number
+  delivery_share_series?: DeliveryShareRun[]
+}
+
 export interface DemandInstruments {
+  exchange_orderbook?: ExchangeOrderbook
   identifiable_bid_absorbed_egld_7d: number
   mega_whale_balance_egld?: number
   mega_whale_change_egld?: number
@@ -509,7 +546,38 @@ export interface PairByVolume {
   is_other?: boolean
 }
 
+/** A venue-level contract state change (run #25: the MEX/WEGLD pause). */
+export interface PairCall {
+  ts: number
+  fn: string | null
+  status: string
+}
+
+export interface MexPairEvent {
+  pair_address: string
+  paused_at_utc: string
+  paused_by: string
+  pause_tx: string
+  last_successful_swap_utc?: string
+  failed_txs_7d: number
+  remove_liquidity_calls_7d?: number
+  pair_holds_mex: number
+  pair_holds_wegld: number
+  prev_pair_tvl_usd: number
+  mex_price_tokens_api?: number | null
+  mex_price_mex_economics?: number | null
+  mex_price_coingecko_now?: number | null
+  mex_price_coingecko_sep13?: number | null
+  mex_price_prev?: number | null
+  hmex_supply?: number
+  hmex_prev_supply?: number
+  /** [epoch ms, price usd, rolling 24h volume usd] */
+  price_series_hourly?: Array<[number, number, number]>
+  pair_calls?: PairCall[]
+}
+
 export interface XExchangeSummary {
+  mex_pair_event?: MexPairEvent
   total_pairs: number
   total_volume_24h_usd: number | null
   mex_price_usd: number

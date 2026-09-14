@@ -310,7 +310,7 @@ entry={
      "WITHDRAW AMOUNTS ARE NOT DECODED, so the staked-ratio attribution rests on timing.",
      "THE BILATERAL INVERSE RULE has been partly mechanical all along: dollar collateral rises in EGLD terms when EGLD falls. The behavioural test is the HEGLD leg, and it failed this week."],
    "surprising_findings":[
-     "xExchange paused its #2 deepest pool, and MEX went UP ~7.5x the next day rather than down.",
+     "xExchange paused its #2 deepest pool in the middle of a MEX spike: the price was already 1.7x at 15:00 UTC, the pool froze at 16:43, and MEX peaked near 7.5x after.",
      "HMEX supply rose 672% in the pause week: MEX went into Hatom rather than out through the pool.",
      "The compound rate fell from the series high to the series low in one week (62.05% -> 49.44%), and none of the retail claims were sold.",
      "Staked EGLD fell 156,538 while delegation TVL rose 35,617.",

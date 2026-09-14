@@ -5,7 +5,7 @@ REPO="/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 RD="2026-09-14"
 O=json.load(open("/tmp/run25w/derived.json"))
 D=json.load(open(f"{REPO}/data/collected/{RD}.json"))
-prev=json.load(open(f"{REPO}/data/previous.json"))
+prev=json.load(open("/tmp/run25w/previous_run24.json"))
 beh=json.load(open(f"{REPO}/data/collected/delegator_behavior_{RD}.json"))
 status=json.load(open("/tmp/run25w/status.json"))
 r24=json.load(open(f"{REPO}/reports/2026-09-07.json"))
@@ -38,7 +38,7 @@ R["anomalies"]=[
  {"metric":"mex_price_usd","current_value":xx["mex_price"],"previous_value":xx["prev_mex_price"],
   "method":"z_score","severity":"critical","average_value":z["mex"]["mean"],"stddev":z["mex"]["stddev"],"z_score":zz("mex"),
   "change_pct":xx["mex_wow"],
-  "description":f"MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko ({xx['prev_mex_price']:.2e} -> {xx['mex_price']:.2e}), z={zz('mex'):+.1f}sigma - the largest standardised move on any tracked series. It followed a `pause` on the MEX/WEGLD pool at 2026-09-13 16:43 UTC, sent by the xExchange router owner. The daily close jumped ~7.5x on about $1.6M of volume and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at {MEXE['mex_price_tokens_api']:.2e}. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see."},
+  "description":f"MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko ({xx['prev_mex_price']:.2e} -> {xx['mex_price']:.2e}), z={zz('mex'):+.1f}sigma - the largest standardised move on any tracked series. The move STARTED before the MEX/WEGLD pool was paused (1.7x by 15:00 UTC, about 4x by 16:00, pause at 16:43 by the xExchange router owner), peaked near 7.5x that evening and has since given back 40%. /mex/economics reports MEX at $0 and /tokens at {MEXE['mex_price_tokens_api']:.2e}. No on-chain pool sets this price any more, so the z-score describes a quote, not a market the chain can see."},
  {"metric":"xexchange_mex_wegld_pair_state","current_value":0,"previous_value":MEXE["prev_pair_tvl_usd"],
   "method":"rule_based","severity":"critical","change_pct":-100.0,
   "description":f"The #2 deepest pool on xExchange (${f(MEXE['prev_pair_tvl_usd'])} last week) is paused and has been dropped from /mex/pairs. It holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD. 172 transactions have failed against it in the week, 116 of them removeLiquidity, so LPs are trying and failing to withdraw. This is the first venue-level state change in the archive, as opposed to a flow."},
@@ -116,7 +116,7 @@ R["trend_indicators"]={
   {"metric":"binance_hot_to_otc_feeders_above_50k","direction":"up","weeks":3,"cumulative_change_pct":None,
    "interpretation":f"135,003 (run #23, feeders only) / 255,442 / {f(HOT['total_egld'])}. The run #24 watch named a third week above 50,000 as a permanent funding line, and this is that week."},
   {"metric":"otc_desk_inventory_egld","direction":"down","weeks":2,"cumulative_change_pct":-78.7,
-   "interpretation":f"266,213 -> 96,114 -> {f(otc['desk_bal'])}. The desks are running on the current week's feed with almost nothing staged."},
+   "interpretation":f"266,213 -> 96,114 -> {f(otc['desk_bal'])}. A falling FLOAT, not a depleting stock: the UPbit wallet that refills the desks still holds about 1.04M EGLD, so this series says nothing about supply exhaustion."},
   {"metric":"lsd_supply_segld","direction":"flat","weeks":8,"cumulative_change_pct":0.0,
    "interpretation":f"SEGLD {tk['lsd']['SEGLD-3ad2d0']['pct']:+.3f}%: eight flat weeks through a rally and its reversal."},
   {"metric":"total_delegators","direction":"flat","weeks":13,"cumulative_change_pct":-1.0,
@@ -134,7 +134,7 @@ R["trend_indicators"]={
 R["watch_list"]=[
  {"item":"XEXCHANGE MEX/WEGLD POOL PAUSED - LPs locked, MEX priced off-chain","weeks_on_list":1,
   "reason":f"Paused 2026-09-13 16:43 UTC by erd1ss6u80ruas2p... (the router owner), tx b0decfa361de... The pool holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD. 172 failed transactions in the week, 116 of them removeLiquidity. MEX {xx['mex_wow']:+.0f}% WoW on CoinGecko; HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%. PRE-COMMITTED (mex-pair-resume): pair resumed within two weeks with MEX back under ~8.2e-07 (2x pre-pause) = an incident and a liquidity-freeze squeeze; resumed with MEX above that = repricing that stuck; still paused or delisted by run #27 = MEX price discovery has left the chain."},
- {"item":f"OTC PIPELINE - wave #4 running, desks near empty at {f(otc['desk_bal'])}","weeks_on_list":25,
+ {"item":"OTC PIPELINE - wave #4 running; the desk float is low but the reservoir behind it is not","weeks_on_list":25,
   "reason":f"UPbit tranche {f(otc['upbit_feed'])}; net one-way {f(otc['net_one_way'])} ({OB['net_one_way_share_of_spot_volume_pct']:.1f}% of CEX spot volume); gross {f(otc['gross_out'])}; destinations Binance.com +{f(V(otc['net_by_venue'],'Binance.com'))}, Bybit +{f(V(otc['net_by_venue'],'Bybit'))}, Gate.io +{f(V(otc['net_by_venue'],'Gate.io'))}. Aug 17 - Sep 14 as one window: {f(wave['net_one_way'])}. PRE-COMMITTED (delivery-price-relevance): see the scoreboard."},
  {"item":"EXCHANGE ORDER BOOK - the first demand-side reading, now a baseline","weeks_on_list":1,
   "reason":f"Binance ±2% depth ${f(OB['binance']['depth_plus2_usd'])} ask / ${f(OB['binance']['depth_minus2_usd'])} bid; Bybit ${f(OB['bybit']['depth_plus2_usd'])} / ${f(OB['bybit']['depth_minus2_usd'])}; all venues ${f(OB['all_venues']['depth_plus2_usd'])} / ${f(OB['all_venues']['depth_minus2_usd'])} on ${f(OB['all_venues']['volume_24h_usd'])} 24h volume. 7d spot volume {f(OB['spot_volume_7d_egld']/1e6,2)}M EGLD. One snapshot, so no trend claim yet. Next week the model can say whether bids thinned under continued delivery."},
@@ -247,7 +247,7 @@ R["meta_learning"]={
    "Order-book depth is one snapshot with no prior; trend claims wait a week.",
    "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."],
  "key_findings":[
-   f"The xExchange router owner paused the MEX/WEGLD pool on 2026-09-13 16:43 UTC. MEX rose ~7.5x on CoinGecko the next day, HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%, and 172 transactions against the frozen pair failed.",
+   f"The xExchange router owner paused the MEX/WEGLD pool on 2026-09-13 16:43 UTC. MEX was already 1.7x by 15:00 UTC and peaked near 7.5x after it, HMEX supply {ht['HMEX-df6df7']['supply_pct']:+.0f}%, and 172 transactions against the frozen pair failed.",
    f"Wave #4 confirmed: UPbit tranche {f(otc['upbit_feed'])}, net one-way {f(otc['net_one_way'])}, desks down to {f(otc['desk_bal'])}; {f(wave['net_one_way'])} EGLD one-way over Aug 17 - Sep 14.",
    f"The first exchange-side reading puts delivery at {OB['net_one_way_share_of_spot_volume_pct']:.1f}% of CEX spot volume; last week's 'invisible bid' was mostly ordinary turnover.",
    f"Staked ratio {100*M['sr']:.2f}%, below 46.80% in week one of the test, while new unDelegations fell by two-thirds.",
@@ -262,7 +262,7 @@ R["meta_learning"]={
    "ADD A RECENCY QUALIFIER TO THE DEREGISTRATION DETECTOR - done: transitions from locked > 0 in the prior stored snapshot, zero this week. Building it surfaced the identity-rename trap.",
    f"ATTRIBUTE THE UNATTRIBUTED FEEDERS - done: two-hop back-trace of the 8 largest unlabelled feeders; the 196,492/214,978 EGLD feeder resolves to Bybit and Gate.io.",
    "RE-QUERY THE JEXCHANGE ROUTER AND PROMOTE IT - done: five routers in the collector, 9,968 transfers/7d on the main one, test resolved as predicted.",
-   "MEASURE WHETHER THE DESK-EMPTY STATE COINCIDES WITH A RETRACEMENT - done: desks near empty and EGLD -7.6% after a ~$5.17 intra-week peak, but delivery did not stop, so the pairing is not clean; replaced by the delivery-price-relevance test.",
+   "MEASURE WHETHER THE DESK-EMPTY STATE COINCIDES WITH A RETRACEMENT - done, and the premise was wrong: the desk balance is a refilled float (UPbit's ~1.04M EGLD wallet sits behind it), so 'desk-empty' is not a supply state. EGLD fell 7.6% while delivery continued, so the pairing is not clean; replaced by the delivery-price-relevance test.",
    "KEEP THE EMERGING-LSD SWEEP WITH HOLDERS - done, and it exposed that the sweep drops known protocols; holders recorded (VoxEGLD 128, LEGLD 378, VEGLD 435, JWLEGLD 552).",
    f"CHECK THE FEE-REVERSED PROVIDERS - done: second week of losses ({mv('egldstakingprovider','delta'):+,.0f} and {mv('procryptostaking','delta'):+,.0f}); the asymmetry is measured."],
  "methodology_changes":[
@@ -297,16 +297,16 @@ R["meta_learning"]={
    "JOIN PROVIDERS ON ADDRESS IN THE COLLECTOR ITSELF, not just in the assembler, and log identity renames as an event list."],
  "dashboard_feature_suggestions":[
   {"title":"Contract-state event timeline - the MEX/WEGLD pause against price and deposits",
-   "motivation":"This run's headline is a venue-level state change: a pool paused at a known timestamp, followed within a day by a 7.5x MEX move, an 8x HMEX mint and 172 failed calls. The dashboard has no way to show an event with a timestamp next to the series it moved, so the causal ordering (pause at 16:43, last swap at 16:39, price spike the next day) is only in prose.",
+   "motivation":"This run's headline is a venue-level state change: a pool paused at a known timestamp, inside a 7.5x MEX move, with an 8x HMEX mint and 172 failed calls. BUILT THIS RUN, and building it corrected the report: the prose read 'pause, then spike' from daily closes, and the hourly chart shows the price had already risen 1.7x before the pause. A timestamped event next to the series it moved is the only way that ordering is visible.",
    "suggested_visualization":"a time-axis strip with an annotated vertical marker for the pause tx, the MEX daily price line on one axis and HMEX supply on another, plus a small panel of the pair's reserves and failed-call count",
    "data_already_available":True,
    "data_source":"token_activity.xexchange.mex_pair_event (new field this run) plus a CoinGecko MEX market_chart stored in the collected snapshot",
    "priority":"high"},
   {"title":"Pipeline in market scale - delivery as a share of CEX turnover and depth",
-   "motivation":"The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their ±2% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
+   "motivation":"BUILT THIS RUN as the Pipeline at market scale panel, with the delivery-share series backfilled to run #16 from CoinGecko's 90-day volume. The first exchange-side reading changed how the OTC pipeline should be read: a record weekly delivery is ~2% of spot volume, and weekly net delivery into Binance+Bybit is about 10x their ±2% bid depth. The current OTC chart shows delivery in absolute EGLD only, which invites reading each bar against the week's price.",
    "suggested_visualization":"a second y-axis or a small-multiple under the OTC bars plotting net one-way as % of 7d spot volume, plus a per-venue depth tile row (Binance, Bybit, Gate) with bid vs ask ±2% bars",
    "data_already_available":True,
-   "data_source":"whale_intelligence.demand_instruments.exchange_orderbook (new field this run); history starts run #25",
+   "data_source":"whale_intelligence.demand_instruments.exchange_orderbook, including delivery_share_series (runs #16-#25); venue depth history starts run #25",
    "priority":"medium"}],
  "dashboard_suggestions_followup":[
   {"title":"Feed-side attribution - who fills the desks, not just who they deliver to","status":"pending",

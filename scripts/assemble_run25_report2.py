@@ -5,7 +5,7 @@ REPO="/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 RD="2026-09-14"
 O=json.load(open("/tmp/run25w/derived.json"))
 D=json.load(open(f"{REPO}/data/collected/{RD}.json"))
-prev=json.load(open(f"{REPO}/data/previous.json"))
+prev=json.load(open("/tmp/run25w/previous_run24.json"))
 beh=json.load(open(f"{REPO}/data/collected/delegator_behavior_{RD}.json"))
 r24=json.load(open(f"{REPO}/reports/2026-09-07.json"))
 M=O["macro"]; sk=O["staking"]; tk=O["tokens"]; xx=O["xexchange"]; df=O["defi"]
@@ -212,7 +212,7 @@ R["token_activity"]={
   f"THE MEX/WEGLD POOL IS FROZEN. At 2026-09-13 16:43 UTC the wallet that owns the xExchange router (erd1ss6u80ruas2p...) called `pause` on the MEX/WEGLD pair contract. The last successful swap was three minutes earlier. "
   f"Since then 172 transactions against the pair have failed, 116 of them removeLiquidity calls from LPs trying to get out. The contract still holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD (about ${f(MEXE['pair_holds_wegld']*price)} of EGLD). "
   f"Last week this was the #2 deepest pool on the venue at ${f(MEXE['prev_pair_tvl_usd'])}. The API now omits it: /mex/pairs does not list it, /mex/pairs/MEX-455c57/WEGLD-bd4d79 returns 404, and /mex/economics reports MEX at $0.\n\n"
-  f"THE PRICE WENT UP, NOT DOWN. CoinGecko's MEX close was {MEXE['mex_price_coingecko_sep13']:.2e} on Sep 13 and 3.05e-06 on Sep 14, about 7.5x, on some $1.6M of volume against a two-week norm around $10K a day. It has since fallen back to {MEXE['mex_price_coingecko_now']:.2e}, still {xx['mex_wow']:+.0f}% on the week. The MultiversX /tokens endpoint carries {MEXE['mex_price_tokens_api']:.2e}. "
+  f"THE PRICE MOVED FIRST. On CoinGecko's hourly series MEX was already moving before the pause: {MEXE['mex_price_coingecko_sep13']:.2e} through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm. Read at daily resolution this looks like 'pause, then spike'; hourly, it is the reverse. It has since fallen back to {MEXE['mex_price_coingecko_now']:.2e}, still {xx['mex_wow']:+.0f}% on the week. The MultiversX /tokens endpoint carries {MEXE['mex_price_tokens_api']:.2e}. "
   f"Three sources give three different prices and none of them comes from the on-chain pool, which is frozen. Hatom's HMEX supply rose from {f(MEXE['hmex_prev_supply']/1e12,2)}T to {f(MEXE['hmex_supply']/1e12,2)}T, so MEX was deposited into the Hatom money market in size in the same week. "
   f"What is NOT on-chain is the reason for the pause. The model records the call, its sender and its effects and does not guess the motive. MEX supply moved {100*(tk['mex_supply']-tk['mex_prev_supply'])/tk['mex_prev_supply']:+.3f}%, so the week included no mint or burn.\n\n"
   f"THE REST OF THE VENUE TRADED ONE PAIR. EGLD-denominated volume {f(bid['prev_dexvol_egld'])} -> {f(bid['dexvol_egld'])}/day ({100*(bid['dexvol_egld']-bid['prev_dexvol_egld'])/bid['prev_dexvol_egld']:+.0f}%), with WEGLD/USDC {bid['wegld_usdc_share']:.1f}% of it on {xx['top_pairs'][0]['trades_count_24h']:,} trades. Every other pair together did ${f(bid['ex_wegld_usdc_vol'])}. "

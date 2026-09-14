@@ -7,8 +7,8 @@ REPO="/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 RD="2026-09-14"
 O=json.load(open("/tmp/run25w/derived.json"))
 D=json.load(open(f"{REPO}/data/collected/{RD}.json"))
-prev=json.load(open(f"{REPO}/data/previous.json"))
-kn=json.load(open(f"{REPO}/data/known-addresses.json"))
+prev=json.load(open("/tmp/run25w/previous_run24.json"))
+kn=json.load(open("/tmp/run25w/known_run24.json"))
 status=json.load(open("/tmp/run25w/status.json"))
 beh=json.load(open(f"{REPO}/data/collected/delegator_behavior_{RD}.json"))
 r24=json.load(open(f"{REPO}/reports/2026-09-07.json"))
@@ -68,6 +68,7 @@ wegld_vol_pct=100*(bid["dexvol_egld"]-bid["prev_dexvol_egld"])/bid["prev_dexvol_
 stab=tk["stable"]; usdc=stab["USDC-c76f1f"]; usdt=stab["USDT-f8c08c"]
 comb=usdc["supply"]+usdt["supply"]; combp=usdc["prev"]+usdt["prev"]
 comb_pct=100*(comb-combp)/combp
+UPBIT_RES=next((e2["current"] for e2 in ex["entity"] if e2["entity"]=="UPbit"),0)
 
 R={}
 R["metadata"]={"report_date":RD,"period_start":"2026-09-07","period_end":RD,
@@ -86,9 +87,9 @@ R["metadata"]={"report_date":RD,"period_start":"2026-09-07","period_end":RD,
 
 R["executive_summary"]=[
  {"category":"defi","severity":"critical","finding":
-  f"XEXCHANGE PAUSED ITS MEX/WEGLD POOL AND MEX WENT UP SEVENFOLD WITHIN A DAY. The pair contract erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 - last week the #2 deepest pool on the venue at ${f(MEXE['prev_pair_tvl_usd'])} - received a `pause` call at 2026-09-13 16:43 UTC from the wallet that owns the xExchange router. It still holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD, and 172 transactions against it have failed since, 116 of them removeLiquidity attempts. The CoinGecko daily MEX close went from {mex_pre:.2e} to 3.05e-06 the next day on roughly $1.6M of volume against a ~$10K norm, and is {mex_cg:.2e} now ({xx['mex_wow']:+.0f}% WoW). Hatom's HMEX supply rose {100*(MEXE['hmex_supply']-MEXE['hmex_prev_supply'])/MEXE['hmex_prev_supply']:.0f}% in the same week. The on-chain venue for MEX is frozen, the price is being set off-chain, and /mex/economics now reports MEX at $0. The reason for the pause is not visible on-chain."},
+  f"XEXCHANGE PAUSED ITS MEX/WEGLD POOL IN THE MIDDLE OF A SEVENFOLD MEX SPIKE. The pair contract erd1qqqqqqqqqqqqqpgqa0fs...jpsp6shh2 - last week the #2 deepest pool on the venue at ${f(MEXE['prev_pair_tvl_usd'])} - received a `pause` call at 2026-09-13 16:43 UTC from the wallet that owns the xExchange router. It still holds {f(MEXE['pair_holds_mex']/1e9,1)}B MEX and {f(MEXE['pair_holds_wegld'])} WEGLD, and 172 transactions against it have failed since, 116 of them removeLiquidity attempts. On CoinGecko's hourly series MEX was already moving before the pause: {mex_pre:.2e} through the morning, about 1.7x by 15:00 UTC, about 4x by 16:00, and the pool was frozen at 16:43 with the move under way. It peaked near 7.5x that evening on ~$1.6M of rolling 24h volume against a ~$10K norm, and is {mex_cg:.2e} now ({xx['mex_wow']:+.0f}% WoW). The spike did not follow the pause; the pause came about 1.7 hours after the price had already started to move. Hatom's HMEX supply rose {100*(MEXE['hmex_supply']-MEXE['hmex_prev_supply'])/MEXE['hmex_prev_supply']:.0f}% in the same week. The on-chain venue for MEX is frozen, the price is being set off-chain, and /mex/economics now reports MEX at $0. The reason for the pause is not visible on-chain."},
  {"category":"whale","severity":"high","finding":
-  f"WAVE #4 IS UNDER WAY - THE DISTRIBUTION PROGRAMME IS CONTINUOUS. UPbit sent {f(otc['upbit_feed'])} EGLD into its desk, above the 200,000 branch run #24 pre-registered, and the desks delivered {f(otc['net_one_way'])} EGLD one-way on {f(otc['gross_out'])} gross (circularity {otc['circ_pct']:.0f}%). Destinations two hops out: Binance.com +{f(V(otc['net_by_venue'],'Binance.com'))}, Bybit +{f(V(otc['net_by_venue'],'Bybit'))}, Gate.io +{f(V(otc['net_by_venue'],'Gate.io'))}. Inventory ran down again, {f(otc['prev_desk'])} -> {f(otc['desk_bal'])}. Netted as one window from Aug 17 to Sep 14 the programme has delivered {f(wave['net_one_way'])} EGLD one-way; the four weekly figures sum to {f(wave['sum_weekly'])}, a {wave['overstate_pct']:.0f}% overstatement. The 55% weekly circularity sits below the 63-80% band, the run #21 sign that a return leg landed from an earlier week."},
+  f"WAVE #4 IS UNDER WAY - THE DISTRIBUTION PROGRAMME IS CONTINUOUS. UPbit sent {f(otc['upbit_feed'])} EGLD into its desk, above the 200,000 branch run #24 pre-registered, and the desks delivered {f(otc['net_one_way'])} EGLD one-way on {f(otc['gross_out'])} gross (circularity {otc['circ_pct']:.0f}%). Destinations two hops out: Binance.com +{f(V(otc['net_by_venue'],'Binance.com'))}, Bybit +{f(V(otc['net_by_venue'],'Bybit'))}, Gate.io +{f(V(otc['net_by_venue'],'Gate.io'))}. The desk balance fell to {f(otc['desk_bal'])}, but it is a working float, not a stock being sold down: the UPbit wallet that refills it still holds {f(UPBIT_RES)} EGLD. Netted as one window from Aug 17 to Sep 14 the programme has delivered {f(wave['net_one_way'])} EGLD one-way; the four weekly figures sum to {f(wave['sum_weekly'])}, a {wave['overstate_pct']:.0f}% overstatement. The 55% weekly circularity sits below the 63-80% band, the run #21 sign that a return leg landed from an earlier week."},
  {"category":"network","severity":"high","finding":
   f"EGLD FELL {abs(pc):.2f}% TO ${price:.2f} WHILE THE MAJORS HELD - AND THE ORDER BOOK SHOWS WHY THE PIPELINE IS NOT THE WHOLE STORY. BTC {M['btc_wow']:+.2f}%, ETH {M['eth_wow']:+.2f}%: a third consecutive EGLD-specific week, this time to the downside, after a peak near ${peak:.2f} on the CoinGecko daily series. The first exchange-side measurement this model has taken puts the week in scale: CEX spot volume was {f(spot7/1e6,1)}M EGLD over seven days ({100*(spot7-spot7p)/spot7p:+.0f}% WoW), so the desks' one-way delivery was {deliv_share:.1f}% of it, against {prev_deliv_share:.1f}% in the record week. On depth, Binance and Bybit together show ${f(bb_bid)} of bids within 2% of mid, and the pipeline's net delivery into those two venues this week was ${f(bb_net_usd)}, about {bb_net_usd/bb_bid:.0f}x that visible bid. The desks' supply is worked into the book over days rather than hitting it at once, and it is a small fraction of what trades. Run #24's price-only bid test ended inconclusive at ${price:.2f}."},
  {"category":"staking","severity":"high","finding":
@@ -215,8 +216,8 @@ R["whale_intelligence"]={
    "feed_by_parent_venue":feed_by_parent,
    "feeder_backtrace":FB,
    "series_note":(
-     f"Staging and delivery ran down together for a second week. Inventory {' -> '.join(f'{k}: {v:,.0f}' for k,v in INV_SERIES.items())}, while net one-way delivery was {f(otc['net_one_way'])}, the second-largest week on record. "
-     f"With the desks at {f(otc['desk_bal'])}, next week's delivery is capped by next week's feed. A fifth tranche would be visible at once, and without one the pipeline cannot deliver at this scale.")},
+     f"Delivery held near record scale for a second week while the desk float fell. End-of-week desk balance {' -> '.join(f'{k}: {v:,.0f}' for k,v in INV_SERIES.items())}, while net one-way delivery was {f(otc['net_one_way'])}, the second-largest week on record. "
+     f"The desk balance ({f(otc['desk_bal'])}) is a float that UPbit's {f(UPBIT_RES)} EGLD wallet refills, so a low reading does not mean supply is running out. The inventory line shows what sat on the desks at each week's end, not what is left to sell.")},
  "demand_instruments":{
    "identifiable_bid_absorbed_egld_7d":bid["absorbed"],
    "mega_whale_balance_egld":bid["mega_bal"],"mega_whale_change_egld":bid["mega_delta"],
@@ -253,10 +254,11 @@ R["whale_intelligence"]={
      "previous_net_one_way_share_of_spot_volume_pct":prev_deliv_share,
      "binance_bybit_net_delivery_usd_7d":bb_net_usd,
      "binance_bybit_bid_depth_2pct_usd":bb_bid,
+     "delivery_share_series":BOOK["delivery_share_series"],
      "top_tickers":BOOK["top"]}},
  "analysis":(
-  f"WAVE #4 CONFIRMED, AND THE WAREHOUSE KEPT EMPTYING. UPbit fed {f(otc['upbit_feed'])} EGLD, the fourth straight tranche above 290,000, and the desks delivered {f(otc['net_one_way'])} one-way on {f(otc['gross_out'])} gross. "
-  f"Inventory fell again, {f(otc['prev_desk'])} -> {f(otc['desk_bal'])}: the desks delivered this week's feed plus part of what was left from last week. z={z['otc_net']['z']:+.2f}sigma on the net series, the second-largest week in tracking behind last week's record.\n\n"
+  f"WAVE #4 CONFIRMED, AND THE RESERVOIR BEHIND THE DESKS IS STILL FULL. UPbit fed {f(otc['upbit_feed'])} EGLD, the fourth straight tranche above 290,000, and the desks delivered {f(otc['net_one_way'])} one-way on {f(otc['gross_out'])} gross. "
+  f"The desk balance moved {f(otc['prev_desk'])} -> {f(otc['desk_bal'])}. That is a pass-through float, not an inventory: the UPbit wallet feeding it still holds {f(UPBIT_RES)} EGLD, roughly eighteen times the desk balance. z={z['otc_net']['z']:+.2f}sigma on the net series, the second-largest week in tracking behind last week's record.\n\n"
   f"WHERE IT WENT. Binance.com +{f(V(otc['net_by_venue'],'Binance.com'))} ({f(V(otc['out_by_venue'],'Binance.com'))} out, {f(V(otc['in_by_venue'],'Binance.com'))} back), Bybit +{f(V(otc['net_by_venue'],'Bybit'))}, Gate.io +{f(V(otc['net_by_venue'],'Gate.io'))}, plus the Unknown Whale I operator and its router. UPbit took {f(V(otc['out_by_venue'],'UPbit'))} back from the desks. {f(otc['unresolved_out'])} EGLD of outbound is unattributed after two hops. "
   f"Circularity was {otc['circ_pct']:.0f}%, below the 63-80% band. That is the run #21 straddle signature, and the four-week window netting confirms it: {f(wave['net_one_way'])} one-way over Aug 17 - Sep 14 against {f(wave['sum_weekly'])} from the weekly frames.\n\n"
   f"WHO FEEDS IT. By parent venue this week: UPbit {f(FEED.get('UPbit',0))}, Binance-parented feeders {f(FEED.get('Binance',0))}, Bybit-parented {f(FEED.get('Bybit',0))}, unattributed {f(FEED.get('Unattributed',0))}. "

@@ -11,7 +11,7 @@ import { SECTION_IDS, SECTION_LABELS } from '../lib/constants'
  * reference line (a fixed offset below the viewport top). That always
  * resolves to a single section regardless of section height.
  */
-export function SectionNav() {
+export function SectionNav({ hidden = [] }: { hidden?: string[] }) {
   const [activeId, setActiveId] = useState<string>(SECTION_IDS[0] as string)
   const [tooltip, setTooltip] = useState<string | null>(null)
   const rafRef = useRef<number | null>(null)
@@ -26,6 +26,7 @@ export function SectionNav() {
       let bestTop = -Infinity
 
       for (const id of SECTION_IDS) {
+        if (hidden.includes(id)) continue
         const el = document.getElementById(id)
         if (!el) continue
         const top = el.getBoundingClientRect().top
@@ -73,7 +74,7 @@ export function SectionNav() {
       window.removeEventListener('resize', onScroll)
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
     }
-  }, [])
+  }, [hidden])
 
   function scrollTo(id: string) {
     const el = document.getElementById(id)
@@ -86,7 +87,7 @@ export function SectionNav() {
       className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2.5"
       aria-label="Section navigation"
     >
-      {SECTION_IDS.map((id) => {
+      {SECTION_IDS.filter((id) => !hidden.includes(id)).map((id) => {
         const isActive = activeId === id
         const label = SECTION_LABELS[id] ?? id
 
