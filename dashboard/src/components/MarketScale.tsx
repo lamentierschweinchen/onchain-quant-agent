@@ -110,8 +110,16 @@ export function MarketScale({ data, reportDate }: Props) {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
           <div className="lg:col-span-3 bg-bg-elevated border border-border rounded-md p-3 min-w-0">
-            <div className="mb-1 text-[10px] text-text-muted uppercase tracking-widest">
-              Delivery as % of exchange spot volume · per run
+            <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
+              <span className="text-[10px] text-text-muted uppercase tracking-widest">
+                Delivery as % of exchange spot volume · per run
+              </span>
+              {shares.length > 1 && (
+                <span className="flex items-center gap-1.5 text-[11px] font-mono text-text-secondary">
+                  <span aria-hidden className="inline-block w-4 border-t border-dashed" style={{ borderColor: 'var(--color-text-secondary)' }} />
+                  median {median(shares).toFixed(1)}%
+                </span>
+              )}
             </div>
             {series.length > 1 ? (
               <ShareChart series={series} />
@@ -259,9 +267,6 @@ function ShareBars({
         {/* median, labelled in place */}
         <g pointerEvents="none">
           <line x1={P.left} x2={width - P.right} y1={y(med)} y2={y(med)} stroke="var(--color-text-secondary)" strokeDasharray="4 4" />
-          <text x={P.left + 4} y={y(med) - 5} fontSize={10.5} className="font-mono" fill="var(--color-text-secondary)">
-            median {med.toFixed(1)}%
-          </text>
         </g>
       </svg>
 

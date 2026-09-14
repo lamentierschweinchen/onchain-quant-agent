@@ -433,7 +433,7 @@ function TimelineChart({
       {/* Persistent live region: it must exist before its text changes to be announced. */}
       <div role="status" aria-live="polite" className="sr-only">
         {viaKeyboard && hp
-          ? `${fmtStamp(hp[0])}, ${formatTokenPrice(hp[1])}, ${(hp[1] / baseline).toFixed(2)} times pre-move, ${hp[0] > pauseMs ? 'pool frozen' : 'pool trading'}`
+          ? `${fmtStamp(hp[0])}, ${formatPriceFull(hp[1])}, ${(hp[1] / baseline).toFixed(2)} times pre-move, ${hp[0] > pauseMs ? 'pool frozen' : 'pool trading'}`
           : ''}
       </div>
       <svg
