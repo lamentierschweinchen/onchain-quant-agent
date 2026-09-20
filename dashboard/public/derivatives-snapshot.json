@@ -1,191 +1,191 @@
 {
- "fetchedAt": "2026-09-20T06:01:04Z",
+ "fetchedAt": "2026-09-20T11:10:18Z",
  "note": "Hourly EGLD perpetual-futures snapshot. Fallback for the pump tracker when the live proxy is rate-limited.",
  "venues": [
   {
-   "market": "OrangeX Futures",
-   "open_interest": 4742290.64,
-   "volume_24h": 14437054.604423955,
-   "funding_rate": 0.01
-  },
-  {
    "market": "Binance (Futures)",
-   "open_interest": 4254590.56,
-   "volume_24h": 16854185.475675814,
-   "funding_rate": 0.01
+   "open_interest": 4282268.68,
+   "volume_24h": 13695178.804893624,
+   "funding_rate": -0.011405
   },
   {
    "market": "MEXC (Futures)",
-   "open_interest": 3982060.15,
-   "volume_24h": 1613463.2164324888,
-   "funding_rate": 0.01
+   "open_interest": 4002681.23,
+   "volume_24h": 1753023.4833624866,
+   "funding_rate": -0.0084
+  },
+  {
+   "market": "OrangeX Futures",
+   "open_interest": 3739339.14,
+   "volume_24h": 11746596.387633644,
+   "funding_rate": -0.01
   },
   {
    "market": "Bybit (Futures)",
-   "open_interest": 2233420.94,
-   "volume_24h": 5359321.096809252,
-   "funding_rate": -0.035993
-  },
-  {
-   "market": "Bitget Futures",
-   "open_interest": 2144512.07,
-   "volume_24h": 2923785.00366351,
-   "funding_rate": -0.1354
+   "open_interest": 2308438.2,
+   "volume_24h": 4856139.402707722,
+   "funding_rate": -0.095082
   },
   {
    "market": "KuCoin Futures",
-   "open_interest": 2048919.54,
-   "volume_24h": 531554.1119707484,
-   "funding_rate": -0.04589999999999999
+   "open_interest": 2062116.65,
+   "volume_24h": 455195.9890454984,
+   "funding_rate": -0.0884
+  },
+  {
+   "market": "Bitget Futures",
+   "open_interest": 2027096.13,
+   "volume_24h": 2870187.1251538,
+   "funding_rate": -0.2053
   },
   {
    "market": "BingX (Futures)",
-   "open_interest": 1711311.22,
-   "volume_24h": 2620302.0057341866,
-   "funding_rate": 0.01
+   "open_interest": 1917504.32,
+   "volume_24h": 2595433.592800954,
+   "funding_rate": -0.0065
   },
   {
    "market": "Toobit Futures",
-   "open_interest": 1253680.56,
-   "volume_24h": 3682321.55861059,
-   "funding_rate": 0.01
+   "open_interest": 1037992.93,
+   "volume_24h": 3038962.1513344264,
+   "funding_rate": -0.011484
   },
   {
    "market": "KCEX (Futures)",
-   "open_interest": 984622.86,
-   "volume_24h": 2097988.8552214997,
-   "funding_rate": 0.01
+   "open_interest": 961774.32,
+   "volume_24h": 1721599.6363853058,
+   "funding_rate": -0.0114
   },
   {
    "market": "WhiteBIT Futures",
-   "open_interest": 888541.03,
-   "volume_24h": 588074.5674333539,
-   "funding_rate": 0.01
+   "open_interest": 900295.57,
+   "volume_24h": 422782.6481216308,
+   "funding_rate": -0.067521
   },
   {
    "market": "WEEX (Futures)",
-   "open_interest": 797873.13,
-   "volume_24h": 1156407.8150013874,
+   "open_interest": 800422.56,
+   "volume_24h": 1045955.6466844784,
    "funding_rate": 0.0001
   },
   {
    "market": "LBank (Futures)",
-   "open_interest": 611473.87,
-   "volume_24h": 10535300.249496225,
-   "funding_rate": 0.01
+   "open_interest": 607418.82,
+   "volume_24h": 8872363.546073947,
+   "funding_rate": -0.011484
   },
   {
    "market": "OKX (Futures)",
-   "open_interest": 531061.17,
-   "volume_24h": 2222463.0933203097,
-   "funding_rate": 0.007918864596029999
+   "open_interest": 551166.71,
+   "volume_24h": 1861891.1304158822,
+   "funding_rate": -0.05939329629086999
   },
   {
    "market": "Gate (Futures)",
-   "open_interest": 488991.43,
-   "volume_24h": 548438.9559791486,
-   "funding_rate": -0.1576
+   "open_interest": 485404.76,
+   "volume_24h": 327992.64491119015,
+   "funding_rate": -0.1820999999999999
   },
   {
    "market": "Ourbit (Futures)",
-   "open_interest": 430011.01,
-   "volume_24h": 3539953.014257672,
-   "funding_rate": 0.01
+   "open_interest": 270357.0,
+   "volume_24h": 2905412.604645722,
+   "funding_rate": -0.0114
   },
   {
    "market": "BloFin (Futures)",
-   "open_interest": 210852.37,
-   "volume_24h": 44047.89257280393,
-   "funding_rate": 0.012634208663890633
+   "open_interest": 219161.22,
+   "volume_24h": 54803.695456766116,
+   "funding_rate": -0.011682061440832966
   },
   {
    "market": "BitKan (Futures)",
-   "open_interest": 185667.77,
-   "volume_24h": 807043.0689349639,
+   "open_interest": 191836.43,
+   "volume_24h": 701745.9066672483,
+   "funding_rate": 0.01
+  },
+  {
+   "market": "Bitunix Futures",
+   "open_interest": 130853.01,
+   "volume_24h": 706312.7260809182,
    "funding_rate": 0.01
   },
   {
    "market": "Variational Omni",
-   "open_interest": 131253.73,
-   "volume_24h": 82364.31384199999,
-   "funding_rate": -0.03411
-  },
-  {
-   "market": "Bitunix Futures",
-   "open_interest": 113405.56,
-   "volume_24h": 755160.0617101695,
-   "funding_rate": 0.01
+   "open_interest": 128260.43,
+   "volume_24h": 106280.70029244969,
+   "funding_rate": -0.07258
   },
   {
    "market": "Zoomex (Futures)",
-   "open_interest": 111276.71,
-   "volume_24h": 1607818.384774607,
-   "funding_rate": -0.0353
+   "open_interest": 114936.11,
+   "volume_24h": 1455892.3643785093,
+   "funding_rate": -0.0958
   },
   {
    "market": "XT.COM (Derivatives)",
-   "open_interest": 78835.0,
-   "volume_24h": 1834464.062148867,
-   "funding_rate": 0.01
+   "open_interest": 73746.0,
+   "volume_24h": 1479281.3123513532,
+   "funding_rate": -0.011484
   },
   {
    "market": "LeveX (Futures)",
-   "open_interest": 68047.23,
-   "volume_24h": 66915.3936521898,
+   "open_interest": 66220.41,
+   "volume_24h": 59585.28009545126,
    "funding_rate": 0.01
   },
   {
    "market": "Bitrue (Futures)",
-   "open_interest": 27926.55,
-   "volume_24h": 504051.68743459583,
-   "funding_rate": 0.010135
-  },
-  {
-   "market": "BTSE (Futures)",
-   "open_interest": 21921.28,
-   "volume_24h": 196229.808,
-   "funding_rate": -0.0382
+   "open_interest": 27213.91,
+   "volume_24h": 434255.6592609306,
+   "funding_rate": -0.011504
   },
   {
    "market": "Bitfinex (Futures)",
-   "open_interest": 14322.04,
-   "volume_24h": 7648.140725144408,
-   "funding_rate": -0.116892
+   "open_interest": 27142.75,
+   "volume_24h": 17014.740066818566,
+   "funding_rate": -0.215714
+  },
+  {
+   "market": "BTSE (Futures)",
+   "open_interest": 21139.33,
+   "volume_24h": 193672.7188,
+   "funding_rate": -0.068024
   },
   {
    "market": "Hotcoin (Futures)",
    "open_interest": 12226.45,
-   "volume_24h": 1684283.310644231,
+   "volume_24h": 1374613.6635930776,
    "funding_rate": 0.01
   },
   {
    "market": "CoinEx (Futures)",
-   "open_interest": 6522.17,
-   "volume_24h": 82104.33872327986,
-   "funding_rate": -0.1965269999999999
+   "open_interest": 6338.82,
+   "volume_24h": 79822.53073388244,
+   "funding_rate": -0.2992889999999999
   },
   {
    "market": "PrimeXBT",
-   "open_interest": 4674.18,
-   "volume_24h": 4474.49037942756,
-   "funding_rate": 0.01
+   "open_interest": 3905.66,
+   "volume_24h": 4478.947600648783,
+   "funding_rate": -0.0088
   },
   {
    "market": "Crypto.com Exchange (Futures)",
-   "open_interest": 1982.79,
-   "volume_24h": 7.65084,
-   "funding_rate": -0.0105498
+   "open_interest": 1926.24,
+   "volume_24h": 4.72648,
+   "funding_rate": -0.0226256
   },
   {
    "market": "BYDFi (Futures)",
-   "open_interest": 561.14,
-   "volume_24h": 23790.565678136194,
+   "open_interest": 623.61,
+   "volume_24h": 21610.389138900355,
    "funding_rate": 0.01
   },
   {
    "market": "Helix (Futures)",
-   "open_interest": 16.38,
-   "volume_24h": 104668.3516079236,
+   "open_interest": 15.87,
+   "volume_24h": 104668.30613928822,
    "funding_rate": 0.000416666
   }
  ]
