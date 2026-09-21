@@ -1,5 +1,5 @@
 {
-  "generated_from": 25,
+  "generated_from": 26,
   "claims": [
     {
       "claim": "The direct-node unwind: ~215,000 EGLD left direct-node staking over three weeks, 'the largest unexplained structural flow tracked'.",
@@ -177,6 +177,44 @@
         "2026-09-07"
       ],
       "withdrawn_in_date": "2026-09-14"
+    },
+    {
+      "claim": "The compound rate's fall below 50% was a switch to taking yield in cash (candidate regime shift).",
+      "asserted_in_runs": [
+        25
+      ],
+      "withdrawn_in_run": 26,
+      "reason": "The rate returned to 62.68% the next week, the one-week-reaction branch of the registered test.",
+      "replacement": "A one-week reaction to the price reversal; the compound series stays in its 57-63% band.",
+      "asserted_in_dates": [
+        "2026-09-14"
+      ],
+      "withdrawn_in_date": "2026-09-21"
+    },
+    {
+      "claim": "Unknown Whale I is an OTC operator's inventory wallet (a pipeline participant on both legs).",
+      "asserted_in_runs": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "withdrawn_in_run": 26,
+      "reason": "The Sep 19 exploit wallet routed 775,154 minted EGLD into it through a fresh one-hop wallet, the same pattern it used for Binance.com, KuCoin and MEXC deposits.",
+      "replacement": "Probably an exchange hot wallet; confirmation registered as the unknown-whale-i-is-exchange test. Past hub totals are unchanged; only the venue label would change.",
+      "asserted_in_dates": [
+        "2026-08-03",
+        "2026-08-10",
+        "2026-08-17",
+        "2026-08-24",
+        "2026-08-31",
+        "2026-09-07",
+        "2026-09-14"
+      ],
+      "withdrawn_in_date": "2026-09-21"
     }
   ]
 }

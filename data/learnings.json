@@ -6021,6 +6021,424 @@
         "RESOLVE THE COMPOUND-REGIME AND DELIVERY-PRICE-RELEVANCE TESTS - both are one-week tests with partitioned branches.",
         "JOIN PROVIDERS ON ADDRESS IN THE COLLECTOR ITSELF, not just in the assembler, and log identity renames as an event list."
       ]
+    },
+    {
+      "date": "2026-09-21",
+      "run_number": 26,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "/mex/farms",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x43",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "wave #4 window netting (Sep 7 - Sep 21)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond resolution (rec #3)",
+          "all-provider unDelegate scan x107 (rec #5)",
+          "unbonding pool /accounts/{addr}/delegation x45",
+          "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+          "100%-fee provider follow-through",
+          "Binance hot outbound >10K vs desk inbound (rec #11)",
+          "dynamic absorber discovery from desk terminals (rec #8)",
+          "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+          "/accounts/{addr}/transfers/count x12",
+          "JEXchange router 7d transfer counts (run #24 rec #6)",
+          "unattributed feeder two-hop back-trace (run #24 rec #5)",
+          "coingecko tickers depth=true (exchange-side depth, run #24 rec #2)",
+          "coingecko market_chart 14d (aggregate spot volume)",
+          "/tokens/{id} x19 (dataApi re-fetch + list recovery)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+          "deregistered-provider delegator series (rec #9)",
+          "JEXchange aggregator re-derivation (rec #11)",
+          "pre-flight re-query of last run's failed sources (rec #3)",
+          "MEX incident recovery follow-up (run #25 rec #1)"
+        ],
+        "endpoints_that_failed": [
+          "NONE with data missing. The halt makes 24h aggregates (xExchange volume, protocol transfers/24h) read zero; that is the state of the chain, not a failed endpoint, and those metrics are marked not evaluable. SWTAO price null all run (supply used)."
+        ],
+        "api_quirks_discovered": [
+          "A HALTED CHAIN STILL SERVES A NORMAL-LOOKING API. /economics, /accounts, /providers and /stats all answer; nothing says the chain has stopped. The tells are /stats blocks not advancing between calls and /blocks?shard=N returning a latest timestamp hours old. Check the latest block timestamp at the start of every run.",
+          "THE API SERVES INVALID STATE AS BALANCES. After the exploit, /accounts?sort=balance lists a wallet with 41.3M EGLD and a contract with 25.6M, more than the 30.8M /economics total supply, with no flag. Any aggregate built on account balances (exchange flows, whale tiers, top-account deltas) must be checked against total supply before it is narrated.",
+          "24H WINDOWS GO TO ZERO DURING A HALT. /mex/pairs volume24h and /accounts/{addr}/transfers/count?after=now-24h read 0 on every pair and contract.",
+          "A PAUSED xEXCHANGE PAIR CAN STILL TRADE FOR WHITELISTED CALLERS. addToPauseWhitelist on each pair let Hatom's recovery contract swap while every other caller failed. The whitelist calls are on the router owner's transaction list; the swaps appear only in the pair's /transfers (SC results), not its /transactions.",
+          "WITHDRAW AMOUNTS: /transactions/{hash}?withScResults=true carries the EGLD returned to the caller in `results` (receiver == caller). 377 calls decoded in about 90 seconds."
+        ],
+        "data_gaps": [
+          "Flow windows end at the halt: the reporting 'week' is 5.3 days, so weekly series have one short observation.",
+          "The exploit's mechanism is described only as a VM-level atomicity issue; the technical report is pending.",
+          "Hatom's MEX incident report is not published; LP impact of the whitelisted recovery sales is not measurable without its counterfactual prices.",
+          "Order-book depth and CEX volume were read after the halt, with deposits and withdrawals closed at most venues; they are not comparable to last week's baseline.",
+          "Unknown Whale I and erd1a6lte0 are unlabelled; if they are exchanges, historical hub traces carry an unnamed venue.",
+          "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "THE IMPLAUSIBILITY CHECK CAUGHT THE WEEK'S STORY. The derived stage printed an exchange net flow of +4.9M EGLD; instead of narrating it, the top-account list was checked against total supply, which exposed a 41.3M EGLD account, and /stats blocks not advancing exposed the halt.",
+          "TRACING THE FAN-OUT BEFORE WRITING: one pass over the attacker's outbound and each hop's forwards quantified exactly how much minted EGLD reached which venue, which let every balance metric be netted cleanly.",
+          "READING THE PAUSED POOL'S /transfers found the Hatom recovery contract and its 89 whitelisted sales, which the pool's /transactions list does not show.",
+          "SEQUENTIAL SCRIPTS: collector, follow-up, reward scan and LSD sweep ran one after another with zero paged errors and 8 of 8 providers.",
+          "SEEDED LSD SWEEP returned all six known protocols."
+        ],
+        "what_needs_improvement": [
+          "THE COLLECTOR HAS NO LIVENESS CHECK. It ran a full 7-day collection against a chain that had stopped 55 hours earlier and nothing in its output said so.",
+          "audit_report.py has no total-supply sanity check; a single account above supply passed both gates' data layer.",
+          "The order-book instrument was read in a closed market; its second data point is unusable as a WoW comparison.",
+          "Unknown Whale I was labelled an OTC operator for seven runs on circumstantial evidence."
+        ],
+        "surprising_findings": [
+          "A VM-level exploit minted roughly 2.5x the EGLD supply in about an hour through doubling deposit/compound rounds, and the chain was halted about ten minutes after the cash-out began.",
+          "EGLD fully recovered its post-halt low within two days while the chain was still down.",
+          "Hatom's MEX recovery sold seized collateral into pools that were paused to everyone else, via a pause whitelist.",
+          "The attacker's cash-out route ran through Unknown Whale I, an address the model had placed inside the OTC pipeline.",
+          "Two lookalike wallets are address-poisoning the OTC routers."
+        ]
+      },
+      "methodology_changes": [
+        "CHECK CHAIN LIVENESS FIRST. Read the latest block timestamp per shard before collecting; a halted chain serves plausible data and every window silently shortens.",
+        "CHECK ACCOUNT-BALANCE AGGREGATES AGAINST TOTAL SUPPLY. A single account above total supply is invalid state; net incident balances out of every balance-derived metric and report raw alongside.",
+        "AN ATTACKER'S CASH-OUT PATH LABELS EXCHANGE WALLETS. Fresh one-hop wallets forwarding minted funds point at deposit infrastructure; use that to label unnamed high-flow wallets.",
+        "READ A PAUSED POOL'S /transfers, NOT ITS /transactions. Whitelisted trades during a pause appear only as SC-result transfers.",
+        "DECODE WITHDRAW AMOUNTS EVERY RUN from SC results; report returned EGLD beside new unDelegations."
+      ],
+      "new_addresses_discovered": [
+        "erd1kwvkch79edm9qtg3tlaylgm9yff04lr9vaszazuavxtqrffz6scqrvvjd2 - MultiversX VM exploit wallet (2026-09-19)",
+        "erd1qqqqqqqqqqqqqpgqsqffm2ezs77zsu6cvc6nxd4v8qegne4v6scqke2kq9 - MultiversX VM exploit contract (2026-09-19)",
+        "erd1qqqqqqqqqqqqqpgqwmq40hvu7j88gqc7935prc0r96mdhs3m78sszpu2uj - Hatom: MEX incident recovery contract",
+        "erd12uv6mj42mv090ucffuuc4pwexrgqfuycegl2rg9j2ah9u20s7dlsmrt5jd - Hatom: MEX recovery keeper",
+        "erd1a6lte0wqwwdjtt0nvv62c6pacltznzgq93gjxu6el44cx6lqx3fsu48u4l - Probable exchange hot wallet (received 1.63M minted EGLD)",
+        "12 exploit fan-out wallets and 2 address-poisoning lookalikes added under the new `incident` section of known-addresses.json"
+      ],
+      "action_items_completed": [
+        "RESOLVE mex-incident-recovery - done: resume calls read from the router owner (2026-09-17 14:23 UTC), the recovery contract traced end to end, EGLD market and HMEX measured; resolved as predicted with the contradicting details recorded.",
+        "BUILD THE ORDER-BOOK SERIES - done mechanically (week-on-week bid and ask depth for Binance, Bybit, UPbit, Coinbase and Gate) but the second reading was taken after the halt with transfers closed, so it is not a clean WoW comparison.",
+        "SEED THE LIQUID-STAKING SWEEP - done: the discovery sweep re-fetches every previously found receipt token and verifies every seed owner; all six protocols returned.",
+        "ADD A 429 GUARD TO THE REWARD-BEHAVIOUR SCRIPT - done: exponential backoff, errors recorded and surfaced in the output (failed providers and an API error count); run after the collector, 8 of 8 providers.",
+        "DECODE WITHDRAW AMOUNTS - done: the follow-up pass decodes all 377 withdraw calls from SC results, 108,941 EGLD returned.",
+        "RESOLVE THE COMPOUND-REGIME AND DELIVERY-PRICE-RELEVANCE TESTS - done: compound against, delivery not evaluable (re-registered).",
+        "JOIN PROVIDERS ON ADDRESS IN THE COLLECTOR - done: the collector keys both snapshots on the contract address and logs identity changes; 100% match, zero renames.",
+        "(unplanned) ADDED A TOTAL-SUPPLY AND LIVENESS CHECK TO THE AUDIT GATE: any account above total supply, or a new top account above 5% of it, is an error unless the report documents the incident; verified to fire on this snapshot with the incident section removed."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.69,
+          2.68,
+          2.76,
+          3.6,
+          3.83,
+          4.48,
+          4.14,
+          4.24
+        ],
+        "dex_volume_24h_usd": [
+          75362.7807729906,
+          38628.36089504676,
+          40594.726618154826,
+          53782.67067584162,
+          229987.6668827292,
+          234053.12987894475,
+          199616.7116502968,
+          397448.7353661145
+        ],
+        "dex_volume_24h_egld": [
+          61110,
+          44557,
+          96002
+        ],
+        "staked_egld": [
+          14470102,
+          14468060,
+          14514338,
+          14548017,
+          14551783,
+          14485712,
+          14329174,
+          14357283
+        ],
+        "mex_price_usd": [
+          2.4397414242709315e-07,
+          2.472038964013605e-07,
+          2.5603716335458884e-07,
+          3.3417335112217705e-07,
+          3.541086469631204e-07,
+          3.97703098880543e-07,
+          1.8164036583951485e-06,
+          6.201189897699527e-07
+        ],
+        "total_delegators": [
+          174325,
+          174330,
+          174353,
+          173042,
+          172935,
+          172862,
+          172600,
+          172550
+        ],
+        "staked_ratio": [
+          0.4746278437166162,
+          0.4737995781734133,
+          0.4745535960231805,
+          0.4748923642763583,
+          0.474254493214429,
+          0.47134605750035136,
+          0.4655083730551601,
+          0.46588943376972114
+        ],
+        "exchange_net_flow_egld": [
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469,
+          -191939.71816979814,
+          31862.435230013914,
+          117969.59074411914,
+          53956.536047511734
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          301498,
+          604086,
+          222532,
+          767206,
+          709850,
+          1563936,
+          893299,
+          314290
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109,
+          272396,
+          536459,
+          401353,
+          64665
+        ],
+        "otc_desk_inventory_egld": [
+          266213,
+          96114,
+          56596,
+          46637
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+          "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+          "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179,
+          "2026-08-31..2026-09-07 (run #24, weekly frame - a RECORD, and inside the wave)": 536459,
+          "2026-08-17..2026-09-07 (WAVE #3 netted feed-to-drain, three frames - the correct measure)": 878809,
+          "2026-09-07..2026-09-14 (run #25, weekly frame, wave #4)": 401353,
+          "2026-08-17..2026-09-14 (waves #3+#4 netted as one window, four frames)": 1336721,
+          "2026-09-14..2026-09-19 halt (run #26, 5.3-day frame, wave #4)": 64665,
+          "2026-09-07..2026-09-19 halt (WAVE #4 netted feed-to-drain, two frames)": 467107
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1,
+          "run23": 61.6,
+          "run24": 65.7,
+          "run25": 55.1,
+          "run26": 79.4
+        },
+        "dex_turnover_ratio_pct": [
+          4.061,
+          2.141,
+          2.235,
+          2.928,
+          10.832,
+          10.511,
+          8.166,
+          20.862
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0,
+          5747.7,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          3357100.6221337724,
+          3357100.6221337724,
+          3475540.385133772,
+          3175540.3850837722,
+          2978782.2380337724,
+          3351216.1019337727,
+          3493534.6849337723,
+          3493534.6849337723
+        ],
+        "reward_compound_pct": [
+          62.25,
+          59.54,
+          59.07,
+          57.03,
+          57.51,
+          62.05,
+          49.44,
+          62.68
+        ],
+        "delegation_total_locked_egld": [
+          11114380,
+          11034013,
+          10967589,
+          10864570,
+          10900187,
+          10945373
+        ],
+        "usdt_supply": [
+          549884,
+          552292,
+          545052,
+          532035,
+          463905,
+          452585
+        ],
+        "usdc_supply": [
+          7706364,
+          7579164,
+          7786216,
+          7685181
+        ],
+        "unbonding_queue_undelegated_egld_7d": [
+          151443,
+          208125,
+          73351,
+          84169
+        ],
+        "withdraw_egld_returned_7d": [
+          108941
+        ],
+        "withdrawal_breadth_ex_pipeline_egld": [
+          400113,
+          497647,
+          397124,
+          285984
+        ],
+        "cex_spot_volume_7d_egld": [
+          17696479
+        ],
+        "otc_delivery_share_of_spot_pct": [
+          2.27
+        ],
+        "binance_bybit_bid_depth_2pct_usd": [
+          124993
+        ],
+        "closed_book_readings_run26": {
+          "cex_spot_volume_7d_egld": 11126531,
+          "binance_bybit_bid_depth_2pct_usd": 84268
+        },
+        "hmex_supply": [
+          24959314779646.0,
+          11012904178288.0
+        ],
+        "pre_committed_tests_resolved": [
+          7,
+          5,
+          8,
+          6,
+          6,
+          3
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          42.9,
+          80.0,
+          87.5,
+          100.0,
+          66.7,
+          33.3
+        ],
+        "pre_committed_tests_open": [
+          6,
+          8,
+          7,
+          7,
+          5,
+          5
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Chain liveness and incident banner",
+          "motivation": "The chain halted at 07:41 UTC Sep 19, and every panel on the dashboard renders this week's halted-state numbers as a normal week. A reader opening the page sees a +2.4% EGLD week and a quiet pipeline, with no sign that the network has been down for 55 hours or that the raw exchange inflow was +4.9M EGLD of minted funds.",
+          "suggested_visualization": "a top-of-page status strip: last block per shard with an elapsed-time counter, the raw vs net-of-incident exchange flow side by side, and a link to the incident panel",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.chain_halt_incident (new field this run)",
+          "priority": "high"
+        },
+        {
+          "title": "Exploit fan-out graph",
+          "motivation": "The minted EGLD went attacker -> 12 fresh wallets -> Binance/KuCoin/MEXC/erd1a6lte0/Unknown Whale I in three minutes. That routing is what re-labels Unknown Whale I as a probable exchange, and a table cannot show it.",
+          "suggested_visualization": "a left-to-right sankey: attacker wallet and contract on the left, the 12 hop-1 wallets in the middle, destinations on the right, with the unmoved wallets as a terminal node",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.chain_halt_incident.fanout_by_destination_egld plus the persisted chain_halt_incident.fanout in the collected snapshot",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Contract-state event timeline - the MEX/WEGLD pause against price and deposits",
+          "status": "built",
+          "note": "Built in run #25. This run adds the whitelist and resume calls (token_activity.xexchange.mex_incident_recovery.owner_calls), which the panel could append as markers."
+        },
+        {
+          "title": "Pipeline in market scale - delivery as a share of CEX turnover and depth",
+          "status": "built",
+          "note": "Built in run #25; this week's order-book point was read after the halt and should be drawn hollow or skipped."
+        },
+        {
+          "title": "Feed-side attribution - who fills the desks, not just who they deliver to",
+          "status": "pending",
+          "note": "Still queued. If Unknown Whale I is confirmed as an exchange, the venue column needs relabelling first."
+        },
+        {
+          "title": "Demand-instrument scorecard",
+          "status": "deprioritized",
+          "note": "DEX volume is not evaluable this week and the order book was read in a closed market; the scorecard would show two broken tiles. Revisit after the restart."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "Checking the numbers against the chain's own limits. The exploit showed up first as an exchange inflow of +4.9M EGLD, which the pipeline would have published as the largest accumulation-onto-exchange event in its history. It was caught because a single account held more EGLD than the total supply, and then because /stats blocks had not moved between calls. Neither check existed yesterday. Without them, every balance-derived figure in this report would have been wrong, with no sign of it.",
+        "actions_completed_count": 7,
+        "actions_attempted_count": 7,
+        "what_would_2x_next_week": "A liveness check and a total-supply check at the top of the collector, so a halt or an invalid-state event is detected in the first minute rather than discovered through an implausible derived number; then a restart-anchored window so post-recovery flows are measured from the first new block.",
+        "pre_committed_test_for_next_run": "HALT-RECOVERY-CLEAN: attacker+contract+fan-out < 1,000 EGLD and pre-halt desk/custody/Hatom balances within 1% = clean. UNKNOWN WHALE I: >500 distinct 7d senders = exchange. FOURTH-DEREGISTRATION week 4. STAKED-RATIO-FLOOR resolves run #27."
+      },
+      "recommendations_for_next_run": [
+        "CHECK LIVENESS AT COLLECTOR START: latest block per shard; if halted, set the flow-window end to the halt and say so in metadata.",
+        "RESOLVE halt-recovery-clean against this snapshot (attacker/contract/fan-out balances; desks, Binance custody, Hatom EGLD market within 1%).",
+        "LABEL UNKNOWN WHALE I AND erd1a6lte0: count distinct inbound senders over 7 days with deep paging (the back-trace scan hit its 300-transaction cap in 14 days).",
+        "ADD A LIVENESS GATE TO THE COLLECTOR ITSELF (the audit now has one): stop and flag if the latest block on any shard is more than an hour old.",
+        "READ HATOM'S INCIDENT REPORT and MultiversX's technical report when published; reconcile against the chain reconstruction.",
+        "RE-READ THE ORDER BOOK once exchange transfers reopen; that reading, not this one, is the baseline's second point.",
+        "WATCH THE POISONING LOOKALIKES for any inbound above dust."
+      ]
     }
   ]
 }

@@ -40,6 +40,9 @@ ALLOWED = {
     "reDelegate", "claimRewards", "removeNodes", "unBondNodes",
     "unStakeNodes", "withdraw", "delegate", "xExchange", "xMoney",
     "xPortal", "dataApi",
+    # run #26: genuine function names on Hatom's MEX recovery contract and xExchange pairs
+    "runRound", "runCampaignRound", "liquidateBorrow", "setAllowedBorrower", "setSaleRoute",
+    "removeFromPauseWhitelist", "addToPauseWhitelist",
 }
 
 SNAKE = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")

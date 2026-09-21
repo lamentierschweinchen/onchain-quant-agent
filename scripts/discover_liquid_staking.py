@@ -58,6 +58,10 @@ def is_contract(addr):
     return bool(addr) and addr.startswith("erd1qqqq")
 
 
+SEED_RECEIPT_TOKENS = ["SEGLD-3ad2d0", "XEGLD-e413ed", "LEGLD-d74da9", "VOXEGLD-5872e5",
+                       "VEGLD-2b9319", "JWLEGLD-023462"]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pages", type=int, default=3,
@@ -93,12 +97,32 @@ def main():
                                    "sort": sort, "order": "desc"}))
         print(f"  sort {sort} ({args.pages} pages) -> {len(tokens)} candidate tokens")
 
+    # --- 1b. Seed from last week's finds (run #25 rec #3) --------------------
+    # Run #25's sweep lost SALSA and VestaX: their receipt tokens fell out of the
+    # ranked candidate lists, so a protocol that still stakes vanished from the
+    # table. Every receipt token found before is re-fetched by identifier, and
+    # every previously found owner is verified whether or not a token surfaced.
+    prev = json.load(open(f"{REPO}/data/previous.json"))
+    seed_tokens = set(SEED_RECEIPT_TOKENS) | set((prev.get("lsd_supply_emerging") or {}).keys())
+    seed_tokens |= set((prev.get("lsd_supply") or {}).keys())
+    seeded = []
+    for ident in sorted(seed_tokens):
+        t = get(f"/tokens/{ident}")
+        time.sleep(0.25)
+        if isinstance(t, dict) and t.get("identifier"):
+            tokens.setdefault(ident, t)
+            seeded.append(ident)
+    print(f"  seeded {len(seeded)} receipt tokens from previous finds -> {len(tokens)} candidate tokens")
+
     # --- 2. Reduce to distinct smart-contract owners -----------------------
     owners = {}
     for ident, t in tokens.items():
         owner = t.get("owner")
         if is_contract(owner):
             owners.setdefault(owner, []).append(ident)
+    for name, addr in (prev.get("lsd_protocol_seeds") or {}).items():
+        if is_contract(addr):
+            owners.setdefault(addr, [])
     print(f"\n{len(tokens)} tokens -> {len(owners)} distinct smart-contract owners to verify\n")
 
     # --- 3. Verify: does the owner actually stake? -------------------------
@@ -160,6 +184,7 @@ def main():
         "method": "token owner -> delegation stake (SC-to-SC delegate calls are "
                   "smart-contract results and invisible to /transactions)",
         "tokens_examined": len(tokens),
+        "seeded_receipt_tokens": seeded,
         "contract_owners_verified": len(owners),
         "liquid_staking_protocols": found,
     }

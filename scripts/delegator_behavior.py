@@ -57,19 +57,36 @@ API = "https://api.multiversx.com"
 REPO = Path("/Users/ls/Documents/MultiversX/projects/onchain-quant-agent")
 
 
-def get(path: str, params: dict | None = None, retries: int = 2):
+API_ERRORS: list[dict] = []
+
+
+def get(path: str, params: dict | None = None, retries: int = 5):
+    """GET with exponential backoff on HTTP 429 (run #25 rec #4).
+
+    Run #25 ran this script alongside the collector, drew 429s, and silently
+    dropped 4 of 8 providers, which produced a false 46.79% compound rate.
+    Errors are now recorded in API_ERRORS and surfaced in the output, so an
+    error can never read as an empty provider.
+    """
     url = API + path
     if params:
         url += "?" + urllib.parse.urlencode(params)
+    delay = 1.0
     for attempt in range(retries + 1):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "delegator-behavior/1"})
+            req = urllib.request.Request(url, headers={"User-Agent": "delegator-behavior/2"})
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.loads(r.read().decode())
         except Exception as e:
+            msg = str(e)
             if attempt == retries:
-                return {"__error__": str(e), "__url__": url}
-            time.sleep(1.0)
+                API_ERRORS.append({"url": url, "error": msg})
+                return {"__error__": msg, "__url__": url}
+            if "429" in msg:
+                time.sleep(delay)
+                delay = min(delay * 2, 12.0)
+            else:
+                time.sleep(1.0)
 
 
 def load_known_addresses() -> tuple[dict[str, str], dict[str, str]]:
@@ -133,6 +150,7 @@ def analyse(args: argparse.Namespace) -> dict:
     per_provider: list[dict] = []
     operator_summaries: list[dict] = []
     sample_claims: list[dict] = []  # representative claim->fate examples for the report
+    providers_failed: list[dict] = []
 
     for pi, p in enumerate(provs, 1):
         identity = p.get("identity") or p["provider"]
@@ -150,6 +168,9 @@ def analyse(args: argparse.Namespace) -> dict:
         )
         time.sleep(0.3)
         if not isinstance(txs, list):
+            providers_failed.append({"identity": identity, "address": prov_addr,
+                                     "error": (txs or {}).get("__error__") if isinstance(txs, dict) else str(txs)})
+            log(f"    [ERROR] {identity}: provider tx fetch failed - excluded, NOT counted as empty")
             continue
         func_counts: Counter[str] = Counter()
         for t in txs:
@@ -292,6 +313,9 @@ def analyse(args: argparse.Namespace) -> dict:
     aggregates = {
         "window_days": args.days,
         "providers_sampled": len(per_provider),
+        "providers_requested": len(provs),
+        "providers_failed": providers_failed,
+        "api_errors": len(API_ERRORS),
         "operator_window_days": args.operator_days,
         "total_function_calls_observed": total_function_calls,
         "overall_function_distribution": {

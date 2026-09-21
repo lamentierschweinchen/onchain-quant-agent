@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-09-14",
+    "last_updated": "2026-09-21",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -508,6 +508,22 @@
       "category": "defi",
       "subcategory": "deployer",
       "notes": "Hatom main account that owns and deploys the 59-contract Hatom suite."
+    },
+    "erd1qqqqqqqqqqqqqpgqwmq40hvu7j88gqc7935prc0r96mdhs3m78sszpu2uj": {
+      "name": "Hatom: MEX incident recovery contract",
+      "category": "defi",
+      "subcategory": "hatom_ops",
+      "notes": "Deployed Sep 15 by the Hatom deployer; redeemed seized HMEX and sold 270B MEX into MEX/WEGLD, MEX/USH, MEX/USDC while they were paused (pause whitelist).",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd12uv6mj42mv090ucffuuc4pwexrgqfuycegl2rg9j2ah9u20s7dlsmrt5jd": {
+      "name": "Hatom: MEX recovery keeper",
+      "category": "defi",
+      "subcategory": "hatom_ops",
+      "notes": "Called runRound/runCampaignRound on the recovery contract Sep 15-17.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
     }
   },
   "defi_ashswap": {
@@ -1126,7 +1142,7 @@
       "name": "Unknown Whale I (active)",
       "category": "other",
       "subcategory": "whale",
-      "notes": "Active account (nonce 8,122). Grew from 127,844 to 146,011 EGLD in week of Apr 1-7 (+18,167 EGLD, +14.2%). Funding source unknown. Not an exchange or known DeFi contract. Added to watch list 2026-04-07."
+      "notes": "Active account (nonce 8,122). Grew from 127,844 to 146,011 EGLD in week of Apr 1-7 (+18,167 EGLD, +14.2%). Funding source unknown. Not an exchange or known DeFi contract. Added to watch list 2026-04-07. Run #26: received 775,154 minted EGLD from a Sep 19 exploit fan-out wallet - probable exchange hot wallet, not an OTC operator (test unknown-whale-i-is-exchange). Run #26: received 775,154 minted EGLD from a Sep 19 exploit fan-out wallet - probable exchange hot wallet, not an OTC operator (test unknown-whale-i-is-exchange)."
     },
     "erd1v6x9egd2j5cmr57cugxukfnn647q2zuy57nu68t0y6qpu6ztaypshcxnk5": {
       "name": "UPbit OTC Desk",
@@ -1780,6 +1796,146 @@
       "notes": "Deposited 2.3B MEX into Hatom's MEX market and borrowed 552 EGLD in the same window as wallet A.",
       "first_seen": "2026-09-14",
       "discovered_run": 25
+    }
+  },
+  "incident": {
+    "erd1kwvkch79edm9qtg3tlaylgm9yff04lr9vaszazuavxtqrffz6scqrvvjd2": {
+      "name": "MultiversX VM exploit wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploiter",
+      "notes": "Funded Sep 16 by MEXC/Bybit withdrawals; Sep 19 06:34-07:37 UTC ran doubling deposit/compound rounds producing invalid EGLD balances; fanned out 9.81M EGLD to 12 wallets 07:24-07:27; chain halted ~07:41.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1qqqqqqqqqqqqqpgqsqffm2ezs77zsu6cvc6nxd4v8qegne4v6scqke2kq9": {
+      "name": "MultiversX VM exploit contract (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_contract",
+      "notes": "Deployed by the exploit wallet 06:34 UTC Sep 19; target of the deposit/compound loop; 25.56M EGLD at the halt.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1hp7z308y2mfenn3lu48tyt3pcfuqq7kvacrdlt3pmpuzte9dk0qqt0nrrh": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 775,154 minted EGLD from the exploit wallet; forwarded to Unknown Whale I (active).",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1jrp4jca0s8gyjcl4g5sedk6m4k97fc20umlq2gdr3seqxelh0uuqr43r72": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 891,381 minted EGLD from the exploit wallet; forwarded to nowhere (unmoved).",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd17tdrymgfhy44np4zuxrne36kfdt898w2jp3yprm0at52z5gqs62qr9rpuk": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 769,995 minted EGLD from the exploit wallet; forwarded to nowhere (unmoved).",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd148whmf6zxetrpgfdmxac27kfsnq58320we367lds8yrtkccf9hpq8ga4w4": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 750,203 minted EGLD from the exploit wallet; forwarded to MEXC.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd10yt3dqhp8vlushs2lfguerdu9ggsygalwe2ada6quy4n8q9aj06skm7swc": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 846,641 minted EGLD from the exploit wallet; forwarded to erd1a6lte0wqww.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1l0n3e7um9kxh0v52mfn8f7mj0mdw5mq9h64vdc3hp5u78fty7azsdqlfxu": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 788,229 minted EGLD from the exploit wallet; forwarded to erd1a6lte0wqww.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1atsqnll6glu5nxuwf2knrqpjcq7jz025aj734eqtc9a80qtkf20sydxcse": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 881,101 minted EGLD from the exploit wallet; forwarded to nowhere (unmoved).",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1azdq7r4yxjw3fyn3phk2hs5k5t8spr842klmyzsm7qc03rdu3sjqkf29fj": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 921,564 minted EGLD from the exploit wallet; forwarded to KuCoin.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1ldc7dkmttgp7hfsrt2tr7syaxda27w5cmj44qedx3fjz838438jqza7g2f": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 899,812 minted EGLD from the exploit wallet; forwarded to KuCoin.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1qslmz2nlqwspyx49tj5ngz8qq5kndncvcskjft5cqzt2y2njescqzg6wq6": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 722,414 minted EGLD from the exploit wallet; forwarded to Binance.com.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1qqndlkf0g722nnlvdpnm3gethvdl4e032znwmg0vcldhalw24khqrrd6g3": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 715,268 minted EGLD from the exploit wallet; forwarded to Binance.com.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1qqjqhq5pfdv6vvkv2j63g3fzcmkz50d7ax0kw2dhy5ydrefxce5sk5qhpl": {
+      "name": "Exploit fan-out wallet (2026-09-19)",
+      "category": "incident",
+      "subcategory": "exploit_hop",
+      "notes": "Received 850,614 minted EGLD from the exploit wallet; forwarded to Binance.com.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1z7wyqlr64qhr5k3wu9qa4d6c6wszxx8s5n9qc7067ds9f9pv3stqppm63r": {
+      "name": "Address-poisoning lookalike (OTC desk)",
+      "category": "incident",
+      "subcategory": "address_poisoning",
+      "notes": "Sends 0.0001 EGLD dust to OTC pipeline routers; mimics OTC Distribution Wallet erd1z7fnqf...nm63r. No misdirected inbound as of run #26.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    },
+    "erd1v6k4dxe72tg0d43pvxrhq0zhlg0z5p0r4jeww2wtazv8kjn0cugsryxnk5": {
+      "name": "Address-poisoning lookalike (OTC desk)",
+      "category": "incident",
+      "subcategory": "address_poisoning",
+      "notes": "Sends 0.0001 EGLD dust to OTC pipeline routers; mimics UPbit OTC Desk erd1v6x9egd...hcxnk5. No misdirected inbound as of run #26.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
+    }
+  },
+  "exchanges_probable": {
+    "erd1a6lte0wqwwdjtt0nvv62c6pacltznzgq93gjxu6el44cx6lqx3fsu48u4l": {
+      "name": "Probable exchange hot wallet (unnamed venue)",
+      "category": "unknown",
+      "subcategory": "probable_exchange",
+      "notes": "Nonce 2,131, streams of small inbound transfers; received 1,634,870 minted EGLD from two exploit fan-out wallets on Sep 19. Category left 'unknown' until the venue is identified.",
+      "first_seen": "2026-09-21",
+      "discovered_run": 26
     }
   }
 }

@@ -183,6 +183,33 @@ def audit_report(report_path: Path, collected_path: Path | None, previous_path: 
                         f"${(reported-expected_hatom_lsd)/1e6:+.2f}M — verify."
                     )
 
+    # ---------- Check 9 (run #26): chain liveness + invalid-state balances ----------
+    # A halted chain still serves a normal-looking API, and after the 2026-09-19
+    # exploit /accounts listed a 41.3M EGLD wallet against a 30.8M total supply.
+    # Neither is detectable by schema validation. Any account above total supply,
+    # or a new top account above 5% of supply, is invalid state unless the report
+    # documents it as an incident (whale_intelligence.chain_halt_incident).
+    if collected:
+        econ = collected.get("economics") or {}
+        supply = float(econ.get("totalSupply") or 0)
+        incident = (R.get("whale_intelligence") or {}).get("chain_halt_incident") or {}
+        documented = {incident.get("attacker_wallet"), incident.get("attacker_contract")}
+        prev_addrs = {a.get("address") for a in prev.get("top_accounts", [])} | set(prev.get("incident_addresses", []))
+        for acc in collected.get("top_accounts") or []:
+            bal = int(acc.get("balance", "0")) / 1e18
+            addr = acc.get("address")
+            if supply and addr not in documented and (bal > supply or (bal > 0.05 * supply and addr not in prev_addrs
+                                                                     and not addr.startswith("erd1qqqqqqqqqqqqqqqpqqq"))):
+                errors.append(
+                    f"invalid_state: {addr} holds {bal:,.0f} EGLD against a total supply of {supply:,.0f} "
+                    f"(new top account > 5% of supply, or above supply). Check chain liveness and net incident "
+                    f"balances out of every balance-derived metric before publishing.")
+        halt = collected.get("chain_halt_incident") or {}
+        blocks = halt.get("last_blocks") or {}
+        if blocks and not incident:
+            errors.append("liveness: chain_halt_incident.last_blocks is present in the snapshot but the report has no "
+                          "whale_intelligence.chain_halt_incident section.")
+
     return errors, warnings
 
 

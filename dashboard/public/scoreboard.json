@@ -1,14 +1,14 @@
 {
-  "generated_from": 25,
+  "generated_from": 26,
   "totals": {
-    "tests": 37,
-    "resolved": 32,
+    "tests": 40,
+    "resolved": 35,
     "open": 5,
-    "as_predicted": 24,
-    "against": 2,
-    "inconclusive": 4,
+    "as_predicted": 25,
+    "against": 3,
+    "inconclusive": 5,
     "withdrawn": 2,
-    "hit_rate_pct": 75
+    "hit_rate_pct": 71.42857142857143
   },
   "runs": [
     {
@@ -70,35 +70,132 @@
       "withdrawn": 0,
       "hit_rate_pct": 66.66666666666667,
       "open_after": 5
+    },
+    {
+      "run": 26,
+      "date": "2026-09-21",
+      "registered": 3,
+      "resolved": 3,
+      "as_predicted": 1,
+      "against": 1,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 33.333333333333336,
+      "open_after": 5
     }
   ],
   "tests": [
     {
-      "id": "mex-pair-resume",
-      "registered_in_run": 25,
-      "claim": "The MEX/WEGLD pause is a structural move of MEX price discovery off-chain rather than a temporary incident.",
-      "threshold": "by run #27 (two weeks): pair still paused or delisted = structural; pair resumed with MEX under ~8.2e-07 (2x the pre-pause 4.08e-07) = an incident that caused a liquidity-freeze squeeze; pair resumed with MEX at or above 8.2e-07 = an incident whose repricing stuck",
+      "id": "halt-recovery-clean",
+      "registered_in_run": 26,
+      "claim": "MultiversX's targeted recovery removes the exploit's invalid balances without reverting legitimate pre-halt history.",
+      "threshold": "at the first snapshot after block production resumes: attacker wallet + contract + 12 fan-out wallets hold < 1,000 EGLD combined AND the pre-halt OTC desk, Binance custody and Hatom EGLD-market balances match this snapshot within 1% = clean targeted recovery; invalid balances gone but legitimate balances changed by > 1% = broader rollback; invalid balances still present = recovery incomplete; chain still halted at run #27 = extended outage",
       "branches": [
         {
-          "condition": "still paused or delisted at run #27",
-          "reading": "structural: MEX price discovery has left the chain"
+          "condition": "invalid balances < 1,000 EGLD and legitimate balances within 1%",
+          "reading": "clean targeted recovery"
         },
         {
-          "condition": "resumed and MEX < 8.2e-07",
-          "reading": "incident; the spike was a squeeze on frozen liquidity"
+          "condition": "invalid balances gone, legitimate balances moved > 1%",
+          "reading": "broader rollback than stated"
         },
         {
-          "condition": "resumed and MEX >= 8.2e-07",
-          "reading": "incident; the repricing held after liquidity returned"
+          "condition": "invalid balances still present after restart",
+          "reading": "recovery incomplete"
+        },
+        {
+          "condition": "no block produced by run #27",
+          "reading": "extended outage"
         }
       ],
       "status": "open",
       "outcome": null,
       "resolved_in_run": null,
-      "measured_value": "paused 2026-09-13 16:43 UTC; MEX 1.82e-06 on CoinGecko (+357% WoW); HMEX supply +672%",
+      "measured_value": "halted since 2026-09-19 07:37 UTC; attacker + contract 66,867,299 EGLD; fan-out 9,812,376; desks 46,637, custody 3,493,535, Hatom EGLD market 112,295",
       "resolution": null,
-      "seen_in_run": 25,
-      "seen_in_date": "2026-09-14"
+      "seen_in_run": 26,
+      "seen_in_date": "2026-09-21"
+    },
+    {
+      "id": "unknown-whale-i-is-exchange",
+      "registered_in_run": 26,
+      "claim": "Unknown Whale I (erd1vd76pwhl...q53m3z0) is an exchange hot wallet, not an OTC operator's inventory.",
+      "threshold": "by run #28: its inbound shows > 500 distinct senders in a 7-day window OR an exchange publicly identifies it = exchange hot wallet (relabel and re-attribute the hub history); < 50 distinct senders = operator inventory stands; 50-500 = no conclusion, re-measure",
+      "branches": [
+        {
+          "condition": "> 500 distinct senders in 7 days, or public identification",
+          "reading": "exchange hot wallet"
+        },
+        {
+          "condition": "< 50 distinct senders in 7 days",
+          "reading": "operator inventory"
+        },
+        {
+          "condition": "50-500 distinct senders",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "received 775,154 minted EGLD via a one-hop fresh wallet at 07:27 UTC Sep 19; the two-hop back-trace of its inbound hit the 300-transaction page cap in 14 days",
+      "resolution": null,
+      "seen_in_run": 26,
+      "seen_in_date": "2026-09-21"
+    },
+    {
+      "id": "delivery-price-relevance-2",
+      "registered_in_run": 26,
+      "claim": "Once transfers reopen, OTC delivery is large enough to move EGLD relative to BTC.",
+      "threshold": "in the first full week after exchange EGLD transfers reopen, with net one-way delivery > 300,000: EGLD - BTC < -5pp = price-relevant; >= -5pp = absorbed; delivery <= 300,000 = not evaluable",
+      "branches": [
+        {
+          "condition": "delivery > 300,000 and EGLD - BTC < -5pp",
+          "reading": "price-relevant supply"
+        },
+        {
+          "condition": "delivery > 300,000 and EGLD - BTC >= -5pp",
+          "reading": "absorbed by turnover"
+        },
+        {
+          "condition": "delivery <= 300,000",
+          "reading": "not evaluable"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "re-registered: run #26 delivery 64,665 (not evaluable)",
+      "resolution": null,
+      "seen_in_run": 26,
+      "seen_in_date": "2026-09-21"
+    },
+    {
+      "id": "mex-incident-recovery",
+      "registered_in_run": 25,
+      "claim": "Hatom's MEX money market incident is resolved on the timeline and terms Hatom stated: markets back by Wednesday, no user losses, no bad debt.",
+      "threshold": "at run #26: MEX market and the MEX/EGLD, MEX/USH, MEX/USDC pools resumed AND no bad debt or user loss disclosed = recovery as stated; resumed BUT a loss or bad debt disclosed = contained, not costless; any of them still paused = the stated timeline slipped",
+      "branches": [
+        {
+          "condition": "all resumed, no loss or bad debt disclosed",
+          "reading": "recovery as stated"
+        },
+        {
+          "condition": "resumed, loss or bad debt disclosed",
+          "reading": "contained, not costless"
+        },
+        {
+          "condition": "any still paused at run #26",
+          "reading": "timeline slipped"
+        }
+      ],
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 26,
+      "measured_value": "MEX/WEGLD, MEX/USH, MEX/USDC resumed 2026-09-17 14:23 UTC (router owner removeFromPauseWhitelist x3 then resume); Hatom EGLD money market 28,418 -> 112,295 EGLD; HMEX -56%; no loss or bad debt disclosed; incident report not yet published",
+      "resolution": "The 'all resumed, no loss disclosed' branch fires: recovery as stated. The data contradicts part of the stated terms, and it should be recorded (run #24 rule). The resume came on Thursday Sep 17, a day after the stated Wednesday. The branch did not fire on that alone because the test was scored at run #26. The unwind also relied on something the statement did not mention: the DEX admin whitelisted a Hatom-deployed recovery contract so it could sell 270B MEX of seized collateral into pools that other LPs could not trade or exit. 'No losses to users' is Hatom's claim, and without its report there is no chain evidence against it. Any LP impact depends on counterfactual prices.",
+      "seen_in_run": 26,
+      "seen_in_date": "2026-09-21"
     },
     {
       "id": "delivery-price-relevance",
@@ -119,13 +216,13 @@
           "reading": "not evaluable; re-register"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "this week: delivery 401,353 (2.3% of spot), EGLD - BTC = -7.08pp; last week delivery 536,459 (2.1%), EGLD - BTC = +16.61pp",
-      "resolution": null,
-      "seen_in_run": 25,
-      "seen_in_date": "2026-09-14"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 26,
+      "measured_value": "net one-way 64,665 EGLD (bar: >300,000); EGLD - BTC = -6.29pp",
+      "resolution": "The 'not evaluable' branch fires: delivery fell to 64,665, far below the 300,000 bar, so the test cannot say whether delivery moves price. EGLD still lagged BTC by 6.3pp in a week with almost no delivery. That is weak evidence against the pipeline being the main source of EGLD's relative weakness, though the halt confounds it. Re-registered for the first full week after the chain restarts.",
+      "seen_in_run": 26,
+      "seen_in_date": "2026-09-21"
     },
     {
       "id": "compound-regime",
@@ -146,13 +243,13 @@
           "reading": "carry"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "49.44% (263 vs 269), from 62.05%",
-      "resolution": null,
-      "seen_in_run": 25,
-      "seen_in_date": "2026-09-14"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 26,
+      "measured_value": "compound 62.68% (304 vs 181), 8 of 8 providers, pre-halt window",
+      "resolution": "The '>= 55%' branch fires, against the claim: the fall below 50% was a one-week reaction to the price reversal, not a switch to taking yield in cash. The regime-shift candidate is rejected under the two-week rule.",
+      "seen_in_run": 26,
+      "seen_in_date": "2026-09-21"
     },
     {
       "id": "staked-ratio-floor",
