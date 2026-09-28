@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-09-21",
+    "last_updated": "2026-09-28",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1803,7 +1803,7 @@
       "name": "MultiversX VM exploit wallet (2026-09-19)",
       "category": "incident",
       "subcategory": "exploiter",
-      "notes": "Funded Sep 16 by MEXC/Bybit withdrawals; Sep 19 06:34-07:37 UTC ran doubling deposit/compound rounds producing invalid EGLD balances; fanned out 9.81M EGLD to 12 wallets 07:24-07:27; chain halted ~07:41.",
+      "notes": "Funded Sep 16 by MEXC/Bybit withdrawals; Sep 19 06:34-07:37 UTC ran doubling deposit/compound rounds producing invalid EGLD balances; fanned out 9.81M EGLD to 12 wallets 07:24-07:27; chain halted ~07:41. Run #27: rolled back to dust by the Sep 19 06:37:45 recovery; on Sep 27 19:58-20:05 UTC sent its last 10.71 EGLD in 0.1066 pieces to 105 distinct wallets.",
       "first_seen": "2026-09-21",
       "discovered_run": 26
     },

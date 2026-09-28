@@ -1,14 +1,14 @@
 {
-  "generated_from": 26,
+  "generated_from": 27,
   "totals": {
-    "tests": 40,
-    "resolved": 35,
-    "open": 5,
+    "tests": 42,
+    "resolved": 38,
+    "open": 4,
     "as_predicted": 25,
-    "against": 3,
+    "against": 6,
     "inconclusive": 5,
     "withdrawn": 2,
-    "hit_rate_pct": 71.42857142857143
+    "hit_rate_pct": 65.78947368421052
   },
   "runs": [
     {
@@ -82,9 +82,79 @@
       "withdrawn": 0,
       "hit_rate_pct": 33.333333333333336,
       "open_after": 5
+    },
+    {
+      "run": 27,
+      "date": "2026-09-28",
+      "registered": 2,
+      "resolved": 3,
+      "as_predicted": 0,
+      "against": 3,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 0,
+      "open_after": 4
     }
   ],
   "tests": [
+    {
+      "id": "korea-premium-arbitrage",
+      "registered_in_run": 27,
+      "claim": "The Upbit premium is blocked arbitrage, not Korean demand: it closes once EGLD deposits reopen.",
+      "threshold": "first run in which UPbit's hot wallet receives EGLD deposits from >= 20 distinct senders in the window: Upbit-Binance premium < 5% = blocked arbitrage; 5-15% = no conclusion, re-measure next run; > 15% = premium is demand, not blocked arbitrage; deposits still closed at run #29 = not evaluable, retire",
+      "branches": [
+        {
+          "condition": "deposits open and premium < 5%",
+          "reading": "blocked arbitrage"
+        },
+        {
+          "condition": "deposits open and premium 5-15%",
+          "reading": "no conclusion, re-measure"
+        },
+        {
+          "condition": "deposits open and premium > 15%",
+          "reading": "Korean demand, not arbitrage"
+        },
+        {
+          "condition": "deposits still closed at run #29",
+          "reading": "not evaluable, retire"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "premium 32.4% (Upbit $5.96 vs Binance $4.50); UPbit hot wallet 0 EGLD deposits since restart",
+      "resolution": null,
+      "seen_in_run": 27,
+      "seen_in_date": "2026-09-28"
+    },
+    {
+      "id": "post-restart-exit-wave",
+      "registered_in_run": 27,
+      "claim": "The restart triggered an exit wave from delegation, not a one-off burst.",
+      "threshold": "unDelegated EGLD in run #28's full 7-day live window: > 150,000 = exit wave continuing; 90,000-150,000 = elevated, no conclusion; < 90,000 = back to the pre-halt 73-84K range, a one-off burst",
+      "branches": [
+        {
+          "condition": "> 150,000 EGLD unDelegated",
+          "reading": "exit wave"
+        },
+        {
+          "condition": "90,000-150,000",
+          "reading": "elevated, no conclusion"
+        },
+        {
+          "condition": "< 90,000",
+          "reading": "one-off burst"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #27: 62,093 EGLD in 3.7 live days (~117,307/week pace), 510 wallets",
+      "resolution": null,
+      "seen_in_run": 27,
+      "seen_in_date": "2026-09-28"
+    },
     {
       "id": "halt-recovery-clean",
       "registered_in_run": 26,
@@ -108,13 +178,13 @@
           "reading": "extended outage"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "halted since 2026-09-19 07:37 UTC; attacker + contract 66,867,299 EGLD; fan-out 9,812,376; desks 46,637, custody 3,493,535, Hatom EGLD market 112,295",
-      "resolution": null,
-      "seen_in_run": 26,
-      "seen_in_date": "2026-09-21"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 27,
+      "measured_value": "invalid balances 2.55 EGLD across attacker, contract and 12 fan-out wallets (bar < 1,000); desks 46,637 vs 46,637 (0.0%); Binance custody 3,493,535 vs 3,493,535 (0.0%); Hatom EGLD market 125,737 vs 112,295 (+12.0%)",
+      "resolution": "The 'broader rollback than stated' branch fires, against the claim of a targeted recovery that preserves finalized history. The invalid balances are gone, but they were removed by rolling every shard back to Sep 19 06:37:45, and 1,597 non-exploit transactions from the rolled-back hour were never re-executed. The data contradicts one part of the branch as written (run #24 rule): the only legitimate balance that moved by more than 1%, Hatom's EGLD market, moved through ordinary post-restart deposits, not through the rollback. The desks and Binance custody match to the EGLD. The branch fires on the recovery method, which the test's threshold was a proxy for; the threshold alone would have read it for the wrong reason.",
+      "seen_in_run": 27,
+      "seen_in_date": "2026-09-28"
     },
     {
       "id": "unknown-whale-i-is-exchange",
@@ -270,13 +340,13 @@
           "reading": "one matured queue"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "46.55%; new unDelegations 73,351 EGLD from 248 wallets",
-      "resolution": null,
-      "seen_in_run": 25,
-      "seen_in_date": "2026-09-14"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 27,
+      "measured_value": "staked ratio 46.48% at run #27 (band 46.30-46.80%)",
+      "resolution": "The 'settled lower' branch fires, against 'exits continuing'. Caveat recorded: the ratio was frozen for five of the seven days, and unDelegations ran at a ~117,307/week pace in the live days. The pace is registered separately (post-restart-exit-wave) rather than stretched into this test.",
+      "seen_in_run": 27,
+      "seen_in_date": "2026-09-28"
     },
     {
       "id": "wave4-restart",
@@ -501,13 +571,13 @@
           "reading": "the three are idiosyncratic business decisions, not a market signal"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "three known: ledgerbyfigment (run #13 window, 170,808 EGLD, 3,883 users now), stakedinc (whole archive, 637 users), p2p_org_ (exit completed this week, 1,244 users). Detection signature widened to zero locked stake while still listing nodes or delegators",
-      "resolution": null,
-      "seen_in_run": 23,
-      "seen_in_date": "2026-08-31"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 27,
+      "measured_value": "week 4 of 4 on the TRANSITION basis: zero transitions; join on contract address, 100% match",
+      "resolution": "The 'none within 4 weeks' branch fires: the three known deregistrations are idiosyncratic business decisions, not a trend in the validator set.",
+      "seen_in_run": 27,
+      "seen_in_date": "2026-09-28"
     },
     {
       "id": "dex-demand-in-egld",

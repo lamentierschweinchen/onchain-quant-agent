@@ -6439,6 +6439,438 @@
         "RE-READ THE ORDER BOOK once exchange transfers reopen; that reading, not this one, is the baseline's second point.",
         "WATCH THE POISONING LOOKALIKES for any inbound above dust."
       ]
+    },
+    {
+      "date": "2026-09-28",
+      "run_number": 27,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "/mex/farms",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x45",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "wave #4 extended window netting (Sep 7 - Sep 28)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond resolution (rec #3)",
+          "all-provider unDelegate scan x107 (rec #5)",
+          "unbonding pool /accounts/{addr}/delegation x45",
+          "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+          "100%-fee provider follow-through",
+          "Binance hot outbound >10K vs desk inbound (rec #11)",
+          "dynamic absorber discovery from desk terminals (rec #8)",
+          "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+          "/accounts/{addr}/transfers/count x12",
+          "JEXchange router 7d transfer counts (run #24 rec #6)",
+          "unattributed feeder two-hop back-trace (run #24 rec #5)",
+          "coingecko tickers depth=true (exchange-side depth, run #24 rec #2)",
+          "coingecko market_chart 14d (aggregate spot volume)",
+          "/tokens/{id} x19 (dataApi re-fetch + list recovery)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+          "deregistered-provider delegator series (rec #9)",
+          "JEXchange aggregator re-derivation (rec #11)",
+          "pre-flight re-query of last run's failed sources (rec #3)",
+          "halt-recovery-clean balances (run #26 rec #2)",
+          "distinct-inbound-sender census UWI + erd1a6lte0 (run #26 rec #3)",
+          "address-poisoning lookalike watch (run #26 rec #7)",
+          "exchange withdrawal reopen check (first send after restart 2)"
+        ],
+        "endpoints_that_failed": [
+          "NONE with data missing. 47 HTTP 429s in the main pass (provider scan, protocol counters, JEX routers) were all recovered by the follow-up and a targeted re-query."
+        ],
+        "api_quirks_discovered": [
+          "AFTER A ROLLBACK THE API INDEX STILL SERVES ORPHANED TRANSACTIONS as success in account histories (the Sep 19 exploit deposits), while balances reflect the rolled-back state. Any tx-scan window that covers a rollback must be checked against block hashes or balances.",
+          "HUB-TRACE VENUE RESOLUTION DEPENDS ON LABEL TEXT: venue_of() treats any label containing 'Whale' as a venue, so router labels written in runs #24-#25 ('OTC Desk->Unknown Whale I (active) Router') became pseudo-venues and cut wave #4's measured circularity by 152K on unchanged transactions.",
+          "A closed exchange rail reads as a perfect zero: every tracked exchange balance equal to the EGLD. Distinguish 'no flow' from 'flat' with a send/receive count since the event."
+        ],
+        "data_gaps": [
+          "Only 3.7 live days in the 7-day window; weekly series get a short, closed-book observation.",
+          "MultiversX's technical report and Hatom's MEX incident report were not read this run.",
+          "Unknown Whale I census not evaluable while exchange rails are closed.",
+          "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "THE LIVENESS GATE: first thing the collector did was read every shard's latest block; the window's live-day count (3.71) was known before any flow was computed.",
+          "STORING NET-OF-INCIDENT BALANCES LAST WEEK: the rollback reversed 4.9M of minted exchange deposits and this week's flows show zero, not a -4.9M phantom outflow.",
+          "COUNTING RAIL ACTIVITY SINCE THE EVENT: 1 send across 20 exchange wallets separated a closed market from a flat one.",
+          "FREEZING THE WAVE: comparing the re-net against last week's stored trace exposed the label-drift artifact (618,762 vs 467,107) on identical transactions.",
+          "SEQUENTIAL SCRIPTS + FOLLOW-UP: all 47 main-pass 429s recovered; 8 of 8 reward providers sampled."
+        ],
+        "what_needs_improvement": [
+          "The collector drew 47 HTTP 429s; it needs a global request budget, not just per-call backoff.",
+          "venue_of() resolves venues from label text ('Whale' in the name), which drifts as router labels are added.",
+          "Neither the MultiversX post-mortem nor Hatom's MEX report was read.",
+          "Several run-specific scripts are copied and patched every week; the collector/derived/report split should become one parameterised pipeline."
+        ],
+        "surprising_findings": [
+          "Four days after restart, no tracked exchange has reopened EGLD deposits or withdrawals on chain.",
+          "EGLD outperformed BTC by 8.3pp with Upbit at a 32% premium carrying 77% of global volume.",
+          "UnDelegations ran at ~117K/week pace after the restart, while delegators stayed flat.",
+          "The exploit wallet was used again after the rollback, spraying 10.7 EGLD to 105 wallets."
+        ]
+      },
+      "methodology_changes": [
+        "SEPARATE 'NO FLOW' FROM 'FLAT'. After any network event, count exchange sends/receives since the event before narrating a flat exchange aggregate; a closed rail gives a perfect zero.",
+        "CLOSED-BOOK READINGS STAY OUT OF BASELINES. Exchange flow, OTC throughput, order book and CEX volume read with rails closed are recorded but not appended.",
+        "FREEZE THE LABEL SET FOR RE-NETTING A CLOSED WAVE; the resolver's venue test is label-text-based and drifts as router labels are added.",
+        "REGISTER PACE-BASED TESTS ON A FULL LIVE WINDOW, not on a short window extrapolated."
+      ],
+      "new_addresses_discovered": [
+        "erd155j9c36hp5dkqp7u5gwjek00g2axermvqdzk3j7mpk9k8yunpy4s9fpq8c - largest post-restart unDelegator (added to watch list, unlabelled)"
+      ],
+      "action_items_completed": [
+        "CHECK LIVENESS AT COLLECTOR START - done: the collector reads the latest block per shard before anything else and records the lags (all < 2 s).",
+        "RESOLVE halt-recovery-clean - done: attacker, contract and all 12 fan-out balances read; desks, custody and Hatom compared; resolved against (broader rollback).",
+        "LABEL UNKNOWN WHALE I AND erd1a6lte0 - attempted: deep-paged 7-day inbound census built into the collector; not evaluable while exchange rails are closed (2 and 1 spam inbound).",
+        "ADD A LIVENESS GATE TO THE COLLECTOR - done: liveness_ok flag, printed warning when any shard lags > 1 h.",
+        "READ THE INCIDENT REPORTS - not done this run (deferred).",
+        "RE-READ THE ORDER BOOK once transfers reopen - deferred: transfers have not reopened; this run's reading is flagged closed-book and kept out of the baseline.",
+        "WATCH THE POISONING LOOKALIKES - done: 0 inbound above dust on either lookalike; operator sent 181 dust txs this week.",
+        "(unplanned) EXCHANGE RAIL CHECK: send/receive counts since restart for 20 tracked exchange wallets, which is what separated 'closed' from 'flat'."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.68,
+          2.76,
+          3.6,
+          3.83,
+          4.48,
+          4.14,
+          4.24,
+          4.48
+        ],
+        "dex_volume_24h_usd": [
+          38628.36089504676,
+          40594.726618154826,
+          53782.67067584162,
+          229987.6668827292,
+          234053.12987894475,
+          199616.7116502968,
+          397448.7353661145,
+          116293.67605035269
+        ],
+        "dex_volume_24h_egld": [
+          61110,
+          44557,
+          96002,
+          25958
+        ],
+        "staked_egld": [
+          14468060,
+          14514338,
+          14548017,
+          14551783,
+          14485712,
+          14329174,
+          14357283,
+          14335164
+        ],
+        "mex_price_usd": [
+          2.472038964013605e-07,
+          2.5603716335458884e-07,
+          3.3417335112217705e-07,
+          3.541086469631204e-07,
+          3.97703098880543e-07,
+          1.8164036583951485e-06,
+          6.201189897699527e-07,
+          6.358740982775643e-07
+        ],
+        "total_delegators": [
+          174330,
+          174353,
+          173042,
+          172935,
+          172862,
+          172600,
+          172550,
+          172498
+        ],
+        "staked_ratio": [
+          0.4737995781734133,
+          0.4745535960231805,
+          0.4748923642763583,
+          0.474254493214429,
+          0.47134605750035136,
+          0.4655083730551601,
+          0.46588943376972114,
+          0.46479484397808346
+        ],
+        "exchange_net_flow_egld": [
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469,
+          -191939.71816979814,
+          31862.435230013914,
+          117969.59074411914,
+          53956.536047511734
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          301498,
+          604086,
+          222532,
+          767206,
+          709850,
+          1563936,
+          893299,
+          314290
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109,
+          272396,
+          536459,
+          401353,
+          64665
+        ],
+        "otc_desk_inventory_egld": [
+          266213,
+          96114,
+          56596,
+          46637,
+          46637
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+          "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+          "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179,
+          "2026-08-31..2026-09-07 (run #24, weekly frame - a RECORD, and inside the wave)": 536459,
+          "2026-08-17..2026-09-07 (WAVE #3 netted feed-to-drain, three frames - the correct measure)": 878809,
+          "2026-09-07..2026-09-14 (run #25, weekly frame, wave #4)": 401353,
+          "2026-08-17..2026-09-14 (waves #3+#4 netted as one window, four frames)": 1336721,
+          "2026-09-14..2026-09-19 halt (run #26, 5.3-day frame, wave #4)": 64665,
+          "2026-09-07..2026-09-19 halt (WAVE #4 netted feed-to-drain, two frames)": 467107,
+          "2026-09-07..2026-09-19 halt (WAVE #4 FINAL, run #26 labels; run #27 found no further desk activity)": 467107
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1,
+          "run23": 61.6,
+          "run24": 65.7,
+          "run25": 55.1,
+          "run26": 79.4
+        },
+        "dex_turnover_ratio_pct": [
+          2.141,
+          2.235,
+          2.928,
+          10.832,
+          10.511,
+          8.166,
+          20.862,
+          4.609
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          5747.7,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          3357100.6221337724,
+          3475540.385133772,
+          3175540.3850837722,
+          2978782.2380337724,
+          3351216.1019337727,
+          3493534.6849337723,
+          3493534.6849337723,
+          3493534.6849337723
+        ],
+        "reward_compound_pct": [
+          59.54,
+          59.07,
+          57.03,
+          57.51,
+          62.05,
+          49.44,
+          62.68,
+          52.4
+        ],
+        "delegation_total_locked_egld": [
+          11114380,
+          11034013,
+          10967589,
+          10864570,
+          10900187,
+          10945373,
+          10892686
+        ],
+        "usdt_supply": [
+          549884,
+          552292,
+          545052,
+          532035,
+          463905,
+          452585,
+          433045
+        ],
+        "usdc_supply": [
+          7706364,
+          7579164,
+          7786216,
+          7685181,
+          7511843
+        ],
+        "unbonding_queue_undelegated_egld_7d": [
+          151443,
+          208125,
+          73351,
+          84169
+        ],
+        "unbonding_short_window_readings": {
+          "run27 (3.71 live days)": {
+            "undelegated_egld": 62093,
+            "weekly_pace_egld": 117307,
+            "withdraw_egld_returned": 40069
+          }
+        },
+        "withdraw_egld_returned_7d": [
+          108941
+        ],
+        "withdrawal_breadth_ex_pipeline_egld": [
+          400113,
+          497647,
+          397124,
+          285984
+        ],
+        "cex_spot_volume_7d_egld": [
+          17696479
+        ],
+        "otc_delivery_share_of_spot_pct": [
+          2.27
+        ],
+        "binance_bybit_bid_depth_2pct_usd": [
+          124993
+        ],
+        "closed_book_readings_run26": {
+          "cex_spot_volume_7d_egld": 11126531,
+          "binance_bybit_bid_depth_2pct_usd": 84268
+        },
+        "closed_book_readings_run27": {
+          "cex_spot_volume_7d_egld": 13016608,
+          "binance_bybit_bid_depth_2pct_usd": 38621,
+          "korea_premium_pct": 32.4,
+          "exchange_net_flow_egld": 0.0,
+          "otc_gross_egld": 179
+        },
+        "hmex_supply": [
+          24959314779646.0,
+          11012904178288.0
+        ],
+        "pre_committed_tests_resolved": [
+          7,
+          5,
+          8,
+          6,
+          6,
+          3,
+          3
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          42.9,
+          80.0,
+          87.5,
+          100.0,
+          66.7,
+          33.3,
+          0.0
+        ],
+        "pre_committed_tests_open": [
+          6,
+          8,
+          7,
+          7,
+          5,
+          5,
+          4
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Exchange rail status board",
+          "motivation": "This run's key finding is that no tracked exchange wallet moved EGLD in 3.7 live days after the restart. On the dashboard that renders as a flat exchange-flow chart and a zero, which reads as a calm week rather than a suspended market.",
+          "suggested_visualization": "a per-venue row of status chips (open / closed / partial) with last on-chain EGLD deposit and withdrawal timestamps and a days-since counter, placed above the exchange-flow panel",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.exchange_flows.rail_status plus a per-wallet since-restart count (collector field exchange_reopen)",
+          "priority": "high"
+        },
+        {
+          "title": "Korea premium tracker",
+          "motivation": "EGLD outperformed BTC by 8.3pp while Upbit, 77% of global volume, traded 32% above Binance with deposits closed. The single-week price number cannot show that the move lives in one closed venue.",
+          "suggested_visualization": "hourly line of Upbit vs global EGLD price with the premium as a shaded band, and rail-closed periods shaded on the time axis",
+          "data_already_available": false,
+          "data_source": "Upbit public candles API (hourly KRW-EGLD) + CoinGecko hourly; persisted in data/collected/special/2026-09-24-chain-restart.json for Sep 19-24",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Chain liveness and incident banner",
+          "status": "pending",
+          "note": "Not built. The report now carries network_health.liveness and whale_intelligence.halt_recovery; the banner can read those. Still the highest-value missing panel after a halt."
+        },
+        {
+          "title": "Exploit fan-out graph",
+          "status": "deprioritized",
+          "note": "The rollback erased the fan-out from canonical state; the graph would now be a historical record only."
+        },
+        {
+          "title": "Feed-side attribution - who fills the desks, not just who they deliver to",
+          "status": "pending",
+          "note": "Blocked on the venue_of() label fix (this run found label drift in the resolver) and on the rails reopening."
+        },
+        {
+          "title": "Demand-instrument scorecard",
+          "status": "deprioritized",
+          "note": "Closed-book week again: the order book and exchange tiles would show readings that are excluded from baselines."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "Telling a closed market from a quiet one. Every exchange balance matched last week to the EGLD, which a flow table presents as a perfectly flat week. Counting sends since the restart (1, a replay) showed that nothing could move. That reframes everything downstream: the +8.3pp outperformance and the 32% Upbit premium are prices set by buyers who cannot receive supply, and the 62,093 EGLD of fresh unDelegations is supply waiting for the rails to open.",
+        "actions_completed_count": 5,
+        "actions_attempted_count": 7,
+        "what_would_2x_next_week": "Rails reopening would make the week decisive: a first-block-after-reopen trace of per-venue deposits and withdrawals, the hourly Upbit premium against it, and the destination of post-restart unbonded EGLD would resolve three tests at once.",
+        "pre_committed_test_for_next_run": "POST-RESTART-EXIT-WAVE (run #28 full window: >150K = wave, <90K = burst). KOREA-PREMIUM-ARBITRAGE and DELIVERY-PRICE-RELEVANCE-2 once deposits reopen. UNKNOWN-WHALE-I census re-run."
+      },
+      "recommendations_for_next_run": [
+        "COUNT EXCHANGE SENDS/RECEIVES SINCE RESTART FIRST; if rails are still closed, keep every exchange-side metric out of the baselines again.",
+        "If rails reopened: resolve korea-premium-arbitrage and delivery-price-relevance-2, and re-run the Unknown Whale I census.",
+        "RESOLVE post-restart-exit-wave on a full 7-day live window; trace where matured unbonding EGLD goes (exchange once open vs held).",
+        "FIX venue_of(): resolve venues on category == exchange plus an explicit venue map, not on 'Whale' in the label text; re-net waves only with a frozen label set.",
+        "READ MultiversX's technical post-mortem and Hatom's MEX report; reconcile with the chain reconstruction.",
+        "Add a GLOBAL rate-limit budget to the collector (47 HTTP 429s this run, all in the provider scan and protocol counters)."
+      ]
     }
   ]
 }

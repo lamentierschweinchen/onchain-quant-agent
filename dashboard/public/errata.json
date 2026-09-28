@@ -1,5 +1,5 @@
 {
-  "generated_from": 26,
+  "generated_from": 27,
   "claims": [
     {
       "claim": "The direct-node unwind: ~215,000 EGLD left direct-node staking over three weeks, 'the largest unexplained structural flow tracked'.",
@@ -215,6 +215,19 @@
         "2026-09-14"
       ],
       "withdrawn_in_date": "2026-09-21"
+    },
+    {
+      "claim": "MultiversX's recovery would be a targeted recovery that preserves finalized history (the framing the run #26 report relayed and tested).",
+      "asserted_in_runs": [
+        26
+      ],
+      "withdrawn_in_run": 27,
+      "reason": "The chain was rolled back to Sep 19 06:37:45 on every shard, rewriting 64 minutes of finalized blocks; 1,597 non-exploit transactions from that hour were not re-executed.",
+      "replacement": "A rollback-and-replay recovery. Exploit balances are gone, and pre-exploit balances of the desks and Binance custody are intact to the EGLD.",
+      "asserted_in_dates": [
+        "2026-09-21"
+      ],
+      "withdrawn_in_date": "2026-09-28"
     }
   ]
 }
