@@ -228,6 +228,19 @@
         "2026-09-21"
       ],
       "withdrawn_in_date": "2026-09-28"
+    },
+    {
+      "claim": "Crypto.com reopened EGLD rails on Sep 29 (first published version of this run #28 report).",
+      "asserted_in_runs": [
+        28
+      ],
+      "withdrawn_in_run": 28,
+      "reason": "The Sep 29 and later 02:00 UTC transfers were Crypto.com's internal daily sweep to its own staking wallet (erd1uskf6..., which delegates to Figment) and a 0-value bot, a routine that also ran before the halt.",
+      "replacement": "First customer-like Crypto.com flows on chain were Oct 2: withdrawals of 1,444 and 240 EGLD and one 5,617 EGLD deposit; none since. Both legs have worked at least once, but no public reopening notice was found, so the venue is 'functioning, unconfirmed'.",
+      "asserted_in_dates": [
+        "2026-10-05"
+      ],
+      "withdrawn_in_date": "2026-10-05"
     }
   ]
 }

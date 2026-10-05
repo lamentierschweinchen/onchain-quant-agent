@@ -2,7 +2,7 @@
 """Run #28 stage 2: assemble reports/2026-10-05.json from derived.json + snapshot.
 
 The week's defining facts: the first full live week since the Sep 19 halt. Exchange
-rails reopened PARTIALLY and venue by venue (Tokero Sep 28-29, Crypto.com Sep 29,
+rails reopened PARTIALLY and venue by venue (Tokero Sep 28-29, Crypto.com Oct 2 - corrected from Sep 29,
 Binance.com deposit-side only from Sep 29, Bitget Oct 3-4, Gate.io Oct 4); UPbit,
 Bybit, Coinbase, MEXC and KuCoin moved no EGLD. The first post-reopen pipeline
 delivery was stranded pre-halt router inventory hitting Gate.io at its 23:00 sweep.
@@ -121,6 +121,7 @@ R["metadata"] = {
         "rail check (new script rails_run28.py): value-bearing EGLD deposits/withdrawals per tracked exchange wallet since restart 2, paginated",
         "targeted traces (trace_run28.py): largest post-restart unstaker, the five OTC Desk->Gate.io routers, four largest unlabelled movers",
         "xBridge decode: 5 unwrapTokenCreateTransaction calls (USDC -> Ethereum) from the unDelegator",
+        "post-publication correction: exchange-internal Crypto.com flows excluded from rail counts (Crypto.com first customer-like flows Oct 2, not Sep 29)",
         "public sources: exchange status (Kraken reopened Oct 1; Upbit caution designation Sep 21, review Oct 19-23; Binance native network closed, BEP-20 only) and the absence of a MultiversX technical incident report as of Oct 3"],
     "data_sources_failed": status["failed"],
     "data_sources_recovered": [
@@ -222,8 +223,8 @@ R["whale_intelligence"] = {
                         "egld_deposited_in_window": RAIL_EGLD_IN, "egld_withdrawn_in_window": RAIL_EGLD_OUT,
                         "venues_open": OPEN, "venues_deposit_only": DEPONLY, "venues_closed": [k for k, v in VEN.items() if v["state"] == "closed"],
                         "by_venue": venue_rows,
-                        "note": "Value-bearing EGLD transactions only (ESDT spam airdrops excluded). MEXC's and KuCoin's only transactions since restart are the Sep 24 15:41 replays of Sep 19 transfers. Public status: Kraken reopened Oct 1 (no tracked address); Binance lists the native network closed and withdraws via BEP-20 only."},
-        "signal": (f"PARTIAL RAILS. Net exchange flow {ex['net']:+,.0f} EGLD, all of it at the venues that reopened: Gate.io {VEN['Gate.io']['in_egld']-VEN['Gate.io']['out_egld']:+,.0f}, Binance.com {VEN['Binance.com']['in_egld']:+,.0f} (deposits only), Crypto.com {VEN['Crypto.com']['in_egld']-VEN['Crypto.com']['out_egld']:+,.0f}, Bitget {VEN['Bitget']['in_egld']-VEN['Bitget']['out_egld']:+,.0f}. "
+                        "note": "Value-bearing EGLD transactions only (ESDT spam airdrops excluded), and exchange-internal flows excluded: Crypto.com's daily 02:00 sweep to its own staking wallet (erd1uskf6...) and a 0-value 02:00 bot ran before the halt too, and counting them first dated Crypto.com's reopening to Sep 29 (corrected: first customer-like flows Oct 2, 2 withdrawals and 1 large deposit, none since). MEXC's and KuCoin's only transactions since restart are the Sep 24 15:41 replays of Sep 19 transfers. Public status: Kraken reopened Oct 1 (no tracked address); Binance lists the native network closed and withdraws via BEP-20 only."},
+        "signal": (f"PARTIAL RAILS. Net exchange flow {ex['net']:+,.0f} EGLD, all of it at the venues that reopened (balance change): " + ", ".join(f"{e2['entity']} {e2['net_flow_egld']:+,.0f}" for e2 in ex["entity"] if e2["net_flow_egld"]) + ". Binance is deposit-only; Crypto.com's customer-like flows were two withdrawals and one deposit, all on Oct 2 (its daily internal staking sweep is excluded from rail counts). " +
                    f"{', '.join(CLOSED_MAJOR)} moved no EGLD. The inflow sign is what a reopening looks like (deposits first, withdrawals later), so it is recorded but not appended to the exchange-flow baseline."),
         "by_exchange": [{"exchange": w["exchange"], "change_egld": w["change_egld"], "pct": w["pct"]} for w in ex["per_wallet"]],
         "entity_netting": [{"entity": e2["entity"], "wallets_count": e2["wallets_count"],
@@ -773,7 +774,11 @@ R["meta_learning"] = {
          "note": "Not built. Now carried by rail_status.by_venue with a per-venue state; superseded in scope by this run's rail reopening timeline suggestion, which adds the time axis."},
         {"title": "Korea premium tracker", "status": "pending",
          "note": "Not built. More useful this week: the premium halved with UPbit still closed, and Upbit's Oct 19-23 review makes the series decision-relevant."}],
-    "withdrawn_claims": [],
+    "withdrawn_claims": [
+        {"claim": "Crypto.com reopened EGLD rails on Sep 29 (first published version of this run #28 report).",
+         "asserted_in_runs": [28], "withdrawn_in_run": 28,
+         "reason": "The Sep 29 and later 02:00 UTC transfers were Crypto.com's internal daily sweep to its own staking wallet (erd1uskf6..., which delegates to Figment) and a 0-value bot, a routine that also ran before the halt.",
+         "replacement": "First customer-like Crypto.com flows on chain were Oct 2: withdrawals of 1,444 and 240 EGLD and one 5,617 EGLD deposit; none since. Both legs have worked at least once, but no public reopening notice was found, so the venue is 'functioning, unconfirmed'."}],
 }
 
 rep = {k: R[k] for k in ["metadata", "executive_summary", "network_health", "whale_intelligence", "staking_intelligence", "token_activity",

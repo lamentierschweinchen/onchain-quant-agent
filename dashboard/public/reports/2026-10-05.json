@@ -3,7 +3,7 @@
   "report_date": "2026-10-05",
   "period_start": "2026-09-28",
   "period_end": "2026-10-05",
-  "generated_at": "2026-10-05T08:36:58.736146Z",
+  "generated_at": "2026-10-05T09:58:08.231248Z",
   "egld_price_usd": 4.6,
   "btc_price_usd": 86233,
   "eth_price_usd": 2724.7,
@@ -54,6 +54,7 @@
    "rail check (new script rails_run28.py): value-bearing EGLD deposits/withdrawals per tracked exchange wallet since restart 2, paginated",
    "targeted traces (trace_run28.py): largest post-restart unstaker, the five OTC Desk->Gate.io routers, four largest unlabelled movers",
    "xBridge decode: 5 unwrapTokenCreateTransaction calls (USDC -> Ethereum) from the unDelegator",
+   "post-publication correction: exchange-internal Crypto.com flows excluded from rail counts (Crypto.com first customer-like flows Oct 2, not Sep 29)",
    "public sources: exchange status (Kraken reopened Oct 1; Upbit caution designation Sep 21, review Oct 19-23; Binance native network closed, BEP-20 only) and the absence of a MultiversX technical incident report as of Oct 3"
   ],
   "data_sources_failed": [],
@@ -373,7 +374,7 @@
     "sender": "erd1hzccjg25yqaqnr732x2ka7pj5glx72pfqzf05jj9hxqn3lxkramq5zu8h4",
     "sender_label": "Crypto.com",
     "receiver": "erd1uskf6lu8x23mrxfm7gde28jaq6m5wxxws2uw5gf5z6yk6srel7mspeukls",
-    "receiver_label": "Unknown",
+    "receiver_label": "Crypto.com internal staking sweep (erd1uskf6)",
     "value_egld": 1133.53572348,
     "value_usd": 5214.264328007999,
     "flow_type": "exchange_outflow"
@@ -582,10 +583,10 @@
    "direction": "inflow",
    "rail_status": {
     "tracked_wallets": 20,
-    "egld_sends_since_restart": 31,
-    "egld_deposits_in_window": 66,
-    "egld_deposited_in_window": 24865.734172000466,
-    "egld_withdrawn_in_window": 5075.84497281,
+    "egld_sends_since_restart": 24,
+    "egld_deposits_in_window": 58,
+    "egld_deposited_in_window": 24468.923574473956,
+    "egld_withdrawn_in_window": 2141.14015362,
     "venues_open": [
      "Bitget",
      "Crypto.com",
@@ -624,13 +625,13 @@
      {
       "venue": "Crypto.com",
       "state": "open",
-      "deposits_egld_txs_7d": 10,
-      "deposits_egld_7d": 6014.2106975265115,
-      "distinct_depositors_7d": 4,
-      "withdrawals_egld_txs_7d": 9,
-      "withdrawals_egld_7d": 4618.78481919,
-      "first_egld_deposit_utc": "2026-09-30 02:00 UTC",
-      "first_egld_withdrawal_utc": "2026-09-29 10:02 UTC"
+      "deposits_egld_txs_7d": 2,
+      "deposits_egld_7d": 5617.4001,
+      "distinct_depositors_7d": 2,
+      "withdrawals_egld_txs_7d": 2,
+      "withdrawals_egld_7d": 1684.08,
+      "first_egld_deposit_utc": "2026-10-02 08:10 UTC",
+      "first_egld_withdrawal_utc": "2026-10-02 08:06 UTC"
      },
      {
       "venue": "Binance.com",
@@ -798,9 +799,9 @@
       "first_egld_withdrawal_utc": null
      }
     ],
-    "note": "Value-bearing EGLD transactions only (ESDT spam airdrops excluded). MEXC's and KuCoin's only transactions since restart are the Sep 24 15:41 replays of Sep 19 transfers. Public status: Kraken reopened Oct 1 (no tracked address); Binance lists the native network closed and withdraws via BEP-20 only."
+    "note": "Value-bearing EGLD transactions only (ESDT spam airdrops excluded), and exchange-internal flows excluded: Crypto.com's daily 02:00 sweep to its own staking wallet (erd1uskf6...) and a 0-value 02:00 bot ran before the halt too, and counting them first dated Crypto.com's reopening to Sep 29 (corrected: first customer-like flows Oct 2, 2 withdrawals and 1 large deposit, none since). MEXC's and KuCoin's only transactions since restart are the Sep 24 15:41 replays of Sep 19 transfers. Public status: Kraken reopened Oct 1 (no tracked address); Binance lists the native network closed and withdraws via BEP-20 only."
    },
-   "signal": "PARTIAL RAILS. Net exchange flow +19,442 EGLD, all of it at the venues that reopened: Gate.io +14,239, Binance.com +4,240 (deposits only), Crypto.com +1,395, Bitget -433. UPbit, Bybit, Coinbase, MEXC, KuCoin, Bitfinex moved no EGLD. The inflow sign is what a reopening looks like (deposits first, withdrawals later), so it is recorded but not appended to the exchange-flow baseline.",
+   "signal": "PARTIAL RAILS. Net exchange flow +19,442 EGLD, all of it at the venues that reopened (balance change): Gate.io +14,239, Binance +4,240, Crypto.com +1,395, Bitget -433. Binance is deposit-only; Crypto.com's customer-like flows were two withdrawals and one deposit, all on Oct 2 (its daily internal staking sweep is excluded from rail counts). UPbit, Bybit, Coinbase, MEXC, KuCoin, Bitfinex moved no EGLD. The inflow sign is what a reopening looks like (deposits first, withdrawals later), so it is recorded but not appended to the exchange-flow baseline.",
    "by_exchange": [
     {
      "exchange": "Gate.io",
@@ -880,7 +881,7 @@
      "entity": "Crypto.com",
      "wallets_count": 1,
      "net_flow_egld": 1395.4254283365444,
-     "interpretation": "+1,395: rail open both ways (10 deposits / 9 withdrawals). A partial-rail reading, not a market-wide flow."
+     "interpretation": "+1,395: rail open both ways (2 deposits / 2 withdrawals). A partial-rail reading, not a market-wide flow."
     },
     {
      "entity": "Bitget",
@@ -1224,7 +1225,7 @@
     },
     {
      "address": "erd1uskf6lu8x23mrxfm7gde28jaq6m5wxxws2uw5gf5z6yk6srel7mspeukls",
-     "label": "Unknown",
+     "label": "Crypto.com internal staking sweep (erd1uskf6)",
      "egld": 1133.53572348
     }
    ],
@@ -1499,7 +1500,7 @@
     ]
    }
   },
-  "analysis": "RAILS, VENUE BY VENUE. The rail check this run counts only transactions that carry EGLD, per tracked exchange wallet since restart 2. Binance.com: deposit only (32 in / 0 out, first deposit Sep 29 00:35); Bitget: open (4 in / 5 out, first deposit Oct 03 02:52); Crypto.com: open (10 in / 9 out, first deposit Sep 30 02:00); Gate.io: open (15 in / 16 out, first deposit Oct 04 23:00); Tokero: open (5 in / 1 out, first deposit Sep 28 10:26). Closed, with no EGLD moved: Binance Staking, Binance: de-staking withdrawal wallet, Bitfinex, Bybit, Coinbase, Coinbase (secondary), Coinbase Custody, Coinbase Custody 2 (migration destination), Coinbase Routing Wallet, KuCoin, MEXC, UPbit. Kraken reopened on Oct 1 according to its status page, but this model tracks no Kraken address. The order of reopening matters for reading flows. Deposits come back first, so a reopening week prints an inflow (+19,442 EGLD here) that says nothing about demand to sell.\n\nTHE GATE.IO SWEEP. Gate.io's first EGLD deposits after the halt came at Oct 4 23:00 UTC, and the first 5 were the pipeline's own routers: 12,184 EGLD within two minutes. Each router had received a tranche from the UPbit OTC desk or the Distribution wallet between Sep 18 14:21 and Sep 19 05:14, before the rollback point, so the rollback preserved them. Each sweeps to Gate.io at 23:00, and Gate's closed deposits had held them for 16 days. That is a delivery the desks scheduled before the halt, not a new one. The desks sent nothing all week.\n\nTHE DEX EXIT. erd155j9c36h... unDelegated 8,888 EGLD from each of Pi Staking, Star Staking and Vapor Republic on Sep 24, three hours after restart. As each leg matured it withdrew and sold: 8,902 EGLD on Sep 29 and 17,776 on Oct 4, in 1,000-2,000 EGLD clips through the XOXNO aggregator and xExchange. The USDC went straight to the xBridge wrapper and out to one Ethereum address: 111,274 USDC, $4.26/EGLD on Sep 29 and $4.12 on Oct 4, against $4.60 on CEX at the close. The ~9% discount is the price of exiting while CEX deposits are closed, paid in pool slippage on a 534,787 EGLD pool base.\n\nWHALES. Tiers on the common-address basis (75 wallets): mega +0, large +15,727, mid +8,419. The largest unlabelled move was a single 30,000 EGLD transfer between two unlabelled wallets on Sep 30 (erd1ygqnss... to erd1hhvfrw...); the receiver has since sent out only 603 EGLD. An unlabelled 'Unknown Whale' pair (erd1hl5y4a... and erd1vxa2vk...) passed 12,825 EGLD back and forth and erd1hl5y4a... took about 6,300 EGLD from four other wallets on Oct 5. No holder above 100,000 EGLD moved more than 9,893 EGLD, and those two were team funds receiving epoch distributions.\n\nUNKNOWN WHALE I AND erd1a6lte0: 0 and 0 inbound transactions in seven live days. A hot wallet at a venue that has reopened would be busy; at a closed venue, or for an idle operator, this is what it looks like. Still not evaluable.\n\nDEMAND. Binance+Bybit bids within 2% of mid total $47,454 (from $38,621). Upbit's premium is 11.7% (from 32.4%) on 20% of global volume (from 77%)."
+  "analysis": "RAILS, VENUE BY VENUE. The rail check this run counts only transactions that carry EGLD, per tracked exchange wallet since restart 2. Binance.com: deposit only (32 in / 0 out, first deposit Sep 29 00:35); Bitget: open (4 in / 5 out, first deposit Oct 03 02:52); Crypto.com: open (2 in / 2 out, first deposit Oct 02 08:10); Gate.io: open (15 in / 16 out, first deposit Oct 04 23:00); Tokero: open (5 in / 1 out, first deposit Sep 28 10:26). Closed, with no EGLD moved: Binance Staking, Binance: de-staking withdrawal wallet, Bitfinex, Bybit, Coinbase, Coinbase (secondary), Coinbase Custody, Coinbase Custody 2 (migration destination), Coinbase Routing Wallet, KuCoin, MEXC, UPbit. Kraken reopened on Oct 1 according to its status page, but this model tracks no Kraken address. The order of reopening matters for reading flows. Deposits come back first, so a reopening week prints an inflow (+19,442 EGLD here) that says nothing about demand to sell.\n\nTHE GATE.IO SWEEP. Gate.io's first EGLD deposits after the halt came at Oct 4 23:00 UTC, and the first 5 were the pipeline's own routers: 12,184 EGLD within two minutes. Each router had received a tranche from the UPbit OTC desk or the Distribution wallet between Sep 18 14:21 and Sep 19 05:14, before the rollback point, so the rollback preserved them. Each sweeps to Gate.io at 23:00, and Gate's closed deposits had held them for 16 days. That is a delivery the desks scheduled before the halt, not a new one. The desks sent nothing all week.\n\nTHE DEX EXIT. erd155j9c36h... unDelegated 8,888 EGLD from each of Pi Staking, Star Staking and Vapor Republic on Sep 24, three hours after restart. As each leg matured it withdrew and sold: 8,902 EGLD on Sep 29 and 17,776 on Oct 4, in 1,000-2,000 EGLD clips through the XOXNO aggregator and xExchange. The USDC went straight to the xBridge wrapper and out to one Ethereum address: 111,274 USDC, $4.26/EGLD on Sep 29 and $4.12 on Oct 4, against $4.60 on CEX at the close. The ~9% discount is the price of exiting while CEX deposits are closed, paid in pool slippage on a 534,787 EGLD pool base.\n\nWHALES. Tiers on the common-address basis (75 wallets): mega +0, large +15,727, mid +8,419. The largest unlabelled move was a single 30,000 EGLD transfer between two unlabelled wallets on Sep 30 (erd1ygqnss... to erd1hhvfrw...); the receiver has since sent out only 603 EGLD. An unlabelled 'Unknown Whale' pair (erd1hl5y4a... and erd1vxa2vk...) passed 12,825 EGLD back and forth and erd1hl5y4a... took about 6,300 EGLD from four other wallets on Oct 5. No holder above 100,000 EGLD moved more than 9,893 EGLD, and those two were team funds receiving epoch distributions.\n\nUNKNOWN WHALE I AND erd1a6lte0: 0 and 0 inbound transactions in seven live days. A hot wallet at a venue that has reopened would be busy; at a closed venue, or for an idle operator, this is what it looks like. Still not evaluable.\n\nDEMAND. Binance+Bybit bids within 2% of mid total $47,454 (from $38,621). Upbit's premium is 11.7% (from 32.4%) on 20% of global volume (from 77%)."
  },
  "staking_intelligence": {
   "summary": {
@@ -6785,7 +6786,7 @@
    "previous_value": 0,
    "method": "rule_based",
    "severity": "high",
-   "description": "Rails open both ways at 4 tracked venues (Bitget, Crypto.com, Gate.io, Tokero), deposit-only at Binance.com, closed at UPbit, Bybit, Coinbase, MEXC, KuCoin, Bitfinex. 24,866 EGLD deposited and 5,076 withdrawn on the open rails in the week."
+   "description": "Rails open both ways at 4 tracked venues (Bitget, Crypto.com, Gate.io, Tokero), deposit-only at Binance.com, closed at UPbit, Bybit, Coinbase, MEXC, KuCoin, Bitfinex. 24,469 EGLD deposited and 2,141 withdrawn on the open rails in the week."
   },
   {
    "metric": "otc_router_tail_to_gate",
@@ -7114,7 +7115,7 @@
    },
    {
     "title": "Rail reopening timeline per venue",
-    "motivation": "Rails reopened one venue at a time (Binance.com Sep 29 00:35, Bitget Oct 03 02:52, Crypto.com Sep 30 02:00, Gate.io Oct 04 23:00, Tokero Sep 28 10:26), and the pipeline's router tail hit Gate.io in its first deposit hour. A single net-flow number hides that order.",
+    "motivation": "Rails reopened one venue at a time (Binance.com Sep 29 00:35, Bitget Oct 03 02:52, Crypto.com Oct 02 08:10, Gate.io Oct 04 23:00, Tokero Sep 28 10:26), and the pipeline's router tail hit Gate.io in its first deposit hour. A single net-flow number hides that order.",
     "suggested_visualization": "swimlane timeline (one lane per venue) from the halt to now, shaded closed / deposit-only / open, with first-deposit and first-withdrawal markers and dots for the largest deposits",
     "data_already_available": true,
     "data_source": "whale_intelligence.exchange_flows.rail_status.by_venue (first_egld_deposit_utc, first_egld_withdrawal_utc, state)",
@@ -7133,7 +7134,17 @@
     "note": "Not built. More useful this week: the premium halved with UPbit still closed, and Upbit's Oct 19-23 review makes the series decision-relevant."
    }
   ],
-  "withdrawn_claims": []
+  "withdrawn_claims": [
+   {
+    "claim": "Crypto.com reopened EGLD rails on Sep 29 (first published version of this run #28 report).",
+    "asserted_in_runs": [
+     28
+    ],
+    "withdrawn_in_run": 28,
+    "reason": "The Sep 29 and later 02:00 UTC transfers were Crypto.com's internal daily sweep to its own staking wallet (erd1uskf6..., which delegates to Figment) and a 0-value bot, a routine that also ran before the halt.",
+    "replacement": "First customer-like Crypto.com flows on chain were Oct 2: withdrawals of 1,444 and 240 EGLD and one 5,617 EGLD deposit; none since. Both legs have worked at least once, but no public reopening notice was found, so the venue is 'functioning, unconfirmed'."
+   }
+  ]
  },
  "pre_committed_tests": [
   {

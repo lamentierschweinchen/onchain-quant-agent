@@ -7289,7 +7289,7 @@
         },
         {
           "title": "Rail reopening timeline per venue",
-          "motivation": "Rails reopened one venue at a time (Binance.com Sep 29 00:35, Bitget Oct 03 02:52, Crypto.com Sep 30 02:00, Gate.io Oct 04 23:00, Tokero Sep 28 10:26), and the pipeline's router tail hit Gate.io in its first deposit hour. A single net-flow number hides that order.",
+          "motivation": "Rails reopened one venue at a time (Binance.com Sep 29 00:35, Bitget Oct 03 02:52, Crypto.com Oct 02 08:10, Gate.io Oct 04 23:00, Tokero Sep 28 10:26), and the pipeline's router tail hit Gate.io in its first deposit hour. A single net-flow number hides that order.",
           "suggested_visualization": "swimlane timeline (one lane per venue) from the halt to now, shaded closed / deposit-only / open, with first-deposit and first-withdrawal markers and dots for the largest deposits",
           "data_already_available": true,
           "data_source": "whale_intelligence.exchange_flows.rail_status.by_venue (first_egld_deposit_utc, first_egld_withdrawal_utc, state)",

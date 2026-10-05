@@ -1734,6 +1734,22 @@
       "notes": "Run #28: unDelegated 8,888 EGLD from each of Pi Staking, Star Staking, Vapor Republic on Sep 24; withdrew and sold 26,678 EGLD via XOXNO aggregator/xExchange (Sep 29, Oct 4); bridged 111,274 USDC to Ethereum 0x0acdff4c5927dd7845b1a0e104e820104723d653. Keeps 8,889 EGLD delegated.",
       "first_seen": "2026-10-05",
       "discovered_run": 28
+    },
+    "erd1uskf6lu8x23mrxfm7gde28jaq6m5wxxws2uw5gf5z6yk6srel7mspeukls": {
+      "name": "Crypto.com internal staking sweep (erd1uskf6)",
+      "category": "exchange_ops",
+      "subcategory": "crypto_com_internal",
+      "notes": "Receives a daily 02:00 UTC transfer from the Crypto.com hot wallet and delegates to Figment; same pattern before the Sep 19 halt. Internal flow, excluded from rail counts (run #28).",
+      "first_seen": "2026-10-05",
+      "discovered_run": 28
+    },
+    "erd1usslt0y60j295kxv6dyxrxjjkznjlptdau4wj5wjnshh02qcs3cq7zukls": {
+      "name": "Crypto.com 02:00 zero-value bot (erd1usslt0)",
+      "category": "exchange_ops",
+      "subcategory": "crypto_com_internal",
+      "notes": "Sends 0-value transactions to the Crypto.com hot wallet daily at 02:00 UTC, before and after the halt. Excluded from rail counts (run #28).",
+      "first_seen": "2026-10-05",
+      "discovered_run": 28
     }
   },
   "validators": {
