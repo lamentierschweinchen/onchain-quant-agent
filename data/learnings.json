@@ -6871,6 +6871,458 @@
         "READ MultiversX's technical post-mortem and Hatom's MEX report; reconcile with the chain reconstruction.",
         "Add a GLOBAL rate-limit budget to the collector (47 HTTP 429s this run, all in the provider scan and protocol counters)."
       ]
+    },
+    {
+      "date": "2026-10-05",
+      "run_number": 28,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "/mex/farms",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x42",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "post-restart window netting (Sep 24 - Oct 5)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond resolution (rec #3)",
+          "all-provider unDelegate scan x108 (rec #5)",
+          "unbonding pool /accounts/{addr}/delegation x45",
+          "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+          "100%-fee provider follow-through",
+          "Binance hot outbound >10K vs desk inbound (rec #11)",
+          "dynamic absorber discovery from desk terminals (rec #8)",
+          "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+          "/accounts/{addr}/transfers/count x12",
+          "JEXchange router 7d transfer counts (run #24 rec #6)",
+          "unattributed feeder two-hop back-trace (run #24 rec #5)",
+          "coingecko tickers depth=true (exchange-side depth, run #24 rec #2)",
+          "coingecko market_chart 14d (aggregate spot volume)",
+          "/tokens/{id} x19 (dataApi re-fetch + list recovery)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+          "deregistered-provider delegator series (rec #9)",
+          "JEXchange aggregator re-derivation (rec #11)",
+          "pre-flight re-query of last run's failed sources (rec #3)",
+          "halt-recovery-clean balances (run #26 rec #2)",
+          "distinct-inbound-sender census UWI + erd1a6lte0 (run #26 rec #3)",
+          "address-poisoning lookalike watch (run #26 rec #7)",
+          "exchange withdrawal reopen check (first send after restart 2)"
+        ],
+        "endpoints_that_failed": [
+          "NONE with data missing. 40 HTTP 429s in the main pass despite the new global budget (2 paged provider scans, 4 single calls), all recovered by the follow-up; the reward sampler lost 2 of 8 providers to 429 on the first attempt and was re-run to 8 of 8."
+        ],
+        "api_quirks_discovered": [
+          "ACCOUNT TRANSACTION COUNTS INCLUDE ESDT SPAM AIRDROPS: Binance.com's hot wallet showed 33 receives since restart, Gate.io 17; only value-bearing EGLD transactions separate a reopened rail from airdrop noise.",
+          "A 4 req/s GLOBAL BUDGET STILL DRAWS 429s ON THE PROVIDER SCAN: the API's limit is burstier than a flat rate; the paged provider scan needs ~0.5 s spacing or its own slower budget.",
+          "xBridge exits are visible on MultiversX as unwrapTokenCreateTransaction calls to the Tokens Wrapper (erd1qqqqqqqqqqqqqpgq305jfaqrdxpzjgf9y5gvzh60mergh866yfkqzqjv2h); the action arguments carry the token, amount and Ethereum destination."
+        ],
+        "data_gaps": [
+          "Kraken reopened EGLD on Oct 1 but no Kraken address is tracked.",
+          "MultiversX has published no technical incident report (as of Oct 3); Hatom's MEX report was not found.",
+          "Unknown Whale I census not evaluable (probable venue closed).",
+          "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation (open since run #18)."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "VALUE-BEARING RAIL COUNTS: raw counts said Binance.com 33 receives and Gate.io 17 (airdrop noise included); EGLD-only counts gave a clean per-venue state (open / deposit-only / closed) with first-deposit timestamps.",
+          "FOLLOWING THE WATCH-LIST WALLET: last week's 'largest post-restart unDelegator' entry led straight to the week's best finding (withdraw -> DEX -> USDC -> bridge, a measured ~9% exit discount).",
+          "READING ROUTER HISTORY BEFORE CALLING A DELIVERY: the Gate.io deposits looked like the pipeline restarting; the routers' inbound showed Sep 18-19 tranches, so it was a stranded tail already counted in wave #4.",
+          "RE-RUNNING THE REWARD SAMPLER on a 6/8 result instead of publishing it (run #25 rule): 8/8 on retry, 58.28%."
+        ],
+        "what_needs_improvement": [
+          "A shared 4 req/s budget still drew ~40 HTTP 429s; the provider scan needs a slower dedicated budget.",
+          "No Kraken address is tracked, so a venue that publicly reopened is invisible on chain.",
+          "The exit trace covers one wallet; it should be a collector-side scan of every large withdraw.",
+          "Run-specific scripts are still copied and patched weekly; the rail and trace scripts added this run should be folded into the collector."
+        ],
+        "surprising_findings": [
+          "The Upbit premium fell from 32% to 12% with Upbit deposits still closed: no arbitrage closed it.",
+          "The pipeline's first EGLD to reach a reopened venue was inventory stranded 16 days earlier, delivered in the venue's first deposit hour.",
+          "A staker paid ~9% to exit through the DEX and bridge rather than wait for a CEX.",
+          "Binance.com reopened deposits on the native chain while publicly withdrawing via BEP-20 only."
+        ]
+      },
+      "methodology_changes": [
+        "RAIL STATE IS VALUE-BEARING ONLY. Count EGLD-carrying transactions per exchange wallet (scripts/rails_run28.py); raw transaction counts include ESDT spam airdrops.",
+        "A REOPENING WEEK PRINTS AN INFLOW. Deposits reopen before withdrawals, so partial-rail exchange flows are recorded but not appended to baselines until the major venues are open both ways.",
+        "TRACE EXITS PAST THE DEX. When CEX rails are closed, follow matured unbonding through swap aggregators and xBridge unwrap calls; the bridge action arguments give the USDC amount and destination, and USDC/EGLD gives the realised exit price.",
+        "venue_of() resolves on category plus an explicit map (VENUE_MAP), never on label text."
+      ],
+      "new_addresses_discovered": [
+        "erd1qqqqqqqqqqqqqpgq305jfaqrdxpzjgf9y5gvzh60mergh866yfkqzqjv2h - xBridge: Tokens Wrapper (API asset label); added to known-addresses as bridge.",
+        "erd155j9c36hp5dkqp7u5gwjek00g2axermvqdzk3j7mpk9k8yunpy4s9fpq8c - post-restart exiter: 26,664 EGLD unDelegated, sold on chain, bridged to 0x0acdff4c5927dd7845b1a0e104e820104723d653."
+      ],
+      "action_items_completed": [
+        "COUNT EXCHANGE SENDS/RECEIVES SINCE RESTART FIRST - done, and tightened: the collector counts both legs since restart and in the window, and a new rail script keeps only value-bearing EGLD transactions (spam airdrops had inflated the raw counts). Exchange metrics kept out of baselines (partial rails).",
+        "IF RAILS REOPENED: resolve korea-premium-arbitrage / delivery-price-relevance-2, re-run the UWI census - partially: UPbit and the delivery venues are still closed so both tests stay open; the UWI census was re-run (0 inbound).",
+        "RESOLVE post-restart-exit-wave and TRACE MATURED UNBONDING - done: resolved 'one-off burst'; the largest leg traced through withdraw -> DEX -> USDC -> xBridge -> Ethereum.",
+        "FIX THE VENUE RESOLVER - done: venues resolve on category == exchange plus an explicit VENUE_MAP; label text no longer creates venues.",
+        "READ THE INCIDENT REPORTS - attempted: searched; MultiversX had published no technical incident report as of Oct 3 and no Hatom MEX report was found. Exchange status pages (Kraken, Upbit, Binance) read instead.",
+        "GLOBAL RATE-LIMIT BUDGET - done but insufficient: a shared 4 req/s budget cut 429s from 47 to ~40; all recovered."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          2.76,
+          3.6,
+          3.83,
+          4.48,
+          4.14,
+          4.24,
+          4.48,
+          4.6
+        ],
+        "dex_volume_24h_usd": [
+          40594.726618154826,
+          53782.67067584162,
+          229987.6668827292,
+          234053.12987894475,
+          199616.7116502968,
+          397448.7353661145,
+          116293.67605035269,
+          158811.3336340517
+        ],
+        "dex_volume_24h_egld": [
+          61110,
+          44557,
+          96002,
+          25958,
+          34524
+        ],
+        "staked_egld": [
+          14514338,
+          14548017,
+          14551783,
+          14485712,
+          14329174,
+          14357283,
+          14335164,
+          14292379
+        ],
+        "mex_price_usd": [
+          2.5603716335458884e-07,
+          3.3417335112217705e-07,
+          3.541086469631204e-07,
+          3.97703098880543e-07,
+          1.8164036583951485e-06,
+          6.201189897699527e-07,
+          6.358740982775643e-07,
+          5.933589012287548e-07
+        ],
+        "total_delegators": [
+          174353,
+          173042,
+          172935,
+          172862,
+          172600,
+          172550,
+          172498,
+          172335
+        ],
+        "staked_ratio": [
+          0.4745535960231805,
+          0.4748923642763583,
+          0.474254493214429,
+          0.47134605750035136,
+          0.4655083730551601,
+          0.46588943376972114,
+          0.46479484397808346,
+          0.4626677162414884
+        ],
+        "exchange_net_flow_egld": [
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469,
+          -191939.71816979814,
+          31862.435230013914,
+          117969.59074411914,
+          53956.536047511734
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          301498,
+          604086,
+          222532,
+          767206,
+          709850,
+          1563936,
+          893299,
+          314290
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109,
+          272396,
+          536459,
+          401353,
+          64665
+        ],
+        "otc_desk_inventory_egld": [
+          266213,
+          96114,
+          56596,
+          46637,
+          46637,
+          46637
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+          "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+          "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179,
+          "2026-08-31..2026-09-07 (run #24, weekly frame - a RECORD, and inside the wave)": 536459,
+          "2026-08-17..2026-09-07 (WAVE #3 netted feed-to-drain, three frames - the correct measure)": 878809,
+          "2026-09-07..2026-09-14 (run #25, weekly frame, wave #4)": 401353,
+          "2026-08-17..2026-09-14 (waves #3+#4 netted as one window, four frames)": 1336721,
+          "2026-09-14..2026-09-19 halt (run #26, 5.3-day frame, wave #4)": 64665,
+          "2026-09-07..2026-09-19 halt (WAVE #4 netted feed-to-drain, two frames)": 467107,
+          "2026-09-07..2026-09-19 halt (WAVE #4 FINAL, run #26 labels; run #27 found no further desk activity)": 467107
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1,
+          "run23": 61.6,
+          "run24": 65.7,
+          "run25": 55.1,
+          "run26": 79.4
+        },
+        "dex_turnover_ratio_pct": [
+          2.235,
+          2.928,
+          10.832,
+          10.511,
+          8.166,
+          20.862,
+          4.609,
+          6.456
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          3475540.385133772,
+          3175540.3850837722,
+          2978782.2380337724,
+          3351216.1019337727,
+          3493534.6849337723,
+          3493534.6849337723,
+          3493534.6849337723,
+          3493534.6849337723
+        ],
+        "reward_compound_pct": [
+          59.07,
+          57.03,
+          57.51,
+          62.05,
+          49.44,
+          62.68,
+          52.4,
+          58.28
+        ],
+        "delegation_total_locked_egld": [
+          11114380,
+          11034013,
+          10967589,
+          10864570,
+          10900187,
+          10945373,
+          10892686,
+          10905437
+        ],
+        "usdt_supply": [
+          549884,
+          552292,
+          545052,
+          532035,
+          463905,
+          452585,
+          433045,
+          396061
+        ],
+        "usdc_supply": [
+          7706364,
+          7579164,
+          7786216,
+          7685181,
+          7511843,
+          7343990
+        ],
+        "unbonding_queue_undelegated_egld_7d": [
+          151443,
+          208125,
+          73351,
+          84169,
+          59094
+        ],
+        "unbonding_short_window_readings": {
+          "run27 (3.71 live days)": {
+            "undelegated_egld": 62093,
+            "weekly_pace_egld": 117307,
+            "withdraw_egld_returned": 40069
+          }
+        },
+        "withdraw_egld_returned_7d": [
+          108941,
+          83604
+        ],
+        "withdrawal_breadth_ex_pipeline_egld": [
+          400113,
+          497647,
+          397124,
+          285984
+        ],
+        "cex_spot_volume_7d_egld": [
+          17696479
+        ],
+        "otc_delivery_share_of_spot_pct": [
+          2.27
+        ],
+        "binance_bybit_bid_depth_2pct_usd": [
+          124993
+        ],
+        "closed_book_readings_run26": {
+          "cex_spot_volume_7d_egld": 11126531,
+          "binance_bybit_bid_depth_2pct_usd": 84268
+        },
+        "closed_book_readings_run27": {
+          "cex_spot_volume_7d_egld": 13016608,
+          "binance_bybit_bid_depth_2pct_usd": 38621,
+          "korea_premium_pct": 32.4,
+          "exchange_net_flow_egld": 0.0,
+          "otc_gross_egld": 179
+        },
+        "partial_rail_readings_run28": {
+          "cex_spot_volume_7d_egld": 4793577,
+          "binance_bybit_bid_depth_2pct_usd": 47454,
+          "korea_premium_pct": 11.7,
+          "upbit_share_of_volume_pct": 19.6,
+          "exchange_net_flow_egld": 19442,
+          "otc_gross_egld": 0,
+          "otc_router_tail_to_gate_egld": 12184,
+          "venues_open": [
+            "Bitget",
+            "Crypto.com",
+            "Gate.io",
+            "Tokero"
+          ]
+        },
+        "dex_exit_discount_pct": [
+          -9.3
+        ],
+        "korea_premium_pct": [
+          32.4,
+          11.7
+        ],
+        "hmex_supply": [
+          24959314779646.0,
+          11012904178288.0
+        ],
+        "pre_committed_tests_resolved": [
+          7,
+          5,
+          8,
+          6,
+          6,
+          3,
+          3,
+          1
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          42.9,
+          80.0,
+          87.5,
+          100.0,
+          66.7,
+          33.3,
+          0.0,
+          0.0
+        ],
+        "pre_committed_tests_open": [
+          6,
+          8,
+          7,
+          7,
+          5,
+          5,
+          4,
+          5
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Exit-route Sankey for unbonded EGLD",
+          "motivation": "This run traced 26,678 EGLD from three provider withdrawals through the XOXNO aggregator and xExchange into USDC and out via xBridge to Ethereum, at ~9% below CEX. The dashboard shows the unbonding queue and the USDC burn as two unrelated numbers; the link between them is the finding.",
+          "suggested_visualization": "sankey from provider withdraw -> {CEX deposit, DEX swap, held, re-delegated} -> {USDC bridge-out, CEX}, weekly, with the realised exit price per route as a label",
+          "data_already_available": false,
+          "data_source": "whale_intelligence.exit_routes (one wallet this run); a collector-side exit-route scan over all withdraw calls > 1,000 EGLD would generalise it",
+          "priority": "high"
+        },
+        {
+          "title": "Rail reopening timeline per venue",
+          "motivation": "Rails reopened one venue at a time (Binance.com Sep 29 00:35, Bitget Oct 03 02:52, Crypto.com Sep 30 02:00, Gate.io Oct 04 23:00, Tokero Sep 28 10:26), and the pipeline's router tail hit Gate.io in its first deposit hour. A single net-flow number hides that order.",
+          "suggested_visualization": "swimlane timeline (one lane per venue) from the halt to now, shaded closed / deposit-only / open, with first-deposit and first-withdrawal markers and dots for the largest deposits",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.exchange_flows.rail_status.by_venue (first_egld_deposit_utc, first_egld_withdrawal_utc, state)",
+          "priority": "high"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Exchange rail status board",
+          "status": "pending",
+          "note": "Not built. Now carried by rail_status.by_venue with a per-venue state; superseded in scope by this run's rail reopening timeline suggestion, which adds the time axis."
+        },
+        {
+          "title": "Korea premium tracker",
+          "status": "pending",
+          "note": "Not built. More useful this week: the premium halved with UPbit still closed, and Upbit's Oct 19-23 review makes the series decision-relevant."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "Following one exit all the way out. The largest post-restart unstaker could not deposit at an exchange, so it withdrew, swapped on chain and bridged USDC to Ethereum, realising $4.17 per EGLD against $4.60 on CEX. That puts a measured price (~9%) on closed rails, explains most of the week's USDC burn, and shows where the 51,735 EGLD still unbonding is likely to go while UPbit and Binance withdrawals stay shut.",
+        "actions_completed_count": 5,
+        "actions_attempted_count": 6,
+        "what_would_2x_next_week": "UPbit or Binance withdrawals reopening: a per-venue first-week trace, the premium against it, desk behaviour, and whether unbonding exits switch from the DEX+bridge route back to CEX deposits.",
+        "pre_committed_test_for_next_run": "UPBIT-PREMIUM-DECAY (run #29: < 5% with UPbit closed = demand faded). KOREA-PREMIUM-ARBITRAGE deadline run #29. OTC-PIPELINE-RESUMPTION through run #31."
+      },
+      "recommendations_for_next_run": [
+        "RAILS FIRST (value-bearing counts via rails_run28.py): if UPbit or Binance withdrawals reopened, resolve korea-premium-arbitrage and start delivery-price-relevance-2.",
+        "Resolve upbit-premium-decay at run #29 (premium with UPbit still closed: < 5% = demand faded).",
+        "EXIT-ROUTE SCAN: for every withdraw call > 1,000 EGLD, follow the EGLD to CEX deposit / DEX swap / xBridge unwrap; sum the bridge-out USDC against the USDC burn.",
+        "Add a Kraken deposit address to known-addresses (Kraken reopened Oct 1) and check the Binance BEP-20 route via the Binance.com hot wallet's ESDT/bridge activity.",
+        "Slow the provider scan to its own 0.5 s budget (40 HTTP 429s at a shared 4 req/s).",
+        "OTC: watch the desks for the first post-halt send; otc-pipeline-resumption runs to run #31."
+      ]
     }
   ]
 }

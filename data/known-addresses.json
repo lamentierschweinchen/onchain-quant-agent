@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-09-28",
+    "last_updated": "2026-10-05",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -859,6 +859,14 @@
       "category": "bridge",
       "subcategory": "bsc",
       "notes": "Ofero Network's BNB to MultiversX bridge."
+    },
+    "erd1qqqqqqqqqqqqqpgq305jfaqrdxpzjgf9y5gvzh60mergh866yfkqzqjv2h": {
+      "name": "xBridge: Tokens Wrapper",
+      "category": "bridge",
+      "subcategory": "xbridge",
+      "notes": "API asset label. unwrapTokenCreateTransaction calls here bridge USDC-c76f1f out to Ethereum (ETHUSDC). Run #28: carried the largest post-restart staking exit (111,274 USDC).",
+      "first_seen": "2026-10-05",
+      "discovered_run": 28
     }
   },
   "team_and_foundation": {
@@ -1433,7 +1441,7 @@
       "name": "OTC Desk->Gate.io Router (run #22)",
       "category": "router",
       "subcategory": "otc_router",
-      "notes": "Zero-balance pass-through forwarding 23,020 EGLD from the OTC desks to Gate.io in the 2026-08-17..2026-08-24 window.",
+      "notes": "Zero-balance pass-through forwarding 23,020 EGLD from the OTC desks to Gate.io in the 2026-08-17..2026-08-24 window. Run #28: held a Sep 18-19 desk tranche through the halt; swept it to Gate.io at the Oct 4 23:00 reopening.",
       "first_seen": "2026-08-24",
       "discovered_run": 22
     },
@@ -1465,7 +1473,7 @@
       "name": "OTC Desk->Gate.io Router (run #23)",
       "category": "router",
       "subcategory": "otc_router",
-      "notes": "Zero-balance pass-through forwarding 19,413 EGLD from the OTC desks to Gate.io in the 2026-08-24..2026-08-31 window. Confirmed non-absorbing by the run #23 terminal scan.",
+      "notes": "Zero-balance pass-through forwarding 19,413 EGLD from the OTC desks to Gate.io in the 2026-08-24..2026-08-31 window. Confirmed non-absorbing by the run #23 terminal scan. Run #28: held a Sep 18-19 desk tranche through the halt; swept it to Gate.io at the Oct 4 23:00 reopening.",
       "first_seen": "2026-08-31",
       "discovered_run": 23
     },
@@ -1577,7 +1585,7 @@
       "name": "OTC Desk->Gate.io Router (run #24)",
       "category": "router",
       "subcategory": "otc_router",
-      "notes": "Zero-balance pass-through forwarding 16,963 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "notes": "Zero-balance pass-through forwarding 16,963 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking. Run #28: held a Sep 18-19 desk tranche through the halt; swept it to Gate.io at the Oct 4 23:00 reopening.",
       "first_seen": "2026-09-07",
       "discovered_run": 24
     },
@@ -1585,7 +1593,7 @@
       "name": "OTC Desk->Gate.io Router (run #24)",
       "category": "router",
       "subcategory": "otc_router",
-      "notes": "Zero-balance pass-through forwarding 16,595 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "notes": "Zero-balance pass-through forwarding 16,595 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking. Run #28: held a Sep 18-19 desk tranche through the halt; swept it to Gate.io at the Oct 4 23:00 reopening.",
       "first_seen": "2026-09-07",
       "discovered_run": 24
     },
@@ -1593,7 +1601,7 @@
       "name": "OTC Desk->Gate.io Router (run #24)",
       "category": "router",
       "subcategory": "otc_router",
-      "notes": "Zero-balance pass-through forwarding 15,256 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking.",
+      "notes": "Zero-balance pass-through forwarding 15,256 EGLD from the OTC desks to Gate.io in the 2026-08-31..2026-09-07 window, during the largest one-way delivery week in tracking. Run #28: held a Sep 18-19 desk tranche through the halt; swept it to Gate.io at the Oct 4 23:00 reopening.",
       "first_seen": "2026-09-07",
       "discovered_run": 24
     },
@@ -1718,6 +1726,14 @@
       "name": "Whale migration destination (nonce 0)",
       "category": "whale",
       "notes": "run #17: received the full 165,006 from whale erd102hmf79en4, which went to zero. Fresh nonce-0 wallet - a wallet migration, not a sale. Distinct from the erd15ku2r2j6 KuCoin exit."
+    },
+    "erd155j9c36hp5dkqp7u5gwjek00g2axermvqdzk3j7mpk9k8yunpy4s9fpq8c": {
+      "name": "Post-restart exiter erd155j9 (DEX+bridge)",
+      "category": "unknown",
+      "subcategory": "staking_exiter",
+      "notes": "Run #28: unDelegated 8,888 EGLD from each of Pi Staking, Star Staking, Vapor Republic on Sep 24; withdrew and sold 26,678 EGLD via XOXNO aggregator/xExchange (Sep 29, Oct 4); bridged 111,274 USDC to Ethereum 0x0acdff4c5927dd7845b1a0e104e820104723d653. Keeps 8,889 EGLD delegated.",
+      "first_seen": "2026-10-05",
+      "discovered_run": 28
     }
   },
   "validators": {

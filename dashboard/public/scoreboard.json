@@ -1,14 +1,14 @@
 {
-  "generated_from": 27,
+  "generated_from": 28,
   "totals": {
-    "tests": 42,
-    "resolved": 38,
-    "open": 4,
+    "tests": 44,
+    "resolved": 39,
+    "open": 5,
     "as_predicted": 25,
-    "against": 6,
+    "against": 7,
     "inconclusive": 5,
     "withdrawn": 2,
-    "hit_rate_pct": 65.78947368421052
+    "hit_rate_pct": 64.1025641025641
   },
   "runs": [
     {
@@ -94,9 +94,83 @@
       "withdrawn": 0,
       "hit_rate_pct": 0,
       "open_after": 4
+    },
+    {
+      "run": 28,
+      "date": "2026-10-05",
+      "registered": 2,
+      "resolved": 1,
+      "as_predicted": 0,
+      "against": 1,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 0,
+      "open_after": 5
     }
   ],
   "tests": [
+    {
+      "id": "otc-pipeline-resumption",
+      "registered_in_run": 28,
+      "claim": "The OTC programme resumes once its feeder and delivery venues reopen, rather than having ended with the halt.",
+      "threshold": "desk gross outbound in any single weekly window through run #31: > 100,000 EGLD = resumed; 20,000-100,000 = partial, no conclusion; < 20,000 in every week through run #31 with UPbit deposits open for at least two of those weeks = programme ended; UPbit still closed at run #31 = not evaluable",
+      "branches": [
+        {
+          "condition": "> 100,000 EGLD gross desk outbound in a week by run #31",
+          "reading": "resumed"
+        },
+        {
+          "condition": "20,000-100,000",
+          "reading": "partial, no conclusion"
+        },
+        {
+          "condition": "< 20,000 every week, UPbit open >= 2 weeks",
+          "reading": "programme ended"
+        },
+        {
+          "condition": "UPbit closed through run #31",
+          "reading": "not evaluable"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #28: desk gross outbound 0; router tail 12,184 to Gate.io; desks 46,637",
+      "resolution": null,
+      "seen_in_run": 28,
+      "seen_in_date": "2026-10-05"
+    },
+    {
+      "id": "upbit-premium-decay",
+      "registered_in_run": 28,
+      "claim": "The Upbit premium is fading Korean demand, not blocked arbitrage: it keeps closing while UPbit deposits stay shut.",
+      "threshold": "Upbit-Binance premium at run #29 with UPbit EGLD deposits still closed: < 5% = demand faded (premium closed without arbitrage); 5-15% = no conclusion; > 15% = premium re-widened, demand persists; UPbit deposits reopened before run #29 = not evaluable (korea-premium-arbitrage takes over)",
+      "branches": [
+        {
+          "condition": "deposits closed and premium < 5%",
+          "reading": "demand faded"
+        },
+        {
+          "condition": "deposits closed and premium 5-15%",
+          "reading": "no conclusion"
+        },
+        {
+          "condition": "deposits closed and premium > 15%",
+          "reading": "demand persists"
+        },
+        {
+          "condition": "UPbit deposits reopened before run #29",
+          "reading": "not evaluable"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #28: 11.7% (from 32.4%), UPbit deposits closed",
+      "resolution": null,
+      "seen_in_run": 28,
+      "seen_in_date": "2026-10-05"
+    },
     {
       "id": "korea-premium-arbitrage",
       "registered_in_run": 27,
@@ -147,13 +221,13 @@
           "reading": "one-off burst"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #27: 62,093 EGLD in 3.7 live days (~117,307/week pace), 510 wallets",
-      "resolution": null,
-      "seen_in_run": 27,
-      "seen_in_date": "2026-09-28"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 28,
+      "measured_value": "59,094 EGLD unDelegated by 282 wallets over the full 7-day live window Sep 28 - Oct 5 (bar < 90,000)",
+      "resolution": "The '< 90,000 = one-off burst' branch fires, against the claim that the restart triggered an exit wave. Last week's ~117K/week pace was a burst concentrated in the first hours after restart (one wallet alone queued 26,664). What the burst did next is measured: its largest leg was withdrawn, sold on chain and bridged out, so the burst was real exit supply even though it did not persist.",
+      "seen_in_run": 28,
+      "seen_in_date": "2026-10-05"
     },
     {
       "id": "halt-recovery-clean",

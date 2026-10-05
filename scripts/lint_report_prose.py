@@ -43,6 +43,8 @@ ALLOWED = {
     # run #26: genuine function names on Hatom's MEX recovery contract and xExchange pairs
     "runRound", "runCampaignRound", "liquidateBorrow", "setAllowedBorrower", "setSaleRoute",
     "removeFromPauseWhitelist", "addToPauseWhitelist",
+    # run #28: product name of the MultiversX-Ethereum bridge (as xExchange)
+    "xBridge",
 }
 
 SNAKE = re.compile(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b")
