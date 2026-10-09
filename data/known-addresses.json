@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-10-05",
+    "last_updated": "2026-10-09",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1191,6 +1191,30 @@
       "notes": "Nonce 566, ~46,629 EGLD. Identified run #22 as Whale I's largest external counterparty and then resolved as the SAME operator: over 30 days it sent 37,188 EGLD to Whale I and received 52,551 from it, and essentially nothing else (its five other counterparties total ~12,800 out and ~1 in). Closes the run #20/#21 Whale I classification - both wallets are OTC operator inventory and their hub take must be excluded from the demand instruments.",
       "first_seen": "2026-08-24",
       "discovered_run": 22
+    },
+    "erd137cw9q46yzsx9wftk85m8x2n40yj6uzfcccqunut689thhr67nwsvnujun": {
+      "name": "Binance.com depositor (57,620 EGLD, Oct 9)",
+      "category": "other",
+      "subcategory": "whale",
+      "notes": "Twelve deposits to the Binance.com hot wallet on Oct 9; funded by erd1hl5y4a... (35,739) and erd1hhvfrw... (22,987).",
+      "first_seen": "2026-10-09",
+      "discovered_run": 29
+    },
+    "erd14ds7pkqm0aj70tjyd8yswunqgn0rfjztt82rzy983rrpyu34ygwqdjjml3": {
+      "name": "Binance.com depositor (35,949 EGLD, meria exit)",
+      "category": "other",
+      "subcategory": "whale",
+      "notes": "Single Oct 9 12:18 UTC deposit; funded by a wallet that merged two meria withdrawals (Oct 6).",
+      "first_seen": "2026-10-09",
+      "discovered_run": 29
+    },
+    "erd1hhvfrwvqj5jhxqwlac9vftwgnlkv0s9y7xy7xp98vehlq74qee6srkqgdh": {
+      "name": "Unlabelled whale funding Binance deposits",
+      "category": "other",
+      "subcategory": "whale",
+      "notes": "Received 30,000 EGLD Sep 30; funded 22,987 + 7,540 EGLD to two Binance.com depositors Oct 5-9.",
+      "first_seen": "2026-10-09",
+      "discovered_run": 29
     }
   },
   "exchange_routers": {

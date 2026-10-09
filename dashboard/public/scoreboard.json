@@ -1,14 +1,14 @@
 {
-  "generated_from": 28,
+  "generated_from": 29,
   "totals": {
-    "tests": 44,
-    "resolved": 39,
-    "open": 5,
+    "tests": 46,
+    "resolved": 40,
+    "open": 6,
     "as_predicted": 25,
-    "against": 7,
+    "against": 8,
     "inconclusive": 5,
     "withdrawn": 2,
-    "hit_rate_pct": 64.1025641025641
+    "hit_rate_pct": 62.5
   },
   "runs": [
     {
@@ -106,9 +106,75 @@
       "withdrawn": 0,
       "hit_rate_pct": 0,
       "open_after": 5
+    },
+    {
+      "run": 29,
+      "date": "2026-10-09",
+      "registered": 2,
+      "resolved": 1,
+      "as_predicted": 0,
+      "against": 1,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 0,
+      "open_after": 6
     }
   ],
   "tests": [
+    {
+      "id": "binance-deposit-persistence",
+      "registered_in_run": 29,
+      "claim": "The Binance.com deposit surge is the unstaked-EGLD overhang reaching a CEX and continues, not a one-day reopening artifact.",
+      "threshold": "At run #30, Binance.com hot-wallet value-bearing deposits minus withdrawals per day of window: > +10,000 EGLD/day = overhang still arriving; -5,000 to +10,000 = no conclusion; < -5,000 EGLD/day = withdrawals dominate, the surge was the reopening",
+      "branches": [
+        {
+          "condition": "> +10,000 EGLD/day net",
+          "reading": "overhang still arriving"
+        },
+        {
+          "condition": "-5,000 to +10,000",
+          "reading": "no conclusion"
+        },
+        {
+          "condition": "< -5,000 EGLD/day",
+          "reading": "reopening artifact"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #29: deposits 124,524 and withdrawals 21,535 (the withdrawals started Oct 9 08:04, hours before collection); hot wallet +102,986",
+      "resolution": null,
+      "seen_in_run": 29,
+      "seen_in_date": "2026-10-09"
+    },
+    {
+      "id": "exit-route-cex",
+      "registered_in_run": 29,
+      "claim": "With a CEX deposit rail open, unstaking exits go to the exchange, not through the DEX and bridge.",
+      "threshold": "At run #30, among withdraw calls > 3,000 EGLD in the window whose proceeds can be traced: > 50% of EGLD to a CEX deposit = CEX route dominant; < 25% = the DEX/bridge route persists despite the open rail; USDC burn in the window > 50,000 = bridge route active",
+      "branches": [
+        {
+          "condition": "> 50% traced to CEX deposits",
+          "reading": "CEX route dominant"
+        },
+        {
+          "condition": "< 25% to CEX",
+          "reading": "DEX/bridge persists"
+        },
+        {
+          "condition": "25-50%",
+          "reading": "mixed"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #29: of the six largest withdraw calls, 27,970 EGLD (meria) went to Binance.com; Trust Staking re-delegated; no repeat of the 26,678 EGLD DEX sale",
+      "resolution": null,
+      "seen_in_run": 29,
+      "seen_in_date": "2026-10-09"
+    },
     {
       "id": "otc-pipeline-resumption",
       "registered_in_run": 28,
@@ -163,13 +229,13 @@
           "reading": "not evaluable"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #28: 11.7% (from 32.4%), UPbit deposits closed",
-      "resolution": null,
-      "seen_in_run": 28,
-      "seen_in_date": "2026-10-05"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 29,
+      "measured_value": "premium 15.44% (Upbit $4.56 vs Binance $3.95), UPbit EGLD deposits closed (hot wallet: one 0.0001 EGLD dust receive, one 14,000 send to its own OTC desk)",
+      "resolution": "Above the 15% line: the premium re-widened from 11.7% rather than decaying to < 5%, so the claim that it is fading Korean demand fails. It is the exchange price move: Binance fell 14% while Upbit (KRW) held, which widens the gap without any EGLD reaching Korea. korea-premium-arbitrage stays open.",
+      "seen_in_run": 29,
+      "seen_in_date": "2026-10-09"
     },
     {
       "id": "korea-premium-arbitrage",
