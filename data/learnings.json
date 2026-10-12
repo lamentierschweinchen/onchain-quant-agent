@@ -7798,6 +7798,507 @@
         "Hatom EGLD market: classify who withdrew the 30,848 EGLD (suppliers vs liquidations) from the market's call history.",
         "Return to the Monday cadence and state the window length in every flow."
       ]
+    },
+    {
+      "date": "2026-10-12",
+      "run_number": 30,
+      "data_quality": {
+        "endpoints_that_worked": [
+          "/economics",
+          "/stats",
+          "/accounts?sort=balance",
+          "/tokens?sort=accounts",
+          "/tokens?sort=transactions",
+          "/tokens?sort=marketCap",
+          "/providers?size=200",
+          "/identities",
+          "/mex/economics",
+          "/mex/pairs",
+          "/mex/pairs?size=50",
+          "/mex/tokens",
+          "/mex/farms",
+          "coingecko/simple/price",
+          "/accounts/{addr} + /transactions x45",
+          "paginated desk in/outbound (7d)",
+          "two-hop both-legs hub netting, 7d window",
+          "post-restart window netting (Sep 24 - Oct 12)",
+          "historical hub-trace windows (carried forward)",
+          "229,865 EGLD unbond resolution (rec #3)",
+          "all-provider unDelegate scan x108 (rec #5)",
+          "unbonding pool /accounts/{addr}/delegation x45",
+          "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+          "100%-fee provider follow-through",
+          "Binance hot outbound >10K vs desk inbound (rec #11)",
+          "dynamic absorber discovery from desk terminals (rec #8)",
+          "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+          "/accounts/{addr}/transfers/count x12",
+          "JEXchange router 7d transfer counts (run #24 rec #6)",
+          "unattributed feeder two-hop back-trace (run #24 rec #5)",
+          "coingecko tickers depth=true (exchange-side depth, run #24 rec #2)",
+          "coingecko market_chart 14d (aggregate spot volume)",
+          "/tokens/{id} x19 (dataApi re-fetch + list recovery)",
+          "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+          "deregistered-provider delegator series (rec #9)",
+          "JEXchange aggregator re-derivation (rec #11)",
+          "pre-flight re-query of last run's failed sources (rec #3)",
+          "halt-recovery-clean balances (run #26 rec #2)",
+          "distinct-inbound-sender census UWI + erd1a6lte0 (run #26 rec #3)",
+          "address-poisoning lookalike watch (run #26 rec #7)",
+          "exchange withdrawal reopen check (first send after restart 2)"
+        ],
+        "endpoints_that_failed": [
+          "NONE with data missing. 0 HTTP 429s; 0 paged errors; 0 API errors. The first collector launch stalled ~5h with no output and was re-run."
+        ],
+        "api_quirks_discovered": [
+          "A LONG-RUNNING COLLECTOR WITH BUFFERED STDOUT IS INDISTINGUISHABLE FROM A HUNG ONE: run it with python3 -u, or the log stays empty until exit. The first launch this run sat ~5 hours at 3 seconds of CPU (host sleep is the likely cause) and had to be killed.",
+          "A ZERO-VALUE withdraw OR claimRewards CALL TO A STAKING CONTRACT IS THE EXIT CALL ITSELF, not a re-delegation: the first version of the exit-route scan classified the withdraw hop as 're-delegate'. Filter those functions out of next-hop lists.",
+          "AN EXCHANGE'S OWN HOT -> CUSTODY MOVE CAN DOMINATE A DAY'S 'WITHDRAWALS': Binance.com's Oct 12 raw withdrawals (187,532) were 86% one internal send. Net intra-entity transfers before reading customer flow."
+        ],
+        "data_gaps": [
+          "No public note found for Coinbase's or Bybit's native-network reopening; states inferred from chain data (no web search this run).",
+          "The 7-day delegator reward window overlaps run #29's.",
+          "Kraken has no tracked address.",
+          "Hatom UTK Money Market and OneDex Launchpad still fail bech32 validation."
+        ]
+      },
+      "analysis_insights": {
+        "what_worked": [
+          "INTRA-ENTITY NETTING ON RAIL READINGS: Binance.com's raw Oct 12 withdrawals (187,532) were 86% one send to Binance's own custody; netting it turned an apparent drain into net customer deposits and resolved binance-deposit-persistence correctly.",
+          "THE COLLECTOR-SIDE EXIT SCAN answered the exit-route question on the whole population of large withdraws, and showed the population was nearly empty.",
+          "REUSING STORED LABEL HISTORY: the Whale B -> Coinbase -> Mega Whale leg was recognisable in minutes because the April notes on both wallets described the same pattern.",
+          "Call-history classification (redeem vs liquidate) settled the Hatom EGLD market question without any balance inference."
+        ],
+        "what_needs_improvement": [
+          "The first collector launch hung for ~5 hours with buffered output; long passes must run unbuffered and be watched through the log.",
+          "The new exit-route scan shipped with a classification bug (withdraw calls as re-delegation), caught on review; new classifiers need a hand-checked sample before use.",
+          "No web check this run for Coinbase/Bybit/Upbit network notices.",
+          "The report assembler is still copied and hand-patched each run."
+        ],
+        "surprising_findings": [
+          "Binance unDelegated 320,002 EGLD from its own provider and moved 161,137 into custody within four hours of each other.",
+          "Coinbase's reopening minutes were used for a 120K whale-to-whale leg, repeating the April Whale B / Mega Whale pattern almost exactly.",
+          "DEX volume roughly doubled in EGLD terms as CEX rails reopened, almost all of it WEGLD/USDC.",
+          "Unknown Whale I received nothing with four major venues open, which ended its exchange hypothesis."
+        ]
+      },
+      "methodology_changes": [
+        "EXIT-ROUTE SCAN IS NOW COLLECTOR-SIDE (trace_run30.py section 5): every withdraw > 3,000 EGLD, next hop classified cex / bridge / re-delegate / dex-defi / held / internal, zero-value admin calls excluded.",
+        "INTRA-ENTITY NETTING FOR RAIL READINGS: venue withdrawals are read net of the venue's own sends to its custody/staking wallets before any deposit-persistence or customer-flow claim.",
+        "Run long collectors unbuffered (python3 -u) and watch the log, not the process."
+      ],
+      "new_addresses_discovered": [
+        "erd124tc2z7gzk0sg6uu4lequvwnevhd8jx0casskhwzf447zcl3at9sd6m3jz - received Binance's 6,760 EGLD of claimed binance_staking rewards and deposited them to Binance.com within 20 minutes (Binance rewards pass-through)",
+        "erd1d2anjjhad4xlcrcu8jkk99yhrflsg5skavxqpkxwamxq80lmmglqzw605j - cross-venue wallet: withdrew 14,315 from Binance.com and 12,792 from Bybit, deposited 8,992 at Gate.io",
+        "erd1y27r22e4svp6g985ednf0nnd383pq2tmhkkzf3g58wems07kgc5stex2ne - OTC desk terminal (Oct 6), nonce 1, holds 5,836 EGLD"
+      ],
+      "action_items_completed": [
+        "BINANCE FIRST - done: per-day value-bearing deposits/withdrawals since Oct 9 08:04 (targeted trace pass); binance-deposit-persistence resolved; the three funder wallets checked (none re-deposited at scale).",
+        "EXIT-ROUTE SCAN, collector side - done: every withdraw > 3,000 EGLD scanned and classified, sender checked against known-addresses (Crypto.com sweep tagged internal); exit-route-cex resolved inconclusive.",
+        "OTC desk terminal erd1y27r22... - done: nonce 1, holds 5,836 EGLD, a holder. No UPbit reload in the window.",
+        "Upbit premium and volume share series - done (18.8%, Upbit 18% of volume).",
+        "Hatom EGLD market - done: 46 redeem calls, 0 liquidations since Oct 5; suppliers, not liquidations.",
+        "Monday cadence - done (window labelled ~2.7 days everywhere, short-window flows kept out of weekly baselines)."
+      ],
+      "running_baselines": {
+        "egld_price_usd": [
+          3.83,
+          4.48,
+          4.14,
+          4.24,
+          4.48,
+          4.6,
+          3.95,
+          3.81
+        ],
+        "dex_volume_24h_usd": [
+          229987.6668827292,
+          234053.12987894475,
+          199616.7116502968,
+          397448.7353661145,
+          116293.67605035269,
+          158811.3336340517,
+          139035.8597490462,
+          257343.4101385467
+        ],
+        "dex_volume_24h_egld": [
+          61110,
+          44557,
+          96002,
+          25958,
+          34524,
+          35199,
+          67544
+        ],
+        "staked_egld": [
+          14551783,
+          14485712,
+          14329174,
+          14357283,
+          14335164,
+          14292379,
+          14249639,
+          14256920
+        ],
+        "mex_price_usd": [
+          3.541086469631204e-07,
+          3.97703098880543e-07,
+          1.8164036583951485e-06,
+          6.201189897699527e-07,
+          6.358740982775643e-07,
+          5.933589012287548e-07,
+          5.967333265507123e-07,
+          5.635510588236461e-07
+        ],
+        "total_delegators": [
+          172935,
+          172862,
+          172600,
+          172550,
+          172498,
+          172335,
+          172232,
+          172195
+        ],
+        "staked_ratio": [
+          0.474254493214429,
+          0.47134605750035136,
+          0.4655083730551601,
+          0.46588943376972114,
+          0.46479484397808346,
+          0.4626677162414884,
+          0.4607598857001988,
+          0.46078606788683496
+        ],
+        "exchange_net_flow_egld": [
+          -20386.061375999823,
+          22659.113199120387,
+          3619.7093724994993,
+          -71449.20183447469,
+          -191939.71816979814,
+          31862.435230013914,
+          117969.59074411914,
+          53956.536047511734
+        ],
+        "otc_pipeline_throughput_egld_7d": [
+          301498,
+          604086,
+          222532,
+          767206,
+          709850,
+          1563936,
+          893299,
+          314290
+        ],
+        "otc_net_one_way_egld_7d": [
+          61435,
+          188658,
+          138265,
+          252109,
+          272396,
+          536459,
+          401353,
+          64665
+        ],
+        "otc_desk_inventory_egld": [
+          266213,
+          96114,
+          56596,
+          46637,
+          46637,
+          46637,
+          54893,
+          53578
+        ],
+        "otc_net_one_way_measured_windows": {
+          "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+          "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+          "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+          "2026-07-27..2026-08-03 (run #19)": 61435,
+          "2026-08-03..2026-08-10 (run #20)": 188658,
+          "2026-08-10..2026-08-17 (run #21)": 138265,
+          "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+          "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+          "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179,
+          "2026-08-31..2026-09-07 (run #24, weekly frame - a RECORD, and inside the wave)": 536459,
+          "2026-08-17..2026-09-07 (WAVE #3 netted feed-to-drain, three frames - the correct measure)": 878809,
+          "2026-09-07..2026-09-14 (run #25, weekly frame, wave #4)": 401353,
+          "2026-08-17..2026-09-14 (waves #3+#4 netted as one window, four frames)": 1336721,
+          "2026-09-14..2026-09-19 halt (run #26, 5.3-day frame, wave #4)": 64665,
+          "2026-09-07..2026-09-19 halt (WAVE #4 netted feed-to-drain, two frames)": 467107,
+          "2026-09-07..2026-09-19 halt (WAVE #4 FINAL, run #26 labels; run #27 found no further desk activity)": 467107
+        },
+        "otc_circularity_pct": {
+          "run16": 71.9,
+          "run17_peak": 68.1,
+          "run18": 63.3,
+          "run19": 80.0,
+          "run20": 68.8,
+          "run21": 37.9,
+          "run22": 67.1,
+          "run23": 61.6,
+          "run24": 65.7,
+          "run25": 55.1,
+          "run26": 79.4
+        },
+        "dex_turnover_ratio_pct": [
+          10.832,
+          10.511,
+          8.166,
+          20.862,
+          4.609,
+          6.456,
+          5.828,
+          11.11
+        ],
+        "identifiable_bid_absorbed_egld_7d": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "binance_staking_custody_egld": [
+          2978782.2380337724,
+          3351216.1019337727,
+          3493534.6849337723,
+          3493534.6849337723,
+          3493534.6849337723,
+          3493534.6849337723,
+          3493534.6849337723,
+          3654671.4569337727
+        ],
+        "reward_compound_pct": [
+          57.51,
+          62.05,
+          49.44,
+          62.68,
+          52.4,
+          58.28,
+          60.85,
+          59.38
+        ],
+        "delegation_total_locked_egld": [
+          10967589,
+          10864570,
+          10900187,
+          10945373,
+          10892686,
+          10905437,
+          10908949,
+          10599432
+        ],
+        "usdt_supply": [
+          545052,
+          532035,
+          463905,
+          452585,
+          433045,
+          396061,
+          389984,
+          398684
+        ],
+        "usdc_supply": [
+          7706364,
+          7579164,
+          7786216,
+          7685181,
+          7511843,
+          7343990,
+          7324069,
+          7277767
+        ],
+        "unbonding_queue_undelegated_egld_7d": [
+          151443,
+          208125,
+          73351,
+          84169,
+          59094
+        ],
+        "unbonding_short_window_readings": {
+          "run27 (3.71 live days)": {
+            "undelegated_egld": 62093,
+            "weekly_pace_egld": 117307,
+            "withdraw_egld_returned": 40069
+          },
+          "run29_4day": {
+            "undelegated_egld": 39287,
+            "withdraw_egld_returned": 84929,
+            "days": 4
+          },
+          "run30_short": {
+            "undelegated_egld": 340941,
+            "withdraw_egld_returned": 31538,
+            "days": 2.74
+          }
+        },
+        "withdraw_egld_returned_7d": [
+          108941,
+          83604
+        ],
+        "withdrawal_breadth_ex_pipeline_egld": [
+          400113,
+          497647,
+          397124,
+          285984
+        ],
+        "cex_spot_volume_7d_egld": [
+          17696479
+        ],
+        "otc_delivery_share_of_spot_pct": [
+          2.27
+        ],
+        "binance_bybit_bid_depth_2pct_usd": [
+          124993
+        ],
+        "closed_book_readings_run26": {
+          "cex_spot_volume_7d_egld": 11126531,
+          "binance_bybit_bid_depth_2pct_usd": 84268
+        },
+        "closed_book_readings_run27": {
+          "cex_spot_volume_7d_egld": 13016608,
+          "binance_bybit_bid_depth_2pct_usd": 38621,
+          "korea_premium_pct": 32.4,
+          "exchange_net_flow_egld": 0.0,
+          "otc_gross_egld": 179
+        },
+        "partial_rail_readings_run28": {
+          "cex_spot_volume_7d_egld": 4793577,
+          "binance_bybit_bid_depth_2pct_usd": 47454,
+          "korea_premium_pct": 11.7,
+          "upbit_share_of_volume_pct": 19.6,
+          "exchange_net_flow_egld": 19442,
+          "otc_gross_egld": 0,
+          "otc_router_tail_to_gate_egld": 12184,
+          "venues_open": [
+            "Bitget",
+            "Crypto.com",
+            "Gate.io",
+            "Tokero"
+          ]
+        },
+        "partial_rail_readings_run29": {
+          "window_days": 4,
+          "cex_spot_volume_7d_egld": 5173068,
+          "binance_bybit_bid_depth_2pct_usd": 43478,
+          "korea_premium_pct": 15.4,
+          "upbit_share_of_volume_pct": 7.5,
+          "exchange_net_flow_egld": 93778,
+          "otc_gross_egld": 5745,
+          "binance_com_deposits_egld": 124524,
+          "venues_open": [
+            "Binance.com",
+            "Gate.io"
+          ]
+        },
+        "partial_rail_readings_run30": {
+          "window_days": 2.74,
+          "cex_spot_volume_7d_egld": 5787541,
+          "binance_bybit_bid_depth_2pct_usd": 55628,
+          "korea_premium_pct": 18.8,
+          "upbit_share_of_volume_pct": 17.7,
+          "exchange_net_flow_egld": 9029,
+          "otc_gross_egld": 1604,
+          "binance_com_deposits_egld": 106259,
+          "venues_open": [
+            "Binance.com",
+            "Bybit",
+            "Coinbase",
+            "Crypto.com",
+            "Gate.io"
+          ]
+        },
+        "dex_exit_discount_pct": [
+          -9.3
+        ],
+        "korea_premium_pct": [
+          32.4,
+          11.7,
+          15.4,
+          18.8
+        ],
+        "hmex_supply": [
+          24959314779646.0,
+          11012904178288.0
+        ],
+        "pre_committed_tests_resolved": [
+          8,
+          6,
+          6,
+          3,
+          3,
+          1,
+          1,
+          3
+        ],
+        "pre_committed_test_hit_rate_pct": [
+          87.5,
+          100.0,
+          66.7,
+          33.3,
+          0.0,
+          0.0,
+          0.0,
+          33.3
+        ],
+        "pre_committed_tests_open": [
+          7,
+          7,
+          5,
+          5,
+          4,
+          5,
+          6,
+          5
+        ]
+      },
+      "dashboard_feature_suggestions": [
+        {
+          "title": "Intra-entity netting view for exchange flows",
+          "motivation": "Binance.com's raw Oct 12 withdrawals were 187,532 EGLD, 86% of it one send to Binance's own custody wallet. The current exchange-flow bars show the raw hot-wallet drop (-125K) and invite a wrong reading.",
+          "suggested_visualization": "stacked daily bars per venue split into customer deposits, customer withdrawals and internal transfers (hatched), with entity net as a line",
+          "data_already_available": true,
+          "data_source": "whale_intelligence.exchange_flows.rail_status plus run30_traces.binance_daily (needs an internal-transfer field per day)",
+          "priority": "high"
+        },
+        {
+          "title": "Staking-to-custody flow for exchange stake",
+          "motivation": "Binance unDelegated 320,002 from binance_staking while custody rose 161,137; the dashboard has no view that links provider stake, unbonding queue and custody balance for one entity over time.",
+          "suggested_visualization": "multi-week stacked area per exchange entity: delegated stake, unbonding (with maturity markers), custody, hot wallet",
+          "data_already_available": false,
+          "data_source": "providers history from data/collected archive + unbonding_pool + exchange_balances series",
+          "priority": "medium"
+        }
+      ],
+      "dashboard_suggestions_followup": [
+        {
+          "title": "Funding-chain graph for CEX deposits",
+          "status": "pending",
+          "note": "Not built. This window's largest deposits were arbitrage legs (Gate.io -> Binance.com) rather than linked holders, so priority drops to medium; still useful once arbitrage wallets are labelled."
+        },
+        {
+          "title": "Price vs venue-flow overlay (hourly)",
+          "status": "pending",
+          "note": "Not built. Coinbase (Oct 10 22:26) and Bybit (Oct 12 10:18) reopenings are exactly the markers it would show; data needs an hourly rail query."
+        }
+      ],
+      "self_assessment": {
+        "most_valuable_insight": "The window's two largest flows were Binance moving its own EGLD: 320,002 unDelegated from its provider and 161,137 sent hot -> custody, hours apart. Read raw, they look like a 320K unstaking exit and a 125K hot-wallet drain; netted, Binance.com customers deposited +19,776 EGLD/day and the question becomes where the unbonded stake lands on Oct 21.",
+        "actions_completed_count": 6,
+        "actions_attempted_count": 6,
+        "what_would_2x_next_week": "A full 7-day window with arbitrage wallets netted out of venue flows, plus the Binance unbond traced on maturity: that would separate holder selling from venue churn and from exchange treasury moves.",
+        "pre_committed_test_for_next_run": "BINANCE-UNDELEGATION-DESTINATION (run #31 or #32, after ~Oct 21). MEGA-WHALE-COINBASE-LEG by run #32. KOREA-PREMIUM-ARBITRAGE when UPbit has >= 20 depositors. OTC-PIPELINE-RESUMPTION through run #31."
+      },
+      "recommendations_for_next_run": [
+        "BINANCE UNBOND: if run #31 lands after Oct 21, trace the 320,002 EGLD withdraw from erd1r3w62vq... one hop (custody / re-delegate / hot wallet); otherwise confirm it is still pending.",
+        "UPBIT Oct 19-23 decision: count distinct UPbit depositors; korea-premium-arbitrage becomes evaluable at >= 20.",
+        "Net cross-venue arbitrage wallets (erd1d2anjjha, erd13sytuz92, erd1reh7sy2c) out of venue flows before reading exchange net flow; label them in known-addresses if they persist.",
+        "Coinbase routing wallet: watch for further Whale B -> Coinbase -> Mega Whale legs (mega-whale-coinbase-leg).",
+        "Run a full 7-day window (Oct 12 -> Oct 19) so flows return to the weekly baselines.",
+        "Add a web check for Coinbase/Bybit/Upbit EGLD network notices (none was run this time)."
+      ]
     }
   ]
 }

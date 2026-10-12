@@ -1,14 +1,14 @@
 {
-  "generated_from": 29,
+  "generated_from": 30,
   "totals": {
-    "tests": 46,
-    "resolved": 40,
-    "open": 6,
-    "as_predicted": 25,
-    "against": 8,
-    "inconclusive": 5,
+    "tests": 48,
+    "resolved": 43,
+    "open": 5,
+    "as_predicted": 26,
+    "against": 9,
+    "inconclusive": 6,
     "withdrawn": 2,
-    "hit_rate_pct": 62.5
+    "hit_rate_pct": 60.46511627906977
   },
   "runs": [
     {
@@ -118,9 +118,75 @@
       "withdrawn": 0,
       "hit_rate_pct": 0,
       "open_after": 6
+    },
+    {
+      "run": 30,
+      "date": "2026-10-12",
+      "registered": 2,
+      "resolved": 3,
+      "as_predicted": 1,
+      "against": 1,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 33.333333333333336,
+      "open_after": 5
     }
   ],
   "tests": [
+    {
+      "id": "binance-undelegation-destination",
+      "registered_in_run": 30,
+      "claim": "Binance's 320,002 EGLD unDelegate (Oct 12) is a re-allocation into its staking custody, not supply for sale.",
+      "threshold": "At the first run after the unbond matures (~Oct 21; run #31 or #32): of the EGLD withdrawn by erd1r3w62vq..., > 70% reaching Binance Staking custody or re-delegated = re-allocation; > 30% reaching the Binance.com hot wallet and custody not up by at least that much = supply; otherwise no conclusion. Not withdrawn by run #32 = not evaluable",
+      "branches": [
+        {
+          "condition": "> 70% to custody or re-delegated",
+          "reading": "re-allocation"
+        },
+        {
+          "condition": "> 30% to hot wallet, custody not up",
+          "reading": "supply"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #30: unDelegated 320,002 at 06:16 UTC Oct 12; same morning the hot wallet sent 161,137 to custody (3,654,671).",
+      "resolution": null,
+      "seen_in_run": 30,
+      "seen_in_date": "2026-10-12"
+    },
+    {
+      "id": "mega-whale-coinbase-leg",
+      "registered_in_run": 30,
+      "claim": "The Mega Whale's +120,172 EGLD is a Coinbase-intermediated transfer from Unknown Whale B, not a new buyer.",
+      "threshold": "By run #32: Whale B's balance falls by >= 50,000 more while the Mega Whale rises by a similar amount through the Coinbase routing wallet = bilateral OTC pattern confirmed; the Mega Whale receives >= 50,000 via Coinbase with no matching Whale B deposit = independent buying; neither = no conclusion",
+      "branches": [
+        {
+          "condition": "matched Whale B -> Coinbase -> Mega Whale legs",
+          "reading": "bilateral OTC"
+        },
+        {
+          "condition": "Mega Whale inflow without a Whale B leg",
+          "reading": "independent buying"
+        },
+        {
+          "condition": "neither",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #30: Whale B sent 122,054 at 22:32 Oct 10, received 55,036 back over two days; Mega Whale +120,172 at 22:35-22:55.",
+      "resolution": null,
+      "seen_in_run": 30,
+      "seen_in_date": "2026-10-12"
+    },
     {
       "id": "binance-deposit-persistence",
       "registered_in_run": 29,
@@ -140,13 +206,13 @@
           "reading": "reopening artifact"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #29: deposits 124,524 and withdrawals 21,535 (the withdrawals started Oct 9 08:04, hours before collection); hot wallet +102,986",
-      "resolution": null,
-      "seen_in_run": 29,
-      "seen_in_date": "2026-10-09"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 30,
+      "measured_value": "window 2.7 days: deposits 106,259, customer withdrawals 52,072 (excluding the 161,137 internal hot -> custody send), net +54,188 = +19,776 EGLD/day; per day 10-09 +5,843, 10-10 +22,592, 10-11 +14,200, 10-12 -144,902 (raw, Oct 12 includes the custody send)",
+      "resolution": "Deposits exceeded customer withdrawals on every full day since the reopening, by more than the +10,000/day line over the window. The raw hot-wallet figure (Oct 12: -145K) is the internal custody top-up, which the test's 'customer flow' reading must exclude. Caveat: the largest single deposit (15,179) was an arbitrage leg from Gate.io, so part of the inflow is cross-venue churn rather than holders selling.",
+      "seen_in_run": 30,
+      "seen_in_date": "2026-10-12"
     },
     {
       "id": "exit-route-cex",
@@ -167,13 +233,13 @@
           "reading": "mixed"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #29: of the six largest withdraw calls, 27,970 EGLD (meria) went to Binance.com; Trust Staking re-delegated; no repeat of the 26,678 EGLD DEX sale",
-      "resolution": null,
-      "seen_in_run": 29,
-      "seen_in_date": "2026-10-09"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 30,
+      "measured_value": "3 withdraw calls > 3,000 EGLD: internal 3,027 (Crypto.com sweep), re-delegated 3,833, held 4,892, to CEX 0, to DEX/bridge 0; USDC burn 46,302 (< 50,000)",
+      "resolution": "Neither branch is met in substance: 0% went to a CEX, but nothing went through the DEX or bridge either. The population of large exits was near zero this window, so the claim was not tested. Binance's 320,002 EGLD unDelegate is an exchange's own stake, not a delegator exit, and is tested separately.",
+      "seen_in_run": 30,
+      "seen_in_date": "2026-10-12"
     },
     {
       "id": "otc-pipeline-resumption",
@@ -345,13 +411,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "received 775,154 minted EGLD via a one-hop fresh wallet at 07:27 UTC Sep 19; the two-hop back-trace of its inbound hit the 300-transaction page cap in 14 days",
-      "resolution": null,
-      "seen_in_run": 26,
-      "seen_in_date": "2026-09-21"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 30,
+      "measured_value": "run #30: 0 inbound txs and 0 distinct senders in the window, with Binance.com, Coinbase, Bybit and Gate.io all moving EGLD both ways",
+      "resolution": "Past its run #28 deadline, which was extended only because exchange rails were closed. With four major venues open it received nothing: < 50 distinct senders, so the operator-inventory reading stands and the hub history is not re-attributed.",
+      "seen_in_run": 30,
+      "seen_in_date": "2026-10-12"
     },
     {
       "id": "delivery-price-relevance-2",
