@@ -1,14 +1,14 @@
 {
-  "generated_from": 30,
+  "generated_from": 31,
   "totals": {
-    "tests": 48,
-    "resolved": 43,
-    "open": 5,
+    "tests": 50,
+    "resolved": 44,
+    "open": 6,
     "as_predicted": 26,
     "against": 9,
-    "inconclusive": 6,
+    "inconclusive": 7,
     "withdrawn": 2,
-    "hit_rate_pct": 60.46511627906977
+    "hit_rate_pct": 59.09090909090909
   },
   "runs": [
     {
@@ -130,9 +130,75 @@
       "withdrawn": 0,
       "hit_rate_pct": 33.333333333333336,
       "open_after": 5
+    },
+    {
+      "run": 31,
+      "date": "2026-10-15",
+      "registered": 2,
+      "resolved": 1,
+      "as_predicted": 0,
+      "against": 0,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 0,
+      "open_after": 6
     }
   ],
   "tests": [
+    {
+      "id": "reopening-supply-overhang",
+      "registered_in_run": 31,
+      "claim": "The post-reopening decline is pent-up supply from the halt weeks reaching exchanges, not a market-wide move.",
+      "threshold": "Over the next full 7-day window (run #32): tracked exchanges net inflow > +25,000 EGLD (ex cross-venue wallets) AND EGLD - BTC < -3pp = overhang persists; net outflow AND EGLD - BTC > 0 = overhang cleared; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "net inflow > 25K and EGLD-BTC < -3pp",
+          "reading": "overhang persists"
+        },
+        {
+          "condition": "net outflow and EGLD-BTC > 0",
+          "reading": "overhang cleared"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #31: exchanges +42,939 EGLD (+7,218 ex-arbitrage) over 2.8 days; EGLD - BTC -5.5pp.",
+      "resolution": null,
+      "seen_in_run": 31,
+      "seen_in_date": "2026-10-15"
+    },
+    {
+      "id": "ninjastaking-exit-destination",
+      "registered_in_run": 31,
+      "claim": "The 26,699 EGLD ninjastaking unDelegate (erd1me5hmqt5qg...) is a sale, not a provider rotation.",
+      "threshold": "Within 3 days of the withdraw (unbonds ~Oct 23): > 50% reaching a labelled exchange (one hop allowed) = sale; > 50% re-delegated = rotation; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "> 50% to exchange",
+          "reading": "sale"
+        },
+        {
+          "condition": "> 50% re-delegated",
+          "reading": "rotation"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #31: unDelegated 26,699, 8.3 days to unbond; wallet holds 122.",
+      "resolution": null,
+      "seen_in_run": 31,
+      "seen_in_date": "2026-10-15"
+    },
     {
       "id": "binance-undelegation-destination",
       "registered_in_run": 30,
@@ -264,13 +330,13 @@
           "reading": "not evaluable"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #28: desk gross outbound 0; router tail 12,184 to Gate.io; desks 46,637",
-      "resolution": null,
-      "seen_in_run": 28,
-      "seen_in_date": "2026-10-05"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 31,
+      "measured_value": "runs #28-#31: desk gross 0 / 5,745 / 1,604 / 0 EGLD (all < 20,000); UPbit withdrawals never reopened (its hot wallet had no EGLD flow this window, 1 send since restart, to its own OTC desk)",
+      "resolution": "Not evaluable by the test's own branch: UPbit was still closed at run #31. Every window stayed under the 20,000 partial line, but the programme's feed (UPbit -> desk) cannot run while UPbit's rail is shut, so 'programme ended' cannot be separated from 'programme blocked'. Re-register only if UPbit reopens.",
+      "seen_in_run": 31,
+      "seen_in_date": "2026-10-15"
     },
     {
       "id": "upbit-premium-decay",

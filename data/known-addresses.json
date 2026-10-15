@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-10-12",
+    "last_updated": "2026-10-15",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1231,6 +1231,30 @@
       "notes": "Received the UPbit OTC desk's 5,745 EGLD through routers on Oct 6; nonce 1, holds 5,836 EGLD, has sent nothing of value.",
       "first_seen": "2026-10-12",
       "discovered_run": 30
+    },
+    "erd13sytuz92vyz0h0l52xzw3xmuy3msulhxyzdu7h0feankdakxs9sq49uzdt": {
+      "name": "Cross-venue arbitrage wallet (Gate.io/Binance/Coinbase -> Bybit)",
+      "category": "other",
+      "subcategory": "arbitrage",
+      "notes": "Run #30: Gate.io -> Bybit 12,943. Run #31: 3,348 from Binance.com + 2,217 from Coinbase -> Bybit 5,565. Nonce 135, keeps no balance.",
+      "first_seen": "2026-10-15",
+      "discovered_run": 31
+    },
+    "erd1reh7sy2c4x53wdgtgq53lnesljgsyuwlel5tq684uemn83k0et4sn3d6lc": {
+      "name": "Cross-venue wallet (one-shot Gate.io -> Binance.com)",
+      "category": "other",
+      "subcategory": "arbitrage",
+      "notes": "Nonce 1: withdrew 15,177 from Gate.io and deposited 15,179 at Binance.com on Oct 12 15:00 UTC; now empty.",
+      "first_seen": "2026-10-15",
+      "discovered_run": 31
+    },
+    "erd1vadknqe8tasfwz62sn5gre0ws8x08rnuy2lp6cw0np5aktl7sndsh9wtw7": {
+      "name": "Drip seller into Binance.com (via erd137cw9q46)",
+      "category": "other",
+      "subcategory": "seller",
+      "notes": "Oct 12-15: sends 200-250 EGLD clips to erd137cw9q46 (run #29's 57,620 EGLD Binance depositor), which forwards them to Binance.com within minutes. Holds ~67,800 EGLD.",
+      "first_seen": "2026-10-15",
+      "discovered_run": 31
     }
   },
   "exchange_routers": {
