@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-10-15",
+    "last_updated": "2026-10-19",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1255,6 +1255,22 @@
       "notes": "Oct 12-15: sends 200-250 EGLD clips to erd137cw9q46 (run #29's 57,620 EGLD Binance depositor), which forwards them to Binance.com within minutes. Holds ~67,800 EGLD.",
       "first_seen": "2026-10-15",
       "discovered_run": 31
+    },
+    "erd1rgm4td296wxwxnepwets5wnwsea7jy5u4lw4xt2sa535khgsjcdqfag6j4": {
+      "name": "One-shot hop: erd1hhvfrw -> Binance.com",
+      "category": "other",
+      "subcategory": "deposit_hop",
+      "notes": "Nonce 1. Received 12,223 EGLD from erd1hhvfrw (Binance funder) on 2026-10-19 03:34 UTC and deposited it at Binance.com at 03:36; empty after.",
+      "first_seen": "2026-10-19",
+      "discovered_run": 32
+    },
+    "erd1ltetacm786cz9atjjs9rgtlj56ce2n6k7ex0t9n6vfavg4krzl4qg7tl8j": {
+      "name": "USDC bridge-out wallet (largest, Oct 15-19)",
+      "category": "other",
+      "subcategory": "bridge_user",
+      "notes": "Unwrapped 21,442 USDC to bridge out in two calls (run #32); no EGLD swaps and no exchange inflow in the prior 7 days.",
+      "first_seen": "2026-10-19",
+      "discovered_run": 32
     }
   },
   "exchange_routers": {

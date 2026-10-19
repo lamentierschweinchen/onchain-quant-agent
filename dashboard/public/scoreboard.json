@@ -1,14 +1,14 @@
 {
-  "generated_from": 31,
+  "generated_from": 32,
   "totals": {
-    "tests": 50,
-    "resolved": 44,
-    "open": 6,
-    "as_predicted": 26,
+    "tests": 51,
+    "resolved": 46,
+    "open": 5,
+    "as_predicted": 27,
     "against": 9,
-    "inconclusive": 7,
+    "inconclusive": 8,
     "withdrawn": 2,
-    "hit_rate_pct": 59.09090909090909
+    "hit_rate_pct": 58.69565217391305
   },
   "runs": [
     {
@@ -142,9 +142,48 @@
       "withdrawn": 0,
       "hit_rate_pct": 0,
       "open_after": 6
+    },
+    {
+      "run": 32,
+      "date": "2026-10-19",
+      "registered": 1,
+      "resolved": 2,
+      "as_predicted": 1,
+      "against": 0,
+      "inconclusive": 1,
+      "withdrawn": 0,
+      "hit_rate_pct": 50,
+      "open_after": 5
     }
   ],
   "tests": [
+    {
+      "id": "overhang-absorbed",
+      "registered_in_run": 32,
+      "claim": "The halt-weeks supply overhang has been absorbed: the post-reopening inflow to exchanges is ending and EGLD stops underperforming BTC.",
+      "threshold": "Over the next 7-day rail window (run #33, start after this run's rail pass): tracked exchanges net < +10,000 EGLD ex cross-venue wallets AND EGLD - BTC >= -1pp = absorbed; net > +25,000 AND EGLD - BTC < -3pp = still being distributed; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "net < +10K ex cross-venue and EGLD-BTC >= -1pp",
+          "reading": "absorbed"
+        },
+        {
+          "condition": "net > +25K and EGLD-BTC < -3pp",
+          "reading": "still distributing"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #32 last 4.2 days: exchanges +12,843 EGLD (cross-venue wallets kept nothing), EGLD - BTC +0.4pp.",
+      "resolution": null,
+      "seen_in_run": 32,
+      "seen_in_date": "2026-10-19"
+    },
     {
       "id": "reopening-supply-overhang",
       "registered_in_run": 31,
@@ -164,13 +203,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #31: exchanges +42,939 EGLD (+7,218 ex-arbitrage) over 2.8 days; EGLD - BTC -5.5pp.",
-      "resolution": null,
-      "seen_in_run": 31,
-      "seen_in_date": "2026-10-15"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 32,
+      "measured_value": "7-day rails Oct 12 15:05 -> Oct 19 (7.0 days): net +54,201 EGLD raw, +34,049 ex cross-venue wallets; EGLD -5.77% vs BTC -0.63% (-5.1pp). Balance basis ex cross-venue about +20,061.",
+      "resolution": "Branch 'persists': both conditions met on the rail measure the test was written for. Caveat stated up front: on the balance basis the inflow is about +20,061, under the 25,000 line, so the margin is thin; and in the last 4.2 days of the week the price impact faded (EGLD +0.4pp vs BTC) although the inflow pace did not. The halt-weeks overhang reached exchanges during the first week after reopening; whether it is finished is a separate test (overhang-absorbed).",
+      "seen_in_run": 32,
+      "seen_in_date": "2026-10-19"
     },
     {
       "id": "ninjastaking-exit-destination",
@@ -245,13 +284,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #30: Whale B sent 122,054 at 22:32 Oct 10, received 55,036 back over two days; Mega Whale +120,172 at 22:35-22:55.",
-      "resolution": null,
-      "seen_in_run": 30,
-      "seen_in_date": "2026-10-12"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 32,
+      "measured_value": "by run #32: Whale B 181,822 (+8,628, a Coinbase withdrawal, not a deposit); Mega Whale 1,219,231 (unchanged); routing wallet idle",
+      "resolution": "Neither branch: Whale B did not fall further and the Mega Whale received nothing. Whale B instead pulled 8,628 back from Coinbase. The run #30 leg stays a single observation; no bilateral pattern and no independent buying.",
+      "seen_in_run": 32,
+      "seen_in_date": "2026-10-19"
     },
     {
       "id": "binance-deposit-persistence",
