@@ -1,14 +1,14 @@
 {
-  "generated_from": 32,
+  "generated_from": 33,
   "totals": {
-    "tests": 51,
-    "resolved": 46,
+    "tests": 52,
+    "resolved": 47,
     "open": 5,
-    "as_predicted": 27,
+    "as_predicted": 28,
     "against": 9,
     "inconclusive": 8,
     "withdrawn": 2,
-    "hit_rate_pct": 58.69565217391305
+    "hit_rate_pct": 59.57446808510638
   },
   "runs": [
     {
@@ -154,9 +154,52 @@
       "withdrawn": 0,
       "hit_rate_pct": 50,
       "open_after": 5
+    },
+    {
+      "run": 33,
+      "date": "2026-10-22",
+      "registered": 1,
+      "resolved": 1,
+      "as_predicted": 1,
+      "against": 0,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 100,
+      "open_after": 5
     }
   ],
   "tests": [
+    {
+      "id": "binance-custody-hold",
+      "registered_in_run": 33,
+      "claim": "The 320,000 EGLD Binance returned to its staking custody stays off the market.",
+      "threshold": "By run #35, measured on Binance Staking custody erd1rf4hv70...: > 70% of the 320,000 re-delegated = re-stake; < 50,000 sent to the Binance.com hot wallet and the rest held = held; > 100,000 sent to the hot wallet = supply; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "> 70% re-delegated",
+          "reading": "re-stake"
+        },
+        {
+          "condition": "< 50K to hot wallet, rest held",
+          "reading": "held"
+        },
+        {
+          "condition": "> 100K to hot wallet",
+          "reading": "supply"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #33: custody 3,974,671 EGLD; no outbound at the trace.",
+      "resolution": null,
+      "seen_in_run": 33,
+      "seen_in_date": "2026-10-22"
+    },
     {
       "id": "overhang-absorbed",
       "registered_in_run": 32,
@@ -257,13 +300,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #30: unDelegated 320,002 at 06:16 UTC Oct 12; same morning the hot wallet sent 161,137 to custody (3,654,671).",
-      "resolution": null,
-      "seen_in_run": 30,
-      "seen_in_date": "2026-10-12"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 33,
+      "measured_value": "run #33: withdraw Oct 22 09:15 UTC by erd1r3w62vq...; 320,000 of 320,000 EGLD (100%) sent to Binance Staking custody erd1rf4hv70... at Oct 22 09:17; 0 to the Binance.com hot wallet; custody balance 3,974,671 at the trace.",
+      "resolution": "Branch 're-allocation': > 70% reached Binance Staking custody. The unbond was a move from delegation into custody, not supply for sale. It is not (yet) re-delegated, so the staked ratio will show a ~1pp step down at the next read; that step is a custody choice, not an exit to market. Follow-up test registered: binance-custody-hold.",
+      "seen_in_run": 33,
+      "seen_in_date": "2026-10-22"
     },
     {
       "id": "mega-whale-coinbase-leg",

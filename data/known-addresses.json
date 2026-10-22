@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-10-19",
+    "last_updated": "2026-10-22",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1271,6 +1271,38 @@
       "notes": "Unwrapped 21,442 USDC to bridge out in two calls (run #32); no EGLD swaps and no exchange inflow in the prior 7 days.",
       "first_seen": "2026-10-19",
       "discovered_run": 32
+    },
+    "erd1rcty49rmvv6z80exv2l4pj2cgnnyqkjs639ss2cz0r5nkr8s4rnqfu5v0n": {
+      "name": "One-shot hop #2: erd1hhvfrw -> Binance.com",
+      "category": "other",
+      "subcategory": "deposit_hop",
+      "notes": "Nonce 2. 6 EGLD test then 24,994 from erd1hhvfrw (Binance funder) on 2026-10-20 21:18-21:26 UTC; deposited 25,000 at Binance.com at 21:35; empty after.",
+      "first_seen": "2026-10-22",
+      "discovered_run": 33
+    },
+    "erd1079hvt0a2tha0jr6gykh5ft7nuvgrlt07c6tkuzm8zkyyc66v72qgt9u6p": {
+      "name": "Refill wallet for erd1hhvfrw",
+      "category": "other",
+      "subcategory": "refill",
+      "notes": "Sends erd1hhvfrw 200-700 EGLD every 30-60 minutes; funded by Unknown Whale erd1hl5y4a. Part of the erd1hl5y4a -> erd1hhvfrw -> one-shot hop -> Binance.com chain (runs #32-#33).",
+      "first_seen": "2026-10-22",
+      "discovered_run": 33
+    },
+    "erd1ukxuufpkva67hu8ae097euz9teegzv564sc9pf00u3puwer92h6qf07yl4": {
+      "name": "Coinbase -> Binance migrator",
+      "category": "other",
+      "subcategory": "cex_to_cex",
+      "notes": "Received ~29,500 EGLD from Coinbase wallets in 14 days; deposited 3,254 at Binance.com in four clips Oct 19-22.",
+      "first_seen": "2026-10-22",
+      "discovered_run": 33
+    },
+    "erd14gdre9z87n68q4k82v2ye9xsp5pn2xsty33ezq3azjtd8k4fj5ks0lxm9l": {
+      "name": "Binance -> Hatom collateral wallet",
+      "category": "other",
+      "subcategory": "defi_user",
+      "notes": "Withdrew 10,004 EGLD from Binance.com on 2026-10-20 09:00 UTC and supplied it to Hatom's EGLD money market (mintAndEnterMarket) six minutes later.",
+      "first_seen": "2026-10-22",
+      "discovered_run": 33
     }
   },
   "exchange_routers": {
