@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-25T05:54:21Z",
+ "updated": "2026-10-25T11:12:27Z",
  "note": "Hourly readings for the EGLD pump tracker. funding is the mean across perp venues; negative means short sellers pay longs. oiShare is open interest as a percent of market cap.",
  "points": [
   {
@@ -4141,6 +4141,21 @@
    "fundingVenues": 30,
    "desks": 54344,
    "staked": 13923744
+  },
+  {
+   "t": "2026-10-25T11:12:27Z",
+   "price": 3.24,
+   "change24h": -3.56,
+   "mcap": 100565275,
+   "spotVol": 2435900,
+   "oi": 23299478,
+   "oiShare": 23.17,
+   "perpVol": 33201677,
+   "funding": -0.01173,
+   "fundingNeg": 21,
+   "fundingVenues": 30,
+   "desks": 54344,
+   "staked": 13893537
   }
  ]
 }
