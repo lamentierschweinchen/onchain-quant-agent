@@ -1,14 +1,14 @@
 {
-  "generated_from": 33,
+  "generated_from": 34,
   "totals": {
-    "tests": 52,
-    "resolved": 47,
-    "open": 5,
+    "tests": 54,
+    "resolved": 50,
+    "open": 4,
     "as_predicted": 28,
-    "against": 9,
-    "inconclusive": 8,
+    "against": 10,
+    "inconclusive": 10,
     "withdrawn": 2,
-    "hit_rate_pct": 59.57446808510638
+    "hit_rate_pct": 56
   },
   "runs": [
     {
@@ -166,9 +166,79 @@
       "withdrawn": 0,
       "hit_rate_pct": 100,
       "open_after": 5
+    },
+    {
+      "run": 34,
+      "date": "2026-10-26",
+      "registered": 2,
+      "resolved": 3,
+      "as_predicted": 0,
+      "against": 1,
+      "inconclusive": 2,
+      "withdrawn": 0,
+      "hit_rate_pct": 0,
+      "open_after": 4
     }
   ],
   "tests": [
+    {
+      "id": "upbit-premium-on-decision",
+      "registered_in_run": 34,
+      "claim": "The Upbit premium is a closed-venue premium: it collapses once Upbit decides (delisting or reopened deposits).",
+      "threshold": "At the first run after Upbit's announced decision (Nov 16-20): if Upbit delists EGLD or reopens deposits, Upbit-Binance premium < 5% = closed-venue premium; > 10% = Korean demand premium; 5-10% = no conclusion; caution extended again with deposits closed = re-date the test once",
+      "branches": [
+        {
+          "condition": "decision taken and premium < 5%",
+          "reading": "closed-venue premium"
+        },
+        {
+          "condition": "decision taken and premium > 10%",
+          "reading": "Korean demand"
+        },
+        {
+          "condition": "decision taken and premium 5-10%",
+          "reading": "no conclusion"
+        },
+        {
+          "condition": "caution extended again, deposits closed",
+          "reading": "re-date once"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #34: premium 20.6%, Upbit 90% of global volume, UPbit wallet idle.",
+      "resolution": null,
+      "seen_in_run": 34,
+      "seen_in_date": "2026-10-26"
+    },
+    {
+      "id": "outflow-bottom",
+      "registered_in_run": 34,
+      "claim": "With exchange inflow over, EGLD stops underperforming BTC.",
+      "threshold": "Over run #35's window (balance basis ex internal moves, cross-venue wallets out): tracked exchanges net <= 0 AND EGLD - BTC >= 0pp = bottoming; net > +10,000 AND EGLD - BTC < -2pp = renewed distribution; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "net <= 0 and EGLD-BTC >= 0pp",
+          "reading": "bottoming"
+        },
+        {
+          "condition": "net > +10K and EGLD-BTC < -2pp",
+          "reading": "renewed distribution"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #34: net -32,129 ex internal, EGLD -8.5pp vs BTC.",
+      "resolution": null,
+      "seen_in_run": 34,
+      "seen_in_date": "2026-10-26"
+    },
     {
       "id": "binance-custody-hold",
       "registered_in_run": 33,
@@ -219,13 +289,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #32 last 4.2 days: exchanges +12,843 EGLD (cross-venue wallets kept nothing), EGLD - BTC +0.4pp.",
-      "resolution": null,
-      "seen_in_run": 32,
-      "seen_in_date": "2026-10-19"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 34,
+      "measured_value": "run #34 fixed window 2026-10-19 14:40 UTC -> 2026-10-26 14:40 UTC: rails net -16,335 EGLD raw, -15,453 ex cross-venue wallets (deposits 243,235, withdrawals 259,570); EGLD -10.2% vs BTC -2.4% = -7.9pp.",
+      "resolution": "Branch 'otherwise / no conclusion': the flow leg passed (net -15,453 < +10,000) but the price leg failed (-7.9pp < -1pp); 'still distributing' also fails (net not > +25,000). The halt-weeks inflow did end, but EGLD fell anyway: the selling came from EGLD already on exchanges (and from Korea-closed liquidity elsewhere), not from new deposits. Follow-up registered: outflow-bottom.",
+      "seen_in_run": 34,
+      "seen_in_date": "2026-10-26"
     },
     {
       "id": "reopening-supply-overhang",
@@ -273,13 +343,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #31: unDelegated 26,699, 8.3 days to unbond; wallet holds 122.",
-      "resolution": null,
-      "seen_in_run": 31,
-      "seen_in_date": "2026-10-15"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 34,
+      "measured_value": "run #34: withdraw 2026-10-23 19:54 UTC (26,699 EGLD); 15,000 (56%) delegated back to ninjastaking at 2026-10-24 05:23 UTC; 0 to a labelled exchange; the rest swapped via xExchange/XOXNO into USDC/USDT supplied on Hatom (with EGLD borrowed against it).",
+      "resolution": "Branch 'rotation' (> 50% re-delegated): the claim that the unDelegate was a sale is contradicted. The wallet re-delegated to the same provider, so the 'exit' was a partial de-risking into stablecoins, executed on-chain through Hatom rather than on an exchange.",
+      "seen_in_run": 34,
+      "seen_in_date": "2026-10-26"
     },
     {
       "id": "binance-undelegation-destination",
@@ -474,13 +544,13 @@
           "reading": "not evaluable, retire"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "premium 32.4% (Upbit $5.96 vs Binance $4.50); UPbit hot wallet 0 EGLD deposits since restart",
-      "resolution": null,
-      "seen_in_run": 27,
-      "seen_in_date": "2026-09-28"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 34,
+      "measured_value": "run #34: UPbit received 0 EGLD deposits in the window (0 since run #27 above dust in the window); premium 20.6%. Upbit extended its caution review to Nov 16-20.",
+      "resolution": "Branch 'deposits still closed at run #29 = not evaluable, retire': UPbit deposits never reopened. Retired and replaced by upbit-premium-on-decision, which is tied to Upbit's announced decision date.",
+      "seen_in_run": 34,
+      "seen_in_date": "2026-10-26"
     },
     {
       "id": "post-restart-exit-wave",

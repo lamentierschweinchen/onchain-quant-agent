@@ -9,7 +9,7 @@
       "SDK documentation (system contracts)"
     ],
     "total_entries": 146,
-    "last_updated": "2026-10-22",
+    "last_updated": "2026-10-26",
     "updated_by_run": 9,
     "notes": " | Run 6: +3 routing wallets (Binance.com 2 \u2192 UPbit OTC). Run 7: +10 routing wallets, +1 unknown_whales (cross-exchange OTC pipeline). Run 8: +2 OTC source-chain routers (erd17l22 distribution: erd1nhtq4 nonce 2543 + erd1ecyftln nonce 50). Run 9: +1 OTC source funder (erd12tq6ax5k -> erd17l22 upstream). Run 10: erd12tq6ax5k verified as pure pass-through with 100% Binance.com origin; OTC pipeline fully traced end-to-end. Run 11: distribution wave HIT ON SCHEDULE (UPbit OTC -14K, OTC Dist -12.4K = -26.4K combined); load-distribute cycle empirically validated at 1-week minimum period."
   },
@@ -1303,6 +1303,30 @@
       "notes": "Withdrew 10,004 EGLD from Binance.com on 2026-10-20 09:00 UTC and supplied it to Hatom's EGLD money market (mintAndEnterMarket) six minutes later.",
       "first_seen": "2026-10-22",
       "discovered_run": 33
+    },
+    "erd1qyt62v5ndd0rm8n8ppyx0g4kunvqu25vsh22zr42387e5z5rkqcqv6al7y": {
+      "name": "Multi-provider exiter erd1qyt62v5ndd",
+      "category": "other",
+      "subcategory": "staking_exit",
+      "notes": "Withdrew 8,351 (westake), 8,350 (Synexis) and 8,001 (bober) on 2026-10-25; held ~25,698 unstaked at the run #34 trace.",
+      "first_seen": "2026-10-26",
+      "discovered_run": 34
+    },
+    "erd1ygkh9r65xm8nvczg0jcc3y3ncc3tq88zym7vpve7fpdmv2u0qgusfwf98h": {
+      "name": "Binance.com withdrawal holder erd1ygkh9r65",
+      "category": "other",
+      "subcategory": "cex_withdrawal",
+      "notes": "Fresh wallet; received 27,066 EGLD from Binance.com on 2026-10-26 08:15 UTC and held it.",
+      "first_seen": "2026-10-26",
+      "discovered_run": 34
+    },
+    "erd1r35rd2zy8dgkzan66ma2ahpx3rlluynlzvsq4f7td4nyu0ru245qftkzvg": {
+      "name": "KuCoin first post-halt withdrawer",
+      "category": "other",
+      "subcategory": "cex_withdrawal",
+      "notes": "Received 9,999 EGLD from KuCoin in three sends on 2026-10-23 05:54-06:04 UTC, the first customer withdrawals since the halt.",
+      "first_seen": "2026-10-26",
+      "discovered_run": 34
     }
   },
   "exchange_routers": {
