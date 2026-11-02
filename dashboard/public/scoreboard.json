@@ -1,14 +1,14 @@
 {
-  "generated_from": 34,
+  "generated_from": 35,
   "totals": {
-    "tests": 54,
-    "resolved": 50,
+    "tests": 56,
+    "resolved": 52,
     "open": 4,
-    "as_predicted": 28,
+    "as_predicted": 30,
     "against": 10,
     "inconclusive": 10,
     "withdrawn": 2,
-    "hit_rate_pct": 56
+    "hit_rate_pct": 57.69230769230769
   },
   "runs": [
     {
@@ -178,9 +178,75 @@
       "withdrawn": 0,
       "hit_rate_pct": 0,
       "open_after": 4
+    },
+    {
+      "run": 35,
+      "date": "2026-11-02",
+      "registered": 2,
+      "resolved": 2,
+      "as_predicted": 2,
+      "against": 0,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 100,
+      "open_after": 4
     }
   ],
   "tests": [
+    {
+      "id": "kucoin-backlog-decay",
+      "registered_in_run": 35,
+      "claim": "KuCoin's outflow is a backlog release that decays.",
+      "threshold": "KuCoin wallet net flow over run #36's window (balance basis): net outflow < 20,000 = decayed; > 50,000 = continuing; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "outflow < 20K",
+          "reading": "backlog exhausted"
+        },
+        {
+          "condition": "outflow > 50K",
+          "reading": "open rail with ongoing sellers"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #35: -149,563 (book 55,768)",
+      "resolution": null,
+      "seen_in_run": 35,
+      "seen_in_date": "2026-11-02"
+    },
+    {
+      "id": "bottom-confirms",
+      "registered_in_run": 35,
+      "claim": "The bottoming read holds in the next window.",
+      "threshold": "Over run #36's window: tracked exchanges net <= +10,000 ex internal moves AND EGLD - BTC >= -2pp = confirms; net > +10,000 AND EGLD - BTC < -2pp = failed; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "net <= +10K and EGLD-BTC >= -2pp",
+          "reading": "confirms"
+        },
+        {
+          "condition": "net > +10K and EGLD-BTC < -2pp",
+          "reading": "failed"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #35: net -205,817, +7.2pp",
+      "resolution": null,
+      "seen_in_run": 35,
+      "seen_in_date": "2026-11-02"
+    },
     {
       "id": "upbit-premium-on-decision",
       "registered_in_run": 34,
@@ -231,13 +297,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #34: net -32,129 ex internal, EGLD -8.5pp vs BTC.",
-      "resolution": null,
-      "seen_in_run": 34,
-      "seen_in_date": "2026-10-26"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 35,
+      "measured_value": "net -205,817 EGLD; EGLD +3.66% vs BTC -3.55% = +7.2pp",
+      "resolution": "Bottoming branch fired: exchanges net <= 0 and EGLD ahead of BTC. Caveats: 99% of the outflow is KuCoin and MEXC (one-off backlogs, not a trend), and the Binance internal move was inside the tracked set so it nets out. One window.",
+      "seen_in_run": 35,
+      "seen_in_date": "2026-11-02"
     },
     {
       "id": "binance-custody-hold",
@@ -262,13 +328,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #33: custody 3,974,671 EGLD; no outbound at the trace.",
-      "resolution": null,
-      "seen_in_run": 33,
-      "seen_in_date": "2026-10-22"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 35,
+      "measured_value": "custody 4,284,611; 0 outbound txs, 0 to the hot wallet, 0 re-delegated since Oct 22",
+      "resolution": "'Held' branch fired. The custody also received 309,906 from the hot wallet on Oct 29, which is outside the test but raises the idle balance.",
+      "seen_in_run": 35,
+      "seen_in_date": "2026-11-02"
     },
     {
       "id": "overhang-absorbed",
