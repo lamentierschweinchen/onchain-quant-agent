@@ -1141,10 +1141,12 @@
       "notes": "Unlabeled account. ~165K EGLD. Shard 0."
     },
     "erd15ku2r2j6smlwumftumlpw0mfpqxy32wyt4ewxzyhs3ugsjee8stq2xh84e": {
-      "name": "Unknown Whale",
+      "name": "KuCoin round-trip whale (erd15ku2r2j6)",
       "category": "other",
-      "subcategory": "whale",
-      "notes": "Unlabeled account. ~153K EGLD."
+      "subcategory": "cex_withdrawal",
+      "notes": "Deposited 145,443 EGLD to KuCoin 2026-07-19; withdrew 136,359 (Oct 30) and 32,000 (Nov 3); holds 168,358. Targeted by poisoning lookalike erd1tyfnsaztln.",
+      "first_seen": "2026-11-09",
+      "discovered_run": 36
     },
     "erd1vd76pwhl4dyeyd8gylv6mkkvy7g4dnfezjuyp4j4x3wwnauga57q53m3z0": {
       "name": "Unknown Whale I (active)",
@@ -1327,6 +1329,14 @@
       "notes": "Received 9,999 EGLD from KuCoin in three sends on 2026-10-23 05:54-06:04 UTC, the first customer withdrawals since the halt.",
       "first_seen": "2026-10-26",
       "discovered_run": 34
+    },
+    "erd1drc22z7hz90sqmugmtwu6pe8kyncg67gv7xulcu4mq92ygyxpacq72xywa": {
+      "name": "OTC operator vault (erd1drc22z7h)",
+      "category": "other",
+      "subcategory": "otc",
+      "notes": "Received 112,634 EGLD from Unknown Whale I (OTC operator inventory) 2026-11-05; sends 1,500-3,200 EGLD clips back to Whale I twice daily.",
+      "first_seen": "2026-11-09",
+      "discovered_run": 36
     }
   },
   "exchange_routers": {

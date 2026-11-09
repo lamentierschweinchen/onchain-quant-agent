@@ -1,14 +1,14 @@
 {
-  "generated_from": 35,
+  "generated_from": 36,
   "totals": {
-    "tests": 56,
-    "resolved": 52,
+    "tests": 58,
+    "resolved": 54,
     "open": 4,
     "as_predicted": 30,
     "against": 10,
-    "inconclusive": 10,
+    "inconclusive": 12,
     "withdrawn": 2,
-    "hit_rate_pct": 57.69230769230769
+    "hit_rate_pct": 55.55555555555556
   },
   "runs": [
     {
@@ -190,9 +190,75 @@
       "withdrawn": 0,
       "hit_rate_pct": 100,
       "open_after": 4
+    },
+    {
+      "run": 36,
+      "date": "2026-11-09",
+      "registered": 2,
+      "resolved": 2,
+      "as_predicted": 0,
+      "against": 0,
+      "inconclusive": 2,
+      "withdrawn": 0,
+      "hit_rate_pct": 0,
+      "open_after": 4
     }
   ],
   "tests": [
+    {
+      "id": "binance-rail-reopens",
+      "registered_in_run": 36,
+      "claim": "Binance's dark native EGLD rail is a temporary pause, not a withdrawal of support.",
+      "threshold": "Over run #37's window: any Binance-labelled wallet (or a newly identified Binance deposit address) receives >= 5,000 EGLD in value-bearing customer deposits = reopened; 0 = still dark; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "deposits >= 5,000",
+          "reading": "reopened"
+        },
+        {
+          "condition": "deposits == 0",
+          "reading": "still dark"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #36: 0 deposits, 0 withdrawals",
+      "resolution": null,
+      "seen_in_run": 36,
+      "seen_in_date": "2026-11-09"
+    },
+    {
+      "id": "kucoin-whale-holds",
+      "registered_in_run": 36,
+      "claim": "erd15ku2r2j6 withdrew to hold, not to sell elsewhere.",
+      "threshold": "At run #37: balance >= 150,000 and no transfer >= 10,000 to any exchange-labelled wallet = holder; >= 50,000 sent to exchanges = seller; otherwise no conclusion",
+      "branches": [
+        {
+          "condition": "balance >= 150K, no CEX send >= 10K",
+          "reading": "holder"
+        },
+        {
+          "condition": ">= 50K to exchanges",
+          "reading": "seller"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #36: 168,358 held",
+      "resolution": null,
+      "seen_in_run": 36,
+      "seen_in_date": "2026-11-09"
+    },
     {
       "id": "kucoin-backlog-decay",
       "registered_in_run": 35,
@@ -212,13 +278,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #35: -149,563 (book 55,768)",
-      "resolution": null,
-      "seen_in_run": 35,
-      "seen_in_date": "2026-11-02"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 36,
+      "measured_value": "KuCoin balance -40,396 (55,768 -> 15,372); one 32,000 withdrawal to erd15ku2r2j6, ex that -8,396",
+      "resolution": "Middle branch (20K-50K): no conclusion on the registered rule. The trace explains why: the 'backlog' was one wallet's 168K round trip, not many sellers; ex that wallet the daily outflow fell under 400 EGLD. The premise of the test was wrong, not just the size.",
+      "seen_in_run": 36,
+      "seen_in_date": "2026-11-09"
     },
     {
       "id": "bottom-confirms",
@@ -239,13 +305,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #35: net -205,817, +7.2pp",
-      "resolution": null,
-      "seen_in_run": 35,
-      "seen_in_date": "2026-11-02"
+      "status": "resolved",
+      "outcome": "inconclusive",
+      "resolved_in_run": 36,
+      "measured_value": "net -86,702 EGLD; EGLD -11.47% vs BTC -3.35% = -8.1pp",
+      "resolution": "Neither branch: exchanges kept losing EGLD (bottom side) but EGLD lagged BTC by 8.1pp (failed side). Exchange outflow did not predict price this window, with Binance's rail shut.",
+      "seen_in_run": 36,
+      "seen_in_date": "2026-11-09"
     },
     {
       "id": "upbit-premium-on-decision",
