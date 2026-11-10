@@ -14,7 +14,7 @@ RD="2026-11-09"; SNAP=f"{REPO}/data/collected/{RD}.json"
 D=json.load(open(SNAP)); API="https://api.multiversx.com"
 RESTART2=1790263800
 # run #33: run #32 stored its rail end (1792420828 = 2026-10-19 14:40:28 UTC); start exactly there.
-RAIL_START=1793636364   # run 35 stored rail end 2026-11-02 14:19:24
+RAIL_START=1793636364   # run 35 stored rail end 2026-11-02 16:19:24
 OV_START,OV_END=1793630428,1794235228   # 2026-11-02 14:40:28 -> 2026-11-09 14:40:28
 RAIL7_START=int(time.time())-7*86400  # trailing 7 days
 WIN=max(D["_period"]["window_start_ts"],RAIL_START)

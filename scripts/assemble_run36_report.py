@@ -10,9 +10,9 @@ REPO = "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 RD = "2026-11-09"
 E = 1e18
 c = json.load(open(f"{REPO}/data/collected/{RD}.json"))
-pv = json.load(open(f"{REPO}/data/previous.json"))
+pv = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/previous_2026-11-02.json"))  # run 36 rebuild: frozen pre-run snapshot
 r0 = json.load(open(f"{REPO}/reports/2026-11-02.json"))
-learn = json.load(open(f"{REPO}/data/learnings.json"))
+learn = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/learnings_pre36.json"))
 kn = json.load(open(f"{REPO}/data/known-addresses.json"))
 R = copy.deepcopy(r0)
 for k in ("otc_pipeline", "halt_recovery"):
@@ -52,13 +52,13 @@ nh["economics"] = {"egld_price_usd": price, "market_cap_usd": eco["marketCap"], 
     "staking_apr": eco["apr"], "base_apr": eco["baseApr"], "topup_apr": eco["topUpApr"],
     "token_market_cap_usd": eco["tokenMarketCap"]}
 nh["activity"] = {"total_accounts": st["accounts"], "total_transactions": st["transactions"], "epoch": st["epoch"],
-    "blocks": st["blocks"], "shards": 3, "transactions_7d": tx_added, "avg_daily_transactions": round(tx_added / 7.0)}
+    "blocks": st["blocks"], "shards": 3, "transactions_7d": tx_added, "avg_daily_transactions": round(tx_added / c["_period"]["window_days"])}
 nh["deltas"] = {"price_change_pct": pc, "market_cap_change_pct": pct(eco["marketCap"], peco["market_cap_usd"]),
     "staked_ratio_change_pp": (ratio - peco["staked_ratio"]) * 100, "apr_change_pp": (eco["apr"] - peco["staking_apr"]) * 100,
     "accounts_added": st["accounts"] - pv["activity"]["total_accounts"], "transactions_added": tx_added,
     "supply_added": eco["totalSupply"] - peco["total_supply"], "staked_egld_added": staked - peco["staked_egld"],
     "epoch_advanced": st["epoch"] - pv["activity"]["epoch"],
-    "btc_correlation_note": f"BTC {btc_wow:+.2f}%, ETH {eth_wow:+.2f}%, EGLD {pc:+.2f}% over 7.0 days: EGLD {rel:+.1f}pp vs BTC, after +7.2pp in run #35."}
+    "btc_correlation_note": f"BTC {btc_wow:+.2f}%, ETH {eth_wow:+.2f}%, EGLD {pc:+.2f}% over 7.05 days: EGLD {rel:+.1f}pp vs BTC, after +7.2pp in run #35."}
 nh["liveness"] = {"ok": c["liveness_ok"], "latest_block_by_shard": {k: hm(v["timestamp"]) for k, v in live.items()},
     "restart_1_utc": "2026-09-23 16:35 UTC", "restart_1_stopped_utc": "2026-09-23 16:53 UTC", "restart_2_utc": "2026-09-24 15:30 UTC",
     "live_days_in_window": c["_period"]["live_days"], "rollback_point_utc": "2026-09-19 06:37:45 UTC"}
@@ -106,15 +106,17 @@ for k in prevb:
     bye.append({"exchange": k, "change_egld": chg[k], "pct": pct(cur.get(k, 0), prevb[k])})
 ef["by_exchange"] = bye
 bin_cust = chg["Binance.com"] + chg["Binance Staking"]
+VV = {v["venue"]: v for v in venues}
+def dw(n): v = VV[n]; return f"{v['withdrawals_egld_7d']:,.0f} withdrawn vs {v['deposits_egld_7d']:,.0f} deposited (trailing 7d rails)"
 ef["entity_netting"] = [
     {"entity": "Binance", "wallets_count": 4, "net_flow_egld": bin_cust,
      "interpretation": "0 EGLD: no native EGLD deposit or withdrawal at any Binance wallet in the window. The hot wallet erd1sdslvl has not transacted since it swept 309,906 EGLD to custody on Oct 29 23:05 UTC and holds 3 EGLD; 15 of its last depositors also sent nothing anywhere after Oct 30, so this reads as a paused rail, not a new deposit address. Spot trading continues ($2.99)."},
     {"entity": "KuCoin", "wallets_count": 1, "net_flow_egld": chg["KuCoin"],
-     "interpretation": f"{chg['KuCoin']:+,.0f}: 44,566 withdrawn vs 4,170 deposited. 32,000 of it was one Nov 3 withdrawal to erd15ku2r2j6, the same wallet that took 136,359 on Oct 30 and deposited 145,443 in July. It now holds 168,358 and has not sold. Ex that wallet, KuCoin's daily withdrawals fell from ~5,000 to under 400 EGLD by Nov 7-9."},
+     "interpretation": f"{chg['KuCoin']:+,.0f} on balances; {dw('KuCoin')}. 32,000 of it was one Nov 3 withdrawal to erd15ku2r2j6, the same wallet that took 136,359 on Oct 30 and deposited 145,443 in July. It now holds 168,358 and has not sold. Ex that wallet, KuCoin's daily withdrawals ran 2,700-5,000 EGLD on Nov 1-6 and fell under 400 on Nov 7-9."},
     {"entity": "MEXC", "wallets_count": 1, "net_flow_egld": chg["MEXC"],
-     "interpretation": f"{chg['MEXC']:+,.0f}: 154 withdrawals, zero deposits for a second week (withdraw-only). 40,983 left."},
-    {"entity": "Bybit", "wallets_count": 1, "net_flow_egld": chg["Bybit"], "interpretation": f"{chg['Bybit']:+,.0f}: 30,147 withdrawn against 13,445 deposited."},
-    {"entity": "Gate.io", "wallets_count": 1, "net_flow_egld": chg["Gate.io"], "interpretation": f"{chg['Gate.io']:+,.0f}: 10,544 out, 2,528 in."},
+     "interpretation": f"{chg['MEXC']:+,.0f}: {VV['MEXC']['withdrawals_egld_txs_7d']} withdrawals, zero deposits for a second week (withdraw-only). 40,983 left."},
+    {"entity": "Bybit", "wallets_count": 1, "net_flow_egld": chg["Bybit"], "interpretation": f"{chg['Bybit']:+,.0f} on balances; {dw('Bybit')}."},
+    {"entity": "Gate.io", "wallets_count": 1, "net_flow_egld": chg["Gate.io"], "interpretation": f"{chg['Gate.io']:+,.0f} on balances; {dw('Gate.io')}."},
 ]
 ef["signal"] = f"Tracked exchange wallets lost {abs(net):,.0f} EGLD ({pct(tot_c, tot_p):+.2f}%) with Binance's native rail dark all week. KuCoin -40,396 (32,000 is one self-custody withdrawal), Bybit -16,734, MEXC -15,014, Gate.io -8,015."
 
@@ -280,7 +282,7 @@ xx.update({"total_pairs": me["marketPairs"], "total_volume_24h_usd": vol24, "mex
     "previous_turnover_ratio_pct": pv["xexchange"]["turnover_ratio_pct"], "dex_vol_wow_pct": pct(vol24, pv["xexchange"]["volume_24h_usd"]),
     "dex_volume_egld_24h": vol24 / price, "previous_dex_volume_egld_24h": pv["xexchange"]["volume_24h_egld"],
     "dex_vol_egld_wow_pct": pct(vol24 / price, pv["xexchange"]["volume_24h_egld"]), "pool_tvl_egld": tvl / price, "previous_pool_tvl_egld": pv["xexchange"]["pool_tvl_egld"]})
-for k in ("mex_pair_depth", "wegld_usdc_share_of_volume_pct", "ex_wegld_usdc_volume_usd"):
+for k in ("mex_pair_depth", "wegld_usdc_share_of_volume_pct", "ex_wegld_usdc_volume_usd", "mex_pair_event"):   # run 36: Sep MEX incident block retired
     xx.pop(k, None)
 
 # ---------------------------------------------------------------- defi
@@ -327,6 +329,25 @@ for p_ in pb:
                    "health_signal": sig((u / pu - 1) * 100),
                    "notable_events": f"Restated: ${u:,.0f} vs ${pu:,.0f} on Oct 26 (two-week basis, USD {(u/pu-1)*100:+.1f}%, EGLD-terms {(ue/pe-1)*100:+.1f}%)."})
 R_TVL = TVL
+di["dex_volume_egld_24h"] = vol24 / price
+di["dex_turnover_ratio_pct"] = vol24 / tvl * 100 if tvl else None
+xx["volume_status"] = "run #36 24h snapshot (7.05-day window); compared with run #35"
+xx.pop("mex_price_change_24h_pct", None)
+NOTREC = {"JewelSwap", "SALSA (Staking Agency)", "Dinovox VoxEGLD", "VestaX Finance"}
+for p_ in pb:
+    n = p_["protocol"]
+    if n == "XOXNO LSD": p_["transfers_24h"] = None
+    if n in ("XOXNO Aggregator", "OneDex", "JEXchange"):
+        p_.update({"tvl_usd": None, "tvl_egld": None, "tvl_wow_change_pct": None, "volume_24h_usd": None, "health_signal": None,
+                   "notable_events": f"Activity only: {p_.get('transfers_24h') or 0:,} transfers in 24h. TVL not measured for routers/aggregators."})
+    if n in NOTREC:
+        p_.update({"tvl_usd": None, "tvl_egld": None, "tvl_wow_change_pct": None, "health_signal": None,
+                   "notable_events": "Not re-collected this run (staked-EGLD discovery pass last ran in run #34); figure withheld rather than shown stale."})
+LEG = {"xExchange": ("dex", vol24, me["marketPairs"], None, tvl), "Hatom Lending": ("lending", 0.0, 0, tr24.get("Hatom EGLD MM"), TVL["Hatom Lending"]),
+       "Hatom Liquid Staking": ("liquid_staking", 0.0, 0, tr24.get("Hatom Liquid Staking"), TVL["Hatom Liquid Staking"]),
+       "XOXNO LSD": ("liquid_staking", 0.0, 0, None, TVL["XOXNO LSD"])}
+R["defi_activity"]["protocols"] = [{"name": k, "category": v[0], "volume_24h_usd": v[1], "active_pairs": v[2], "transfers_24h": v[3],
+    "tvl_usd": v[4], "tvl_egld": v[4] / price} for k, v in LEG.items()]
 
 json.dump(R, open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/stage1.json", "w"), default=str)
 D = dict(price=price, pprice=pprice, pc=pc, btc_wow=btc_wow, eth_wow=eth_wow, rel=rel, net=net, tot_c=tot_c, tot_p=tot_p, chg=chg, ratio=ratio,

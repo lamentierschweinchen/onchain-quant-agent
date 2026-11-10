@@ -9,9 +9,7 @@ import { TokenDefi } from '../components/TokenDefi'
 import { AnomaliesWatchList } from '../components/AnomaliesWatchList'
 import { MetaLearning } from '../components/MetaLearning'
 import { OtcPipeline } from '../components/OtcPipeline'
-import { MexPauseTimeline } from '../components/MexPauseTimeline'
 import { MarketScale } from '../components/MarketScale'
-import { UnbondingCard } from '../components/UnbondingCard'
 import { Scoreboard } from '../components/Scoreboard'
 import { ErrataBanner } from '../components/ErrataBanner'
 import { useErrata, supersededClaims, ownWithdrawals } from '../hooks/useErrata'
@@ -63,8 +61,8 @@ export function HomePage() {
     )
   }
 
-  const mexEvent = report.token_activity.xexchange.mex_pair_event
-  const SECTIONS_HIDDEN = mexEvent ? [] : ['contract-events']
+  const otc = report.whale_intelligence.otc_pipeline
+  const SECTIONS_HIDDEN = otc ? [] : ['otc-pipeline']
 
   return (
     <div className="min-h-screen bg-bg text-text-primary">
@@ -91,42 +89,31 @@ export function HomePage() {
           </section>
         </SectionHeader>
 
-        {mexEvent && (
-          <SectionHeader
-            title="Contract Events"
-            subtitle="Venue state changes, drawn against what they moved"
-          >
-            <section id="contract-events">
-              <MexPauseTimeline event={mexEvent} />
-            </section>
-          </SectionHeader>
-        )}
-
         <SectionHeader title="Network Health" subtitle="Macro economics + onchain activity">
           <section id="network-health">
             <NetworkHealth data={report.network_health} />
           </section>
         </SectionHeader>
 
-        <SectionHeader
-          title="OTC Pipeline"
-          subtitle="Gross vs net one-way · wave-window netting · venue terminals"
-        >
-          <section id="otc-pipeline">
-            <div className="space-y-4">
-              <OtcPipeline
-                data={report.whale_intelligence.otc_pipeline}
-                reportDate={report.metadata.report_date}
-              />
-              {report.whale_intelligence.otc_pipeline && (
+        {otc && (
+          <SectionHeader
+            title="OTC Pipeline"
+            subtitle="Gross vs net one-way · wave-window netting · venue terminals"
+          >
+            <section id="otc-pipeline">
+              <div className="space-y-4">
+                <OtcPipeline
+                  data={otc}
+                  reportDate={report.metadata.report_date}
+                />
                 <MarketScale
                   data={report.whale_intelligence.demand_instruments?.exchange_orderbook}
                   reportDate={report.metadata.report_date}
                 />
-              )}
-            </div>
-          </section>
-        </SectionHeader>
+              </div>
+            </section>
+          </SectionHeader>
+        )}
 
         <SectionHeader title="Whale Intelligence" subtitle="Tier stratification, flows, dormant activations">
           <section id="whale-intelligence">
@@ -139,12 +126,6 @@ export function HomePage() {
           subtitle="Concentration, APR distribution, churn"
         >
           <section id="staking-intelligence" className="space-y-4">
-            {report.staking_intelligence.unbonding_in_flight && (
-              <UnbondingCard
-                data={report.staking_intelligence.unbonding_in_flight}
-                reportDate={report.metadata.report_date}
-              />
-            )}
             <StakingIntelligence data={report.staking_intelligence} />
           </section>
         </SectionHeader>

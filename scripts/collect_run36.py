@@ -19,7 +19,7 @@ prev = json.load(open(f"{REPO}/data/previous.json"))
 def ts(y, m, d):
     return int(datetime(y, m, d, 0, 0, 0, tzinfo=timezone.utc).timestamp())
 
-SEVEN_DAYS_AGO  = 1793635385   # previous collection ended Nov 2 14:03:05 UTC (run 35 liveness read)
+SEVEN_DAYS_AGO  = 1793635385   # previous collection ended Nov 2 16:03:05 UTC (run 35 liveness read)
 WINDOW_END      = int(time.time())
 ONE_DAY_AGO     = WINDOW_END - 86400
 THIRTY_DAYS_AGO = ts(2026, 10, 10)
@@ -131,7 +131,7 @@ D = {"_period": {"report_date": REPORT_DATE,
                  "window_start_ts": SEVEN_DAYS_AGO,
                  "window_days": round((WINDOW_END-SEVEN_DAYS_AGO)/86400, 2),
                  "live_days": round((WINDOW_END-SEVEN_DAYS_AGO)/86400, 2),
-                 "note": "window 2026-11-02 14:03 -> 2026-11-09 (~7 days, since the previous collection)."}}
+                 "note": "window 2026-11-02 16:03 -> 2026-11-09 (~7 days, since the previous collection)."}}
 ok, failed = [], []
 
 # ---------------------------------------------------------------------------

@@ -5,8 +5,8 @@ REPO = "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 S = "/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad"
 RD = "2026-11-09"
 R = json.load(open(f"{S}/stage1.json")); D = json.load(open(f"{S}/digest36.json"))
-c = json.load(open(f"{REPO}/data/collected/{RD}.json")); pv = json.load(open(f"{REPO}/data/previous.json"))
-r0 = json.load(open(f"{REPO}/reports/2026-11-02.json")); L = json.load(open(f"{REPO}/data/learnings.json"))
+c = json.load(open(f"{REPO}/data/collected/{RD}.json")); pv = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/previous_2026-11-02.json"))
+r0 = json.load(open(f"{REPO}/reports/2026-11-02.json")); L = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/learnings_pre36.json"))
 rb = L["runs"][-1]["running_baselines"]
 price, pc, rel = D["price"], D["pc"], D["rel"]
 def z(key, cur):
@@ -38,7 +38,7 @@ for key, label, fmt in (("egld_price_usd", "egld_price_usd", "price"), ("dex_vol
                       "change_pct": (cur - rb[key][-1]) / rb[key][-1] * 100,
                       "description": f"{NICE.get(label,label)} {cur:,.6g} vs 8-run mean {m:,.6g} (z = {zv:+.2f})."})
 zdx = z("dex_volume_24h_usd", D["vol24"]); zp = z("egld_price_usd", price); zd = z("total_delegators", D["dl"])
-anoms.append({"metric": "binance_native_rail", "current_value": 0, "previous_value": 145633, "method": "rule_based", "severity": "high",
+anoms.append({"metric": "binance_native_rail", "current_value": 0, "previous_value": 145617, "method": "rule_based", "severity": "high",
     "description": "Binance.com recorded 0 native EGLD deposits and 0 withdrawals in a 7-day window (run #35: 72,137 in / 73,480 out). The hot wallet erd1sdslvl last moved on Oct 29 23:05 UTC, when it swept 309,906 to custody and kept 3 EGLD. Spot trading continues. No announcement found."})
 anoms.append({"metric": "exchange_net_flow_egld", "current_value": D["net"], "previous_value": -205817, "method": "rule_based", "severity": "medium",
     "description": f"Tracked exchange wallets lost {abs(D['net']):,.0f} EGLD with Binance shut: KuCoin -40,396, Bybit -16,734, MEXC -15,014, Gate.io -8,015. A third straight net outflow did not lift the price (EGLD {pc:+.1f}%)."})
@@ -56,7 +56,7 @@ R["anomalies"] = anoms
 chg = D["chg"]; T36 = c["run36_traces"]; si = R["staking_intelligence"]; ch = si["churn"]
 act = R["network_health"]["activity"]; dl_ = R["network_health"]["deltas"]
 R["network_health"]["analysis"] = (
- f"WINDOW. 7.1 days (Nov 2 14:03 -> Nov 9 17:20 UTC); all four shards live. Epoch {act['epoch']}, {act['transactions_7d']:,} transactions "
+ f"WINDOW. 7.05 days (Nov 2 16:03 -> Nov 9 17:19 UTC); all four shards live. Epoch {act['epoch']}, {act['transactions_7d']:,} transactions "
  f"({act['avg_daily_transactions']:,}/day), {dl_['accounts_added']:,} new accounts. Supply +{dl_['supply_added']:,.0f} EGLD (the weekly emission; the two growth funds took +11,426 each).\n\n"
  f"PRICE. EGLD ${price:.2f}, {pc:+.2f}% against BTC {D['btc_wow']:+.2f}% and ETH {D['eth_wow']:+.2f}%: {rel:+.1f}pp vs BTC, giving back last window's +7.2pp. "
  f"Market cap ${c['economics']['marketCap']/1e6:,.1f}M. Lowest weekly reading since Aug 17 ($2.76); the June-August range was $2.55-3.16.\n\n"
@@ -68,7 +68,7 @@ R["whale_intelligence"]["analysis"] = (
  "Binance custody (4,284,611) did not move: no outbound, no delegate.\n\n"
  f"OTHER BOOKS KEPT SHRINKING. Tracked exchange wallets {D['tot_c']:,.0f} EGLD, {D['net']:+,.0f} ({D['net']/D['tot_p']*100:+.2f}%): KuCoin -40,396, Bybit -16,734, MEXC -15,014 (withdraw-only for a second week), Gate.io -8,015, Coinbase -3,501. No venue gained.\n\n"
  "THE KUCOIN BACKLOG WAS ONE WALLET. erd15ku2r2j6 deposited 145,443 EGLD into KuCoin on Jul 19, withdrew 136,359 on Oct 30 and 32,000 on Nov 3, and now holds 168,358. It has not sold or delegated. "
- "That one wallet is 90% of the 188K KuCoin has paid out across both windows (traced receivers >= 100 EGLD). Without it, KuCoin's withdrawals fell from about 5,000 EGLD a day to under 400 by Nov 7-9. "
+ "That one wallet is 85% of the 197,857 EGLD KuCoin paid out since Oct 26 (receivers of withdrawals >= 100 EGLD). Without it, KuCoin's withdrawals ran 2,700-5,000 EGLD a day on Nov 1-6 and fell under 400 on Nov 7-9. "
  "A lookalike address (erd1tyfnsaztln, mimicking KuCoin's erd1ty4pvm) has been sending it zero-value transfers: an address-poisoning attempt on a 168K wallet.\n\n"
  "OTC INVENTORY MOVED, INTERNALLY. Unknown Whale I (OTC operator inventory) sent 112,634 to erd1drc22z7h on Nov 5. That wallet sends clips of 1,500-3,200 EGLD back to Whale I twice a day: a vault, not a buyer. It also receives poisoning dust from a lookalike (erd1vdpfqqjaah).\n\n"
  f"TIERS. Mega whales flat; large whales {D['WT']['large_whales'][2]:+,.0f} (the KuCoin withdrawer); mid whales {D['WT']['mid_whales'][2]:+,.0f} on a common-address basis (Whale I's vault transfer plus KuCoin, MEXC and Gate.io wallets shrinking).\n\n"
@@ -76,7 +76,7 @@ R["whale_intelligence"]["analysis"] = (
 R["staking_intelligence"]["analysis"] = (
  f"FLAT. {c['undelegate_callers_count']} wallets unDelegated {c['undelegated_this_week_total_egld']:,.0f} EGLD; 257 withdraw calls returned 72,314. Staked {D['dstaked']:+,.0f}. "
  f"Delegators {D['dl']:,} ({D['dl']-D['dlp']:+,}): {ch['providers_gaining_delegators']} providers gained, {ch['providers_losing_delegators']} lost. The decline continued but nearly stopped (-30, after -384). "
- f"HHI {D['hhi']:.5f}, top-5 {D['top5']:.2f}%. Biggest mover pi-staking +28,139; Synexis +4,000, oxsyai +2,754. A -11.5% price week did not produce an unstaking wave.")
+ f"HHI {D['hhi']:.5f}, top-5 {D['top5']:.2f}%. Biggest movers across all providers: pi-staking +28,139, ninjastaking +8,866, equinoxecapital -7,878, valuestaking -4,645. A -11.5% price week did not produce an unstaking wave.")
 R["token_activity"]["analysis"] = (
  f"DEX VOLUME RECOVERED. 24h xExchange volume ${D['vol24']:,.0f} ({dxp:+.1f}% vs $66,892); WEGLD/USDC 93% of it. Pair TVL ${D['tvl']:,.0f}. "
  f"MEX ${mexp:.3e} ({R['token_activity']['xexchange']['mex_price_change_wow_pct']:+.1f}%). "
@@ -101,7 +101,7 @@ R["executive_summary"] = [
 ti = R["trend_indicators"]
 ti["accelerating_exchange_outflows"] = [
  {"exchange": "KuCoin", "trend": "outflow", "cumulative_change_pct": (15372 - 220076) / 220076 * 100, "weeks_in_trend": 3,
-  "interpretation": "Third week: -14,746, -149,563, -40,396. 168K of it is one self-custody withdrawer; the rest decayed to under 400 EGLD a day. 15,372 left."},
+  "interpretation": "Third week: -14,746, -149,563, -40,396. 168K of it is one self-custody withdrawer; the rest fell under 400 EGLD a day by Nov 7-9. 15,372 left."},
  {"exchange": "MEXC", "trend": "outflow", "cumulative_change_pct": (40983 - 110883) / 110883 * 100, "weeks_in_trend": 2,
   "interpretation": "Second week withdraw-only: -54,886, then -15,014 with zero deposits."},
  {"exchange": "Bybit", "trend": "outflow", "cumulative_change_pct": (339061 - 375931) / 375931 * 100, "weeks_in_trend": 2,

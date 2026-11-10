@@ -11380,7 +11380,8 @@
      "No Binance announcement found for the paused EGLD rail.",
      "Bithumb and Upbit decisions not found.",
      "OTC pipeline sections not refreshed (desk gross 139 EGLD).",
-     "Reward-behavior operator row dropped (owner unresolved): ['validblocks']"
+     "Reward-behavior operator row dropped (owner unresolved): ['validblocks']",
+     "First publish of run #36 carried stale numbers from the template report; fixed same day."
     ],
     "surprising_findings": [
      "Binance's native EGLD rail has been dark since Oct 29 23:05 UTC.",
@@ -11391,7 +11392,8 @@
    },
    "methodology_changes": [
     "Trace pass adds per-venue daily rails and a one-hop destination class for every KuCoin withdrawal >= 100 EGLD.",
-    "Rail liveness: report each tracked hot wallet's last-transaction time, so a dark venue is not read as balanced flow."
+    "Rail liveness: report each tracked hot wallet's last-transaction time, so a dark venue is not read as balanced flow.",
+    "Post-publish audit (run #36): the lean assembler deep-copies last week's report, so any field it does not recompute ships stale. Before publishing, diff the new report against the previous one and treat every unchanged numeric as suspect (run #36 found stale legacy protocols, DEX turnover, four LSD TVL rows, the MEX incident block, a wrong XOXNO LSD transfer count, and a mislabelled window start)."
    ],
    "new_addresses_discovered": [
     "erd15ku2r2j6smlwumftumlpw0mfpqxy32wyt4ewxzyhs3ugsjee8stq2xh84e: KuCoin round-trip whale (168,358)",
@@ -12001,7 +12003,8 @@
     "Add a rail-liveness check to the collector: last-transaction timestamp per tracked hot wallet, flag any venue silent > 48h.",
     "If Binance reopens, look for a new deposit address (first depositors after the gap) before netting flows.",
     "Build the Hatom borrow -> swap -> supply join (carried twice).",
-    "Track erd1drc22z7h vault returns to Whale I: does the 112,634 drain back in clips?"
+    "Track erd1drc22z7h vault returns to Whale I: does the 112,634 drain back in clips?",
+    "Run an unchanged-numerics diff against the previous report before publishing; script it into the gate."
    ]
   }
  ]

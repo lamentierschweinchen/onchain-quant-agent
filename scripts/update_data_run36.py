@@ -31,7 +31,7 @@ P["lsd_supply"]={t:float(c["tvl_tokens"][t].get("supply") or 0) for t in ["SEGLD
 P["stablecoin_supply"]={"USDC-c76f1f":7119153.0,"USDT-f8c08c":381086.0}
 x=R["token_activity"]["xexchange"]
 P["xexchange"]={"volume_24h_usd":D["vol24"],"total_pairs":x["total_pairs"],"mex_price_usd":x["mex_price_usd"],"mex_market_cap_usd":x["mex_market_cap_usd"],
-  "mex_price_source":"xExchange /mex/economics","volume_status":"run #36 24h snapshot (7.1-day window)","pool_tvl_usd":D["tvl"],"turnover_ratio_pct":x["turnover_ratio_pct"],
+  "mex_price_source":"xExchange /mex/economics","volume_status":"run #36 24h snapshot (7.05-day window)","pool_tvl_usd":D["tvl"],"turnover_ratio_pct":x["turnover_ratio_pct"],
   "volume_24h_egld":D["vol24"]/D["price"],"pool_tvl_egld":D["tvl"]/D["price"]}
 P["binance_rail"]={"hot_wallet":"erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets","last_tx_utc":"2026-10-29 23:05:39","deposits_7d":0,"withdrawals_7d":0,"state":"dark"}
 wa=[w for w in pv["watch_addresses"]]
@@ -52,7 +52,7 @@ kn["unlabeled_whales"]["erd1drc22z7hz90sqmugmtwu6pe8kyncg67gv7xulcu4mq92ygyxpacq
 json.dump(kn,open(f"{REPO}/data/known-addresses.json","w"),indent=2)
 
 # methodology
-row=("| 36 | 2026-11-09 | **BINANCE'S RAIL WENT DARK; THE KUCOIN BACKLOG WAS ONE WALLET.** 7.1-day window. EGLD -11.5% to $3.01 vs BTC -3.4% (-8.1pp). "
+row=("| 36 | 2026-11-09 | **BINANCE'S RAIL WENT DARK; THE KUCOIN BACKLOG WAS ONE WALLET.** 7.05-day window. EGLD -11.5% to $3.01 vs BTC -3.4% (-8.1pp). "
  "(1) Binance.com: 0 deposits, 0 withdrawals; hot wallet silent since its Oct 29 23:05 sweep of 309,906 to custody (3 EGLD left); 15 recent depositors also silent, so paused rail, not a new address. Spot trading continues. "
  "(2) Tracked exchanges -86,702 (KuCoin -40,396, Bybit -16,734, MEXC -15,014 withdraw-only, Gate.io -8,015) with price down: bottom-confirms INCONCLUSIVE. "
  "(3) KuCoin withdrawals traced one hop: erd15ku2r2j6 took 168,359 (deposited 145,443 in July) and holds; ex that, daily outflow fell under 400 EGLD. kucoin-backlog-decay INCONCLUSIVE (middle band; premise wrong). "

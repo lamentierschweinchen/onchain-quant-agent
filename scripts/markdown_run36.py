@@ -6,7 +6,7 @@ R=json.load(open(f"{REPO}/reports/{RD}.json")); m=R["metadata"]; nh=R["network_h
 ta=R["token_activity"]; da=R["defi_activity"]; ef=wi["exchange_flows"]; D=nh["deltas"]
 L=[]; A=L.append
 A(f"# MultiversX On-Chain Intelligence Report - {RD}\n")
-A(f"**Period**: 2026-11-02 14:03 -> 2026-11-09 17:20 UTC (7.1 days) | **EGLD**: ${m['egld_price_usd']:.2f} ({D['price_change_pct']:+.2f}%) | **BTC**: ${m['btc_price_usd']:,.0f} | **Run**: #36\n")
+A(f"**Period**: 2026-11-02 16:03 -> 2026-11-09 17:19 UTC (7.05 days) | **EGLD**: ${m['egld_price_usd']:.2f} ({D['price_change_pct']:+.2f}%) | **BTC**: ${m['btc_price_usd']:,.0f} | **Run**: #36\n")
 A("## TL;DR\n")
 for i,e in enumerate(R["executive_summary"],1): A(f"{i}. [{e['severity'].upper()}] {e['finding']}")
 eo=ef["by_exchange"]
