@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Run #36: refresh previous.json, known-addresses.json, methodology Evolution Log, and append the learnings entry."""
-import json, copy
+import json, copy, sys
+sys.path.insert(0, "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent/scripts")
+from report_template import archive_previous
 REPO="/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"; RD="2026-11-09"
 S="/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad"
 c=json.load(open(f"{REPO}/data/collected/{RD}.json")); R=json.load(open(f"{REPO}/reports/{RD}.json"))
@@ -12,6 +14,7 @@ for s,e in kn.items():
         for a,m in e.items():
             if isinstance(m,dict) and a.startswith("erd1"): LM[a]=m.get("name")
 eco=c["economics"]; st=c["stats"]; E=1e18
+archive_previous(pv)   # keep the pre-run snapshot so assemblers can be re-run safely
 P=copy.deepcopy(pv); P.pop("_run35_note",None)
 P["snapshot_date"]=RD
 P["economics"]={"egld_price_usd":eco["price"],"market_cap_usd":eco["marketCap"],"total_supply":eco["totalSupply"],"circulating_supply":eco["circulatingSupply"],

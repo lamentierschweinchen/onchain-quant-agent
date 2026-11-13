@@ -367,16 +367,23 @@ This populates `staking_intelligence.reward_behavior` with:
 
 The dashboard renders this as a dedicated section. The compound rate is the single highest-signal new metric.
 
-### 3.4 Two-Layer Pre-Publish Gate — MANDATORY
+### 3.4 Pre-Publish Gate — MANDATORY (one command, four layers)
 
-**Before** generating the manifest, run BOTH layers. Layer 1 catches data-integrity issues (silent API nulls, under-surfaced supply events); layer 2 catches schema/dashboard issues.
+**Before** generating the manifest, run the single gate. It stops at the first failing layer; do not proceed to manifest/commit/deploy until it prints `PREPUBLISH OK`.
 
 ```bash
-# Layer 1 - data integrity audit (added run #11)
-python3 scripts/audit_report.py reports/${REPORT_DATE}.json data/collected/${REPORT_DATE}.json
-# Layer 2 - schema + dashboard invariants
-python3 scripts/validate_report.py reports/${REPORT_DATE}.json
+scripts/prepublish.sh ${REPORT_DATE}
+#   1 prose     - lint_report_prose.py: machine identifiers in reader-facing text
+#   2 audit     - audit_report.py: data integrity vs data/collected (silent API nulls, run #11)
+#   3 schema    - validate_report.py: schema + dashboard invariants (blank page, run #8)
+#   4 staleness - check_staleness.py: values silently carried from last week's report (run #36)
 ```
+
+**Staleness layer (added run #36).** Run #36 first shipped two-run-old DEX volume, stale TVL rows, a retired incident block and placeholder text: the assembler deep-copied last week's report and every field it forgot passed all other gates. `check_staleness.py` compares each leaf with the previous report (list rows aligned by address/protocol/identifier) and fails on floats identical to 10+ digits, verbatim narrative and placeholder text. If a carry is genuine, declare it with a reason in `data/carry_declarations.json` (`{"YYYY-MM-DD": {"path.regex": "reason"}}`); never silence the gate otherwise.
+
+**Assembler rules (added run #36), so staleness cannot be introduced in the first place:**
+- Build the report with `report_template.blank_template(last_report)`, never `copy.deepcopy(last_report)`. It keeps the shape and identity fields but blanks every value, so a forgotten field is visibly missing instead of silently stale. Read previous values from the original report object.
+- Load the comparison snapshot with `report_template.load_previous(REPORT_DATE)`, never `data/previous.json` directly. The updater calls `report_template.archive_previous(prev)` before overwriting `data/previous.json`, so re-running an assembler after the update still computes deltas against last week (`data/previous_history/`).
 
 The audit script catches issues that schema validation cannot. Run #11 hit this exact class of bug: SWTAO-356a25 API returned null price/marketCap, silently making Hatom LSD appear -26% EGLD WoW when the actual value was -1% (essentially flat). See `data/methodology.md` for the full list of audit checks.
 
@@ -458,7 +465,7 @@ Honestly answer in your learnings entry:
 ## Step 5: Commit & Push
 
 ```bash
-git add reports/ data/collected/ data/previous.json data/learnings.json data/methodology.md data/known-addresses.json data/report-schema.json dashboard/public/
+git add reports/ data/collected/ data/previous.json data/previous_history/ data/carry_declarations.json data/learnings.json data/methodology.md data/known-addresses.json data/report-schema.json dashboard/public/
 git commit -m "Weekly intel report: ${REPORT_DATE}
 
 - Network health, whale intelligence (with tier stratification), staking

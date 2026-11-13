@@ -3,18 +3,21 @@
 numeric section from data/collected/2026-11-02.json, drops the bespoke sections whose inputs this run did
 not re-collect (otc_pipeline, halt_recovery, unbonding_in_flight, provider_states, fee_events) and writes
 fresh narrative from the computed figures."""
-import json, copy, statistics
+import json, copy, statistics, sys
+sys.path.insert(0, "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent/scripts")
+from report_template import blank_template, load_previous
 from datetime import datetime, timezone
 
 REPO = "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 RD = "2026-11-09"
 E = 1e18
 c = json.load(open(f"{REPO}/data/collected/{RD}.json"))
-pv = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/previous_2026-11-02.json"))  # run 36 rebuild: frozen pre-run snapshot
+pv = load_previous(RD)   # snapshot taken before this report, safe to re-run
 r0 = json.load(open(f"{REPO}/reports/2026-11-02.json"))
-learn = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/learnings_pre36.json"))
+learn = json.load(open(f"{REPO}/data/learnings.json"))
+learn["runs"] = [x for x in learn["runs"] if x["date"] < RD]   # runs before this report
 kn = json.load(open(f"{REPO}/data/known-addresses.json"))
-R = copy.deepcopy(r0)
+R = blank_template(r0)   # shape only; every value must be recomputed below
 for k in ("otc_pipeline", "halt_recovery"):
     R["whale_intelligence"].pop(k, None)
 for k in ("unbonding_in_flight", "provider_states", "fee_events", "identity_renames", "zero_stake_cohort"):
@@ -122,7 +125,7 @@ ef["signal"] = f"Tracked exchange wallets lost {abs(net):,.0f} EGLD ({pct(tot_c,
 
 # ---------------------------------------------------------------- wallet changes / tiers
 wc = []
-prevw = {w["address"]: w for w in R["whale_intelligence"]["wallet_changes"]}
+prevw = {w["address"]: w for w in r0["whale_intelligence"]["wallet_changes"]}
 topmap = {x["address"]: int(x["balance"]) / E for x in c["top_accounts"]}
 for a, w in prevw.items():
     b = bal.get(a, topmap.get(a))
@@ -273,7 +276,7 @@ vol24 = sum(x.get("volume24h") or 0 for x in c["mex_pairs"]); tvl = sum(x.get("t
 px = c["mex_pairs"][0].get("quotePrice") or price
 xx = ta["xexchange"]
 tp_ = pairs[0]
-xx.update({"total_pairs": me["marketPairs"], "total_volume_24h_usd": vol24, "mex_price_usd": me["price"], "mex_market_cap_usd": me["marketCap"],
+xx.update({"mex_price_source": "xExchange /mex/economics", "total_pairs": me["marketPairs"], "total_volume_24h_usd": vol24, "mex_price_usd": me["price"], "mex_market_cap_usd": me["marketCap"],
     "mex_price_change_wow_pct": pct(me["price"], pv["xexchange"]["mex_price_usd"]), "top_pair": f"{tp_['baseName']}/{tp_['quoteName']}",
     "top_pair_volume_24h_usd": tp_.get("volume24h"), "top_pair_dominance_pct": (tp_.get("volume24h") or 0) / vol24 * 100 if vol24 else None,
     "top_pairs_by_volume": [{"name": f"{x['baseName']}/{x['quoteName']}", "volume_24h_usd": x.get("volume24h"), "tvl_usd": x.get("totalValue"),

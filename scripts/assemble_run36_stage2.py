@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Run #36 stage 2: z-scores, narrative, trends, tests, meta_learning. Reads stage1.json, writes reports/2026-11-09.json."""
-import json, statistics, copy
+import json, statistics, copy, sys
+sys.path.insert(0, "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent/scripts")
+from report_template import load_previous
 REPO = "/Users/ls/Documents/MultiversX/projects/onchain-quant-agent"
 S = "/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad"
 RD = "2026-11-09"
 R = json.load(open(f"{S}/stage1.json")); D = json.load(open(f"{S}/digest36.json"))
-c = json.load(open(f"{REPO}/data/collected/{RD}.json")); pv = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/previous_2026-11-02.json"))
-r0 = json.load(open(f"{REPO}/reports/2026-11-02.json")); L = json.load(open("/private/tmp/claude-501/-Users-ls-Documents-MultiversX-projects-onchain-quant-agent/174a0ac3-37e6-4a71-9596-a35c3cbb3939/scratchpad/learnings_pre36.json"))
+c = json.load(open(f"{REPO}/data/collected/{RD}.json")); pv = load_previous(RD)
+r0 = json.load(open(f"{REPO}/reports/2026-11-02.json")); L = json.load(open(f"{REPO}/data/learnings.json")); L["runs"] = [x for x in L["runs"] if x["date"] < RD]
 rb = L["runs"][-1]["running_baselines"]
 price, pc, rel = D["price"], D["pc"], D["rel"]
 def z(key, cur):
