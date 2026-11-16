@@ -51,7 +51,7 @@
       "name": "Binance.com",
       "category": "exchange",
       "subcategory": "hot_wallet",
-      "notes": "Binance exchange wallet. ~517K EGLD. Shard 2."
+      "notes": "Binance exchange wallet (explorer tag Exchange: Binance.com). Held ~1 EGLD until 2026-11-12 16:24 UTC, when Binance Staking custody sent it 2,264,611 EGLD; it then funded hot wallet 2 (erd1ts0g6r0h) with 80,300 EGLD in five sends. 2,184,313 EGLD at run #37. Shard 2."
     },
     "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets": {
       "name": "Binance.com",
@@ -142,6 +142,14 @@
       "category": "exchange",
       "subcategory": "hot_wallet",
       "notes": "Romanian exchange. ~8K EGLD."
+    },
+    "erd1ts0g6r0hn2tme5t53epyp9lurm7893v52c30xp5zur05mm92r4hqx6jd26": {
+      "name": "Binance.com hot wallet 2 (erd1ts0g6r0h)",
+      "category": "exchange",
+      "subcategory": "hot_wallet",
+      "notes": "New Binance.com native EGLD hot wallet. First transaction 2026-11-09 18:29 UTC, 10.8 days after the old hot wallet erd1sdslvl went silent (Oct 29 23:05). Funded by Binance Staking custody (20,000, Nov 12) and Binance.com erd1ylwusw (80,300, Nov 12-15). Run #37 window: 1,592 withdrawals (204,493 EGLD) to 1,258 receivers, 396 deposit sweeps (174,725 EGLD) from 283 senders. Labelled on behaviour and funding; no explorer tag yet.",
+      "first_seen": "2026-11-16",
+      "discovered_run": 37
     }
   },
   "defi_xexchange": {
@@ -1337,6 +1345,14 @@
       "notes": "Received 112,634 EGLD from Unknown Whale I (OTC operator inventory) 2026-11-05; sends 1,500-3,200 EGLD clips back to Whale I twice daily.",
       "first_seen": "2026-11-09",
       "discovered_run": 36
+    },
+    "erd1rlqdj67qxp9l4gt895hwsjl7akrw6td3hhxwm2u4l2te9fzr3gjq6qzh4e": {
+      "name": "Binance depositor whale (erd1rlqdj67qxp)",
+      "category": "other",
+      "subcategory": "cex_deposit",
+      "notes": "First transaction 2026-10-29. Sent 14,558 EGLD (Nov 11) and 29,028 EGLD (Nov 16) to deposit address erd17sy7rxg3, which swept all 43,586 into Binance hot wallet 2. 41,905 EGLD left at run #37.",
+      "first_seen": "2026-11-16",
+      "discovered_run": 37
     }
   },
   "exchange_routers": {
@@ -2112,6 +2128,22 @@
       "notes": "Sends 0.0001 EGLD dust to OTC pipeline routers; mimics UPbit OTC Desk erd1v6x9egd...hcxnk5. No misdirected inbound as of run #26.",
       "first_seen": "2026-09-21",
       "discovered_run": 26
+    },
+    "erd1tsddlqzd63gmpqrhmzse5yheplped49khczwv0g9q7vpaq3ddx9qx7jd26": {
+      "name": "Address-poisoning lookalike (Binance wallet)",
+      "category": "incident",
+      "subcategory": "address_poisoning",
+      "notes": "Mimics erd1ts0g6r0hn2...x6jd26 (same first 6 and last 4 characters). 102 dust transfers to 58 targets since its first transaction in the run #37 window.",
+      "first_seen": "2026-11-16",
+      "discovered_run": 37
+    },
+    "erd1yl5ksy466z3qnecwy3n3xtvgasacf2rd3cm2ge4r8f70xgwg3xkqsx6zlz": {
+      "name": "Address-poisoning lookalike (Binance wallet)",
+      "category": "incident",
+      "subcategory": "address_poisoning",
+      "notes": "Mimics erd1ylwuswz9zu...896zlz (same first 6 and last 4 characters). 1 dust transfers to 1 targets since its first transaction in the run #37 window.",
+      "first_seen": "2026-11-16",
+      "discovered_run": 37
     }
   },
   "exchanges_probable": {

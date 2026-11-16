@@ -1,14 +1,14 @@
 {
-  "generated_from": 36,
+  "generated_from": 37,
   "totals": {
-    "tests": 58,
-    "resolved": 54,
+    "tests": 60,
+    "resolved": 56,
     "open": 4,
-    "as_predicted": 30,
+    "as_predicted": 32,
     "against": 10,
     "inconclusive": 12,
     "withdrawn": 2,
-    "hit_rate_pct": 55.55555555555556
+    "hit_rate_pct": 57.142857142857146
   },
   "runs": [
     {
@@ -202,9 +202,79 @@
       "withdrawn": 0,
       "hit_rate_pct": 0,
       "open_after": 4
+    },
+    {
+      "run": 37,
+      "date": "2026-11-16",
+      "registered": 2,
+      "resolved": 2,
+      "as_predicted": 2,
+      "against": 0,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 100,
+      "open_after": 4
     }
   ],
   "tests": [
+    {
+      "id": "binance-backlog-fades",
+      "registered_in_run": 37,
+      "claim": "The first week's net withdrawal at Binance's new hot wallet was a backlog from the 10.8-day pause, not a standing exit.",
+      "threshold": "Over run #38's window, customer flow at erd1ts0g6r0h (plus any further Binance hot wallet): withdrawals < 120,000 EGLD AND net withdrawal < 15,000 = backlog faded; withdrawals > 180,000 OR net withdrawal > 40,000 = standing exit; otherwise no conclusion. Run #37: 204,493 out, 29,768 net.",
+      "branches": [
+        {
+          "condition": "withdrawals < 120K and net < 15K",
+          "reading": "backlog faded"
+        },
+        {
+          "condition": "withdrawals > 180K or net > 40K",
+          "reading": "standing exit"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #37: 204,493 withdrawn, 174,725 deposited",
+      "resolution": null,
+      "seen_in_run": 37,
+      "seen_in_date": "2026-11-16"
+    },
+    {
+      "id": "binance-reserve-stays",
+      "registered_in_run": 37,
+      "claim": "The 2,264,611 EGLD moved from staking custody to erd1ylwusw is exchange reserve, not EGLD on its way out or back into stake.",
+      "threshold": "At run #38: erd1ylwusw balance >= 2,000,000 = reserve; >= 300,000 sent to delegation contracts or back to custody = re-staked; >= 300,000 sent anywhere outside Binance's wallets = distribution; otherwise (it only tops up the hot wallet, total under 300,000) = reserve drawn for withdrawals, no conclusion",
+      "branches": [
+        {
+          "condition": "balance >= 2.0M",
+          "reading": "reserve"
+        },
+        {
+          "condition": ">= 300K delegated or returned to custody",
+          "reading": "re-staked"
+        },
+        {
+          "condition": ">= 300K outside Binance",
+          "reading": "distribution"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #37: 2,184,313 held; 80,300 sent, all to the hot wallet",
+      "resolution": null,
+      "seen_in_run": 37,
+      "seen_in_date": "2026-11-16"
+    },
     {
       "id": "binance-rail-reopens",
       "registered_in_run": 36,
@@ -224,13 +294,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #36: 0 deposits, 0 withdrawals",
-      "resolution": null,
-      "seen_in_run": 36,
-      "seen_in_date": "2026-11-09"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 37,
+      "measured_value": "174,725 EGLD of customer deposits (396 sweeps, 283 addresses) at a newly identified Binance hot wallet; old wallet still 0",
+      "resolution": "Reopened (deposits >= 5,000). The rail came back on a new wallet, erd1ts0g6r0h, first active Nov 9 18:29 UTC; it was dark for 10.8 days. The clause about a newly identified address is what caught it: every wallet tracked last week still shows zero customer flow.",
+      "seen_in_run": 37,
+      "seen_in_date": "2026-11-16"
     },
     {
       "id": "kucoin-whale-holds",
@@ -251,13 +321,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #36: 168,358 held",
-      "resolution": null,
-      "seen_in_run": 36,
-      "seen_in_date": "2026-11-09"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 37,
+      "measured_value": "balance 168,358; outbound 0; to exchanges 0",
+      "resolution": "Holder (balance >= 150,000, no exchange send). No outbound transaction of any kind through a week in which EGLD fell 14%.",
+      "seen_in_run": 37,
+      "seen_in_date": "2026-11-16"
     },
     {
       "id": "kucoin-backlog-decay",

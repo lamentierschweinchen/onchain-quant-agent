@@ -1,1 +1,6 @@
-{}
+{
+ "2026-11-16": {
+  "^staking_intelligence\\.summary\\.apr_max$": "Recomputed from this week's /providers: the top-APR provider reads 9.69% in both snapshots (API reports APR to two decimals).",
+  "^staking_intelligence\\.reward_behavior\\.function_distribution\\.withdraw\\.share_pct$": "Recomputed by delegator_behavior.py on this week's sample: 23 withdraw calls again, and the share rounds to 3.1% at one decimal on both totals."
+ }
+}

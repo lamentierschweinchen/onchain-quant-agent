@@ -195,9 +195,23 @@ def audit_report(report_path: Path, collected_path: Path | None, previous_path: 
         incident = (R.get("whale_intelligence") or {}).get("chain_halt_incident") or {}
         documented = {incident.get("attacker_wallet"), incident.get("attacker_contract")}
         prev_addrs = {a.get("address") for a in prev.get("top_accounts", [])} | set(prev.get("incident_addresses", []))
+        # run #37: a new >5% account is VALID state when the snapshot itself shows it was funded, inside the
+        # window, by wallets that were already top accounts last week (balance conservation, e.g. an exchange
+        # moving custody between its own wallets). The exploit case fails this: its balance came from a mint.
+        def funded_by_known(addr, bal):
+            rec = (collected.get("accounts") or {}).get(addr) or {}
+            w0 = (collected.get("_period") or {}).get("window_start_ts") or 0
+            got = sum(int(t.get("value", "0")) / 1e18 for t in rec.get("txs") or []
+                      if t.get("receiver") == addr and t.get("sender") in prev_addrs and (t.get("timestamp") or 0) >= w0)
+            return got >= 0.95 * bal and bal <= supply
         for acc in collected.get("top_accounts") or []:
             bal = int(acc.get("balance", "0")) / 1e18
             addr = acc.get("address")
+            if supply and addr not in documented and bal > 0.05 * supply and addr not in prev_addrs \
+                    and not addr.startswith("erd1qqqqqqqqqqqqqqqpqqq") and funded_by_known(addr, bal):
+                warnings.append(f"new_top_account: {addr} holds {bal:,.0f} EGLD (> 5% of supply) and is new to the top accounts; "
+                                f"accepted because >= 95% of it arrived in-window from last week's top accounts.")
+                continue
             if supply and addr not in documented and (bal > supply or (bal > 0.05 * supply and addr not in prev_addrs
                                                                      and not addr.startswith("erd1qqqqqqqqqqqqqqqpqqq"))):
                 errors.append(
