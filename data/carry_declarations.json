@@ -2,5 +2,10 @@
  "2026-11-16": {
   "^staking_intelligence\\.summary\\.apr_max$": "Recomputed from this week's /providers: the top-APR provider reads 9.69% in both snapshots (API reports APR to two decimals).",
   "^staking_intelligence\\.reward_behavior\\.function_distribution\\.withdraw\\.share_pct$": "Recomputed by delegator_behavior.py on this week's sample: 23 withdraw calls again, and the share rounds to 3.1% at one decimal on both totals."
+ },
+ "2026-11-23": {
+  "^whale_intelligence\\.exchange_flows\\.rail_status\\.venues_closed\\[\\d+\\]$": "Recomputed from this week's rail-liveness pass: the closed venues' last value-bearing transfers (Coinbase routing wallet Oct 10, and the others listed) are unchanged, so the lines are identical.",
+  "^defi_activity\\.protocol_breakdown\\[protocol=VestaX Finance\\]\\.tvl_egld$": "Fresh discovery pass run 2026-11-23 09:31 UTC (other protocols changed); VestaX's active stake did not change between snapshots.",
+  "^defi_activity\\.protocol_breakdown\\[protocol=VestaX Finance\\]\\.tvl_usd$": "Same VestaX stake as above, valued at this week's price."
  }
 }

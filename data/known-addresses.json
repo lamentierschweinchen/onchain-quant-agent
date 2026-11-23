@@ -51,7 +51,7 @@
       "name": "Binance.com",
       "category": "exchange",
       "subcategory": "hot_wallet",
-      "notes": "Binance exchange wallet (explorer tag Exchange: Binance.com). Held ~1 EGLD until 2026-11-12 16:24 UTC, when Binance Staking custody sent it 2,264,611 EGLD; it then funded hot wallet 2 (erd1ts0g6r0h) with 80,300 EGLD in five sends. 2,184,313 EGLD at run #37. Shard 2."
+      "notes": "Binance exchange wallet (explorer tag Exchange: Binance.com). Held ~1 EGLD until 2026-11-12 16:24 UTC, when Binance Staking custody sent it 2,264,611 EGLD; it then funded hot wallet 2 (erd1ts0g6r0h) with 80,300 EGLD in five sends. 2,184,313 EGLD at run #37. Shard 2. Run #38: acts as Binance's EGLD reserve; sent 50,000 to hot wallet 2 on Nov 20; 2,134,313 EGLD."
     },
     "erd1sdslvlxvfnnflzj42l8czrcngq3xjjzkjp3rgul4ttk6hntr4qdsv6sets": {
       "name": "Binance.com",
@@ -147,7 +147,7 @@
       "name": "Binance.com hot wallet 2 (erd1ts0g6r0h)",
       "category": "exchange",
       "subcategory": "hot_wallet",
-      "notes": "New Binance.com native EGLD hot wallet. First transaction 2026-11-09 18:29 UTC, 10.8 days after the old hot wallet erd1sdslvl went silent (Oct 29 23:05). Funded by Binance Staking custody (20,000, Nov 12) and Binance.com erd1ylwusw (80,300, Nov 12-15). Run #37 window: 1,592 withdrawals (204,493 EGLD) to 1,258 receivers, 396 deposit sweeps (174,725 EGLD) from 283 senders. Labelled on behaviour and funding; no explorer tag yet.",
+      "notes": "New Binance.com native EGLD hot wallet. First transaction 2026-11-09 18:29 UTC, 10.8 days after the old hot wallet erd1sdslvl went silent (Oct 29 23:05). Funded by Binance Staking custody (20,000, Nov 12) and Binance.com erd1ylwusw (80,300, Nov 12-15). Run #37 window: 1,592 withdrawals (204,493 EGLD) to 1,258 receivers, 396 deposit sweeps (174,725 EGLD) from 283 senders. Labelled on behaviour and funding; no explorer tag yet. Run #38: 647 withdrawals (205,572 EGLD), 141 deposit sweeps (101,013); no withdrawals Nov 18-19, 114,410 on Nov 20 after a 50,000 top-up from erd1ylwusw. 15,974 EGLD at run #38.",
       "first_seen": "2026-11-16",
       "discovered_run": 37
     }
@@ -1350,7 +1350,7 @@
       "name": "Binance depositor whale (erd1rlqdj67qxp)",
       "category": "other",
       "subcategory": "cex_deposit",
-      "notes": "First transaction 2026-10-29. Sent 14,558 EGLD (Nov 11) and 29,028 EGLD (Nov 16) to deposit address erd17sy7rxg3, which swept all 43,586 into Binance hot wallet 2. 41,905 EGLD left at run #37.",
+      "notes": "First transaction 2024-10-29 (run #38 correction; run #37 recorded 2026). Funded over time by many small withdrawals from Binance's old hot wallet erd1sdslvl (~35,080 EGLD). Sent 14,558 (Nov 11) and 29,028 (Nov 16) back to Binance via deposit address erd17sy7rxg3. No send in the run #38 window; 41,905 EGLD.",
       "first_seen": "2026-11-16",
       "discovered_run": 37
     }

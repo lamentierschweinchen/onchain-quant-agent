@@ -1,14 +1,14 @@
 {
-  "generated_from": 37,
+  "generated_from": 38,
   "totals": {
-    "tests": 60,
-    "resolved": 56,
+    "tests": 62,
+    "resolved": 58,
     "open": 4,
-    "as_predicted": 32,
-    "against": 10,
+    "as_predicted": 33,
+    "against": 11,
     "inconclusive": 12,
     "withdrawn": 2,
-    "hit_rate_pct": 57.142857142857146
+    "hit_rate_pct": 56.89655172413793
   },
   "runs": [
     {
@@ -214,9 +214,75 @@
       "withdrawn": 0,
       "hit_rate_pct": 100,
       "open_after": 4
+    },
+    {
+      "run": 38,
+      "date": "2026-11-23",
+      "registered": 2,
+      "resolved": 2,
+      "as_predicted": 1,
+      "against": 1,
+      "inconclusive": 0,
+      "withdrawn": 0,
+      "hit_rate_pct": 50,
+      "open_after": 4
     }
   ],
   "tests": [
+    {
+      "id": "binance-outflow-persists",
+      "registered_in_run": 38,
+      "claim": "Binance's net EGLD outflow is a standing exit, not a one-off after the pause.",
+      "threshold": "Over run #39's window at Binance's hot wallet(s), internal legs excluded: net withdrawal > 40,000 = persists; net withdrawal < 10,000 or a net deposit = faded; otherwise no conclusion. Run #38: net 104,559.",
+      "branches": [
+        {
+          "condition": "net > 40K",
+          "reading": "persists"
+        },
+        {
+          "condition": "net < 10K or net deposit",
+          "reading": "faded"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #38: 205,572 withdrawn, 101,013 deposited",
+      "resolution": null,
+      "seen_in_run": 38,
+      "seen_in_date": "2026-11-23"
+    },
+    {
+      "id": "hatom-loops-unwind-without-liquidation",
+      "registered_in_run": 38,
+      "claim": "Hatom's EGLD leverage loops are managed positions: if EGLD keeps falling they are repaid, not liquidated.",
+      "threshold": "At run #39, on Hatom's EGLD money market: any liquidation call = not managed; repayments >= borrows with zero liquidations = managed unwind; otherwise (loops continue, no liquidations) = no conclusion.",
+      "branches": [
+        {
+          "condition": "any liquidation",
+          "reading": "not managed"
+        },
+        {
+          "condition": "repay >= borrow, no liquidation",
+          "reading": "managed unwind"
+        },
+        {
+          "condition": "otherwise",
+          "reading": "no conclusion"
+        }
+      ],
+      "status": "open",
+      "outcome": null,
+      "resolved_in_run": null,
+      "measured_value": "run #38: 94 borrows, 74 repayments, 0 liquidations; 45,645 EGLD looped",
+      "resolution": null,
+      "seen_in_run": 38,
+      "seen_in_date": "2026-11-23"
+    },
     {
       "id": "binance-backlog-fades",
       "registered_in_run": 37,
@@ -236,13 +302,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #37: 204,493 withdrawn, 174,725 deposited",
-      "resolution": null,
-      "seen_in_run": 37,
-      "seen_in_date": "2026-11-16"
+      "status": "resolved",
+      "outcome": "against",
+      "resolved_in_run": 38,
+      "measured_value": "205,572 withdrawn, 101,013 deposited, net 104,559 (hot wallet 2, internal Binance legs excluded)",
+      "resolution": "Standing exit (withdrawals > 180,000 and net > 40,000). Withdrawals held at last week's size while deposits fell; net outflow rose from 29,768 to 104,559. A two-day withdrawal pause (Nov 18-19) made part of it another backlog, but the threshold reads the week as a whole.",
+      "seen_in_run": 38,
+      "seen_in_date": "2026-11-23"
     },
     {
       "id": "binance-reserve-stays",
@@ -267,13 +333,13 @@
           "reading": "no conclusion"
         }
       ],
-      "status": "open",
-      "outcome": null,
-      "resolved_in_run": null,
-      "measured_value": "run #37: 2,184,313 held; 80,300 sent, all to the hot wallet",
-      "resolution": null,
-      "seen_in_run": 37,
-      "seen_in_date": "2026-11-16"
+      "status": "resolved",
+      "outcome": "as_predicted",
+      "resolved_in_run": 38,
+      "measured_value": "erd1ylwusw 2,134,313; sent 50,000, all to hot wallet 2; nothing delegated or sent outside Binance",
+      "resolution": "Reserve (balance >= 2,000,000). The wallet is drawn down only to refill the hot wallet.",
+      "seen_in_run": 38,
+      "seen_in_date": "2026-11-23"
     },
     {
       "id": "binance-rail-reopens",

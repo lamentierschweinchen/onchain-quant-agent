@@ -12762,6 +12762,788 @@
     "Trace erd1rlqdj67qxp's funding (first transaction Oct 29) and whether it sends a third clip to Binance.",
     "Check whether Binance's 2.26M move coincides with a change in its on-chain delegations (binance_staking provider stake)."
    ]
+  },
+  {
+   "date": "2026-11-23",
+   "run_number": 38,
+   "data_quality": {
+    "endpoints_that_worked": [
+     "/economics",
+     "/stats",
+     "/accounts?sort=balance",
+     "/tokens?sort=accounts",
+     "/tokens?sort=transactions",
+     "/tokens?sort=marketCap",
+     "/providers?size=200",
+     "/identities",
+     "/mex/economics",
+     "/mex/pairs",
+     "/mex/pairs?size=50",
+     "/mex/tokens",
+     "/mex/farms",
+     "coingecko/simple/price",
+     "/accounts/{addr} + /transactions x47",
+     "paginated desk in/outbound (7d)",
+     "two-hop both-legs hub netting, 7d window",
+     "historical hub-trace windows (carried forward)",
+     "229,865 EGLD unbond resolution (rec #3)",
+     "all-provider unDelegate scan x108 (rec #5)",
+     "unbonding pool /accounts/{addr}/delegation x45",
+     "p2p_org_ stranded-delegator caller enumeration (rec #4)",
+     "100%-fee provider follow-through",
+     "Binance hot outbound >10K vs desk inbound (rec #11)",
+     "dynamic absorber discovery from desk terminals (rec #8)",
+     "withdrawal-breadth scan (paginated exchange outbound, raised hot-wallet cap)",
+     "/accounts/{addr}/transfers/count x12",
+     "JEXchange router 7d transfer counts (run #24 rec #6)",
+     "unattributed feeder two-hop back-trace (run #24 rec #5)",
+     "coingecko tickers depth=true (exchange-side depth, run #24 rec #2)",
+     "coingecko market_chart 14d (aggregate spot volume)",
+     "/tokens/{id} x19 (dataApi re-fetch + list recovery)",
+     "/accounts/{ESDT_SYS}/transactions?function=issue (newly_issued workaround)",
+     "deregistered-provider delegator series (rec #9)",
+     "JEXchange aggregator re-derivation (rec #11)",
+     "pre-flight re-query of last run's failed sources (rec #3)",
+     "halt-recovery-clean balances (run #26 rec #2)",
+     "distinct-inbound-sender census UWI + erd1a6lte0 (run #26 rec #3)",
+     "post-restart window netting (Sep 24 - Nov 23)",
+     "Binance hot wallet 2 daily paging in the collector",
+     "Hatom borrow amounts decoded from results",
+     "hot wallet 2 one-hop destination classes",
+     "liquid-staking discovery pass"
+    ],
+    "endpoints_that_failed": [
+     "Collector: 0 paged errors, 0 API errors, 0 rate-limit retries."
+    ],
+    "api_quirks_discovered": [
+     "/tokens returned null price and market cap for SWTAO-356a25, HUSDC-d80042 and HWTAO-2e9136 on the same day; the ratio fallback (methodology, run #11) was applied to all three.",
+     "/tokens/WTAO-4f5363 and /mex/tokens report TAO at $462 vs CoinGecko $192: a thin xExchange pool price. Never use it as the TAO base.",
+     "Hot wallet 2 in the collector's Binance set pages daily without hitting caps (658 out, 769 in for the window)."
+    ]
+   },
+   "analysis_insights": {
+    "what_worked": [
+     "Per-day hot-wallet flow next to reserve top-ups exposed the Nov 18-19 withdrawal pause and the Nov 20 release that a weekly total hides",
+     "Hot wallet 2 in the collector and Binance wallets in the rails internal set: venue figures match entity netting without ad-hoc overrides",
+     "Decoding borrow results sized the Hatom loops (45,645 EGLD) for the first time",
+     "Checking the WTAO feed against CoinGecko stopped a +25.8% phantom Hatom Liquid Staking reading"
+    ],
+    "what_needs_improvement": [
+     "No Binance statement found for the Nov 18-19 withdrawal pause.",
+     "SWTAO, HUSDC and HTAO prices are derived (API nulls), so Hatom Lending and Liquid Staking TVL carry a small model error.",
+     "OTC pipeline sections not refreshed (desk activity negligible).",
+     "No tokens issued in the window per the /tokens timestamp sort; not cross-checked against ESDT issue transactions.",
+     "Repayments are still unsized, so net leverage change rests on the money market's idle balance."
+    ],
+    "surprising_findings": [
+     "Binance's net outflow more than tripled (104,559) with withdrawals flat: deposits fell, not withdrawals rose.",
+     "Binance paid no EGLD withdrawals on Nov 18-19 while holding ~52K and taking deposits, then paid 114,410 on Nov 20.",
+     "Hatom leverage loops went from 15 to 70 in a -10% week; idle EGLD in the market fell 72%.",
+     "The chain's TAO price ($462) is 2.4x the market; three Hatom tokens returned null prices the same day.",
+     "erd1rlqdj67qxp is a 2024 Binance customer, not a new whale."
+    ]
+   },
+   "methodology_changes": [
+    "Collector: Binance hot wallet 2 is in the Binance hot set (daily-sliced paging).",
+    "Rails pass: Binance's own wallets are in the internal set; venue deposit/withdrawal figures exclude reserve top-ups.",
+    "Trace pass: Hatom borrow joins carry the decoded EGLD amount (results to the borrower).",
+    "Ad-hoc pass: one-hop destination class for the top 15 receivers of Binance's hot wallet (cross-venue share).",
+    "Price sanity check: a token price more than 2x the CoinGecko reference for the same asset is rejected (WTAO)."
+   ],
+   "new_addresses_discovered": [],
+   "action_items_completed": [
+    "binance-backlog-fades resolved (against: standing exit, net 104,559) and binance-reserve-stays resolved (as predicted: 2.13M held).",
+    "Upbit decision recorded: caution extended to Dec 14-18 with deposits closed; upbit-premium-on-decision re-dated once per its own clause.",
+    "Hot wallet 2 added to the collector's Binance set; Binance wallets added to the rails pass's internal set so funding legs are not counted as deposits.",
+    "Hatom borrow amounts decoded from each call's smart-contract results: 52,499 EGLD borrowed, 45,645 in loops.",
+    "erd1rlqdj67qxp traced: first transaction 2024-10-29 (not 2026), funded by Binance's old hot wallet; no third clip.",
+    "Binance delegation footprint checked: custody and erd1ylwusw hold no delegation; binance_staking provider -634 EGLD. The Nov 12 move did not change on-chain staking."
+   ],
+   "running_baselines": {
+    "egld_price_usd": [
+     4.48,
+     4.6,
+     3.95,
+     3.81,
+     3.54,
+     3.59,
+     3.68,
+     3.28,
+     3.4,
+     3.01,
+     2.58,
+     2.32
+    ],
+    "dex_volume_24h_usd": [
+     116293.67605035269,
+     158811.3336340517,
+     139035.8597490462,
+     257343.4101385467,
+     208879.42326705594,
+     108106.65759598026,
+     136264.0785120089,
+     129917.01209378718,
+     66892.01710431871,
+     122074.54272431647,
+     90656.71485519524,
+     60141.53842131548
+    ],
+    "dex_volume_24h_egld": [
+     25958,
+     34524,
+     35199,
+     67544,
+     59005,
+     30113,
+     37028,
+     39609,
+     19674.122677740797,
+     40556,
+     35138,
+     25923
+    ],
+    "staked_egld": [
+     14335164,
+     14292379,
+     14249639,
+     14256920,
+     14267409,
+     14267119,
+     14272297,
+     13887131,
+     13906738,
+     13922386,
+     14008713,
+     14011020
+    ],
+    "mex_price_usd": [
+     6.358740982775643e-07,
+     5.933589012287548e-07,
+     5.967333265507123e-07,
+     5.635510588236461e-07,
+     5.035376041392097e-07,
+     4.975297409781195e-07,
+     5.21752930949611e-07,
+     5.051785749380924e-07,
+     4.982849539533815e-07,
+     4.5829369100143964e-07,
+     3.9765763848397783e-07,
+     2.999053135273255e-07
+    ],
+    "total_delegators": [
+     172498,
+     172335,
+     172232,
+     172195,
+     172194,
+     172146,
+     172104,
+     172025,
+     171641,
+     171611,
+     171304,
+     171255
+    ],
+    "staked_ratio": [
+     0.46479484397808346,
+     0.4626677162414884,
+     0.4607598857001988,
+     0.46078606788683496,
+     0.46081056861851455,
+     0.460380902564278,
+     0.46023212216638415,
+     0.44740576852564423,
+     0.4473199507298687,
+     0.4470038090269791,
+     0.4491586207197279,
+     0.44853989284614626
+    ],
+    "exchange_net_flow_egld": [
+     -20386.061375999823,
+     22659.113199120387,
+     3619.7093724994993,
+     -71449.20183447469,
+     -191939.71816979814,
+     31862.435230013914,
+     117969.59074411914,
+     53956.536047511734,
+     -205816.9544668598,
+     -86701.561833933,
+     36357.8062676359,
+     -37011.072106352076
+    ],
+    "otc_pipeline_throughput_egld_7d": [
+     301498,
+     604086,
+     222532,
+     767206,
+     709850,
+     1563936,
+     893299,
+     314290
+    ],
+    "otc_net_one_way_egld_7d": [
+     61435,
+     188658,
+     138265,
+     252109,
+     272396,
+     536459,
+     401353,
+     64665
+    ],
+    "otc_desk_inventory_egld": [
+     46637,
+     46637,
+     54893,
+     53578,
+     53578,
+     53497,
+     53459,
+     53441
+    ],
+    "otc_net_one_way_measured_windows": {
+     "2026-07-06..2026-07-13 (run #16, backfilled run #21)": 309197,
+     "2026-07-13..2026-07-20 (run #17 peak, re-netted run #20)": 409680,
+     "2026-07-20..2026-07-27 (run #18, backfilled run #21)": 114877,
+     "2026-07-27..2026-08-03 (run #19)": 61435,
+     "2026-08-03..2026-08-10 (run #20)": 188658,
+     "2026-08-10..2026-08-17 (run #21)": 138265,
+     "2026-08-03..2026-08-24 (WAVE #2 netted feed-to-drain, run #21 - the correct measure)": 392029,
+     "2026-08-24..2026-08-31 (run #23, weekly frame - UPPER BOUND, the wave straddles)": 272396,
+     "2026-08-17..2026-08-31 (WAVE #3 netted feed-to-drain, run #23 - the correct measure)": 371179,
+     "2026-08-31..2026-09-07 (run #24, weekly frame - a RECORD, and inside the wave)": 536459,
+     "2026-08-17..2026-09-07 (WAVE #3 netted feed-to-drain, three frames - the correct measure)": 878809,
+     "2026-09-07..2026-09-14 (run #25, weekly frame, wave #4)": 401353,
+     "2026-08-17..2026-09-14 (waves #3+#4 netted as one window, four frames)": 1336721,
+     "2026-09-14..2026-09-19 halt (run #26, 5.3-day frame, wave #4)": 64665,
+     "2026-09-07..2026-09-19 halt (WAVE #4 netted feed-to-drain, two frames)": 467107,
+     "2026-09-07..2026-09-19 halt (WAVE #4 FINAL, run #26 labels; run #27 found no further desk activity)": 467107
+    },
+    "otc_circularity_pct": {
+     "run16": 71.9,
+     "run17_peak": 68.1,
+     "run18": 63.3,
+     "run19": 80.0,
+     "run20": 68.8,
+     "run21": 37.9,
+     "run22": 67.1,
+     "run23": 61.6,
+     "run24": 65.7,
+     "run25": 55.1,
+     "run26": 79.4
+    },
+    "dex_turnover_ratio_pct": [
+     4.609,
+     6.456,
+     5.828,
+     11.11,
+     9.822,
+     5.061,
+     6.044,
+     6.093,
+     5.985,
+     4.833,
+     3.479
+    ],
+    "identifiable_bid_absorbed_egld_7d": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "binance_staking_custody_egld": [
+     3493534.6849337723,
+     3493534.6849337723,
+     3493534.6849337723,
+     3654671.4569337727,
+     3654671.4569337727,
+     3654671.4569337727,
+     3974671.4569337727,
+     3974671.4569337727,
+     4284611.453933773,
+     4284611.453933773,
+     2000000.0051000002,
+     2000000.0051000002
+    ],
+    "reward_compound_pct": [
+     52.4,
+     58.28,
+     60.85,
+     59.38,
+     59.4,
+     60.93,
+     62.03,
+     62.29,
+     57.26,
+     61.74,
+     56.52,
+     65.62
+    ],
+    "delegation_total_locked_egld": [
+     10892686,
+     10905437,
+     10908949,
+     10599432,
+     10574168,
+     10556389,
+     10577151,
+     10601694,
+     10648583,
+     10715014,
+     10723724
+    ],
+    "usdt_supply": [
+     433045,
+     396061,
+     389984,
+     398684,
+     397988,
+     403987,
+     407750,
+     425495,
+     413975,
+     381086,
+     374292,
+     390995
+    ],
+    "usdc_supply": [
+     7511843,
+     7343990,
+     7324069,
+     7277767,
+     7197966,
+     7226350,
+     7319999,
+     7208177,
+     7176244,
+     7119153,
+     7004331,
+     6798063
+    ],
+    "unbonding_queue_undelegated_egld_7d": [
+     151443,
+     208125,
+     73351,
+     84169,
+     59094,
+     56486,
+     61257,
+     57080
+    ],
+    "unbonding_short_window_readings": {
+     "run27 (3.71 live days)": {
+      "undelegated_egld": 62093,
+      "weekly_pace_egld": 117307,
+      "withdraw_egld_returned": 40069
+     },
+     "run29_4day": {
+      "undelegated_egld": 39287,
+      "withdraw_egld_returned": 84929,
+      "days": 4
+     },
+     "run30_short": {
+      "undelegated_egld": 340941,
+      "withdraw_egld_returned": 31538,
+      "days": 2.74
+     },
+     "run31_short": {
+      "undelegated_egld": 60687,
+      "withdraw_egld_returned": 23044,
+      "days": 2.76
+     },
+     "run32_short": {
+      "undelegated_egld": 51891,
+      "withdraw_egld_returned": 27404,
+      "days": 4.22
+     },
+     "run33_short": {
+      "undelegated_egld": 7887,
+      "withdraw_egld_returned": 14196,
+      "days": 2.71
+     },
+     "run34_short": {
+      "undelegated_egld": 34734,
+      "withdraw_egld_returned": 410946,
+      "days": 4.36
+     }
+    },
+    "withdraw_egld_returned_7d": [
+     108941,
+     83604,
+     72314,
+     46000,
+     64853
+    ],
+    "withdrawal_breadth_ex_pipeline_egld": [
+     400113,
+     497647,
+     397124,
+     285984
+    ],
+    "cex_spot_volume_7d_egld": [
+     17696479
+    ],
+    "otc_delivery_share_of_spot_pct": [
+     2.27
+    ],
+    "binance_bybit_bid_depth_2pct_usd": [
+     124993
+    ],
+    "closed_book_readings_run26": {
+     "cex_spot_volume_7d_egld": 11126531,
+     "binance_bybit_bid_depth_2pct_usd": 84268
+    },
+    "closed_book_readings_run27": {
+     "cex_spot_volume_7d_egld": 13016608,
+     "binance_bybit_bid_depth_2pct_usd": 38621,
+     "korea_premium_pct": 32.4,
+     "exchange_net_flow_egld": 0.0,
+     "otc_gross_egld": 179
+    },
+    "partial_rail_readings_run28": {
+     "cex_spot_volume_7d_egld": 4793577,
+     "binance_bybit_bid_depth_2pct_usd": 47454,
+     "korea_premium_pct": 11.7,
+     "upbit_share_of_volume_pct": 19.6,
+     "exchange_net_flow_egld": 19442,
+     "otc_gross_egld": 0,
+     "otc_router_tail_to_gate_egld": 12184,
+     "venues_open": [
+      "Bitget",
+      "Crypto.com",
+      "Gate.io",
+      "Tokero"
+     ]
+    },
+    "partial_rail_readings_run29": {
+     "window_days": 4,
+     "cex_spot_volume_7d_egld": 5173068,
+     "binance_bybit_bid_depth_2pct_usd": 43478,
+     "korea_premium_pct": 15.4,
+     "upbit_share_of_volume_pct": 7.5,
+     "exchange_net_flow_egld": 93778,
+     "otc_gross_egld": 5745,
+     "binance_com_deposits_egld": 124524,
+     "venues_open": [
+      "Binance.com",
+      "Gate.io"
+     ]
+    },
+    "partial_rail_readings_run30": {
+     "window_days": 2.74,
+     "cex_spot_volume_7d_egld": 5787541,
+     "binance_bybit_bid_depth_2pct_usd": 55628,
+     "korea_premium_pct": 18.8,
+     "upbit_share_of_volume_pct": 17.7,
+     "exchange_net_flow_egld": 9029,
+     "otc_gross_egld": 1604,
+     "binance_com_deposits_egld": 106259,
+     "venues_open": [
+      "Binance.com",
+      "Bybit",
+      "Coinbase",
+      "Crypto.com",
+      "Gate.io"
+     ]
+    },
+    "partial_rail_readings_run31": {
+     "window_days": 2.76,
+     "cex_spot_volume_7d_egld": 6135181,
+     "binance_bybit_bid_depth_2pct_usd": 47342,
+     "korea_premium_pct": 13.6,
+     "upbit_share_of_volume_pct": 10.7,
+     "exchange_net_flow_egld": 42939,
+     "otc_gross_egld": 0,
+     "binance_com_deposits_egld": 51333,
+     "venues_open": [
+      "Binance.com",
+      "Bybit",
+      "Coinbase",
+      "Crypto.com",
+      "Gate.io"
+     ]
+    },
+    "partial_rail_readings_run32": {
+     "window_days": 4.22,
+     "cex_spot_volume_7d_egld": 5869785,
+     "binance_bybit_bid_depth_2pct_usd": 46253,
+     "korea_premium_pct": 10.6,
+     "upbit_share_of_volume_pct": 7.9,
+     "exchange_net_flow_egld": 12843,
+     "otc_gross_egld": 81,
+     "binance_com_deposits_egld": 79400,
+     "venues_open": [
+      "Binance.com",
+      "Bybit",
+      "Coinbase",
+      "Crypto.com",
+      "Gate.io"
+     ]
+    },
+    "partial_rail_readings_run33": {
+     "window_days": 2.71,
+     "cex_spot_volume_7d_egld": 5201111,
+     "binance_bybit_bid_depth_2pct_usd": 45287,
+     "korea_premium_pct": 12.2,
+     "upbit_share_of_volume_pct": 47.2,
+     "exchange_net_flow_egld": 16237,
+     "otc_gross_egld": 5340,
+     "binance_com_deposits_egld": 49453,
+     "venues_open": [
+      "Binance.com",
+      "Bybit",
+      "Coinbase",
+      "Crypto.com",
+      "Gate.io"
+     ]
+    },
+    "rail_7d_readings": {
+     "run32": {
+      "start_utc": "2026-10-12 15:05 UTC",
+      "days": 6.97,
+      "deposits_egld": 276712.45,
+      "withdrawals_egld": 222511.09,
+      "net_egld": 54201.36,
+      "cross_venue_deposits_egld": 64546.57,
+      "cross_venue_withdrawals_egld": 44394.58,
+      "net_ex_cross_venue_egld": 34049.37,
+      "egld_change_pct": -5.77,
+      "btc_change_pct": -0.63,
+      "egld_minus_btc_pp": -5.14,
+      "balance_basis_net_ex_cross_venue_egld": 20061.32
+     },
+     "run33_trailing": {
+      "start_utc": "2026-10-15 13:41 UTC",
+      "days": 6.74,
+      "deposits_egld": 211585.91,
+      "withdrawals_egld": 179209.84,
+      "net_egld": 32376.07,
+      "cross_venue_deposits_egld": 38439.58,
+      "cross_venue_withdrawals_egld": 38171.68,
+      "net_ex_cross_venue_egld": 32108.17,
+      "egld_change_pct": 3.95,
+      "btc_change_pct": 1.17,
+      "egld_minus_btc_pp": 2.78,
+      "balance_basis_net_ex_cross_venue_egld": 29080.28
+     },
+     "run34_trailing": {
+      "start_utc": "2026-10-19 16:11 UTC",
+      "days": 7.0,
+      "deposits_egld": 242897.24,
+      "withdrawals_egld": 257852.45,
+      "net_egld": -14955.21,
+      "cross_venue_deposits_egld": 6857.56,
+      "cross_venue_withdrawals_egld": 7738.93,
+      "net_ex_cross_venue_egld": -14073.85,
+      "egld_change_pct": -10.25,
+      "btc_change_pct": -2.35,
+      "egld_minus_btc_pp": -7.89,
+      "balance_basis_net_ex_cross_venue_egld": -16773.53
+     },
+     "run34_overhang_fixed_oct19_26": {
+      "start_utc": "2026-10-19 14:40 UTC",
+      "end_utc": "2026-10-26 14:40 UTC",
+      "deposits_egld": 243235.37,
+      "withdrawals_egld": 259570.03,
+      "net_egld": -16334.66,
+      "cross_venue_deposits_egld": 6857.56,
+      "cross_venue_withdrawals_egld": 7738.93,
+      "net_ex_cross_venue_egld": -15453.29,
+      "egld_change_pct": -10.25,
+      "btc_change_pct": -2.35,
+      "egld_minus_btc_pp": -7.89,
+      "outcome": "no conclusion"
+     }
+    },
+    "partial_rail_readings_run34": {
+     "window_days": 4.36,
+     "cex_spot_volume_7d_egld": 5171582,
+     "binance_bybit_bid_depth_2pct_usd": 28373,
+     "korea_premium_pct": 20.6,
+     "upbit_share_of_volume_pct": 90.4,
+     "exchange_net_flow_egld": -32129,
+     "exchange_net_flow_egld_raw": 287871,
+     "otc_gross_egld": 920,
+     "binance_com_deposits_egld": 71983,
+     "venues_open": [
+      "Binance.com",
+      "Bybit",
+      "Coinbase",
+      "Crypto.com",
+      "Gate.io",
+      "KuCoin"
+     ]
+    },
+    "dex_exit_discount_pct": [
+     -9.3
+    ],
+    "korea_premium_pct": [
+     32.4,
+     11.7,
+     15.4,
+     18.8,
+     13.6,
+     10.6,
+     12.2,
+     20.6,
+     14.2,
+     17.1,
+     19.8,
+     18.1
+    ],
+    "hmex_supply": [
+     24959314779646.0,
+     11012904178288.0
+    ],
+    "pre_committed_tests_resolved": [
+     3,
+     1,
+     1,
+     3,
+     1,
+     2,
+     1,
+     3,
+     2,
+     2,
+     2
+    ],
+    "pre_committed_test_hit_rate_pct": [
+     0.0,
+     0.0,
+     0.0,
+     33.3,
+     0.0,
+     50.0,
+     100.0,
+     0.0,
+     0.0,
+     100.0,
+     50.0
+    ],
+    "pre_committed_tests_open": [
+     4,
+     5,
+     6,
+     5,
+     6,
+     5,
+     5,
+     4,
+     4,
+     4,
+     4
+    ],
+    "binance_native_rail_egld_7d": [
+     0.0,
+     379217.3239506785,
+     306585.2296259778
+    ],
+    "binance_entity_egld": [
+     4584625,
+     4554857,
+     4453471
+    ],
+    "hatom_borrow_loops": {
+     "run37": {
+      "resupply_only": 5,
+      "none_in_30m": 13,
+      "loop": 15,
+      "swap_only": 15,
+      "stake_only": 3
+     },
+     "run38": {
+      "loop": 70,
+      "swap_only": 8,
+      "none_in_30m": 11,
+      "resupply_only": 4,
+      "stake_only": 1
+     }
+    },
+    "usdc_bridge_net_unwrap": [
+     59091,
+     284435,
+     242835
+    ],
+    "hatom_borrowed_egld_by_pattern": {
+     "run38": {
+      "loop": 45645,
+      "swap_only": 1877,
+      "none_in_30m": 2272,
+      "resupply_only": 2700,
+      "stake_only": 6
+     }
+    },
+    "hatom_egld_mm_idle_egld": [
+     55973,
+     15477
+    ],
+    "binance_reserve_egld": [
+     2184313,
+     2134313
+    ]
+   },
+   "dashboard_feature_suggestions": [
+    {
+     "title": "Exchange reserve runway gauge",
+     "motivation": "Binance's reserve wallet (2,134,313) now refills the hot wallet; with a 104,559 weekly net outflow it covers about 20 weeks. No component shows a stock against its burn rate.",
+     "suggested_visualization": "gauge or depletion line: reserve balance per week with projected runway at trailing net outflow",
+     "data_already_available": true,
+     "data_source": "run38_adhoc.ylw + hot2 in data/collected; whale_intelligence.exchange_flows.entity_netting",
+     "priority": "high"
+    },
+    {
+     "title": "Daily hot-wallet flow bars",
+     "motivation": "The Nov 18-19 withdrawal pause and the 114K Nov 20 release are invisible in a weekly total; only a daily view shows a queue forming and clearing.",
+     "suggested_visualization": "daily diverging bars (withdrawals down, deposits up) with funding top-ups as markers",
+     "data_already_available": true,
+     "data_source": "run38_adhoc.hot2.days in data/collected",
+     "priority": "medium"
+    },
+    {
+     "title": "Hatom leverage-loop size series",
+     "motivation": "Loops grew from 15 to 70 with 45,645 EGLD decoded this week, while idle EGLD fell to 15,477. A single-week panel cannot show leverage building into a drawdown.",
+     "suggested_visualization": "stacked weekly bars of borrowed EGLD by follow-through pattern, with idle-cash line overlay",
+     "data_already_available": true,
+     "data_source": "run38_traces.hatom_borrow_join.borrowed_egld_by_pattern + top_accounts Hatom money market balance",
+     "priority": "medium"
+    }
+   ],
+   "dashboard_suggestions_followup": [
+    {
+     "title": "Exchange entity wallet map",
+     "status": "pending",
+     "reason": "Still the right view: this week the reserve -> hot wallet top-up is the only internal edge and it explains the Nov 20 spike."
+    },
+    {
+     "title": "Withdrawal destination sankey per venue",
+     "status": "pending",
+     "reason": "Data refreshed (one-hop classes for hot wallet 2's top receivers); component not built."
+    },
+    {
+     "title": "Hatom borrow follow-through bars",
+     "status": "pending",
+     "reason": "Superseded in scope by the loop-size series now that amounts are decoded; build that instead."
+    }
+   ],
+   "self_assessment": {
+    "most_valuable_insight": "Binance's reopened rail is an exit, not a backlog: withdrawals held at ~205K a week while deposits fell, and a two-day pause was cleared from the 2.13M reserve. At this pace the reserve covers about 20 weeks.",
+    "recommendations_completed": "6 of 6",
+    "next_week_2x_better": "Decode repayments as well as borrows, and turn the hot-wallet daily view into a standing series."
+   },
+   "recommendations_for_next_run": [
+    "Resolve binance-outflow-persists and hatom-loops-unwind-without-liquidation on run #39's window.",
+    "Track erd1ylwusw drawdowns per week as a reserve runway series (balance / net weekly outflow).",
+    "Size Hatom repayments the same way as borrows (decode repayBorrow values) so net leverage change has an EGLD figure.",
+    "Re-check the three null-priced Hatom tokens; if the API still returns null, move the ratio fallback into the collector.",
+    "Look for any Binance notice covering Nov 18-19 and check whether other venues (Bybit, Gate.io) paused EGLD withdrawals on the same days.",
+    "Graduate the KuCoin withdrawer from the watch list if it stays idle another window."
+   ]
   }
  ]
 }
